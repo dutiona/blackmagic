@@ -1,0 +1,233 @@
+{
+    // See https://go.microsoft.com/fwlink/?LinkId=733558
+    // for the documentation about the tasks.json format
+    "version": "2.0.0",
+    "echoCommand": true,
+    "tasks": [
+        {
+            "label": "clean",
+            "type": "shell",
+            "options": {
+                "cwd": "${workspaceRoot}/build"
+            },
+            "args": [
+                "-rf",
+                "*"
+            ],
+            "command": "rm",
+            "group": "none"
+        },
+        {
+            "label": "configure-with-cdb",
+            "type": "shell",
+            "options": {
+                "cwd": "${workspaceRoot}/build"
+            },
+            "args": [
+                "-G",
+                "Ninja",
+                "..",
+                "-DCMAKE_EXPORT_COMPILE_COMMANDS=ON"
+            ],
+            "command": "cmake",
+            "group": "build"
+        },
+        {
+            "label": "copy-cdb-to-workspaceRoot",
+            "type": "shell",
+            "dependsOn": "configure-with-cdb",
+            "options": {
+                "cwd": "${workspaceRoot}/build"
+            },
+            "args": [
+                "compile_commands.json",
+                ".."
+            ],
+            "command": "cp",
+            "group": "build"
+        },
+        {
+            "label": "build-debug-all",
+            "type": "shell",
+            "options": {
+                "cwd": "${workspaceRoot}/build"
+            },
+            "dependsOn": "configure-with-cdb",
+            "args": [
+                "--build",
+                ".",
+                "--target",
+                "check",
+                "--config",
+                "Debug",
+                "--",
+                "-j6"
+            ],
+            "command": "cmake",
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            },
+            "problemMatcher": {
+                "owner": "cpp",
+                "fileLocation": "absolute",
+                "pattern": {
+                    "regexp": "^(.*):(\\d+):(\\d+):\\s+(warning|error|note|info):\\s+(.*)$",
+                    "file": 1,
+                    "line": 2,
+                    "column": 3,
+                    "severity": 4,
+                    "message": 5
+                }
+            }
+        },
+        {
+            "label": "build-release-all",
+            "type": "shell",
+            "options": {
+                "cwd": "${workspaceRoot}/build"
+            },
+            "dependsOn": "configure-with-cdb",
+            "args": [
+                "--build",
+                ".",
+                "--target",
+                "check",
+                "--config",
+                "Release",
+                "--",
+                "-j6"
+            ],
+            "command": "cmake",
+            "group": "build",
+            "problemMatcher": {
+                "owner": "cpp",
+                "fileLocation": "absolute",
+                "pattern": {
+                    "regexp": "^(.*):(\\d+):(\\d+):\\s+(warning|error|note|info):\\s+(.*)$",
+                    "file": 1,
+                    "line": 2,
+                    "column": 3,
+                    "severity": 4,
+                    "message": 5
+                }
+            }
+        },
+        {
+            "label": "clang-format-current",
+            "type": "shell",
+            "options": {
+                "cwd": "${workspaceRoot}"
+            },
+            "args": [
+                "-i",
+                "-style=file",
+                "${relativeFile}"
+            ],
+            "command": "clang-format",
+            "group": "none"
+        },
+        {
+            "label": "clang-tidy-current",
+            "type": "shell",
+            "options": {
+                "cwd": "${workspaceRoot}"
+            },
+            "args": [
+                "-header-filter=\".*\"",
+                "-export-fixes=\"build/clang-tidy-current.fixes\"",
+                "-p",
+                "build",
+                "${file}"
+            ],
+            "dependsOn": "configure-with-cdb",
+            "command": "clang-tidy",
+            "problemMatcher": {
+                "owner": "cpp",
+                "fileLocation": "absolute",
+                "pattern": {
+                    "regexp": "^(.*):(\\d+):(\\d+):\\s+(warning|error|note|info):\\s+(.*)$",
+                    "file": 1,
+                    "line": 2,
+                    "column": 3,
+                    "severity": 4,
+                    "message": 5
+                }
+            },
+            "group": "none"
+        },
+        {
+            "label": "clang-tidy-patch-current",
+            "type": "shell",
+            "options": {
+                "cwd": "${workspaceRoot}"
+            },
+            "args": [
+                "-header-filter=\".*\"",
+                "-fix-errors",
+                "-p",
+                "build",
+                "${file}"
+            ],
+            "dependsOn": "configure-with-cdb",
+            "command": "clang-tidy",
+            "problemMatcher": {
+                "owner": "cpp",
+                "fileLocation": "absolute",
+                "pattern": {
+                    "regexp": "^(.*):(\\d+):(\\d+):\\s+(warning|error|note|info):\\s+(.*)$",
+                    "file": 1,
+                    "line": 2,
+                    "column": 3,
+                    "severity": 4,
+                    "message": 5
+                }
+            },
+            "group": "none"
+        },
+        {
+            "label": "clang-tidy-all",
+            "type": "shell",
+            "options": {
+                "cwd": "${workspaceRoot}"
+            },
+            "dependsOn": "configure-with-cdb",
+            "command": "clang-tidy -header-filter=\".*\" -export-fixes=\"build/clang-tidy-all.fixes\" -p build $(cat build/compile_commands.json | jq \".[].file\" | tr -d '\"' | tr '\\n' ' ')",
+            "problemMatcher": {
+                "owner": "cpp",
+                "fileLocation": "absolute",
+                "pattern": {
+                    "regexp": "^(.*):(\\d+):(\\d+):\\s+(warning|error|note|info):\\s+(.*)$",
+                    "file": 1,
+                    "line": 2,
+                    "column": 3,
+                    "severity": 4,
+                    "message": 5
+                }
+            },
+            "group": "none"
+        },
+        {
+            "label": "clang-tidy-patch-all",
+            "type": "shell",
+            "options": {
+                "cwd": "${workspaceRoot}"
+            },
+            "dependsOn": "configure-with-cdb",
+            "command": "clang-tidy -header-filter=\".*\" -fix-errors -p build $(cat build/compile_commands.json | jq \".[].file\" | tr -d '\"' | tr '\\n' ' ')",
+            "problemMatcher": {
+                "owner": "cpp",
+                "fileLocation": "absolute",
+                "pattern": {
+                    "regexp": "^(.*):(\\d+):(\\d+):\\s+(warning|error|note|info):\\s+(.*)$",
+                    "file": 1,
+                    "line": 2,
+                    "column": 3,
+                    "severity": 4,
+                    "message": 5
+                }
+            },
+            "group": "none"
+        }
+    ]
+}
