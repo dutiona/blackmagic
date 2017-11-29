@@ -2,6 +2,7 @@ cmake_minimum_required(VERSION 3.6)
 
 project(Cpp14Concepts VERSION 0.0.1 LANGUAGES CXX)
 
+add_library(Cpp14Concepts INTERFACE)
 target_compile_features(Cpp14Concepts INTERFACE cxx_std_14)
 target_include_directories(Cpp14Concepts
     INTERFACE "$<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>")

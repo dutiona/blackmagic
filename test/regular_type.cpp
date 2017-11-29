@@ -1,5 +1,5 @@
 #include <gtest/gtest.h>
-TEST(RegularType)
+TEST(RegularType, AlwaysTrue)
 {
     ASSERT_TRUE(true);
 }
