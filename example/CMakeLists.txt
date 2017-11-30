@@ -11,4 +11,10 @@ macro(add_example Executable Source)
     add_dependencies(examples example_${Executable})
 endmacro(add_example)
 
-add_example(regular_type "regular_type.cpp")
+option(WITH_EXAMPLES "Compile and run examples" OFF)
+
+if(WITH_EXAMPLES)
+    
+    add_example(regular_type "regular_type.cpp")
+    
+endif(WITH_EXAMPLES)

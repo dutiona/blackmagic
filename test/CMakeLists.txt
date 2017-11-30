@@ -2,9 +2,6 @@ add_custom_target(tests
     COMMAND ${CMAKE_CTEST_COMMAND} --output-on-failure
     COMMENT "Build and run all the unit tests.")
 
-find_package(Threads REQUIRED)
-find_package(GTest REQUIRED)
-
 macro(add_unit_test Executable Source)
     add_executable(test_${Executable} EXCLUDE_FROM_ALL ${Source})
     add_test(NAME test_${Executable} COMMAND test_${Executable} WORKING_DIRECTORY ${CMAKE_BINARY_DIR}/test)
@@ -21,7 +18,15 @@ macro(add_unit_test Executable Source)
     
 endmacro(add_unit_test)
 
-# regular_type
-add_unit_test(regular_type "regular_type.cpp")
+option(WITH_TESTS "Compile and run tests" ON)
+
+if(WITH_TESTS)
+
+    find_package(Threads REQUIRED)
+    find_package(GTest REQUIRED)
+
+    add_unit_test(regular_type "regular_type.cpp")
+
+endif(WITH_TESTS)
 
 

@@ -1,8 +1,6 @@
 add_custom_target(benchmarks
     COMMENT "Build and run all the benchmarks.")
 
-find_package(benchmark REQUIRED)
-
 macro(add_benchmark Executable Source)
     add_executable(benchmark_${Executable}.exe EXCLUDE_FROM_ALL ${Source})
     target_compile_options(benchmark_${Executable}.exe PRIVATE -O3)
@@ -15,7 +13,12 @@ macro(add_benchmark Executable Source)
     add_dependencies(benchmarks benchmark_${Executable})
 endmacro(add_benchmark)
 
-# regular_type
-add_benchmark(regular_type "regular_type.cpp")
+option(WITH_BENCHMARK "Enable benchmark (requires google benchmark installed" OFF)
 
+if(WITH_BENCHMARK)
+
+    find_package(benchmark REQUIRED)
+    add_benchmark(regular_type "regular_type.cpp")
+
+endif(WITH_BENCHMARK)
 

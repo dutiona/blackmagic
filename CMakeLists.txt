@@ -17,9 +17,11 @@ install(TARGETS   Cpp14Concepts INCLUDES    DESTINATION include)
 install(FILES     include/cpp14concepts.hpp DESTINATION include)
 install(DIRECTORY include/cpp14concepts     DESTINATION include FILES_MATCHING PATTERN "*.hpp")
 
-enable_testing()
-add_subdirectory(benchmark)
 add_subdirectory(example)
+
+add_subdirectory(benchmark)
+
+enable_testing()
 add_subdirectory(test)
 
 # Setup the `check` convenience target, which is equivalent to examples + tests.
