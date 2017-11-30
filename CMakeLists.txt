@@ -8,7 +8,7 @@ target_include_directories(Cpp14Concepts
     INTERFACE "$<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>")
 
 if(MSVC)
-    add_compile_options(/Wall /WX /permissive- /std:c++14)
+    add_compile_options(/W4 /WX /permissive- /std:c++14)
 else(MSVC)
     add_compile_options(-Wall -Wextra -Werror -pedantic -std=c++14)
 endif(MSVC)
