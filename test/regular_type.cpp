@@ -2,5 +2,5 @@
 
 TEST(RegularType, AlwaysTrue)
 {
-    ASSERT_TRUE(true);
+  ASSERT_TRUE(true);
 }

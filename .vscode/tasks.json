@@ -124,7 +124,7 @@
                 "-style=file",
                 "${relativeFile}"
             ],
-            "command": "clang-format",
+            "command": "/Users/dutiona/Dev/vendor/llvm-project-master/build/bin/clang-format",
             "group": "none"
         },
         {

@@ -3,6 +3,7 @@ add_custom_target(benchmarks
 
 macro(add_benchmark Executable Source)
     add_executable(benchmark_${Executable}.exe EXCLUDE_FROM_ALL ${Source})
+    target_include_directories(benchmark_${Executable}.exe PRIVATE ${CPP14CONCEPTS_INCLUDE_DIR})
     target_compile_options(benchmark_${Executable}.exe PRIVATE -O3)
     target_link_libraries(benchmark_${Executable}.exe PRIVATE benchmark::benchmark)
     add_custom_target(benchmark_${Executable}

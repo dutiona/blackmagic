@@ -1,4 +1,5 @@
 /build*
+/cmake-build-*
 .vs
 .idea
 compile_commands.json
