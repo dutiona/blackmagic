@@ -10,8 +10,15 @@
  *      - http://wg21.link/p0734r0
  */
 
-#include "concepts/basic.hpp"
-#include "concepts/layout.hpp"
-#include "concepts/library.hpp"
+#include "basic/concepts.hpp"
+#include "basic/traits.hpp"
+
+namespace concepts {
+using namespace concepts::basic;
+}
+
+namespace traits {
+using namespace concepts::basic::traits;
+}
 
 #endif // CONCEPTS_HPP_
