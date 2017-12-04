@@ -2,24 +2,25 @@
 
 #ifndef CONCEPTS_BASIC_CONCEPTS_HPP_
 #define CONCEPTS_BASIC_CONCEPTS_HPP_
+
 /**
  *
- * DefaultConstructible : specifies that an object of the type can be default
+ * default constructible : specifies that an object of the type can be default
  * constructed
  *
- * MoveConstructible : specifies that an object of the type can be constructed
+ * move constructible : specifies that an object of the type can be constructed
  * from rvalue
  *
- * CopyConstructible : specifies that an object of the type can be constructed
+ * copy constructible : specifies that an object of the type can be constructed
  * from lvalue
  *
- * MoveAssignable : specifies that an object of the type can be assigned from
+ * move assignable : specifies that an object of the type can be assigned from
  * rvalue
  *
- * CopyAssignable : specifies that an object of the type can be assigned from
+ * copy assignable : specifies that an object of the type can be assigned from
  * lvalue
  *
- * Destructible : specifies that an object of the type can be destroyed
+ * destructible : specifies that an object of the type can be destroyed
  *
  */
 
@@ -27,29 +28,29 @@
 
 namespace concepts { namespace basic {
 
-// DefaultConstructible
+// default constructible
 template <typename T>
-constexpr bool DefaultConstructible = details::default_constructible_v<T>;
+constexpr bool default_constructible = details::default_constructible_v<T>;
 
-// MoveConstructible
+// move constructible
 template <typename T>
-constexpr bool MoveConstructible = details::move_constructible_v<T>;
+constexpr bool move_constructible = details::move_constructible_v<T>;
 
-// CopyConstructible
+// copy constructible
 template <typename T>
-constexpr bool CopyConstructible = std::is_copy_assignable_v<T>;
+constexpr bool copy_constructible = details::copy_constructible_v<T>;
 
-// MoveAssignable
+// move assignable
 template <typename T>
-constexpr bool MoveAssignable = std::is_move_assignable_v<T>;
+constexpr bool move_assignable = details::move_assignable_v<T>;
 
-// CopyAssignable
+// copy assignable
 template <typename T>
-constexpr bool CopyAssignable = std::is_copy_assignable_v<T>;
+constexpr bool copy_assignable = details::copy_assignable_v<T>;
 
-// Destructible
+// destructible
 template <typename T>
-constexpr bool Destructible = std::is_destructible_v<T>;
+constexpr bool destructible = details::destructible_v<T>;
 
 }} // namespace concepts::basic
 
