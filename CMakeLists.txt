@@ -5,7 +5,7 @@ project(Concepts VERSION 0.0.1 LANGUAGES CXX)
 add_library(Concepts INTERFACE)
 target_compile_features(Concepts INTERFACE cxx_std_17)
 
-set(CONCEPTS_INCLUDE_DIR "$<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>")
+set(CONCEPTS_INCLUDE_DIR "${PROJECT_SOURCE_DIR}/include")
 target_include_directories(Concepts INTERFACE ${CONCEPTS_INCLUDE_DIR})
 
 if(MSVC)
