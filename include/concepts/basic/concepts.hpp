@@ -1,7 +1,7 @@
 #pragma once
 
-#ifndef CONCEPTS_BASIC_HPP_
-#  define CONCEPTS_BASIC_HPP_
+#ifndef CONCEPTS_BASIC_CONCEPTS_HPP_
+#define CONCEPTS_BASIC_CONCEPTS_HPP_
 /**
  *
  * DefaultConstructible : specifies that an object of the type can be default
@@ -23,33 +23,34 @@
  *
  */
 
-#  include <type_traits>
+#include "details/concepts_impl.hpp"
 
-namespace concepts {
+namespace concepts { namespace basic {
 
 // DefaultConstructible
 template <typename T>
-constexpr bool DefaultConstructible = std::is_default_constructible<T>::value;
+constexpr bool DefaultConstructible = details::default_constructible_v<T>;
 
 // MoveConstructible
 template <typename T>
-constexpr bool MoveConstructible = std::is_move_constructible<T>::value;
+constexpr bool MoveConstructible = details::move_constructible_v<T>;
 
-// MoveConstructible
+// CopyConstructible
 template <typename T>
-constexpr bool CopyConstructible = std::is_copy_assignable<T>::value;
+constexpr bool CopyConstructible = std::is_copy_assignable_v<T>;
 
 // MoveAssignable
 template <typename T>
-constexpr bool MoveAssignable = std::is_move_assignable<T>::value;
+constexpr bool MoveAssignable = std::is_move_assignable_v<T>;
 
 // CopyAssignable
 template <typename T>
-constexpr bool CopyAssignable = std::is_copy_assignable<T>::value;
+constexpr bool CopyAssignable = std::is_copy_assignable_v<T>;
 
 // Destructible
 template <typename T>
-constexpr bool Destructible = std::is_destructible<T>::value;
-} // namespace concepts
+constexpr bool Destructible = std::is_destructible_v<T>;
 
-#endif // CONCEPTS_BASIC_HPP_
+}} // namespace concepts::basic
+
+#endif // CONCEPTS_BASIC_CONCEPTS_HPP_

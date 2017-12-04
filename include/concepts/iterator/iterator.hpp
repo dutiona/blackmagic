@@ -1,6 +1,6 @@
 #pragma once
 
-#ifndef CCONCEPTS_ITERATOR_HPP_
+#ifndef CONCEPTS_ITERATOR_HPP_
 #define CONCEPTS_ITERATOR_HPP_
 
 /**
@@ -25,8 +25,8 @@
 #include "helpers.hpp"
 #include "library.hpp"
 
-#include "details/iterator.hpp"
-#include "details/utility.hpp"
+#include "traits/iterator.hpp"
+#include "traits/utility.hpp"
 
 #include <type_traits>
 #include <utility>

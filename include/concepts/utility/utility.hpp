@@ -1,12 +1,12 @@
 #pragma once
 
-#ifndef CONCEPTS_DETAILS_UTILIY_HPP_
-#define CONCEPTS_DETAILS_UTILIY_HPP_
+#ifndef CONCEPTS_TRAITS_UTILIY_HPP_
+#define CONCEPTS_TRAITS_UTILIY_HPP_
 
 #include <iterator>
 #include <type_traits>
 
-namespace concepts { namespace details {
+namespace concepts { namespace traits {
 
 // member access
 
@@ -139,7 +139,7 @@ using greater_equal_than_t = decltype(std::declval<T>() >= std::declval<U>()); /
 template <typename T, typename... Args>
 using function_call_t = decltype(std::declval<T>()(std::declval<Args>()...)); // a(args...)
 
-}} // namespace concepts::details
+}} // namespace concepts::traits
 
 
-#endif // CONCEPTS_DETAILS_UTILIY_HPP_
+#endif // CONCEPTS_TRAITS_UTILIY_HPP_

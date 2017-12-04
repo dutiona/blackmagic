@@ -1,12 +1,12 @@
 #pragma once
 
-#ifndef CONCEPTS_DETAILS_ITERATOR_HPP_
-#define CONCEPTS_DETAILS_ITERATOR_HPP_
+#ifndef CONCEPTS_TRAITS_ITERATOR_HPP_
+#define CONCEPTS_TRAITS_ITERATOR_HPP_
 
 #include <iterator>
 #include <type_traits>
 
-namespace concepts { namespace details {
+namespace concepts { namespace traits {
 
 template <typename T>
 using value_type_t = typename std::iterator_traits<T>::value_type;
@@ -50,7 +50,7 @@ using dereferenceable_assignable_pre_incrementable_t = decltype(*++std::declval<
 template <typename T, typename U = T>
 using dereferenceable_assignable_pre_decrementable_t = decltype(*--std::declval<T>() = std::declval<U>()); // *--a = b
 
-}} // namespace concepts::details
+}} // namespace concepts::traits
 
 
-#endif // CONCEPTS_DETAILS_ITERATOR_HPP_
+#endif // CONCEPTS_TRAITS_ITERATOR_HPP_

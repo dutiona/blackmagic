@@ -33,7 +33,7 @@
 #include "helpers.hpp"
 #include "iterator.hpp"
 
-#include "details/library.hpp"
+#include "traits/library.hpp"
 
 #include <type_traits>
 #include <utility>
@@ -42,22 +42,19 @@ namespace concepts {
 
 // EqualityComparable
 template <typename T>
-constexpr bool EqualityComparable = std::conjunction<std::is_convertible<details::equality_t<T>, bool>::value,
-                                                     std::is_convertible<details::inequality_t<T>, bool>::value>::value;
+constexpr bool EqualityComparable = traits::is_equality_comparable_v<T>;
 
 // LessThanComparable
 template <typename T>
-constexpr bool LessThanComparable = std::is_convertible<details::less_than_t<T>, bool>::value;
+constexpr bool LessThanComparable = traits::is_less_than_comparable_v<T>;
 
 // Swappable
-template <typename T, typename U = T>
-constexpr bool Swappable = cpp17additions::is_swappable_with_v<T, U>;
+template <typename T>
+constexpr bool Swappable = std::is_swappable_v<T>;
 
 // ValueSwappable
-template <typename T, typename U = T>
-constexpr bool ValueSwappable = std::conjunction<
-  Iterator<T>, Iterator<U>,
-  cpp17additions::is_swappable_with_v<details::dereferenceable_t<T>, details::dereferenceable_t<U>>>::value;
+template <typename T>
+constexpr bool ValueSwappable = traits::is_value_swappable_v<T>;
 
 // NullablePointer
 template <typename T>
