@@ -1,7 +1,7 @@
 #pragma once
 
-#ifndef CPP14CONCEPTS_LIBRARY_HPP_
-#  define CPP14CONCEPTS_LIBRARY_HPP_
+#ifndef CONCEPTS_LIBRARY_HPP_
+#define CONCEPTS_LIBRARY_HPP_
 /**
  *
  * EqualityComparable : operator== is an equivalence relation
@@ -30,15 +30,15 @@
  *
  */
 
-#  include "cpp17additions.hpp"
-#  include "iterator.hpp"
+#include "helpers.hpp"
+#include "iterator.hpp"
 
-#  include "details/library.hpp"
+#include "details/library.hpp"
 
-#  include <type_traits>
-#  include <utility>
+#include <type_traits>
+#include <utility>
 
-namespace cpp14concepts {
+namespace concepts {
 
 // EqualityComparable
 template <typename T>
@@ -102,6 +102,6 @@ constexpr bool Compare =
   std::conjunction<BinaryPredicate<T, Arg1, Arg2>, std::is_same<details::function_call_t<T, Arg1, Arg2>,
                                                                 details::compare_equiv_t<T, Arg1, Arg2>>::value>::value;
 
-} // namespace cpp14concepts
+} // namespace concepts
 
-#endif // CPP14CONCEPTS_LIBRARY_HPP_
+#endif // CONCEPTS_LIBRARY_HPP_

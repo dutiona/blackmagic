@@ -1,22 +1,22 @@
-cmake_minimum_required(VERSION 3.6)
+cmake_minimum_required(VERSION 3.8.2) # required for cxx_std_17
 
-project(Cpp14Concepts VERSION 0.0.1 LANGUAGES CXX)
+project(Concepts VERSION 0.0.1 LANGUAGES CXX)
 
-add_library(Cpp14Concepts INTERFACE)
-target_compile_features(Cpp14Concepts INTERFACE cxx_std_14)
+add_library(Concepts INTERFACE)
+target_compile_features(Concepts INTERFACE cxx_std_17)
 
-set(CPP14CONCEPTS_INCLUDE_DIR "$<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>")
-target_include_directories(Cpp14Concepts INTERFACE ${CPP14CONCEPTS_INCLUDE_DIR})
+set(CONCEPTS_INCLUDE_DIR "$<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>")
+target_include_directories(Concepts INTERFACE ${CONCEPTS_INCLUDE_DIR})
 
 if(MSVC)
-    add_compile_options(/W4 /WX /permissive- /std:c++14)
+    add_compile_options(/W4 /WX /permissive-4 /std:c++17)
 else(MSVC)
-    add_compile_options(-Wall -Wextra -Werror -pedantic -std=c++14)
+    add_compile_options(-Wall -Wextra -Werror -pedantic -std=c++1z)
 endif(MSVC)
 
-install(TARGETS   Cpp14Concepts INCLUDES    DESTINATION include)
-install(FILES     include/cpp14concepts.hpp DESTINATION include)
-install(DIRECTORY include/cpp14concepts     DESTINATION include FILES_MATCHING PATTERN "*.hpp")
+install(TARGETS   Concepts INCLUDES    DESTINATION include)
+install(FILES     include/concepts.hpp DESTINATION include)
+install(DIRECTORY include/concepts     DESTINATION include FILES_MATCHING PATTERN "*.hpp")
 
 add_subdirectory(example)
 

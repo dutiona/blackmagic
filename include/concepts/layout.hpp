@@ -1,7 +1,7 @@
 #pragma once
 
-#ifndef CPP14CONCEPTS_LAYOUT_HPP_
-#define CPP14CONCEPTS_LAYOUT_HPP_
+#ifndef CONCEPTS_LAYOUT_HPP_
+#define CONCEPTS_LAYOUT_HPP_
 /**
  *
  *
@@ -18,7 +18,7 @@
 
 #include <type_traits>
 
-namespace cpp14concepts {
+namespace concepts {
 
 // TriviallyCopyable
 template <typename T>
@@ -39,6 +39,6 @@ constexpr bool StandardLayoutType = std::is_standard_layout<T>::value;
 // PODType
 template <typename T>
 constexpr bool PODType = std::is_pod<T>::value;
-} // namespace cpp14concepts
+} // namespace concepts
 
-#endif // CPP14CONCEPTS_LAYOUT_HPP_
+#endif // CONCEPTS_LAYOUT_HPP_

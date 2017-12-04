@@ -1,12 +1,12 @@
 #pragma once
 
-#ifndef CPP14CONCEPTS_DETAILS_UTILIY_HPP_
-#  define CPP14CONCEPTS_DETAILS_UTILIY_HPP_
+#ifndef CONCEPTS_DETAILS_UTILIY_HPP_
+#define CONCEPTS_DETAILS_UTILIY_HPP_
 
-#  include <iterator>
-#  include <type_traits>
+#include <iterator>
+#include <type_traits>
 
-namespace cpp14concepts { namespace details {
+namespace concepts { namespace details {
 
 // member access
 
@@ -139,7 +139,7 @@ using greater_equal_than_t = decltype(std::declval<T>() >= std::declval<U>()); /
 template <typename T, typename... Args>
 using function_call_t = decltype(std::declval<T>()(std::declval<Args>()...)); // a(args...)
 
-}} // namespace cpp14concepts::details
+}} // namespace concepts::details
 
 
-#endif // CPP14CONCEPTS_DETAILS_UTILIY_HPP_
+#endif // CONCEPTS_DETAILS_UTILIY_HPP_

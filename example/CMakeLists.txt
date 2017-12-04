@@ -3,7 +3,7 @@ add_custom_target(examples
 
 macro(add_example Executable Source)
     add_executable(example_${Executable}.exe EXCLUDE_FROM_ALL ${Source})
-    target_include_directories(example_${Executable}.exe PRIVATE ${CPP14CONCEPTS_INCLUDE_DIR})
+    target_include_directories(example_${Executable}.exe PRIVATE ${CONCEPTS_INCLUDE_DIR})
     add_custom_target(example_${Executable}
         COMMAND example_${Executable}.exe
         DEPENDS example_${Executable}.exe

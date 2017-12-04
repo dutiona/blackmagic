@@ -1,12 +1,12 @@
 #pragma once
 
-#ifndef CPP14CONCEPTS_DETAILS_LIBRARY_HPP_
-#  define CPP14CONCEPTS_DETAILS_LIBRARY_HPP_
+#ifndef CONCEPTS_DETAILS_LIBRARY_HPP_
+#define CONCEPTS_DETAILS_LIBRARY_HPP_
 
-#  include <type_traits>
-#  include <utility>
+#include <type_traits>
+#include <utility>
 
-namespace cpp14concepts { namespace details {
+namespace concepts { namespace details {
 
 template <typename T, typename Arg1, typename Arg2>
 using compare_equiv_t =
@@ -16,6 +16,6 @@ using compare_equiv_t =
 template <typename T, typename... Args>
 using constructible_t = decltype(T(std::declval<Args>()...)); // T(args...)
 
-}} // namespace cpp14concepts::details
+}} // namespace concepts::details
 
-#endif // CPP14CONCEPTS_DETAILS_LIBRARY_HPP_
+#endif // CONCEPTS_DETAILS_LIBRARY_HPP_

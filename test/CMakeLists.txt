@@ -6,7 +6,7 @@ macro(add_unit_test Executable Source)
     add_executable(test_${Executable} EXCLUDE_FROM_ALL ${Source})
     add_test(NAME test_${Executable} COMMAND test_${Executable} WORKING_DIRECTORY ${CMAKE_BINARY_DIR}/test)
     
-    target_include_directories(test_${Executable} PRIVATE ${CPP14CONCEPTS_INCLUDE_DIR})
+    target_include_directories(test_${Executable} PRIVATE ${CONCEPTS_INCLUDE_DIR})
     target_include_directories(test_${Executable} PRIVATE ${GTEST_INCLUDE_DIRS})
     
     if (WIN32)

@@ -1,7 +1,7 @@
 #pragma once
 
-#ifndef CPP14CONCEPTS_ITERATOR_HPP_
-#  define CPP14CONCEPTS_ITERATOR_HPP_
+#ifndef CCONCEPTS_ITERATOR_HPP_
+#define CONCEPTS_ITERATOR_HPP_
 
 /**
  *
@@ -21,17 +21,17 @@
  *
  */
 
-#  include "basic.hpp"
-#  include "cpp17additions.hpp"
-#  include "library.hpp"
+#include "basic.hpp"
+#include "helpers.hpp"
+#include "library.hpp"
 
-#  include "details/iterator.hpp"
-#  include "details/utility.hpp"
+#include "details/iterator.hpp"
+#include "details/utility.hpp"
 
-#  include <type_traits>
-#  include <utility>
+#include <type_traits>
+#include <utility>
 
-namespace cpp14concepts {
+namespace concepts {
 
 // Iterator
 template <typename T>
@@ -64,6 +64,6 @@ constexpr bool OutputIterator =
 // RandomAccessIterator
 // ContiguousIterator
 
-} // namespace cpp14concepts
+} // namespace concepts
 
-#endif // CPP14CONCEPTS_LIBRARY_HPP_
+#endif // CONCEPTS_LIBRARY_HPP_

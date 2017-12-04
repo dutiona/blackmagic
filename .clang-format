@@ -50,7 +50,7 @@ Cpp11BracedListStyle: true
 FixNamespaceComments: true
 # IncludeBlocks: Preserve
 IndentCaseLabels: true
-IndentPPDirectives: AfterHash
+IndentPPDirectives: None
 IndentWidth: 2
 IndentWrappedFunctionNames: true
 KeepEmptyLinesAtTheStartOfBlocks: false

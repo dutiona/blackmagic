@@ -1,7 +1,7 @@
 #pragma once
 
-#ifndef CPP14CONCEPTS_BASIC_HPP_
-#  define CPP14CONCEPTS_BASIC_HPP_
+#ifndef CONCEPTS_BASIC_HPP_
+#  define CONCEPTS_BASIC_HPP_
 /**
  *
  * DefaultConstructible : specifies that an object of the type can be default
@@ -25,7 +25,7 @@
 
 #  include <type_traits>
 
-namespace cpp14concepts {
+namespace concepts {
 
 // DefaultConstructible
 template <typename T>
@@ -50,6 +50,6 @@ constexpr bool CopyAssignable = std::is_copy_assignable<T>::value;
 // Destructible
 template <typename T>
 constexpr bool Destructible = std::is_destructible<T>::value;
-} // namespace cpp14concepts
+} // namespace concepts
 
-#endif // CPP14CONCEPTS_BASIC_HPP_
+#endif // CONCEPTS_BASIC_HPP_
