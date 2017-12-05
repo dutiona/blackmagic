@@ -15,9 +15,6 @@ using compare_equiv_t =
   decltype(!std::declval<T>()(std::declval<Arg1>(), std::declval<Arg2>())
            && !std::declval<T>()(std::declval<Arg2>(), std::declval<Arg1>())); // !cmp(a, b) && !cmp(b, a)
 
-template <typename T, typename... Args>
-using constructible_t = decltype(T(std::declval<Args>()...)); // T(args...)
-
 
 // Equality comparable
 

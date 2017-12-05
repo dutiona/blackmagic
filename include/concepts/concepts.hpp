@@ -14,16 +14,16 @@
 #include "basic/traits.hpp"
 
 //#include "utility/concepts.hpp"
-//#include "utility/traits.hpp"
+#include "utility/traits.hpp"
 
 namespace concepts {
 using namespace concepts::basic;
-//using namespace concepts::utility;
+// using namespace concepts::utility;
 } // namespace concepts
 
 namespace traits {
 using namespace traits::basic;
-//using namespace traits::utility;
+using namespace traits::utility;
 } // namespace traits
 
 #endif // CONCEPTS_HPP_
