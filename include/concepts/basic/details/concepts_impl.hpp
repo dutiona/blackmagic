@@ -9,7 +9,7 @@
 
 namespace concepts { namespace basic { namespace details {
 
-using namespace concepts::basic::traits;
+namespace traits = traits::basic;
 
 // default constructible
 
@@ -20,8 +20,8 @@ struct default_constructible_impl : std::false_type {
 
 template <typename T>
 struct default_constructible_impl<
-  T, std::void_t<std::disjunction<is_default_constructible_t<T>, is_nothrow_default_constructible_t<T>,
-                                  is_trivially_default_constructible_t<T>>>> : std::true_type {
+  T, std::void_t<std::disjunction<traits::is_default_constructible_t<T>, traits::is_nothrow_default_constructible_t<T>,
+                                  traits::is_trivially_default_constructible_t<T>>>> : std::true_type {
 };
 
 template <typename T>
@@ -43,8 +43,8 @@ struct move_constructible_impl : std::false_type {
 
 template <typename T>
 struct move_constructible_impl<
-  T, std::void_t<std::disjunction<is_move_constructible_t<T>, is_nothrow_move_constructible_t<T>,
-                                  is_trivially_move_constructible_t<T>>>> : std::true_type {
+  T, std::void_t<std::disjunction<traits::is_move_constructible_t<T>, traits::is_nothrow_move_constructible_t<T>,
+                                  traits::is_trivially_move_constructible_t<T>>>> : std::true_type {
 };
 
 template <typename T>
@@ -66,8 +66,8 @@ struct copy_constructible_impl : std::false_type {
 
 template <typename T>
 struct copy_constructible_impl<
-  T, std::void_t<std::disjunction<is_copy_constructible_t<T>, is_nothrow_copy_constructible_t<T>,
-                                  is_trivially_copy_constructible_t<T>>>> : std::true_type {
+  T, std::void_t<std::disjunction<traits::is_copy_constructible_t<T>, traits::is_nothrow_copy_constructible_t<T>,
+                                  traits::is_trivially_copy_constructible_t<T>>>> : std::true_type {
 };
 
 template <typename T>
@@ -88,8 +88,9 @@ struct move_assignable_impl : std::false_type {
 };
 
 template <typename T>
-struct move_assignable_impl<T, std::void_t<std::disjunction<is_move_assignable_t<T>, is_nothrow_move_assignable_t<T>,
-                                                            is_trivially_move_assignable_t<T>>>> : std::true_type {
+struct move_assignable_impl<
+  T, std::void_t<std::disjunction<traits::is_move_assignable_t<T>, traits::is_nothrow_move_assignable_t<T>,
+                                  traits::is_trivially_move_assignable_t<T>>>> : std::true_type {
 };
 
 template <typename T>
@@ -110,8 +111,9 @@ struct copy_assignable_impl : std::false_type {
 };
 
 template <typename T>
-struct copy_assignable_impl<T, std::void_t<std::disjunction<is_copy_assignable_t<T>, is_nothrow_copy_assignable_t<T>,
-                                                            is_trivially_copy_assignable_t<T>>>> : std::true_type {
+struct copy_assignable_impl<
+  T, std::void_t<std::disjunction<traits::is_copy_assignable_t<T>, traits::is_nothrow_copy_assignable_t<T>,
+                                  traits::is_trivially_copy_assignable_t<T>>>> : std::true_type {
 };
 
 template <typename T>
@@ -133,8 +135,8 @@ struct destructible_impl : std::false_type {
 
 template <typename T>
 struct destructible_impl<
-  T, std::void_t<std::disjunction<is_destructible_t<T>, is_nothrow_destructible_t<T>, is_trivially_destructible_t<T>>>>
-  : std::true_type {
+  T, std::void_t<std::disjunction<traits::is_destructible_t<T>, traits::is_nothrow_destructible_t<T>,
+                                  traits::is_trivially_destructible_t<T>>>> : std::true_type {
 };
 
 template <typename T>

@@ -5,7 +5,7 @@
 
 #include <type_traits>
 
-namespace concepts { namespace basic { namespace traits {
+namespace traits { namespace basic {
 
 // Default constructible
 
@@ -114,6 +114,6 @@ using std::is_trivially_destructible_v;
 template <typename T>
 using is_trivially_destructible_t = typename std::is_trivially_destructible<T>::type;
 
-}}} // namespace concepts::basic::traits
+}} // namespace traits::basic
 
 #endif // CONCEPTS_BASIC_TRAITS_HPP_
