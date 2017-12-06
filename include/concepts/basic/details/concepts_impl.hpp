@@ -22,14 +22,12 @@ struct default_constructible_impl<
   T, std::void_t<std::disjunction<traits::is_default_constructible_t<T>, traits::is_nothrow_default_constructible_t<T>,
                                   traits::is_trivially_default_constructible_t<T>>>> : std::true_type {
 };
-
 template <typename T>
 using default_constructible = default_constructible_impl<T>;
 template <typename T>
 using default_constructible_t = typename default_constructible<T>::type;
 template <typename T>
 constexpr bool default_constructible_v = default_constructible<T>::value;
-
 
 // move constructible
 
@@ -42,14 +40,12 @@ struct move_constructible_impl<
   T, std::void_t<std::disjunction<traits::is_move_constructible_t<T>, traits::is_nothrow_move_constructible_t<T>,
                                   traits::is_trivially_move_constructible_t<T>>>> : std::true_type {
 };
-
 template <typename T>
 using move_constructible = move_constructible_impl<T>;
 template <typename T>
 using move_constructible_t = typename move_constructible<T>::type;
 template <typename T>
 constexpr bool move_constructible_v = move_constructible<T>::value;
-
 
 // copy constructible
 
@@ -62,14 +58,12 @@ struct copy_constructible_impl<
   T, std::void_t<std::disjunction<traits::is_copy_constructible_t<T>, traits::is_nothrow_copy_constructible_t<T>,
                                   traits::is_trivially_copy_constructible_t<T>>>> : std::true_type {
 };
-
 template <typename T>
 using copy_constructible = copy_constructible_impl<T>;
 template <typename T>
 using copy_constructible_t = typename copy_constructible<T>::type;
 template <typename T>
 constexpr bool copy_constructible_v = copy_constructible<T>::value;
-
 
 // move assignable
 
@@ -82,14 +76,12 @@ struct move_assignable_impl<
   T, std::void_t<std::disjunction<traits::is_move_assignable_t<T>, traits::is_nothrow_move_assignable_t<T>,
                                   traits::is_trivially_move_assignable_t<T>>>> : std::true_type {
 };
-
 template <typename T>
 using move_assignable = move_assignable_impl<T>;
 template <typename T>
 using move_assignable_t = typename move_assignable<T>::type;
 template <typename T>
 constexpr bool move_assignable_v = move_assignable<T>::value;
-
 
 // copy assignable
 
@@ -102,14 +94,12 @@ struct copy_assignable_impl<
   T, std::void_t<std::disjunction<traits::is_copy_assignable_t<T>, traits::is_nothrow_copy_assignable_t<T>,
                                   traits::is_trivially_copy_assignable_t<T>>>> : std::true_type {
 };
-
 template <typename T>
 using copy_assignable = copy_assignable_impl<T>;
 template <typename T>
 using copy_assignable_t = typename copy_assignable<T>::type;
 template <typename T>
 constexpr bool copy_assignable_v = copy_assignable<T>::value;
-
 
 // destructible
 
@@ -122,7 +112,6 @@ struct destructible_impl<
   T, std::void_t<std::disjunction<traits::is_destructible_t<T>, traits::is_nothrow_destructible_t<T>,
                                   traits::is_trivially_destructible_t<T>>>> : std::true_type {
 };
-
 template <typename T>
 using destructible = destructible_impl<T>;
 template <typename T>

@@ -603,7 +603,7 @@ using is_function_call = details::is_function_call_impl<T, , Args...>;
 template <typename T, typename... Args>
 using is_function_call_t = typename is_function_call<T, Args...>::type;
 template <typename T, typename... Args>
-constexpr bool is_function_call_t_v = is_function_call<T, Args...>::value;
+constexpr bool is_function_call_v = is_function_call<T, Args...>::value;
 // is_nothrow_function_call
 template <typename T, typename... Args>
 using is_nothrow_function_call = details::is_nothrow_function_call_impl<T, , , Args...>;

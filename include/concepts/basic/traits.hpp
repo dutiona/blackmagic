@@ -24,7 +24,6 @@ using std::is_trivially_default_constructible_v;
 template <typename T>
 using is_trivially_default_constructible_t = typename std::is_trivially_default_constructible<T>::type;
 
-
 // MoveConstructible
 
 using std::is_move_constructible;
@@ -41,7 +40,6 @@ using std::is_trivially_move_constructible;
 using std::is_trivially_move_constructible_v;
 template <typename T>
 using is_trivially_move_constructible_t = typename std::is_trivially_move_constructible<T>::type;
-
 
 // MoveAssignable
 
@@ -60,7 +58,6 @@ using std::is_trivially_move_assignable_v;
 template <typename T>
 using is_trivially_move_assignable_t = typename std::is_trivially_move_assignable<T>::type;
 
-
 // CopyConstructible
 
 using std::is_copy_constructible;
@@ -78,7 +75,6 @@ using std::is_trivially_copy_constructible_v;
 template <typename T>
 using is_trivially_copy_constructible_t = typename std::is_trivially_copy_constructible<T>::type;
 
-
 // CopyAssignable
 
 using std::is_copy_assignable;
@@ -95,7 +91,6 @@ using std::is_trivially_copy_assignable;
 using std::is_trivially_copy_assignable_v;
 template <typename T>
 using is_trivially_copy_assignable_t = typename std::is_trivially_copy_assignable<T>::type;
-
 
 // Destructible
 
