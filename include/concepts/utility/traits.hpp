@@ -242,89 +242,376 @@ template <typename T, typename U = T>
 constexpr bool is_nothrow_rshift_assignable_v = is_nothrow_rshift_assignable<T, U>::value;
 
 
-// TODO
 // arithmetic
 
+// is_positive : +a
 template <typename T>
-using positive_t = decltype(+std::declval<T>()); // +a
-
+using is_positive = details::is_positive_impl<T>;
 template <typename T>
-using negative_t = decltype(-std::declval<T>()); // -a
-
+using is_positive_t = typename is_positive<T>::type;
 template <typename T>
-using not_t = decltype(~std::declval<T>()); // ~a
+constexpr bool is_positive_v = is_positive<T>::value;
+// is_nothrow_positive
+template <typename T>
+using is_nothrow_positive = details::is_nothrow_positive_impl<T>;
+template <typename T>
+using is_nothrow_positive_t = typename is_nothrow_positive<T>::type;
+template <typename T>
+constexpr bool is_nothrow_positive_v = is_nothrow_positive<T>::value;
 
-template <typename T, typename U = T>
-using plus_t = decltype(std::declval<T>() + std::declval<U>()); // a + b
+// is_negative : -a
+template <typename T>
+using is_negative = details::is_negative_impl<T>;
+template <typename T>
+using is_negative_t = typename is_negative<T>::type;
+template <typename T>
+constexpr bool is_negative_v = is_negative<T>::value;
+// is_nothrow_negative
+template <typename T>
+using is_nothrow_negative = details::is_nothrow_negative_impl<T>;
+template <typename T>
+using is_nothrow_negative_t = typename is_nothrow_negative<T>::type;
+template <typename T>
+constexpr bool is_nothrow_negative_v = is_nothrow_negative<T>::value;
 
-template <typename T, typename U = T>
-using less_t = decltype(std::declval<T>() - std::declval<U>()); // a - b
+// is_not : ~a
+template <typename T>
+using is_not = details::is_not_impl<T>;
+template <typename T>
+using is_not_t = typename is_not<T>::type;
+template <typename T>
+constexpr bool is_not_v = is_not<T>::value;
+// is_nothrow_not
+template <typename T>
+using is_nothrow_not = details::is_nothrow_not_impl<T>;
+template <typename T>
+using is_nothrow_not_t = typename is_nothrow_not<T>::type;
+template <typename T>
+constexpr bool is_nothrow_not_v = is_nothrow_not<T>::value;
 
+// is_plus : a + b
 template <typename T, typename U = T>
-using mult_t = decltype(std::declval<T>() * std::declval<U>()); // a * b
+using is_plus = details::is_plus_impl<T, U>;
+template <typename T, typename U = T>
+using is_plus_t = typename is_plus<T, U>::type;
+template <typename T, typename U = T>
+constexpr bool is_plus_v = is_plus<T, U>::value;
+// is_nothrow_plus
+template <typename T, typename U = T>
+using is_nothrow_plus = details::is_nothrow_plus_impl<T, U>;
+template <typename T, typename U = T>
+using is_nothrow_plus_t = typename is_nothrow_plus<T, U>::type;
+template <typename T, typename U = T>
+constexpr bool is_nothrow_plus_v = is_nothrow_plus<T, U>::value;
 
+// is_less : a - b
 template <typename T, typename U = T>
-using div_t = decltype(std::declval<T>() / std::declval<U>()); // a / b
+using is_less = details::is_less_impl<T, U>;
+template <typename T, typename U = T>
+using is_less_t = typename is_less<T, U>::type;
+template <typename T, typename U = T>
+constexpr bool is_less_v = is_less<T, U>::value;
+// is_nothrow_less
+template <typename T, typename U = T>
+using is_nothrow_less = details::is_nothrow_less_impl<T, U>;
+template <typename T, typename U = T>
+using is_nothrow_less_t = typename is_nothrow_less<T, U>::type;
+template <typename T, typename U = T>
+constexpr bool is_nothrow_less_v = is_nothrow_less<T, U>::value;
 
+// is_mult : a * b
 template <typename T, typename U = T>
-using mod_t = decltype(std::declval<T>() % std::declval<U>()); // a % b
+using is_mult = details::is_mult_impl<T, U>;
+template <typename T, typename U = T>
+using is_mult_t = typename is_mult<T, U>::type;
+template <typename T, typename U = T>
+constexpr bool is_mult_v = is_mult<T, U>::value;
+// is_nothrow_mult
+template <typename T, typename U = T>
+using is_nothrow_mult = details::is_nothrow_mult_impl<T, U>;
+template <typename T, typename U = T>
+using is_nothrow_mult_t = typename is_nothrow_mult<T, U>::type;
+template <typename T, typename U = T>
+constexpr bool is_nothrow_mult_v = is_nothrow_mult<T, U>::value;
 
+// is_div : a / b
 template <typename T, typename U = T>
-using and_t = decltype(std::declval<T>() & std::declval<U>()); // a & b
+using is_div = details::is_div_impl<T, U>;
+template <typename T, typename U = T>
+using is_div_t = typename is_div<T, U>::type;
+template <typename T, typename U = T>
+constexpr bool is_div_v = is_div<T, U>::value;
+// is_nothrow_div
+template <typename T, typename U = T>
+using is_nothrow_div = details::is_nothrow_div_impl<T, U>;
+template <typename T, typename U = T>
+using is_nothrow_div_t = typename is_nothrow_div<T, U>::type;
+template <typename T, typename U = T>
+constexpr bool is_nothrow_div_v = is_nothrow_div<T, U>::value;
 
+// is_mod : a % b
 template <typename T, typename U = T>
-using or_t = decltype(std::declval<T>() | std::declval<U>()); // a | b
+using is_mod = details::is_mod_impl<T, U>;
+template <typename T, typename U = T>
+using is_mod_t = typename is_mod<T, U>::type;
+template <typename T, typename U = T>
+constexpr bool is_mod_v = is_mod<T, U>::value;
+// is_nothrow_mod
+template <typename T, typename U = T>
+using is_nothrow_mod = details::is_nothrow_mod_impl<T, U>;
+template <typename T, typename U = T>
+using is_nothrow_mod_t = typename is_nothrow_mod<T, U>::type;
+template <typename T, typename U = T>
+constexpr bool is_nothrow_mod_v = is_nothrow_mod<T, U>::value;
 
+// is_and : a & b
 template <typename T, typename U = T>
-using xor_t = decltype(std::declval<T>() ^ std::declval<U>()); // a ^ b
+using is_and = details::is_and_impl<T, U>;
+template <typename T, typename U = T>
+using is_and_t = typename is_and<T, U>::type;
+template <typename T, typename U = T>
+constexpr bool is_and_v = is_and<T, U>::value;
+// is_nothrow_and
+template <typename T, typename U = T>
+using is_nothrow_and = details::is_nothrow_and_impl<T, U>;
+template <typename T, typename U = T>
+using is_nothrow_and_t = typename is_nothrow_and<T, U>::type;
+template <typename T, typename U = T>
+constexpr bool is_nothrow_and_v = is_nothrow_and<T, U>::value;
 
+// is_or : a | b
 template <typename T, typename U = T>
-using lshift_t = decltype(std::declval<T>() << std::declval<U>()); // a << b
+using is_or = details::is_or_impl<T, U>;
+template <typename T, typename U = T>
+using is_or_t = typename is_or<T, U>::type;
+template <typename T, typename U = T>
+constexpr bool is_or_v = is_or<T, U>::value;
+// is_nothrow_or
+template <typename T, typename U = T>
+using is_nothrow_or = details::is_nothrow_or_impl<T, U>;
+template <typename T, typename U = T>
+using is_nothrow_or_t = typename is_nothrow_or<T, U>::type;
+template <typename T, typename U = T>
+constexpr bool is_nothrow_or_v = is_nothrow_or<T, U>::value;
 
+// is_xor : a ^ b
 template <typename T, typename U = T>
-using rshift_t = decltype(std::declval<T>() >> std::declval<U>()); // a >> b
+using is_xor = details::is_xor_impl<T, U>;
+template <typename T, typename U = T>
+using is_xor_t = typename is_xor<T, U>::type;
+template <typename T, typename U = T>
+constexpr bool is_xor_v = is_xor<T, U>::value;
+// is_nothrow_xor
+template <typename T, typename U = T>
+using is_nothrow_xor = details::is_nothrow_xor_impl<T, U>;
+template <typename T, typename U = T>
+using is_nothrow_xor_t = typename is_nothrow_xor<T, U>::type;
+template <typename T, typename U = T>
+constexpr bool is_nothrow_xor_v = is_nothrow_xor<T, U>::value;
+
+ // is_lshift : a << b
+template <typename T, typename U = T>
+using is_lshift = details::is_lshift_impl<T, U>;
+template <typename T, typename U = T>
+using is_lshift_t = typename is_lshift<T, U>::type;
+template <typename T, typename U = T>
+constexpr bool is_lshift_v = is_lshift<T, U>::value;
+// is_nothrow_lshift
+template <typename T, typename U = T>
+using is_nothrow_lshift = details::is_nothrow_lshift_impl<T, U>;
+template <typename T, typename U = T>
+using is_nothrow_lshift_t = typename is_nothrow_lshift<T, U>::type;
+template <typename T, typename U = T>
+constexpr bool is_nothrow_lshift_v = is_nothrow_lshift<T, U>::value;
+
+// is_rshift : a >> b
+template <typename T, typename U = T>
+using is_rshift = details::is_rshift_impl<T, U>;
+template <typename T, typename U = T>
+using is_rshift_t = typename is_rshift<T, U>::type;
+template <typename T, typename U = T>
+constexpr bool is_rshift_v = is_rshift<T, U>::value;
+// is_nothrow_rshift
+template <typename T, typename U = T>
+using is_nothrow_rshift = details::is_nothrow_rshift_impl<T, U>;
+template <typename T, typename U = T>
+using is_nothrow_rshift_t = typename is_nothrow_rshift<T, U>::type;
+template <typename T, typename U = T>
+constexpr bool is_nothrow_rshift_v = is_nothrow_rshift<T, U>::value;
 
 
 // increment / decrement
 
+// is_pre_incrementable : ++a
 template <typename T>
-using pre_incrementable_t = decltype(++std::declval<T>()); // ++a
+using is_pre_incrementable = details::is_pre_incrementable_impl<T>;
+template <typename T>
+using is_pre_incrementable_t = typename is_pre_incrementable<T>::type;
+template <typename T>
+constexpr bool is_pre_incrementable_v = is_pre_incrementable<T>::value;
+// is_nothrow_pre_incrementable
+template <typename T>
+using is_nothrow_pre_incrementable = details::is_nothrow_pre_incrementable_impl<T>;
+template <typename T>
+using is_nothrow_pre_incrementable_t = typename is_nothrow_pre_incrementable<T>::type;
+template <typename T>
+constexpr bool is_nothrow_pre_incrementable_v = is_nothrow_pre_incrementable<T>::value;
 
+// is_post_incrementable : a++
 template <typename T>
-using post_incrementable_t = decltype(std::declval<T>()++); // a++
+using is_post_incrementable = details::is_post_incrementable_impl<T>;
+template <typename T>
+using is_post_incrementable_t = typename is_post_incrementable<T>::type;
+template <typename T>
+constexpr bool is_post_incrementable_v = is_post_incrementable<T>::value;
+// is_nothrow_post_incrementable
+template <typename T>
+using is_nothrow_post_incrementable = details::is_nothrow_post_incrementable_impl<T>;
+template <typename T>
+using is_nothrow_post_incrementable_t = typename is_nothrow_post_incrementable<T>::type;
+template <typename T>
+constexpr bool is_nothrow_post_incrementable_v = is_nothrow_post_incrementable<T>::value;
 
+// is_pre_decrementable : --a
 template <typename T>
-using pre_decrementable_t = decltype(--std::declval<T>()); // --a
+using is_pre_decrementable = details::is_pre_decrementable_impl<T>;
+template <typename T>
+using is_pre_decrementable_t = typename is_pre_decrementable<T>::type;
+template <typename T>
+constexpr bool is_pre_decrementable_v = is_pre_decrementable<T>::value;
+// is_nothrow_pre_decrementable
+template <typename T>
+using is_nothrow_pre_decrementable = details::is_nothrow_pre_decrementable_impl<T>;
+template <typename T>
+using is_nothrow_pre_decrementable_t = typename is_nothrow_pre_decrementable<T>::type;
+template <typename T>
+constexpr bool is_nothrow_pre_decrementable_v = is_nothrow_pre_decrementable<T>::value;
 
+// is_post_decrementable : a--
 template <typename T>
-using post_decrementable_t = decltype(std::declval<T>()--); // a--
+using is_post_decrementable = details::is_post_decrementable_impl<T>;
+template <typename T>
+using is_post_decrementable_t = typename is_post_decrementable<T>::type;
+template <typename T>
+constexpr bool is_post_decrementable_v = is_post_decrementable<T>::value;
+// is_nothrow_post_decrementable
+template <typename T>
+using is_nothrow_post_decrementable = details::is_nothrow_post_decrementable_impl<T>;
+template <typename T>
+using is_nothrow_post_decrementable_t = typename is_nothrow_post_decrementable<T>::type;
+template <typename T>
+constexpr bool is_nothrow_post_decrementable_v = is_nothrow_post_decrementable<T>::value;
 
 
 // comparison
-
+// is_equality : a == b
 template <typename T, typename U = T>
-using equality_t = decltype(std::declval<T>() == std::declval<U>()); // a == b
-
+using is_equality = details::is_equality_impl<T, U>;
 template <typename T, typename U = T>
-using inequality_t = decltype(std::declval<T>() != std::declval<U>()); // a != b
-
+using is_equality_t = typename is_equality<T, U>::type;
 template <typename T, typename U = T>
-using less_than_t = decltype(std::declval<T>() < std::declval<U>()); // a < b
-
+constexpr bool is_equality_v = is_equality<T, U>::value;
+// is_nothrow_equality
 template <typename T, typename U = T>
-using less_equal_than_t = decltype(std::declval<T>() <= std::declval<U>()); // a <= b
-
+using is_nothrow_equality = details::is_nothrow_equality_impl<T, U>;
 template <typename T, typename U = T>
-using greater_than_t = decltype(std::declval<T>() > std::declval<U>()); // a > b
-
+using is_nothrow_equality_t = typename is_nothrow_equality<T, U>::type;
 template <typename T, typename U = T>
-using greater_equal_than_t = decltype(std::declval<T>() >= std::declval<U>()); // a >= b
+constexpr bool is_nothrow_equality_v = is_nothrow_equality<T, U>::value;
+
+// is_inequality : a != b
+template <typename T, typename U = T>
+using is_inequality = details::is_inequality_impl<T, U>;
+template <typename T, typename U = T>
+using is_inequality_t = typename is_inequality<T, U>::type;
+template <typename T, typename U = T>
+constexpr bool is_inequality_v = is_inequality<T, U>::value;
+// is_nothrow_inequality
+template <typename T, typename U = T>
+using is_nothrow_inequality = details::is_nothrow_inequality_impl<T, U>;
+template <typename T, typename U = T>
+using is_nothrow_inequality_t = typename is_nothrow_inequality<T, U>::type;
+template <typename T, typename U = T>
+constexpr bool is_nothrow_inequality_v = is_nothrow_inequality<T, U>::value;
+
+// is_less_than : a < b
+template <typename T, typename U = T>
+using is_less_than = details::is_less_than_impl<T, U>;
+template <typename T, typename U = T>
+using is_less_than_t = typename is_less_than<T, U>::type;
+template <typename T, typename U = T>
+constexpr bool is_less_than_v = is_less_than<T, U>::value;
+// is_nothrow_less_than
+template <typename T, typename U = T>
+using is_nothrow_less_than = details::is_nothrow_less_than_impl<T, U>;
+template <typename T, typename U = T>
+using is_nothrow_less_than_t = typename is_nothrow_less_than<T, U>::type;
+template <typename T, typename U = T>
+constexpr bool is_nothrow_less_than_v = is_nothrow_less_than<T, U>::value;
+
+// is_less_equal_than : a <= b
+template <typename T, typename U = T>
+using is_less_equal_than = details::is_less_equal_than_impl<T, U>;
+template <typename T, typename U = T>
+using is_less_equal_than_t = typename is_less_equal_than<T, U>::type;
+template <typename T, typename U = T>
+constexpr bool is_less_equal_than_v = is_less_equal_than<T, U>::value;
+// is_nothrow_less_equal_than
+template <typename T, typename U = T>
+using is_nothrow_less_equal_than = details::is_nothrow_less_equal_than_impl<T, U>;
+template <typename T, typename U = T>
+using is_nothrow_less_equal_than_t = typename is_nothrow_less_equal_than<T, U>::type;
+template <typename T, typename U = T>
+constexpr bool is_nothrow_less_equal_than_v = is_nothrow_less_equal_than<T, U>::value;
+
+// is_greater_than : a > b
+template <typename T, typename U = T>
+using is_greater_than = details::is_greater_than_impl<T, U>;
+template <typename T, typename U = T>
+using is_greater_than_t = typename is_greater_than<T, U>::type;
+template <typename T, typename U = T>
+constexpr bool is_greater_than_v = is_greater_than<T, U>::value;
+// is_nothrow_greater_than
+template <typename T, typename U = T>
+using is_nothrow_greater_than = details::is_nothrow_greater_than_impl<T, U>;
+template <typename T, typename U = T>
+using is_nothrow_greater_than_t = typename is_nothrow_greater_than<T, U>::type;
+template <typename T, typename U = T>
+constexpr bool is_nothrow_greater_than_v = is_nothrow_greater_than<T, U>::value;
+
+// is_greater_equal_than : a >= b
+template <typename T, typename U = T>
+using is_greater_equal_than = details::is_greater_equal_than_impl<T, U>;
+template <typename T, typename U = T>
+using is_greater_equal_than_t = typename is_greater_equal_than<T, U>::type;
+template <typename T, typename U = T>
+constexpr bool is_greater_equal_than_v = is_greater_equal_than<T, U>::value;
+// is_nothrow_greater_equal_than
+template <typename T, typename U = T>
+using is_nothrow_greater_equal_than = details::is_nothrow_greater_equal_than_impl<T, U>;
+template <typename T, typename U = T>
+using is_nothrow_greater_equal_than_t = typename is_nothrow_greater_equal_than<T, U>::type;
+template <typename T, typename U = T>
+constexpr bool is_nothrow_greater_equal_than_v = is_nothrow_greater_equal_than<T, U>::value;
 
 
 // other
 
-template <typename T, typename... Args>
-using function_call_t = decltype(std::declval<T>()(std::declval<Args>()...)); // a(args...)
+// is_function_call : f(args...)
+template <typename T, typename ... Args>
+using is_function_call = details::is_function_call_impl<T, , Args...>;
+template <typename T, typename ... Args>
+using is_function_call_t = typename is_function_call<T, Args...>::type;
+template <typename T, typename ... Args>
+constexpr bool is_function_call_t_v = is_function_call<T, Args...>::value;
+// is_nothrow_function_call
+template <typename T, typename ... Args>
+using is_nothrow_function_call = details::is_nothrow_function_call_impl<T, , , Args...>;
+template <typename T, typename ... Args>
+using is_nothrow_function_call_t = typename is_nothrow_function_call<T, Args...>::type;
+template <typename T, typename ... Args>
+constexpr bool is_nothrow_function_call_v = is_nothrow_function_call<T, Args...>::value;
+
 
 }} // namespace traits::utility
 
