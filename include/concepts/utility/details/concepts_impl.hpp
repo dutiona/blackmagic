@@ -446,11 +446,11 @@ struct xor_impl<T, I, std::void_t<std::disjunction<traits::is_xor_t<T, U>, trait
   : std::true_type {
 };
 template <typename T, typename U = T>
-  using xor = xor_impl<T, U>;
+using Xor = xor_impl<T, U>; // "xor" is a c++ keyword
 template <typename T, typename U = T>
-using xor_t = typename xor <T, U>::type;
+using xor_t = typename Xor<T, U>::type;
 template <typename T, typename U = T>
-constexpr bool xor_v = xor<T, U>::value;
+constexpr bool xor_v = Xor<T, U>::value;
 
 // lshift
 template <typename T, typename U = T, typename = void>
