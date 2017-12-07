@@ -41,7 +41,7 @@ constexpr bool less_assignable = details::less_assignable_v<T, U>;
 
 // mult_assignable
 template <typename T, typename U = T>
-constexpr bool mult_assignable = details::details::mult_assignable_v<T, U>;
+constexpr bool mult_assignable = details::mult_assignable_v<T, U>;
 
 // div_assignable
 template <typename T, typename U = T>
@@ -124,7 +124,7 @@ constexpr bool lshift = details::lshift_v<T, U>;
 
 // rshift
 template <typename T, typename U = T>
-constexpr bool lshift = details::rshift_v<T, U>;
+constexpr bool rshift = details::rshift_v<T, U>;
 
 
 // increment / decrement
@@ -150,27 +150,27 @@ constexpr bool post_decrementable = details::post_decrementable_v<T>;
 
 // equality
 template <typename T, typename U = T>
-constexpr bool equality = details::equalityt_v<T, U>;
+constexpr bool equality = details::equality_v<T, U>;
 
 // inequality
 template <typename T, typename U = T>
-constexpr bool inequality = details::inequalityt_v<T, U>;
+constexpr bool inequality = details::inequality_v<T, U>;
 
 // less_than
 template <typename T, typename U = T>
-constexpr bool less_than = details::less_thant_v<T, U>;
+constexpr bool less_than = details::less_than_v<T, U>;
 
 // less_equal_than
 template <typename T, typename U = T>
-constexpr bool less_equal_than = details::less_equal_thant_v<T, U>;
+constexpr bool less_equal_than = details::less_equal_than_v<T, U>;
 
 // greater_than
 template <typename T, typename U = T>
-constexpr bool greater_than = details::greater_thant_v<T, U>;
+constexpr bool greater_than = details::greater_than_v<T, U>;
 
 // greater_equal_than
 template <typename T, typename U = T>
-constexpr bool greater_equal_than = details::greater_equal_thant_v<T, U>;
+constexpr bool greater_equal_than = details::greater_equal_than_v<T, U>;
 
 
 // other

@@ -90,9 +90,9 @@ template <typename T, typename U = T, typename = void>
 struct assignable_impl : std::false_type {
   // TODO add explicit error message via static assert HERE
 };
-template <typename T, typename U = T>
+template <typename T, typename U>
 struct assignable_impl<
-  T, I, std::void_t<std::disjunction<traits::is_assignable_t<T, U>, traits::is_nothrow_assignable_t<T, U>>>>
+  T, U, std::void_t<std::disjunction<traits::is_assignable_t<T, U>, traits::is_nothrow_assignable_t<T, U>>>>
   : std::true_type {
 };
 template <typename T, typename U = T>
@@ -107,9 +107,9 @@ template <typename T, typename U = T, typename = void>
 struct plus_assignable_impl : std::false_type {
   // TODO add explicit error message via static assert HERE
 };
-template <typename T, typename U = T>
+template <typename T, typename U>
 struct plus_assignable_impl<
-  T, I, std::void_t<std::disjunction<traits::is_plus_assignable_t<T, U>, traits::is_nothrow_plus_assignable_t<T, U>>>>
+  T, U, std::void_t<std::disjunction<traits::is_plus_assignable_t<T, U>, traits::is_nothrow_plus_assignable_t<T, U>>>>
   : std::true_type {
 };
 template <typename T, typename U = T>
@@ -124,9 +124,9 @@ template <typename T, typename U = T, typename = void>
 struct less_assignable_impl : std::false_type {
   // TODO add explicit error message via static assert HERE
 };
-template <typename T, typename U = T>
+template <typename T, typename U>
 struct less_assignable_impl<
-  T, I, std::void_t<std::disjunction<traits::is_less_assignable_t<T, U>, traits::is_nothrow_less_assignable_t<T, U>>>>
+  T, U, std::void_t<std::disjunction<traits::is_less_assignable_t<T, U>, traits::is_nothrow_less_assignable_t<T, U>>>>
   : std::true_type {
 };
 template <typename T, typename U = T>
@@ -141,9 +141,9 @@ template <typename T, typename U = T, typename = void>
 struct mult_assignable_impl : std::false_type {
   // TODO add explicit error message via static assert HERE
 };
-template <typename T, typename U = T>
+template <typename T, typename U>
 struct mult_assignable_impl<
-  T, I, std::void_t<std::disjunction<traits::is_mult_assignable_t<T, U>, traits::is_nothrow_mult_assignable_t<T, U>>>>
+  T, U, std::void_t<std::disjunction<traits::is_mult_assignable_t<T, U>, traits::is_nothrow_mult_assignable_t<T, U>>>>
   : std::true_type {
 };
 template <typename T, typename U = T>
@@ -158,9 +158,9 @@ template <typename T, typename U = T, typename = void>
 struct div_assignable_impl : std::false_type {
   // TODO add explicit error message via static assert HERE
 };
-template <typename T, typename U = T>
+template <typename T, typename U>
 struct div_assignable_impl<
-  T, I, std::void_t<std::disjunction<traits::is_div_assignable_t<T, U>, traits::is_nothrow_div_assignable_t<T, U>>>>
+  T, U, std::void_t<std::disjunction<traits::is_div_assignable_t<T, U>, traits::is_nothrow_div_assignable_t<T, U>>>>
   : std::true_type {
 };
 template <typename T, typename U = T>
@@ -175,9 +175,9 @@ template <typename T, typename U = T, typename = void>
 struct mod_assignable_impl : std::false_type {
   // TODO add explicit error message via static assert HERE
 };
-template <typename T, typename U = T>
+template <typename T, typename U>
 struct mod_assignable_impl<
-  T, I, std::void_t<std::disjunction<traits::is_mod_assignable_t<T, U>, traits::is_nothrow_mod_assignable_t<T, U>>>>
+  T, U, std::void_t<std::disjunction<traits::is_mod_assignable_t<T, U>, traits::is_nothrow_mod_assignable_t<T, U>>>>
   : std::true_type {
 };
 template <typename T, typename U = T>
@@ -192,9 +192,9 @@ template <typename T, typename U = T, typename = void>
 struct or_assignable_impl : std::false_type {
   // TODO add explicit error message via static assert HERE
 };
-template <typename T, typename U = T>
+template <typename T, typename U>
 struct or_assignable_impl<
-  T, I, std::void_t<std::disjunction<traits::is_or_assignable_t<T, U>, traits::is_nothrow_or_assignable_t<T, U>>>>
+  T, U, std::void_t<std::disjunction<traits::is_or_assignable_t<T, U>, traits::is_nothrow_or_assignable_t<T, U>>>>
   : std::true_type {
 };
 template <typename T, typename U = T>
@@ -209,9 +209,9 @@ template <typename T, typename U = T, typename = void>
 struct and_assignable_impl : std::false_type {
   // TODO add explicit error message via static assert HERE
 };
-template <typename T, typename U = T>
+template <typename T, typename U>
 struct and_assignable_impl<
-  T, I, std::void_t<std::disjunction<traits::is_and_assignable_t<T, U>, traits::is_nothrow_and_assignable_t<T, U>>>>
+  T, U, std::void_t<std::disjunction<traits::is_and_assignable_t<T, U>, traits::is_nothrow_and_assignable_t<T, U>>>>
   : std::true_type {
 };
 template <typename T, typename U = T>
@@ -226,9 +226,9 @@ template <typename T, typename U = T, typename = void>
 struct xor_assignable_impl : std::false_type {
   // TODO add explicit error message via static assert HERE
 };
-template <typename T, typename U = T>
+template <typename T, typename U>
 struct xor_assignable_impl<
-  T, I, std::void_t<std::disjunction<traits::is_xor_assignable_t<T, U>, traits::is_nothrow_xor_assignable_t<T, U>>>>
+  T, U, std::void_t<std::disjunction<traits::is_xor_assignable_t<T, U>, traits::is_nothrow_xor_assignable_t<T, U>>>>
   : std::true_type {
 };
 template <typename T, typename U = T>
@@ -243,9 +243,9 @@ template <typename T, typename U = T, typename = void>
 struct lshift_assignable_impl : std::false_type {
   // TODO add explicit error message via static assert HERE
 };
-template <typename T, typename U = T>
+template <typename T, typename U>
 struct lshift_assignable_impl<
-  T, I,
+  T, U,
   std::void_t<std::disjunction<traits::is_lshift_assignable_t<T, U>, traits::is_nothrow_lshift_assignable_t<T, U>>>>
   : std::true_type {
 };
@@ -261,9 +261,9 @@ template <typename T, typename U = T, typename = void>
 struct rshift_assignable_impl : std::false_type {
   // TODO add explicit error message via static assert HERE
 };
-template <typename T, typename U = T>
+template <typename T, typename U>
 struct rshift_assignable_impl<
-  T, I,
+  T, U,
   std::void_t<std::disjunction<traits::is_rshift_assignable_t<T, U>, traits::is_nothrow_rshift_assignable_t<T, U>>>>
   : std::true_type {
 };
@@ -329,8 +329,8 @@ template <typename T, typename U = T, typename = void>
 struct plus_impl : std::false_type {
   // TODO add explicit error message via static assert HERE
 };
-template <typename T, typename U = T>
-struct plus_impl<T, I, std::void_t<std::disjunction<traits::is_plus_t<T, U>, traits::is_nothrow_plus_t<T, U>>>>
+template <typename T, typename U>
+struct plus_impl<T, U, std::void_t<std::disjunction<traits::is_plus_t<T, U>, traits::is_nothrow_plus_t<T, U>>>>
   : std::true_type {
 };
 template <typename T, typename U = T>
@@ -345,8 +345,8 @@ template <typename T, typename U = T, typename = void>
 struct less_impl : std::false_type {
   // TODO add explicit error message via static assert HERE
 };
-template <typename T, typename U = T>
-struct less_impl<T, I, std::void_t<std::disjunction<traits::is_less_t<T, U>, traits::is_nothrow_less_t<T, U>>>>
+template <typename T, typename U>
+struct less_impl<T, U, std::void_t<std::disjunction<traits::is_less_t<T, U>, traits::is_nothrow_less_t<T, U>>>>
   : std::true_type {
 };
 template <typename T, typename U = T>
@@ -361,8 +361,8 @@ template <typename T, typename U = T, typename = void>
 struct mult_impl : std::false_type {
   // TODO add explicit error message via static assert HERE
 };
-template <typename T, typename U = T>
-struct mult_impl<T, I, std::void_t<std::disjunction<traits::is_mult_t<T, U>, traits::is_nothrow_mult_t<T, U>>>>
+template <typename T, typename U>
+struct mult_impl<T, U, std::void_t<std::disjunction<traits::is_mult_t<T, U>, traits::is_nothrow_mult_t<T, U>>>>
   : std::true_type {
 };
 template <typename T, typename U = T>
@@ -377,11 +377,11 @@ template <typename T, typename U = T, typename = void>
 struct div_impl : std::false_type {
   // TODO add explicit error message via static assert HERE
 };
-template <typename T, typename U = T>
-struct div_impl<T, I, std::void_t<std::disjunction<traits::is_div_t<T, U>, traits::is_nothrow_div_t<T, U>>>>
+template <typename T, typename U>
+struct div_impl<T, U, std::void_t<std::disjunction<traits::is_div_t<T, U>, traits::is_nothrow_div_t<T, U>>>>
   : std::true_type {
 };
-template <typename T, typename U = T>
+template <typename T, typename U>
 using div = div_impl<T, U>;
 template <typename T, typename U = T>
 using div_t = typename div<T, U>::type;
@@ -393,8 +393,8 @@ template <typename T, typename U = T, typename = void>
 struct mod_impl : std::false_type {
   // TODO add explicit error message via static assert HERE
 };
-template <typename T, typename U = T>
-struct mod_impl<T, I, std::void_t<std::disjunction<traits::is_mod_t<T, U>, traits::is_nothrow_mod_t<T, U>>>>
+template <typename T, typename U>
+struct mod_impl<T, U, std::void_t<std::disjunction<traits::is_mod_t<T, U>, traits::is_nothrow_mod_t<T, U>>>>
   : std::true_type {
 };
 template <typename T, typename U = T>
@@ -409,8 +409,8 @@ template <typename T, typename U = T, typename = void>
 struct and_impl : std::false_type {
   // TODO add explicit error message via static assert HERE
 };
-template <typename T, typename U = T>
-struct and_impl<T, I, std::void_t<std::disjunction<traits::is_and_t<T, U>, traits::is_nothrow_and_t<T, U>>>>
+template <typename T, typename U>
+struct and_impl<T, U, std::void_t<std::disjunction<traits::is_and_t<T, U>, traits::is_nothrow_and_t<T, U>>>>
   : std::true_type {
 };
 template <typename T, typename U = T>
@@ -425,8 +425,8 @@ template <typename T, typename U = T, typename = void>
 struct or_impl : std::false_type {
   // TODO add explicit error message via static assert HERE
 };
-template <typename T, typename U = T>
-struct or_impl<T, I, std::void_t<std::disjunction<traits::is_or_t<T, U>, traits::is_nothrow_or_t<T, U>>>>
+template <typename T, typename U>
+struct or_impl<T, U, std::void_t<std::disjunction<traits::is_or_t<T, U>, traits::is_nothrow_or_t<T, U>>>>
   : std::true_type {
 };
 template <typename T, typename U = T>
@@ -441,8 +441,8 @@ template <typename T, typename U = T, typename = void>
 struct xor_impl : std::false_type {
   // TODO add explicit error message via static assert HERE
 };
-template <typename T, typename U = T>
-struct xor_impl<T, I, std::void_t<std::disjunction<traits::is_xor_t<T, U>, traits::is_nothrow_xor_t<T, U>>>>
+template <typename T, typename U>
+struct xor_impl<T, U, std::void_t<std::disjunction<traits::is_xor_t<T, U>, traits::is_nothrow_xor_t<T, U>>>>
   : std::true_type {
 };
 template <typename T, typename U = T>
@@ -457,8 +457,8 @@ template <typename T, typename U = T, typename = void>
 struct lshift_impl : std::false_type {
   // TODO add explicit error message via static assert HERE
 };
-template <typename T, typename U = T>
-struct lshift_impl<T, I, std::void_t<std::disjunction<traits::is_lshift_t<T, U>, traits::is_nothrow_lshift_t<T, U>>>>
+template <typename T, typename U>
+struct lshift_impl<T, U, std::void_t<std::disjunction<traits::is_lshift_t<T, U>, traits::is_nothrow_lshift_t<T, U>>>>
   : std::true_type {
 };
 template <typename T, typename U = T>
@@ -473,8 +473,8 @@ template <typename T, typename U = T, typename = void>
 struct rshift_impl : std::false_type {
   // TODO add explicit error message via static assert HERE
 };
-template <typename T, typename U = T>
-struct rshift_impl<T, I, std::void_t<std::disjunction<traits::is_rshift_t<T, U>, traits::is_nothrow_rshift_t<T, U>>>>
+template <typename T, typename U>
+struct rshift_impl<T, U, std::void_t<std::disjunction<traits::is_rshift_t<T, U>, traits::is_nothrow_rshift_t<T, U>>>>
   : std::true_type {
 };
 template <typename T, typename U = T>
@@ -482,7 +482,7 @@ using rshift = rshift_impl<T, U>;
 template <typename T, typename U = T>
 using rshift_t = typename rshift<T, U>::type;
 template <typename T, typename U = T>
-constexpr bool lshift_v = rshift<T, U>::value;
+constexpr bool rshift_v = rshift<T, U>::value;
 
 
 // increment / decrement
@@ -563,8 +563,8 @@ template <typename T, typename U = T, typename = void>
 struct equality_impl : std::false_type {
   // TODO add explicit error message via static assert HERE
 };
-template <typename T, typename U = T>
-struct equality_impl<T, I,
+template <typename T, typename U>
+struct equality_impl<T, U,
                      std::void_t<std::disjunction<traits::is_equality_t<T, U>, traits::is_nothrow_equality_t<T, U>>>>
   : std::true_type {
 };
@@ -580,9 +580,9 @@ template <typename T, typename U = T, typename = void>
 struct inequality_impl : std::false_type {
   // TODO add explicit error message via static assert HERE
 };
-template <typename T, typename U = T>
+template <typename T, typename U>
 struct inequality_impl<
-  T, I, std::void_t<std::disjunction<traits::is_inequality_t<T, U>, traits::is_nothrow_inequality_t<T, U>>>>
+  T, U, std::void_t<std::disjunction<traits::is_inequality_t<T, U>, traits::is_nothrow_inequality_t<T, U>>>>
   : std::true_type {
 };
 template <typename T, typename U = T>
@@ -597,8 +597,8 @@ template <typename T, typename U = T, typename = void>
 struct less_than_impl : std::false_type {
   // TODO add explicit error message via static assert HERE
 };
-template <typename T, typename U = T>
-struct less_than_impl<T, I,
+template <typename T, typename U>
+struct less_than_impl<T, U,
                       std::void_t<std::disjunction<traits::is_less_than_t<T, U>, traits::is_nothrow_less_than_t<T, U>>>>
   : std::true_type {
 };
@@ -614,9 +614,9 @@ template <typename T, typename U = T, typename = void>
 struct less_equal_than_impl : std::false_type {
   // TODO add explicit error message via static assert HERE
 };
-template <typename T, typename U = T>
+template <typename T, typename U>
 struct less_equal_than_impl<
-  T, I, std::void_t<std::disjunction<traits::is_less_equal_than_t<T, U>, traits::is_nothrow_less_equal_than_t<T, U>>>>
+  T, U, std::void_t<std::disjunction<traits::is_less_equal_than_t<T, U>, traits::is_nothrow_less_equal_than_t<T, U>>>>
   : std::true_type {
 };
 template <typename T, typename U = T>
@@ -631,9 +631,9 @@ template <typename T, typename U = T, typename = void>
 struct greater_than_impl : std::false_type {
   // TODO add explicit error message via static assert HERE
 };
-template <typename T, typename U = T>
+template <typename T, typename U>
 struct greater_than_impl<
-  T, I, std::void_t<std::disjunction<traits::is_greater_than_t<T, U>, traits::is_nothrow_greater_than_t<T, U>>>>
+  T, U, std::void_t<std::disjunction<traits::is_greater_than_t<T, U>, traits::is_nothrow_greater_than_t<T, U>>>>
   : std::true_type {
 };
 template <typename T, typename U = T>
@@ -648,9 +648,9 @@ template <typename T, typename U = T, typename = void>
 struct greater_equal_than_impl : std::false_type {
   // TODO add explicit error message via static assert HERE
 };
-template <typename T, typename U = T>
+template <typename T, typename U>
 struct greater_equal_than_impl<
-  T, I,
+  T, U,
   std::void_t<std::disjunction<traits::is_greater_equal_than_t<T, U>, traits::is_nothrow_greater_equal_than_t<T, U>>>>
   : std::true_type {
 };
