@@ -16,7 +16,7 @@ namespace traits = traits::utility;
 // valid
 template <typename T, typename = void>
 struct valid_impl : std::false_type {
-  static_assert(sizeof(T) == 0, "T fails to model the valid concept.");
+  static_assert(sizeof(T) == -1, "T fails to model the valid concept.");
 };
 template <typename T>
 struct valid_impl<T, std::enable_if_t<std::disjunction_v<traits::is_valid_t<T>, traits::is_nothrow_valid_t<T>>>>
@@ -52,7 +52,7 @@ constexpr bool dereferenceable_v = dereferenceable<T>::value;
 // address_of
 template <typename T, typename = void>
 struct address_of_impl : std::false_type {
-  // TODO add explicit error message via static assert HERE
+  static_assert(sizeof(T) == -1, "T fails to model the address of concept.");
 };
 template <typename T>
 struct address_of_impl<
@@ -69,7 +69,7 @@ constexpr bool address_of_v = address_of<T>::value;
 // subscript
 template <typename T, typename I, typename = void>
 struct subscript_impl : std::false_type {
-  // TODO add explicit error message via static assert HERE
+  static_assert(sizeof(T) == -1, "T fails to model the subscript concept.");
 };
 template <typename T, typename I>
 struct subscript_impl<
@@ -89,7 +89,7 @@ constexpr bool subscript_v = subscript<T, I>::value;
 // assignable
 template <typename T, typename U = T, typename = void>
 struct assignable_impl : std::false_type {
-  // TODO add explicit error message via static assert HERE
+  static_assert(sizeof(T) == -1, "T fails to model the assignable concept.");
 };
 template <typename T, typename U>
 struct assignable_impl<
@@ -106,7 +106,7 @@ constexpr bool assignable_v = assignable<T, U>::value;
 // plus_assignable
 template <typename T, typename U = T, typename = void>
 struct plus_assignable_impl : std::false_type {
-  // TODO add explicit error message via static assert HERE
+  static_assert(sizeof(T) == -1, "T fails to model the plus assignable concept.");
 };
 template <typename T, typename U>
 struct plus_assignable_impl<
@@ -124,7 +124,7 @@ constexpr bool plus_assignable_v = plus_assignable<T, U>::value;
 // less_assignable
 template <typename T, typename U = T, typename = void>
 struct less_assignable_impl : std::false_type {
-  // TODO add explicit error message via static assert HERE
+  static_assert(sizeof(T) == -1, "T fails to model the less assignable concept.");
 };
 template <typename T, typename U>
 struct less_assignable_impl<
@@ -142,7 +142,7 @@ constexpr bool less_assignable_v = less_assignable<T, U>::value;
 // mult_assignable
 template <typename T, typename U = T, typename = void>
 struct mult_assignable_impl : std::false_type {
-  // TODO add explicit error message via static assert HERE
+  static_assert(sizeof(T) == -1, "T fails to model the mult assignable concept.");
 };
 template <typename T, typename U>
 struct mult_assignable_impl<
@@ -160,7 +160,7 @@ constexpr bool mult_assignable_v = mult_assignable<T, U>::value;
 // div_assignable
 template <typename T, typename U = T, typename = void>
 struct div_assignable_impl : std::false_type {
-  // TODO add explicit error message via static assert HERE
+  static_assert(sizeof(T) == -1, "T fails to model the div assignable concept.");
 };
 template <typename T, typename U>
 struct div_assignable_impl<
@@ -178,7 +178,7 @@ constexpr bool div_assignable_v = div_assignable<T, U>::value;
 // mod_assignable
 template <typename T, typename U = T, typename = void>
 struct mod_assignable_impl : std::false_type {
-  // TODO add explicit error message via static assert HERE
+  static_assert(sizeof(T) == -1, "T fails to model the mod assignable concept.");
 };
 template <typename T, typename U>
 struct mod_assignable_impl<
@@ -196,7 +196,7 @@ constexpr bool mod_assignable_v = mod_assignable<T, U>::value;
 // or_assignable
 template <typename T, typename U = T, typename = void>
 struct or_assignable_impl : std::false_type {
-  // TODO add explicit error message via static assert HERE
+  static_assert(sizeof(T) == -1, "T fails to model the or assignable concept.");
 };
 template <typename T, typename U>
 struct or_assignable_impl<
@@ -214,7 +214,7 @@ constexpr bool or_assignable_v = or_assignable<T, U>::value;
 // and_assignable
 template <typename T, typename U = T, typename = void>
 struct and_assignable_impl : std::false_type {
-  // TODO add explicit error message via static assert HERE
+  static_assert(sizeof(T) == -1, "T fails to model the and assignable concept.");
 };
 template <typename T, typename U>
 struct and_assignable_impl<
@@ -232,7 +232,7 @@ constexpr bool and_assignable_v = and_assignable<T, U>::value;
 // xor_assignable
 template <typename T, typename U = T, typename = void>
 struct xor_assignable_impl : std::false_type {
-  // TODO add explicit error message via static assert HERE
+  static_assert(sizeof(T) == -1, "T fails to model the xor assignable concept.");
 };
 template <typename T, typename U>
 struct xor_assignable_impl<
@@ -250,7 +250,7 @@ constexpr bool xor_assignable_v = xor_assignable<T, U>::value;
 // lshift_assignable
 template <typename T, typename U = T, typename = void>
 struct lshift_assignable_impl : std::false_type {
-  // TODO add explicit error message via static assert HERE
+  static_assert(sizeof(T) == -1, "T fails to model the lshift assignable concept.");
 };
 template <typename T, typename U>
 struct lshift_assignable_impl<T, U,
@@ -268,7 +268,7 @@ constexpr bool lshift_assignable_v = lshift_assignable<T, U>::value;
 // rshift_assignable
 template <typename T, typename U = T, typename = void>
 struct rshift_assignable_impl : std::false_type {
-  // TODO add explicit error message via static assert HERE
+  static_assert(sizeof(T) == -1, "T fails to model the rshift assignable concept.");
 };
 template <typename T, typename U>
 struct rshift_assignable_impl<T, U,
@@ -289,7 +289,7 @@ constexpr bool rshift_assignable_v = rshift_assignable<T, U>::value;
 // positive
 template <typename T, typename = void>
 struct positive_impl : std::false_type {
-  // TODO add explicit error message via static assert HERE
+  static_assert(sizeof(T) == -1, "T fails to model the positive concept.");
 };
 template <typename T>
 struct positive_impl<T,
@@ -306,7 +306,7 @@ constexpr bool positive_v = positive<T>::value;
 // negative
 template <typename T, typename = void>
 struct negative_impl : std::false_type {
-  // TODO add explicit error message via static assert HERE
+  static_assert(sizeof(T) == -1, "T fails to model the negative concept.");
 };
 template <typename T>
 struct negative_impl<T,
@@ -323,7 +323,7 @@ constexpr bool negative_v = negative<T>::value;
 // not
 template <typename T, typename = void>
 struct not_impl : std::false_type {
-  // TODO add explicit error message via static assert HERE
+  static_assert(sizeof(T) == -1, "T fails to model the not concept.");
 };
 template <typename T>
 struct not_impl<T, std::enable_if_t<std::disjunction_v<traits::is_not_t<T>, traits::is_nothrow_not_t<T>>>>
@@ -339,7 +339,7 @@ constexpr bool not_v = Not<T>::value;
 // plus
 template <typename T, typename U = T, typename = void>
 struct plus_impl : std::false_type {
-  // TODO add explicit error message via static assert HERE
+  static_assert(sizeof(T) == -1, "T fails to model the plus concept.");
 };
 template <typename T, typename U>
 struct plus_impl<T, U, std::enable_if_t<std::disjunction_v<traits::is_plus_t<T, U>, traits::is_nothrow_plus_t<T, U>>>>
@@ -355,7 +355,7 @@ constexpr bool plus_v = plus<T, U>::value;
 // less
 template <typename T, typename U = T, typename = void>
 struct less_impl : std::false_type {
-  // TODO add explicit error message via static assert HERE
+  static_assert(sizeof(T) == -1, "T fails to model the less concept.");
 };
 template <typename T, typename U>
 struct less_impl<T, U, std::enable_if_t<std::disjunction_v<traits::is_less_t<T, U>, traits::is_nothrow_less_t<T, U>>>>
@@ -371,7 +371,7 @@ constexpr bool less_v = less<T, U>::value;
 // mult
 template <typename T, typename U = T, typename = void>
 struct mult_impl : std::false_type {
-  // TODO add explicit error message via static assert HERE
+  static_assert(sizeof(T) == -1, "T fails to model the mult concept.");
 };
 template <typename T, typename U>
 struct mult_impl<T, U, std::enable_if_t<std::disjunction_v<traits::is_mult_t<T, U>, traits::is_nothrow_mult_t<T, U>>>>
@@ -387,7 +387,7 @@ constexpr bool mult_v = mult<T, U>::value;
 // div
 template <typename T, typename U = T, typename = void>
 struct div_impl : std::false_type {
-  // TODO add explicit error message via static assert HERE
+  static_assert(sizeof(T) == -1, "T fails to model the div concept.");
 };
 template <typename T, typename U>
 struct div_impl<T, U, std::enable_if_t<std::disjunction_v<traits::is_div_t<T, U>, traits::is_nothrow_div_t<T, U>>>>
@@ -403,7 +403,7 @@ constexpr bool div_v = div<T, U>::value;
 // mod
 template <typename T, typename U = T, typename = void>
 struct mod_impl : std::false_type {
-  // TODO add explicit error message via static assert HERE
+  static_assert(sizeof(T) == -1, "T fails to model the mod concept.");
 };
 template <typename T, typename U>
 struct mod_impl<T, U, std::enable_if_t<std::disjunction_v<traits::is_mod_t<T, U>, traits::is_nothrow_mod_t<T, U>>>>
@@ -419,7 +419,7 @@ constexpr bool mod_v = mod<T, U>::value;
 // and
 template <typename T, typename U = T, typename = void>
 struct and_impl : std::false_type {
-  // TODO add explicit error message via static assert HERE
+  static_assert(sizeof(T) == -1, "T fails to model the and concept.");
 };
 template <typename T, typename U>
 struct and_impl<T, U, std::enable_if_t<std::disjunction_v<traits::is_and_t<T, U>, traits::is_nothrow_and_t<T, U>>>>
@@ -435,7 +435,7 @@ constexpr bool and_v = And<T, U>::value;
 // or
 template <typename T, typename U = T, typename = void>
 struct or_impl : std::false_type {
-  // TODO add explicit error message via static assert HERE
+  static_assert(sizeof(T) == -1, "T fails to model the or concept.");
 };
 template <typename T, typename U>
 struct or_impl<T, U, std::enable_if_t<std::disjunction_v<traits::is_or_t<T, U>, traits::is_nothrow_or_t<T, U>>>>
@@ -451,7 +451,7 @@ constexpr bool or_v = Or<T, U>::value;
 // xor
 template <typename T, typename U = T, typename = void>
 struct xor_impl : std::false_type {
-  // TODO add explicit error message via static assert HERE
+  static_assert(sizeof(T) == -1, "T fails to model the xor concept.");
 };
 template <typename T, typename U>
 struct xor_impl<T, U, std::enable_if_t<std::disjunction_v<traits::is_xor_t<T, U>, traits::is_nothrow_xor_t<T, U>>>>
@@ -467,7 +467,7 @@ constexpr bool xor_v = Xor<T, U>::value;
 // lshift
 template <typename T, typename U = T, typename = void>
 struct lshift_impl : std::false_type {
-  // TODO add explicit error message via static assert HERE
+  static_assert(sizeof(T) == -1, "T fails to model the lshift concept.");
 };
 template <typename T, typename U>
 struct lshift_impl<T, U,
@@ -484,7 +484,7 @@ constexpr bool lshift_v = lshift<T, U>::value;
 // rshift
 template <typename T, typename U = T, typename = void>
 struct rshift_impl : std::false_type {
-  // TODO add explicit error message via static assert HERE
+  static_assert(sizeof(T) == -1, "T fails to model the rshift concept.");
 };
 template <typename T, typename U>
 struct rshift_impl<T, U,
@@ -504,7 +504,7 @@ constexpr bool rshift_v = rshift<T, U>::value;
 // pre_incrementable
 template <typename T, typename = void>
 struct pre_incrementable_impl : std::false_type {
-  // TODO add explicit error message via static assert HERE
+  static_assert(sizeof(T) == -1, "T fails to model the pre incrementable concept.");
 };
 template <typename T>
 struct pre_incrementable_impl<
@@ -521,7 +521,7 @@ constexpr bool pre_incrementable_v = pre_incrementable<T>::value;
 // post_incrementable
 template <typename T, typename = void>
 struct post_incrementable_impl : std::false_type {
-  // TODO add explicit error message via static assert HERE
+  static_assert(sizeof(T) == -1, "T fails to model the post incrementable concept.");
 };
 template <typename T>
 struct post_incrementable_impl<
@@ -539,7 +539,7 @@ constexpr bool post_incrementable_v = post_incrementable<T>::value;
 // pre_decrementable
 template <typename T, typename = void>
 struct pre_decrementable_impl : std::false_type {
-  // TODO add explicit error message via static assert HERE
+  static_assert(sizeof(T) == -1, "T fails to model the pre decrementable concept.");
 };
 template <typename T>
 struct pre_decrementable_impl<
@@ -556,7 +556,7 @@ constexpr bool pre_decrementable_v = pre_decrementable<T>::value;
 // post_decrementable
 template <typename T, typename = void>
 struct post_decrementable_impl : std::false_type {
-  // TODO add explicit error message via static assert HERE
+  static_assert(sizeof(T) == -1, "T fails to model the post decrementable concept.");
 };
 template <typename T>
 struct post_decrementable_impl<
@@ -577,7 +577,7 @@ constexpr bool post_decrementable_v = post_decrementable<T>::value;
 // equality
 template <typename T, typename U = T, typename = void>
 struct equality_impl : std::false_type {
-  // TODO add explicit error message via static assert HERE
+  static_assert(sizeof(T) == -1, "T fails to model the equality concept.");
 };
 template <typename T, typename U>
 struct equality_impl<
@@ -594,7 +594,7 @@ constexpr bool equality_v = equality<T, U>::value;
 // inequality
 template <typename T, typename U = T, typename = void>
 struct inequality_impl : std::false_type {
-  // TODO add explicit error message via static assert HERE
+  static_assert(sizeof(T) == -1, "T fails to model the inequality concept.");
 };
 template <typename T, typename U>
 struct inequality_impl<
@@ -611,7 +611,7 @@ constexpr bool inequality_v = inequality<T, U>::value;
 // less_than
 template <typename T, typename U = T, typename = void>
 struct less_than_impl : std::false_type {
-  // TODO add explicit error message via static assert HERE
+  static_assert(sizeof(T) == -1, "T fails to model the less than concept.");
 };
 template <typename T, typename U>
 struct less_than_impl<
@@ -628,7 +628,7 @@ constexpr bool less_than_v = less_than<T, U>::value;
 // less_equal_than
 template <typename T, typename U = T, typename = void>
 struct less_equal_than_impl : std::false_type {
-  // TODO add explicit error message via static assert HERE
+  static_assert(sizeof(T) == -1, "T fails to model the less equal than concept.");
 };
 template <typename T, typename U>
 struct less_equal_than_impl<
@@ -646,7 +646,7 @@ constexpr bool less_equal_than_v = less_equal_than<T, U>::value;
 // greater_than
 template <typename T, typename U = T, typename = void>
 struct greater_than_impl : std::false_type {
-  // TODO add explicit error message via static assert HERE
+  static_assert(sizeof(T) == -1, "T fails to model the greater than concept.");
 };
 template <typename T, typename U>
 struct greater_than_impl<
@@ -663,7 +663,7 @@ constexpr bool greater_than_v = greater_than<T, U>::value;
 // greater_equal_than
 template <typename T, typename U = T, typename = void>
 struct greater_equal_than_impl : std::false_type {
-  // TODO add explicit error message via static assert HERE
+  static_assert(sizeof(T) == -1, "T fails to model the greater equal than concept.");
 };
 template <typename T, typename U>
 struct greater_equal_than_impl<T, U,
@@ -684,7 +684,7 @@ constexpr bool greater_equal_than_v = greater_equal_than<T, U>::value;
 // function_call
 template <typename T, typename ArgList, typename = void>
 struct function_call_impl : std::false_type {
-  // TODO add explicit error message via static assert HERE
+  static_assert(sizeof(T) == -1, "T fails to model the function call concept.");
 };
 template <typename T, template <class...> class ArgList, typename... Args>
 struct function_call_impl<T, ArgList<Args...>,

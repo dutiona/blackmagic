@@ -12,10 +12,9 @@ namespace concepts { namespace basic { namespace details {
 namespace traits = traits::basic;
 
 // default constructible
-
 template <typename T, typename = void>
 struct default_constructible_impl : std::false_type {
-  // TODO add explicit error message via static assert HERE
+  static_assert(sizeof(T) == -1, "T fails to model the default constructible concept.");
 };
 template <typename T>
 struct default_constructible_impl<
@@ -31,10 +30,9 @@ template <typename T>
 constexpr bool default_constructible_v = default_constructible<T>::value;
 
 // move constructible
-
 template <typename T, typename = void>
 struct move_constructible_impl : std::false_type {
-  // TODO add explicit error message via static assert HERE
+  static_assert(sizeof(T) == -1, "T fails to model the move constructible concept.");
 };
 template <typename T>
 struct move_constructible_impl<
@@ -49,10 +47,9 @@ template <typename T>
 constexpr bool move_constructible_v = move_constructible<T>::value;
 
 // copy constructible
-
 template <typename T, typename = void>
 struct copy_constructible_impl : std::false_type {
-  // TODO add explicit error message via static assert HERE
+  static_assert(sizeof(T) == -1, "T fails to model the copy constructible concept.");
 };
 template <typename T>
 struct copy_constructible_impl<
@@ -67,10 +64,9 @@ template <typename T>
 constexpr bool copy_constructible_v = copy_constructible<T>::value;
 
 // move assignable
-
 template <typename T, typename = void>
 struct move_assignable_impl : std::false_type {
-  // TODO add explicit error message via static assert HERE
+  static_assert(sizeof(T) == -1, "T fails to model the move assignable concept.");
 };
 template <typename T>
 struct move_assignable_impl<
@@ -85,10 +81,9 @@ template <typename T>
 constexpr bool move_assignable_v = move_assignable<T>::value;
 
 // copy assignable
-
 template <typename T, typename = void>
 struct copy_assignable_impl : std::false_type {
-  // TODO add explicit error message via static assert HERE
+  static_assert(sizeof(T) == -1, "T fails to model the copy assignable concept.");
 };
 template <typename T>
 struct copy_assignable_impl<
@@ -103,10 +98,9 @@ template <typename T>
 constexpr bool copy_assignable_v = copy_assignable<T>::value;
 
 // destructible
-
 template <typename T, typename = void>
 struct destructible_impl : std::false_type {
-  // TODO add explicit error message via static assert HERE
+  static_assert(sizeof(T) == -1, "T fails to model the destructible concept.");
 };
 template <typename T>
 struct destructible_impl<
