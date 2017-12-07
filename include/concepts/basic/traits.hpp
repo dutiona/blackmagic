@@ -7,8 +7,7 @@
 
 namespace traits { namespace basic {
 
-// Default constructible
-
+// default constructible
 using std::is_default_constructible;
 using std::is_default_constructible_v;
 template <typename T>
@@ -24,8 +23,7 @@ using std::is_trivially_default_constructible_v;
 template <typename T>
 using is_trivially_default_constructible_t = typename std::is_trivially_default_constructible<T>::type;
 
-// MoveConstructible
-
+// move constructible
 using std::is_move_constructible;
 using std::is_move_constructible_v;
 template <typename T>
@@ -41,8 +39,7 @@ using std::is_trivially_move_constructible_v;
 template <typename T>
 using is_trivially_move_constructible_t = typename std::is_trivially_move_constructible<T>::type;
 
-// MoveAssignable
-
+// move assignable
 using std::is_move_assignable;
 using std::is_move_assignable_v;
 template <typename T>
@@ -58,8 +55,7 @@ using std::is_trivially_move_assignable_v;
 template <typename T>
 using is_trivially_move_assignable_t = typename std::is_trivially_move_assignable<T>::type;
 
-// CopyConstructible
-
+// copy constructible
 using std::is_copy_constructible;
 using std::is_copy_constructible_v;
 template <typename T>
@@ -75,8 +71,7 @@ using std::is_trivially_copy_constructible_v;
 template <typename T>
 using is_trivially_copy_constructible_t = typename std::is_trivially_copy_constructible<T>::type;
 
-// CopyAssignable
-
+// copy assignable
 using std::is_copy_assignable;
 using std::is_copy_assignable_v;
 template <typename T>
@@ -92,8 +87,7 @@ using std::is_trivially_copy_assignable_v;
 template <typename T>
 using is_trivially_copy_assignable_t = typename std::is_trivially_copy_assignable<T>::type;
 
-// Destructible
-
+// destructible
 using std::is_destructible;
 using std::is_destructible_v;
 template <typename T>
