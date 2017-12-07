@@ -665,18 +665,18 @@ constexpr bool greater_equal_than_v = greater_equal_than<T, U>::value;
 // other
 
 // function_call
-template <typename T, typename = void, typename... Args>
+template <typename T, typename ArgList, typename = void>
 struct function_call_impl : std::false_type {
   // TODO add explicit error message via static assert HERE
 };
-template <typename T, typename... Args>
+template <typename T, template <class...> class ArgList, typename... Args>
 struct function_call_impl<
-  T,
-  std::void_t<std::disjunction<traits::is_function_call_t<T, Args...>, traits::is_nothrow_function_call_t<T, Args...>>>,
-  Args...> : std::true_type {
+  T, ArgList<Args...>,
+  std::void_t<std::disjunction<traits::is_function_call_t<T, Args...>, traits::is_nothrow_function_call_t<T, Args...>>>>
+  : std::true_type {
 };
 template <typename T, typename... Args>
-using function_call = function_call_impl<T, , Args...>;
+using function_call = function_call_impl<T, std::void_t<Args...>>;
 template <typename T, typename... Args>
 using function_call_t = typename function_call<T, Args...>::type;
 template <typename T, typename... Args>

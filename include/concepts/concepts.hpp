@@ -13,12 +13,12 @@
 #include "basic/concepts.hpp"
 #include "basic/traits.hpp"
 
-#include "utility/concepts.hpp"
+//#include "utility/concepts.hpp"
 #include "utility/traits.hpp"
 
 namespace concepts {
 using namespace concepts::basic;
-using namespace concepts::utility;
+// using namespace concepts::utility;
 } // namespace concepts
 
 namespace traits {

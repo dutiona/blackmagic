@@ -7,10 +7,9 @@ set_property(GLOBAL PROPERTY USE_FOLDERS ON)
 set(CONCEPTS_INCLUDE_DIR "${PROJECT_SOURCE_DIR}/include")
 file(GLOB_RECURSE CONCEPTS_SOURCES ${CONCEPTS_INCLUDE_DIR} *.hpp)
 
-add_library(Concepts STATIC ${CONCEPTS_SOURCES})
-set_target_properties(Concepts PROPERTIES LINKER_LANGUAGE CXX)
-target_compile_features(Concepts PUBLIC cxx_std_17)
-target_include_directories(Concepts PUBLIC ${CONCEPTS_INCLUDE_DIR})
+add_library(Concepts INTERFACE)
+target_compile_features(Concepts INTERFACE cxx_std_17)
+target_include_directories(Concepts INTERFACE ${CONCEPTS_INCLUDE_DIR})
 
 source_group(TREE ${CONCEPTS_INCLUDE_DIR} FILES ${CONCEPTS_SOURCES})
 
