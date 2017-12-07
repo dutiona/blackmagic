@@ -11,6 +11,6 @@ struct test_ {
 
 TEST(Utility, is_dereferenceable)
 {
-  // ASSERT_TRUE(concepts::dereferenceable<test_>);
-  // ASSERT_FALSE(traits::is_nothrow_dereferenceable_v<test_>);
+  ASSERT_TRUE(concepts::dereferenceable<test_>);
+  ASSERT_FALSE(traits::is_nothrow_dereferenceable_v<test_>);
 }
