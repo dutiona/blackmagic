@@ -16,10 +16,10 @@ namespace traits = traits::utility;
 // valid
 template <typename T, typename = void>
 struct valid_impl : std::false_type {
-  // TODO add explicit error message via static assert HERE
+  static_assert(sizeof(T) == 0, "T fails to model the valid concept.");
 };
 template <typename T>
-struct valid_impl<T, std::void_t<std::disjunction<traits::is_valid_t<T>, traits::is_nothrow_valid_t<T>>>>
+struct valid_impl<T, std::enable_if_t<std::disjunction_v<traits::is_valid_t<T>, traits::is_nothrow_valid_t<T>>>>
   : std::true_type {
 };
 template <typename T>
@@ -35,11 +35,11 @@ constexpr bool valid_v = valid<T>::value;
 // dereferenceable
 template <typename T, typename = void>
 struct dereferenceable_impl : std::false_type {
-  // TODO add explicit error message via static assert HERE
+  static_assert(sizeof(T) == -1, "T fails to model the dereferenceable concept.");
 };
 template <typename T>
 struct dereferenceable_impl<
-  T, std::void_t<std::disjunction<traits::is_dereferenceable_t<T>, traits::is_nothrow_dereferenceable_t<T>>>>
+  T, std::enable_if_t<std::disjunction_v<traits::is_dereferenceable_t<T>, traits::is_nothrow_dereferenceable_t<T>>>>
   : std::true_type {
 };
 template <typename T>
@@ -55,7 +55,8 @@ struct address_of_impl : std::false_type {
   // TODO add explicit error message via static assert HERE
 };
 template <typename T>
-struct address_of_impl<T, std::void_t<std::disjunction<traits::is_address_of_t<T>, traits::is_nothrow_address_of_t<T>>>>
+struct address_of_impl<
+  T, std::enable_if_t<std::disjunction_v<traits::is_address_of_t<T>, traits::is_nothrow_address_of_t<T>>>>
   : std::true_type {
 };
 template <typename T>
@@ -71,8 +72,8 @@ struct subscript_impl : std::false_type {
   // TODO add explicit error message via static assert HERE
 };
 template <typename T, typename I>
-struct subscript_impl<T, I,
-                      std::void_t<std::disjunction<traits::is_subscript_t<T, I>, traits::is_nothrow_subscript_t<T, I>>>>
+struct subscript_impl<
+  T, I, std::enable_if_t<std::disjunction_v<traits::is_subscript_t<T, I>, traits::is_nothrow_subscript_t<T, I>>>>
   : std::true_type {
 };
 template <typename T, typename I>
@@ -92,7 +93,7 @@ struct assignable_impl : std::false_type {
 };
 template <typename T, typename U>
 struct assignable_impl<
-  T, U, std::void_t<std::disjunction<traits::is_assignable_t<T, U>, traits::is_nothrow_assignable_t<T, U>>>>
+  T, U, std::enable_if_t<std::disjunction_v<traits::is_assignable_t<T, U>, traits::is_nothrow_assignable_t<T, U>>>>
   : std::true_type {
 };
 template <typename T, typename U = T>
@@ -109,7 +110,8 @@ struct plus_assignable_impl : std::false_type {
 };
 template <typename T, typename U>
 struct plus_assignable_impl<
-  T, U, std::void_t<std::disjunction<traits::is_plus_assignable_t<T, U>, traits::is_nothrow_plus_assignable_t<T, U>>>>
+  T, U,
+  std::enable_if_t<std::disjunction_v<traits::is_plus_assignable_t<T, U>, traits::is_nothrow_plus_assignable_t<T, U>>>>
   : std::true_type {
 };
 template <typename T, typename U = T>
@@ -126,7 +128,8 @@ struct less_assignable_impl : std::false_type {
 };
 template <typename T, typename U>
 struct less_assignable_impl<
-  T, U, std::void_t<std::disjunction<traits::is_less_assignable_t<T, U>, traits::is_nothrow_less_assignable_t<T, U>>>>
+  T, U,
+  std::enable_if_t<std::disjunction_v<traits::is_less_assignable_t<T, U>, traits::is_nothrow_less_assignable_t<T, U>>>>
   : std::true_type {
 };
 template <typename T, typename U = T>
@@ -143,7 +146,8 @@ struct mult_assignable_impl : std::false_type {
 };
 template <typename T, typename U>
 struct mult_assignable_impl<
-  T, U, std::void_t<std::disjunction<traits::is_mult_assignable_t<T, U>, traits::is_nothrow_mult_assignable_t<T, U>>>>
+  T, U,
+  std::enable_if_t<std::disjunction_v<traits::is_mult_assignable_t<T, U>, traits::is_nothrow_mult_assignable_t<T, U>>>>
   : std::true_type {
 };
 template <typename T, typename U = T>
@@ -160,7 +164,8 @@ struct div_assignable_impl : std::false_type {
 };
 template <typename T, typename U>
 struct div_assignable_impl<
-  T, U, std::void_t<std::disjunction<traits::is_div_assignable_t<T, U>, traits::is_nothrow_div_assignable_t<T, U>>>>
+  T, U,
+  std::enable_if_t<std::disjunction_v<traits::is_div_assignable_t<T, U>, traits::is_nothrow_div_assignable_t<T, U>>>>
   : std::true_type {
 };
 template <typename T, typename U = T>
@@ -177,7 +182,8 @@ struct mod_assignable_impl : std::false_type {
 };
 template <typename T, typename U>
 struct mod_assignable_impl<
-  T, U, std::void_t<std::disjunction<traits::is_mod_assignable_t<T, U>, traits::is_nothrow_mod_assignable_t<T, U>>>>
+  T, U,
+  std::enable_if_t<std::disjunction_v<traits::is_mod_assignable_t<T, U>, traits::is_nothrow_mod_assignable_t<T, U>>>>
   : std::true_type {
 };
 template <typename T, typename U = T>
@@ -194,7 +200,8 @@ struct or_assignable_impl : std::false_type {
 };
 template <typename T, typename U>
 struct or_assignable_impl<
-  T, U, std::void_t<std::disjunction<traits::is_or_assignable_t<T, U>, traits::is_nothrow_or_assignable_t<T, U>>>>
+  T, U,
+  std::enable_if_t<std::disjunction_v<traits::is_or_assignable_t<T, U>, traits::is_nothrow_or_assignable_t<T, U>>>>
   : std::true_type {
 };
 template <typename T, typename U = T>
@@ -211,7 +218,8 @@ struct and_assignable_impl : std::false_type {
 };
 template <typename T, typename U>
 struct and_assignable_impl<
-  T, U, std::void_t<std::disjunction<traits::is_and_assignable_t<T, U>, traits::is_nothrow_and_assignable_t<T, U>>>>
+  T, U,
+  std::enable_if_t<std::disjunction_v<traits::is_and_assignable_t<T, U>, traits::is_nothrow_and_assignable_t<T, U>>>>
   : std::true_type {
 };
 template <typename T, typename U = T>
@@ -228,7 +236,8 @@ struct xor_assignable_impl : std::false_type {
 };
 template <typename T, typename U>
 struct xor_assignable_impl<
-  T, U, std::void_t<std::disjunction<traits::is_xor_assignable_t<T, U>, traits::is_nothrow_xor_assignable_t<T, U>>>>
+  T, U,
+  std::enable_if_t<std::disjunction_v<traits::is_xor_assignable_t<T, U>, traits::is_nothrow_xor_assignable_t<T, U>>>>
   : std::true_type {
 };
 template <typename T, typename U = T>
@@ -244,9 +253,9 @@ struct lshift_assignable_impl : std::false_type {
   // TODO add explicit error message via static assert HERE
 };
 template <typename T, typename U>
-struct lshift_assignable_impl<
-  T, U,
-  std::void_t<std::disjunction<traits::is_lshift_assignable_t<T, U>, traits::is_nothrow_lshift_assignable_t<T, U>>>>
+struct lshift_assignable_impl<T, U,
+                              std::enable_if_t<std::disjunction_v<traits::is_lshift_assignable_t<T, U>,
+                                                                  traits::is_nothrow_lshift_assignable_t<T, U>>>>
   : std::true_type {
 };
 template <typename T, typename U = T>
@@ -262,9 +271,9 @@ struct rshift_assignable_impl : std::false_type {
   // TODO add explicit error message via static assert HERE
 };
 template <typename T, typename U>
-struct rshift_assignable_impl<
-  T, U,
-  std::void_t<std::disjunction<traits::is_rshift_assignable_t<T, U>, traits::is_nothrow_rshift_assignable_t<T, U>>>>
+struct rshift_assignable_impl<T, U,
+                              std::enable_if_t<std::disjunction_v<traits::is_rshift_assignable_t<T, U>,
+                                                                  traits::is_nothrow_rshift_assignable_t<T, U>>>>
   : std::true_type {
 };
 template <typename T, typename U = T>
@@ -283,7 +292,8 @@ struct positive_impl : std::false_type {
   // TODO add explicit error message via static assert HERE
 };
 template <typename T>
-struct positive_impl<T, std::void_t<std::disjunction<traits::is_positive_t<T>, traits::is_nothrow_positive_t<T>>>>
+struct positive_impl<T,
+                     std::enable_if_t<std::disjunction_v<traits::is_positive_t<T>, traits::is_nothrow_positive_t<T>>>>
   : std::true_type {
 };
 template <typename T>
@@ -299,7 +309,8 @@ struct negative_impl : std::false_type {
   // TODO add explicit error message via static assert HERE
 };
 template <typename T>
-struct negative_impl<T, std::void_t<std::disjunction<traits::is_negative_t<T>, traits::is_nothrow_negative_t<T>>>>
+struct negative_impl<T,
+                     std::enable_if_t<std::disjunction_v<traits::is_negative_t<T>, traits::is_nothrow_negative_t<T>>>>
   : std::true_type {
 };
 template <typename T>
@@ -315,7 +326,8 @@ struct not_impl : std::false_type {
   // TODO add explicit error message via static assert HERE
 };
 template <typename T>
-struct not_impl<T, std::void_t<std::disjunction<traits::is_not_t<T>, traits::is_nothrow_not_t<T>>>> : std::true_type {
+struct not_impl<T, std::enable_if_t<std::disjunction_v<traits::is_not_t<T>, traits::is_nothrow_not_t<T>>>>
+  : std::true_type {
 };
 template <typename T>
 using Not = not_impl<T>; // "not" is a c++ keyword
@@ -330,7 +342,7 @@ struct plus_impl : std::false_type {
   // TODO add explicit error message via static assert HERE
 };
 template <typename T, typename U>
-struct plus_impl<T, U, std::void_t<std::disjunction<traits::is_plus_t<T, U>, traits::is_nothrow_plus_t<T, U>>>>
+struct plus_impl<T, U, std::enable_if_t<std::disjunction_v<traits::is_plus_t<T, U>, traits::is_nothrow_plus_t<T, U>>>>
   : std::true_type {
 };
 template <typename T, typename U = T>
@@ -346,7 +358,7 @@ struct less_impl : std::false_type {
   // TODO add explicit error message via static assert HERE
 };
 template <typename T, typename U>
-struct less_impl<T, U, std::void_t<std::disjunction<traits::is_less_t<T, U>, traits::is_nothrow_less_t<T, U>>>>
+struct less_impl<T, U, std::enable_if_t<std::disjunction_v<traits::is_less_t<T, U>, traits::is_nothrow_less_t<T, U>>>>
   : std::true_type {
 };
 template <typename T, typename U = T>
@@ -362,7 +374,7 @@ struct mult_impl : std::false_type {
   // TODO add explicit error message via static assert HERE
 };
 template <typename T, typename U>
-struct mult_impl<T, U, std::void_t<std::disjunction<traits::is_mult_t<T, U>, traits::is_nothrow_mult_t<T, U>>>>
+struct mult_impl<T, U, std::enable_if_t<std::disjunction_v<traits::is_mult_t<T, U>, traits::is_nothrow_mult_t<T, U>>>>
   : std::true_type {
 };
 template <typename T, typename U = T>
@@ -378,7 +390,7 @@ struct div_impl : std::false_type {
   // TODO add explicit error message via static assert HERE
 };
 template <typename T, typename U>
-struct div_impl<T, U, std::void_t<std::disjunction<traits::is_div_t<T, U>, traits::is_nothrow_div_t<T, U>>>>
+struct div_impl<T, U, std::enable_if_t<std::disjunction_v<traits::is_div_t<T, U>, traits::is_nothrow_div_t<T, U>>>>
   : std::true_type {
 };
 template <typename T, typename U>
@@ -394,7 +406,7 @@ struct mod_impl : std::false_type {
   // TODO add explicit error message via static assert HERE
 };
 template <typename T, typename U>
-struct mod_impl<T, U, std::void_t<std::disjunction<traits::is_mod_t<T, U>, traits::is_nothrow_mod_t<T, U>>>>
+struct mod_impl<T, U, std::enable_if_t<std::disjunction_v<traits::is_mod_t<T, U>, traits::is_nothrow_mod_t<T, U>>>>
   : std::true_type {
 };
 template <typename T, typename U = T>
@@ -410,7 +422,7 @@ struct and_impl : std::false_type {
   // TODO add explicit error message via static assert HERE
 };
 template <typename T, typename U>
-struct and_impl<T, U, std::void_t<std::disjunction<traits::is_and_t<T, U>, traits::is_nothrow_and_t<T, U>>>>
+struct and_impl<T, U, std::enable_if_t<std::disjunction_v<traits::is_and_t<T, U>, traits::is_nothrow_and_t<T, U>>>>
   : std::true_type {
 };
 template <typename T, typename U = T>
@@ -426,7 +438,7 @@ struct or_impl : std::false_type {
   // TODO add explicit error message via static assert HERE
 };
 template <typename T, typename U>
-struct or_impl<T, U, std::void_t<std::disjunction<traits::is_or_t<T, U>, traits::is_nothrow_or_t<T, U>>>>
+struct or_impl<T, U, std::enable_if_t<std::disjunction_v<traits::is_or_t<T, U>, traits::is_nothrow_or_t<T, U>>>>
   : std::true_type {
 };
 template <typename T, typename U = T>
@@ -442,7 +454,7 @@ struct xor_impl : std::false_type {
   // TODO add explicit error message via static assert HERE
 };
 template <typename T, typename U>
-struct xor_impl<T, U, std::void_t<std::disjunction<traits::is_xor_t<T, U>, traits::is_nothrow_xor_t<T, U>>>>
+struct xor_impl<T, U, std::enable_if_t<std::disjunction_v<traits::is_xor_t<T, U>, traits::is_nothrow_xor_t<T, U>>>>
   : std::true_type {
 };
 template <typename T, typename U = T>
@@ -458,7 +470,8 @@ struct lshift_impl : std::false_type {
   // TODO add explicit error message via static assert HERE
 };
 template <typename T, typename U>
-struct lshift_impl<T, U, std::void_t<std::disjunction<traits::is_lshift_t<T, U>, traits::is_nothrow_lshift_t<T, U>>>>
+struct lshift_impl<T, U,
+                   std::enable_if_t<std::disjunction_v<traits::is_lshift_t<T, U>, traits::is_nothrow_lshift_t<T, U>>>>
   : std::true_type {
 };
 template <typename T, typename U = T>
@@ -474,7 +487,8 @@ struct rshift_impl : std::false_type {
   // TODO add explicit error message via static assert HERE
 };
 template <typename T, typename U>
-struct rshift_impl<T, U, std::void_t<std::disjunction<traits::is_rshift_t<T, U>, traits::is_nothrow_rshift_t<T, U>>>>
+struct rshift_impl<T, U,
+                   std::enable_if_t<std::disjunction_v<traits::is_rshift_t<T, U>, traits::is_nothrow_rshift_t<T, U>>>>
   : std::true_type {
 };
 template <typename T, typename U = T>
@@ -494,7 +508,7 @@ struct pre_incrementable_impl : std::false_type {
 };
 template <typename T>
 struct pre_incrementable_impl<
-  T, std::void_t<std::disjunction<traits::is_pre_incrementable_t<T>, traits::is_nothrow_pre_incrementable_t<T>>>>
+  T, std::enable_if_t<std::disjunction_v<traits::is_pre_incrementable_t<T>, traits::is_nothrow_pre_incrementable_t<T>>>>
   : std::true_type {
 };
 template <typename T>
@@ -511,7 +525,8 @@ struct post_incrementable_impl : std::false_type {
 };
 template <typename T>
 struct post_incrementable_impl<
-  T, std::void_t<std::disjunction<traits::is_post_incrementable_t<T>, traits::is_nothrow_post_incrementable_t<T>>>>
+  T,
+  std::enable_if_t<std::disjunction_v<traits::is_post_incrementable_t<T>, traits::is_nothrow_post_incrementable_t<T>>>>
   : std::true_type {
 };
 template <typename T>
@@ -528,7 +543,7 @@ struct pre_decrementable_impl : std::false_type {
 };
 template <typename T>
 struct pre_decrementable_impl<
-  T, std::void_t<std::disjunction<traits::is_pre_decrementable_t<T>, traits::is_nothrow_pre_decrementable_t<T>>>>
+  T, std::enable_if_t<std::disjunction_v<traits::is_pre_decrementable_t<T>, traits::is_nothrow_pre_decrementable_t<T>>>>
   : std::true_type {
 };
 template <typename T>
@@ -545,7 +560,8 @@ struct post_decrementable_impl : std::false_type {
 };
 template <typename T>
 struct post_decrementable_impl<
-  T, std::void_t<std::disjunction<traits::is_post_decrementable_t<T>, traits::is_nothrow_post_decrementable_t<T>>>>
+  T,
+  std::enable_if_t<std::disjunction_v<traits::is_post_decrementable_t<T>, traits::is_nothrow_post_decrementable_t<T>>>>
   : std::true_type {
 };
 template <typename T>
@@ -564,8 +580,8 @@ struct equality_impl : std::false_type {
   // TODO add explicit error message via static assert HERE
 };
 template <typename T, typename U>
-struct equality_impl<T, U,
-                     std::void_t<std::disjunction<traits::is_equality_t<T, U>, traits::is_nothrow_equality_t<T, U>>>>
+struct equality_impl<
+  T, U, std::enable_if_t<std::disjunction_v<traits::is_equality_t<T, U>, traits::is_nothrow_equality_t<T, U>>>>
   : std::true_type {
 };
 template <typename T, typename U = T>
@@ -582,7 +598,7 @@ struct inequality_impl : std::false_type {
 };
 template <typename T, typename U>
 struct inequality_impl<
-  T, U, std::void_t<std::disjunction<traits::is_inequality_t<T, U>, traits::is_nothrow_inequality_t<T, U>>>>
+  T, U, std::enable_if_t<std::disjunction_v<traits::is_inequality_t<T, U>, traits::is_nothrow_inequality_t<T, U>>>>
   : std::true_type {
 };
 template <typename T, typename U = T>
@@ -598,8 +614,8 @@ struct less_than_impl : std::false_type {
   // TODO add explicit error message via static assert HERE
 };
 template <typename T, typename U>
-struct less_than_impl<T, U,
-                      std::void_t<std::disjunction<traits::is_less_than_t<T, U>, traits::is_nothrow_less_than_t<T, U>>>>
+struct less_than_impl<
+  T, U, std::enable_if_t<std::disjunction_v<traits::is_less_than_t<T, U>, traits::is_nothrow_less_than_t<T, U>>>>
   : std::true_type {
 };
 template <typename T, typename U = T>
@@ -616,7 +632,8 @@ struct less_equal_than_impl : std::false_type {
 };
 template <typename T, typename U>
 struct less_equal_than_impl<
-  T, U, std::void_t<std::disjunction<traits::is_less_equal_than_t<T, U>, traits::is_nothrow_less_equal_than_t<T, U>>>>
+  T, U,
+  std::enable_if_t<std::disjunction_v<traits::is_less_equal_than_t<T, U>, traits::is_nothrow_less_equal_than_t<T, U>>>>
   : std::true_type {
 };
 template <typename T, typename U = T>
@@ -633,7 +650,7 @@ struct greater_than_impl : std::false_type {
 };
 template <typename T, typename U>
 struct greater_than_impl<
-  T, U, std::void_t<std::disjunction<traits::is_greater_than_t<T, U>, traits::is_nothrow_greater_than_t<T, U>>>>
+  T, U, std::enable_if_t<std::disjunction_v<traits::is_greater_than_t<T, U>, traits::is_nothrow_greater_than_t<T, U>>>>
   : std::true_type {
 };
 template <typename T, typename U = T>
@@ -649,9 +666,9 @@ struct greater_equal_than_impl : std::false_type {
   // TODO add explicit error message via static assert HERE
 };
 template <typename T, typename U>
-struct greater_equal_than_impl<
-  T, U,
-  std::void_t<std::disjunction<traits::is_greater_equal_than_t<T, U>, traits::is_nothrow_greater_equal_than_t<T, U>>>>
+struct greater_equal_than_impl<T, U,
+                               std::enable_if_t<std::disjunction_v<traits::is_greater_equal_than_t<T, U>,
+                                                                   traits::is_nothrow_greater_equal_than_t<T, U>>>>
   : std::true_type {
 };
 template <typename T, typename U = T>
@@ -670,9 +687,9 @@ struct function_call_impl : std::false_type {
   // TODO add explicit error message via static assert HERE
 };
 template <typename T, template <class...> class ArgList, typename... Args>
-struct function_call_impl<
-  T, ArgList<Args...>,
-  std::void_t<std::disjunction<traits::is_function_call_t<T, Args...>, traits::is_nothrow_function_call_t<T, Args...>>>>
+struct function_call_impl<T, ArgList<Args...>,
+                          std::enable_if_t<std::disjunction_v<traits::is_function_call_t<T, Args...>,
+                                                              traits::is_nothrow_function_call_t<T, Args...>>>>
   : std::true_type {
 };
 template <typename T, typename... Args>
