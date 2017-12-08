@@ -21,7 +21,7 @@ endif(MSVC)
 
 
 if(MSVC)
-    add_compile_options(/W4 /WX /permissive-4 /std:c++17)
+    add_compile_options(/W4 /WX /permissive- /std:c++17)
 else(MSVC)
     add_compile_options(-Wall -Wextra -Werror -pedantic -std=c++1z)
 endif(MSVC)
