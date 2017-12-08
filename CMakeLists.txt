@@ -17,7 +17,6 @@ else(MSVC)
 	add_library(Concepts INTERFACE)
 	target_compile_features(Concepts INTERFACE cxx_std_17)
 	target_include_directories(Concepts INTERFACE ${CONCEPTS_INCLUDE_DIR})
-	source_group(TREE ${CONCEPTS_INCLUDE_DIR} FILES ${CONCEPTS_SOURCES})
 endif(MSVC)
 
 
