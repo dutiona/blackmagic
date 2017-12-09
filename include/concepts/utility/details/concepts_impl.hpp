@@ -19,7 +19,7 @@ struct valid_impl : std::false_type {
   static_assert(sizeof(T) == -1, "T fails to model the valid concept.");
 };
 template <typename T>
-struct valid_impl<T, std::enable_if_t<std::disjunction_v<traits::is_valid_t<T>, traits::is_nothrow_valid_t<T>>>>
+struct valid_impl<T, std::enable_if_t<std::disjunction_v<traits::is_valid<T>, traits::is_nothrow_valid<T>>>>
   : std::true_type {
 };
 template <typename T>
@@ -39,7 +39,7 @@ struct dereferenceable_impl : std::false_type {
 };
 template <typename T>
 struct dereferenceable_impl<
-  T, std::enable_if_t<std::disjunction_v<traits::is_dereferenceable_t<T>, traits::is_nothrow_dereferenceable_t<T>>>>
+  T, std::enable_if_t<std::disjunction_v<traits::is_dereferenceable<T>, traits::is_nothrow_dereferenceable<T>>>>
   : std::true_type {
 };
 template <typename T>
@@ -55,8 +55,8 @@ struct address_of_impl : std::false_type {
   static_assert(sizeof(T) == -1, "T fails to model the address of concept.");
 };
 template <typename T>
-struct address_of_impl<
-  T, std::enable_if_t<std::disjunction_v<traits::is_address_of_t<T>, traits::is_nothrow_address_of_t<T>>>>
+struct address_of_impl<T,
+                       std::enable_if_t<std::disjunction_v<traits::is_address_of<T>, traits::is_nothrow_address_of<T>>>>
   : std::true_type {
 };
 template <typename T>
@@ -73,7 +73,7 @@ struct subscript_impl : std::false_type {
 };
 template <typename T, typename I>
 struct subscript_impl<
-  T, I, std::enable_if_t<std::disjunction_v<traits::is_subscript_t<T, I>, traits::is_nothrow_subscript_t<T, I>>>>
+  T, I, std::enable_if_t<std::disjunction_v<traits::is_subscript<T, I>, traits::is_nothrow_subscript<T, I>>>>
   : std::true_type {
 };
 template <typename T, typename I>
@@ -93,7 +93,7 @@ struct assignable_impl : std::false_type {
 };
 template <typename T, typename U>
 struct assignable_impl<
-  T, U, std::enable_if_t<std::disjunction_v<traits::is_assignable_t<T, U>, traits::is_nothrow_assignable_t<T, U>>>>
+  T, U, std::enable_if_t<std::disjunction_v<traits::is_assignable<T, U>, traits::is_nothrow_assignable<T, U>>>>
   : std::true_type {
 };
 template <typename T, typename U = T>
@@ -111,7 +111,7 @@ struct plus_assignable_impl : std::false_type {
 template <typename T, typename U>
 struct plus_assignable_impl<
   T, U,
-  std::enable_if_t<std::disjunction_v<traits::is_plus_assignable_t<T, U>, traits::is_nothrow_plus_assignable_t<T, U>>>>
+  std::enable_if_t<std::disjunction_v<traits::is_plus_assignable<T, U>, traits::is_nothrow_plus_assignable<T, U>>>>
   : std::true_type {
 };
 template <typename T, typename U = T>
@@ -129,7 +129,7 @@ struct less_assignable_impl : std::false_type {
 template <typename T, typename U>
 struct less_assignable_impl<
   T, U,
-  std::enable_if_t<std::disjunction_v<traits::is_less_assignable_t<T, U>, traits::is_nothrow_less_assignable_t<T, U>>>>
+  std::enable_if_t<std::disjunction_v<traits::is_less_assignable<T, U>, traits::is_nothrow_less_assignable<T, U>>>>
   : std::true_type {
 };
 template <typename T, typename U = T>
@@ -147,7 +147,7 @@ struct mult_assignable_impl : std::false_type {
 template <typename T, typename U>
 struct mult_assignable_impl<
   T, U,
-  std::enable_if_t<std::disjunction_v<traits::is_mult_assignable_t<T, U>, traits::is_nothrow_mult_assignable_t<T, U>>>>
+  std::enable_if_t<std::disjunction_v<traits::is_mult_assignable<T, U>, traits::is_nothrow_mult_assignable<T, U>>>>
   : std::true_type {
 };
 template <typename T, typename U = T>
@@ -164,8 +164,7 @@ struct div_assignable_impl : std::false_type {
 };
 template <typename T, typename U>
 struct div_assignable_impl<
-  T, U,
-  std::enable_if_t<std::disjunction_v<traits::is_div_assignable_t<T, U>, traits::is_nothrow_div_assignable_t<T, U>>>>
+  T, U, std::enable_if_t<std::disjunction_v<traits::is_div_assignable<T, U>, traits::is_nothrow_div_assignable<T, U>>>>
   : std::true_type {
 };
 template <typename T, typename U = T>
@@ -182,8 +181,7 @@ struct mod_assignable_impl : std::false_type {
 };
 template <typename T, typename U>
 struct mod_assignable_impl<
-  T, U,
-  std::enable_if_t<std::disjunction_v<traits::is_mod_assignable_t<T, U>, traits::is_nothrow_mod_assignable_t<T, U>>>>
+  T, U, std::enable_if_t<std::disjunction_v<traits::is_mod_assignable<T, U>, traits::is_nothrow_mod_assignable<T, U>>>>
   : std::true_type {
 };
 template <typename T, typename U = T>
@@ -200,8 +198,7 @@ struct or_assignable_impl : std::false_type {
 };
 template <typename T, typename U>
 struct or_assignable_impl<
-  T, U,
-  std::enable_if_t<std::disjunction_v<traits::is_or_assignable_t<T, U>, traits::is_nothrow_or_assignable_t<T, U>>>>
+  T, U, std::enable_if_t<std::disjunction_v<traits::is_or_assignable<T, U>, traits::is_nothrow_or_assignable<T, U>>>>
   : std::true_type {
 };
 template <typename T, typename U = T>
@@ -218,8 +215,7 @@ struct and_assignable_impl : std::false_type {
 };
 template <typename T, typename U>
 struct and_assignable_impl<
-  T, U,
-  std::enable_if_t<std::disjunction_v<traits::is_and_assignable_t<T, U>, traits::is_nothrow_and_assignable_t<T, U>>>>
+  T, U, std::enable_if_t<std::disjunction_v<traits::is_and_assignable<T, U>, traits::is_nothrow_and_assignable<T, U>>>>
   : std::true_type {
 };
 template <typename T, typename U = T>
@@ -236,8 +232,7 @@ struct xor_assignable_impl : std::false_type {
 };
 template <typename T, typename U>
 struct xor_assignable_impl<
-  T, U,
-  std::enable_if_t<std::disjunction_v<traits::is_xor_assignable_t<T, U>, traits::is_nothrow_xor_assignable_t<T, U>>>>
+  T, U, std::enable_if_t<std::disjunction_v<traits::is_xor_assignable<T, U>, traits::is_nothrow_xor_assignable<T, U>>>>
   : std::true_type {
 };
 template <typename T, typename U = T>
@@ -253,9 +248,9 @@ struct lshift_assignable_impl : std::false_type {
   static_assert(sizeof(T) == -1, "T fails to model the lshift assignable concept.");
 };
 template <typename T, typename U>
-struct lshift_assignable_impl<T, U,
-                              std::enable_if_t<std::disjunction_v<traits::is_lshift_assignable_t<T, U>,
-                                                                  traits::is_nothrow_lshift_assignable_t<T, U>>>>
+struct lshift_assignable_impl<
+  T, U,
+  std::enable_if_t<std::disjunction_v<traits::is_lshift_assignable<T, U>, traits::is_nothrow_lshift_assignable<T, U>>>>
   : std::true_type {
 };
 template <typename T, typename U = T>
@@ -271,9 +266,9 @@ struct rshift_assignable_impl : std::false_type {
   static_assert(sizeof(T) == -1, "T fails to model the rshift assignable concept.");
 };
 template <typename T, typename U>
-struct rshift_assignable_impl<T, U,
-                              std::enable_if_t<std::disjunction_v<traits::is_rshift_assignable_t<T, U>,
-                                                                  traits::is_nothrow_rshift_assignable_t<T, U>>>>
+struct rshift_assignable_impl<
+  T, U,
+  std::enable_if_t<std::disjunction_v<traits::is_rshift_assignable<T, U>, traits::is_nothrow_rshift_assignable<T, U>>>>
   : std::true_type {
 };
 template <typename T, typename U = T>
@@ -292,8 +287,7 @@ struct positive_impl : std::false_type {
   static_assert(sizeof(T) == -1, "T fails to model the positive concept.");
 };
 template <typename T>
-struct positive_impl<T,
-                     std::enable_if_t<std::disjunction_v<traits::is_positive_t<T>, traits::is_nothrow_positive_t<T>>>>
+struct positive_impl<T, std::enable_if_t<std::disjunction_v<traits::is_positive<T>, traits::is_nothrow_positive<T>>>>
   : std::true_type {
 };
 template <typename T>
@@ -309,8 +303,7 @@ struct negative_impl : std::false_type {
   static_assert(sizeof(T) == -1, "T fails to model the negative concept.");
 };
 template <typename T>
-struct negative_impl<T,
-                     std::enable_if_t<std::disjunction_v<traits::is_negative_t<T>, traits::is_nothrow_negative_t<T>>>>
+struct negative_impl<T, std::enable_if_t<std::disjunction_v<traits::is_negative<T>, traits::is_nothrow_negative<T>>>>
   : std::true_type {
 };
 template <typename T>
@@ -326,7 +319,7 @@ struct not_impl : std::false_type {
   static_assert(sizeof(T) == -1, "T fails to model the not concept.");
 };
 template <typename T>
-struct not_impl<T, std::enable_if_t<std::disjunction_v<traits::is_not_t<T>, traits::is_nothrow_not_t<T>>>>
+struct not_impl<T, std::enable_if_t<std::disjunction_v<traits::is_not<T>, traits::is_nothrow_not<T>>>>
   : std::true_type {
 };
 template <typename T>
@@ -342,7 +335,7 @@ struct plus_impl : std::false_type {
   static_assert(sizeof(T) == -1, "T fails to model the plus concept.");
 };
 template <typename T, typename U>
-struct plus_impl<T, U, std::enable_if_t<std::disjunction_v<traits::is_plus_t<T, U>, traits::is_nothrow_plus_t<T, U>>>>
+struct plus_impl<T, U, std::enable_if_t<std::disjunction_v<traits::is_plus<T, U>, traits::is_nothrow_plus<T, U>>>>
   : std::true_type {
 };
 template <typename T, typename U = T>
@@ -358,7 +351,7 @@ struct less_impl : std::false_type {
   static_assert(sizeof(T) == -1, "T fails to model the less concept.");
 };
 template <typename T, typename U>
-struct less_impl<T, U, std::enable_if_t<std::disjunction_v<traits::is_less_t<T, U>, traits::is_nothrow_less_t<T, U>>>>
+struct less_impl<T, U, std::enable_if_t<std::disjunction_v<traits::is_less<T, U>, traits::is_nothrow_less<T, U>>>>
   : std::true_type {
 };
 template <typename T, typename U = T>
@@ -374,7 +367,7 @@ struct mult_impl : std::false_type {
   static_assert(sizeof(T) == -1, "T fails to model the mult concept.");
 };
 template <typename T, typename U>
-struct mult_impl<T, U, std::enable_if_t<std::disjunction_v<traits::is_mult_t<T, U>, traits::is_nothrow_mult_t<T, U>>>>
+struct mult_impl<T, U, std::enable_if_t<std::disjunction_v<traits::is_mult<T, U>, traits::is_nothrow_mult<T, U>>>>
   : std::true_type {
 };
 template <typename T, typename U = T>
@@ -390,7 +383,7 @@ struct div_impl : std::false_type {
   static_assert(sizeof(T) == -1, "T fails to model the div concept.");
 };
 template <typename T, typename U>
-struct div_impl<T, U, std::enable_if_t<std::disjunction_v<traits::is_div_t<T, U>, traits::is_nothrow_div_t<T, U>>>>
+struct div_impl<T, U, std::enable_if_t<std::disjunction_v<traits::is_div<T, U>, traits::is_nothrow_div<T, U>>>>
   : std::true_type {
 };
 template <typename T, typename U>
@@ -406,7 +399,7 @@ struct mod_impl : std::false_type {
   static_assert(sizeof(T) == -1, "T fails to model the mod concept.");
 };
 template <typename T, typename U>
-struct mod_impl<T, U, std::enable_if_t<std::disjunction_v<traits::is_mod_t<T, U>, traits::is_nothrow_mod_t<T, U>>>>
+struct mod_impl<T, U, std::enable_if_t<std::disjunction_v<traits::is_mod<T, U>, traits::is_nothrow_mod<T, U>>>>
   : std::true_type {
 };
 template <typename T, typename U = T>
@@ -422,7 +415,7 @@ struct and_impl : std::false_type {
   static_assert(sizeof(T) == -1, "T fails to model the and concept.");
 };
 template <typename T, typename U>
-struct and_impl<T, U, std::enable_if_t<std::disjunction_v<traits::is_and_t<T, U>, traits::is_nothrow_and_t<T, U>>>>
+struct and_impl<T, U, std::enable_if_t<std::disjunction_v<traits::is_and<T, U>, traits::is_nothrow_and<T, U>>>>
   : std::true_type {
 };
 template <typename T, typename U = T>
@@ -438,7 +431,7 @@ struct or_impl : std::false_type {
   static_assert(sizeof(T) == -1, "T fails to model the or concept.");
 };
 template <typename T, typename U>
-struct or_impl<T, U, std::enable_if_t<std::disjunction_v<traits::is_or_t<T, U>, traits::is_nothrow_or_t<T, U>>>>
+struct or_impl<T, U, std::enable_if_t<std::disjunction_v<traits::is_or<T, U>, traits::is_nothrow_or<T, U>>>>
   : std::true_type {
 };
 template <typename T, typename U = T>
@@ -454,7 +447,7 @@ struct xor_impl : std::false_type {
   static_assert(sizeof(T) == -1, "T fails to model the xor concept.");
 };
 template <typename T, typename U>
-struct xor_impl<T, U, std::enable_if_t<std::disjunction_v<traits::is_xor_t<T, U>, traits::is_nothrow_xor_t<T, U>>>>
+struct xor_impl<T, U, std::enable_if_t<std::disjunction_v<traits::is_xor<T, U>, traits::is_nothrow_xor<T, U>>>>
   : std::true_type {
 };
 template <typename T, typename U = T>
@@ -470,8 +463,7 @@ struct lshift_impl : std::false_type {
   static_assert(sizeof(T) == -1, "T fails to model the lshift concept.");
 };
 template <typename T, typename U>
-struct lshift_impl<T, U,
-                   std::enable_if_t<std::disjunction_v<traits::is_lshift_t<T, U>, traits::is_nothrow_lshift_t<T, U>>>>
+struct lshift_impl<T, U, std::enable_if_t<std::disjunction_v<traits::is_lshift<T, U>, traits::is_nothrow_lshift<T, U>>>>
   : std::true_type {
 };
 template <typename T, typename U = T>
@@ -487,8 +479,7 @@ struct rshift_impl : std::false_type {
   static_assert(sizeof(T) == -1, "T fails to model the rshift concept.");
 };
 template <typename T, typename U>
-struct rshift_impl<T, U,
-                   std::enable_if_t<std::disjunction_v<traits::is_rshift_t<T, U>, traits::is_nothrow_rshift_t<T, U>>>>
+struct rshift_impl<T, U, std::enable_if_t<std::disjunction_v<traits::is_rshift<T, U>, traits::is_nothrow_rshift<T, U>>>>
   : std::true_type {
 };
 template <typename T, typename U = T>
@@ -508,7 +499,7 @@ struct pre_incrementable_impl : std::false_type {
 };
 template <typename T>
 struct pre_incrementable_impl<
-  T, std::enable_if_t<std::disjunction_v<traits::is_pre_incrementable_t<T>, traits::is_nothrow_pre_incrementable_t<T>>>>
+  T, std::enable_if_t<std::disjunction_v<traits::is_pre_incrementable<T>, traits::is_nothrow_pre_incrementable<T>>>>
   : std::true_type {
 };
 template <typename T>
@@ -525,8 +516,7 @@ struct post_incrementable_impl : std::false_type {
 };
 template <typename T>
 struct post_incrementable_impl<
-  T,
-  std::enable_if_t<std::disjunction_v<traits::is_post_incrementable_t<T>, traits::is_nothrow_post_incrementable_t<T>>>>
+  T, std::enable_if_t<std::disjunction_v<traits::is_post_incrementable<T>, traits::is_nothrow_post_incrementable<T>>>>
   : std::true_type {
 };
 template <typename T>
@@ -543,7 +533,7 @@ struct pre_decrementable_impl : std::false_type {
 };
 template <typename T>
 struct pre_decrementable_impl<
-  T, std::enable_if_t<std::disjunction_v<traits::is_pre_decrementable_t<T>, traits::is_nothrow_pre_decrementable_t<T>>>>
+  T, std::enable_if_t<std::disjunction_v<traits::is_pre_decrementable<T>, traits::is_nothrow_pre_decrementable<T>>>>
   : std::true_type {
 };
 template <typename T>
@@ -560,8 +550,7 @@ struct post_decrementable_impl : std::false_type {
 };
 template <typename T>
 struct post_decrementable_impl<
-  T,
-  std::enable_if_t<std::disjunction_v<traits::is_post_decrementable_t<T>, traits::is_nothrow_post_decrementable_t<T>>>>
+  T, std::enable_if_t<std::disjunction_v<traits::is_post_decrementable<T>, traits::is_nothrow_post_decrementable<T>>>>
   : std::true_type {
 };
 template <typename T>
@@ -580,8 +569,8 @@ struct equality_impl : std::false_type {
   static_assert(sizeof(T) == -1, "T fails to model the equality concept.");
 };
 template <typename T, typename U>
-struct equality_impl<
-  T, U, std::enable_if_t<std::disjunction_v<traits::is_equality_t<T, U>, traits::is_nothrow_equality_t<T, U>>>>
+struct equality_impl<T, U,
+                     std::enable_if_t<std::disjunction_v<traits::is_equality<T, U>, traits::is_nothrow_equality<T, U>>>>
   : std::true_type {
 };
 template <typename T, typename U = T>
@@ -598,7 +587,7 @@ struct inequality_impl : std::false_type {
 };
 template <typename T, typename U>
 struct inequality_impl<
-  T, U, std::enable_if_t<std::disjunction_v<traits::is_inequality_t<T, U>, traits::is_nothrow_inequality_t<T, U>>>>
+  T, U, std::enable_if_t<std::disjunction_v<traits::is_inequality<T, U>, traits::is_nothrow_inequality<T, U>>>>
   : std::true_type {
 };
 template <typename T, typename U = T>
@@ -615,7 +604,7 @@ struct less_than_impl : std::false_type {
 };
 template <typename T, typename U>
 struct less_than_impl<
-  T, U, std::enable_if_t<std::disjunction_v<traits::is_less_than_t<T, U>, traits::is_nothrow_less_than_t<T, U>>>>
+  T, U, std::enable_if_t<std::disjunction_v<traits::is_less_than<T, U>, traits::is_nothrow_less_than<T, U>>>>
   : std::true_type {
 };
 template <typename T, typename U = T>
@@ -633,7 +622,7 @@ struct less_equal_than_impl : std::false_type {
 template <typename T, typename U>
 struct less_equal_than_impl<
   T, U,
-  std::enable_if_t<std::disjunction_v<traits::is_less_equal_than_t<T, U>, traits::is_nothrow_less_equal_than_t<T, U>>>>
+  std::enable_if_t<std::disjunction_v<traits::is_less_equal_than<T, U>, traits::is_nothrow_less_equal_than<T, U>>>>
   : std::true_type {
 };
 template <typename T, typename U = T>
@@ -650,7 +639,7 @@ struct greater_than_impl : std::false_type {
 };
 template <typename T, typename U>
 struct greater_than_impl<
-  T, U, std::enable_if_t<std::disjunction_v<traits::is_greater_than_t<T, U>, traits::is_nothrow_greater_than_t<T, U>>>>
+  T, U, std::enable_if_t<std::disjunction_v<traits::is_greater_than<T, U>, traits::is_nothrow_greater_than<T, U>>>>
   : std::true_type {
 };
 template <typename T, typename U = T>
@@ -667,8 +656,8 @@ struct greater_equal_than_impl : std::false_type {
 };
 template <typename T, typename U>
 struct greater_equal_than_impl<T, U,
-                               std::enable_if_t<std::disjunction_v<traits::is_greater_equal_than_t<T, U>,
-                                                                   traits::is_nothrow_greater_equal_than_t<T, U>>>>
+                               std::enable_if_t<std::disjunction_v<traits::is_greater_equal_than<T, U>,
+                                                                   traits::is_nothrow_greater_equal_than<T, U>>>>
   : std::true_type {
 };
 template <typename T, typename U = T>
@@ -681,23 +670,47 @@ constexpr bool greater_equal_than_v = greater_equal_than<T, U>::value;
 
 // other
 
-// function_call
-template <typename T, typename ArgList, typename = void>
-struct function_call_impl : std::false_type {
-  static_assert(sizeof(T) == -1, "T fails to model the function call concept.");
+// invocable
+template <typename T, typename... Args>
+struct Holder {
 };
-template <typename T, template <class...> class ArgList, typename... Args>
-struct function_call_impl<T, ArgList<Args...>,
-                          std::enable_if_t<std::disjunction_v<traits::is_function_call_t<T, Args...>,
-                                                              traits::is_nothrow_function_call_t<T, Args...>>>>
+template <typename Holder, typename = void>
+struct invocable_impl : std::false_type {
+  static_assert(sizeof(Holder) == -1, "T fails to model the invocable concept.");
+};
+template <template <class T, class... Args> class Holder, typename T, typename... Args>
+struct invocable_impl<
+  Holder<T, Args...>,
+  std::enable_if_t<std::disjunction_v<traits::is_invocable<T, Args...>, traits::is_nothrow_invocable<T, Args...>>>>
   : std::true_type {
 };
 template <typename T, typename... Args>
-using function_call = function_call_impl<T, std::void_t<Args...>>;
+using invocable = invocable_impl<Holder<T, Args...>>;
 template <typename T, typename... Args>
-using function_call_t = typename function_call<T, Args...>::type;
+using invocable_t = typename invocable<T, Args...>::type;
 template <typename T, typename... Args>
-constexpr bool function_call_v = function_call<T, Args...>::value;
+constexpr bool invocable_v = invocable<T, Args...>::value;
+
+// invocable r
+template <typename R, typename T, typename... Args>
+struct HolderR {
+};
+template <typename Holder, typename = void>
+struct invocable_r_impl : std::false_type {
+  static_assert(sizeof(Holder) == -1, "T fails to model the invocable r concept.");
+};
+template <template <class R, class T, class... Args> class Holder, typename R, typename T, typename... Args>
+struct invocable_r_impl<Holder<R, T, Args...>,
+                        std::enable_if_t<std::disjunction_v<traits::is_invocable_r<R, T, Args...>,
+                                                            traits::is_nothrow_invocable_r<R, T, Args...>>>>
+  : std::true_type {
+};
+template <typename R, typename T, typename... Args>
+using invocable_r = invocable_impl<Holder<R, T, Args...>>;
+template <typename R, typename T, typename... Args>
+using invocable_r_t = typename invocable_r<R, T, Args...>::type;
+template <typename R, typename T, typename... Args>
+constexpr bool invocable_r_v = invocable_r<R, T, Args...>::value;
 
 }}} // namespace concepts::utility::details
 

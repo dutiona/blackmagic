@@ -5,7 +5,7 @@
 
 #include "details/traits_impl.hpp"
 
-#include <tuple>
+#include <functional>
 #include <type_traits>
 
 namespace traits { namespace utility {
@@ -598,20 +598,36 @@ constexpr bool is_nothrow_greater_equal_than_v = is_nothrow_greater_equal_than<T
 
 // other
 
-// is_function_call : f(args...)
+// is_invocable : f(args...)
 template <typename T, typename... Args>
-using is_function_call = details::is_function_call_impl<T, std::void_t<Args...>>;
+using is_invocable = std::is_invocable<T, Args...>;
 template <typename T, typename... Args>
-using is_function_call_t = typename is_function_call<T, Args...>::type;
+using is_invocable_t = typename is_invocable<T, Args...>::type;
 template <typename T, typename... Args>
-constexpr bool is_function_call_v = is_function_call<T, Args...>::value;
-// is_nothrow_function_call
+constexpr bool is_invocable_v = is_invocable<T, Args...>::value;
+// is_nothrow_invocable
 template <typename T, typename... Args>
-using is_nothrow_function_call = details::is_nothrow_function_call_impl<T, std::void_t<Args...>>;
+using is_nothrow_invocable = std::is_nothrow_invocable<T, Args...>;
 template <typename T, typename... Args>
-using is_nothrow_function_call_t = typename is_nothrow_function_call<T, Args...>::type;
+using is_nothrow_invocable_t = typename is_nothrow_invocable<T, Args...>::type;
 template <typename T, typename... Args>
-constexpr bool is_nothrow_function_call_v = is_nothrow_function_call<T, Args...>::value;
+constexpr bool is_nothrow_invocable_v = is_nothrow_invocable<T, Args...>::value;
+
+// is_invocable_r : r f(args...)
+template <typename R, typename T, typename... Args>
+using is_invocable_r = std::is_invocable_r<R, T, Args...>;
+template <typename R, typename T, typename... Args>
+using is_invocable_r_t = typename is_invocable_r<R, T, Args...>::type;
+template <typename R, typename T, typename... Args>
+constexpr bool is_invocable_r_v = is_invocable_r<R, T, Args...>::value;
+// is_nothrow_invocable_r : r f(args...)
+template <typename R, typename T, typename... Args>
+using is_nothrow_invocable_r = std::is_nothrow_invocable_r<R, T, Args...>;
+template <typename R, typename T, typename... Args>
+using is_nothrow_invocable_r_t = typename is_nothrow_invocable_r<R, T, Args...>::type;
+template <typename R, typename T, typename... Args>
+constexpr bool is_nothrow_invocable_r_v = is_nothrow_invocable_r<R, T, Args...>::value;
+
 
 }} // namespace traits::utility
 

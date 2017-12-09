@@ -43,18 +43,18 @@ constexpr bool trivial_v = trivial<T>::value;
 
 // standard layout
 template <typename T, typename = void>
-struct trivial_impl : std::false_type {
-  static_assert(sizeof(T) == -1, "T fails to model the trivial concept.");
+struct standard_layout_impl : std::false_type {
+  static_assert(sizeof(T) == -1, "T fails to model the standard layout concept.");
 };
 template <typename T>
-struct trivial_impl<T, std::enable_if_t<traits::is_trivial_v<T>>> : std::true_type {
+struct standard_layout_impl<T, std::enable_if_t<traits::standard_layout_impl_v<T>>> : std::true_type {
 };
 template <typename T>
-using trivial = trivial_impl<T>;
+using standard_layout = standard_layout_impl<T>;
 template <typename T>
-using trivial_t = typename trivial<T>::type;
+using standard_layout_t = typename standard_layout<T>::type;
 template <typename T>
-constexpr bool trivial_v = trivial<T>::value;
+constexpr bool standard_layout_v = standard_layout<T>::value;
 
 // pod
 template <typename T, typename = void>

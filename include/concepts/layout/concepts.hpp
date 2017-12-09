@@ -1,7 +1,7 @@
 #pragma once
 
-#ifndef CONCEPTS_LAYOUT_HPP_
-#define CONCEPTS_LAYOUT_HPP_
+#ifndef CONCEPTS_LAYOUT_CONCEPTS_HPP_
+#define CONCEPTS_LAYOUT_CONCEPTS_HPP_
 /**
  *
  *
@@ -18,7 +18,7 @@
 
 #include "details/concepts_impl.hpp"
 
-namespace concepts {
+namespace concepts { namespace layout {
 
 // trivially copyable
 template <typename T>
@@ -35,6 +35,7 @@ constexpr bool standard_layout = details::standard_layout_v<T>;
 // POD
 template <typename T>
 constexpr bool pod = details::pod_v<T>;
-} // namespace concepts
 
-#endif // CONCEPTS_LAYOUT_HPP_
+}} // namespace concepts::layout
+
+#endif // CONCEPTS_LAYOUT_CONCEPTS_HPP_

@@ -635,27 +635,6 @@ struct is_nothrow_greater_equal_than_impl<T, U, Valid,
   : is_greater_equal_than_impl<T, U, Valid> {
 };
 
-
-// other
-
-// is_function_call
-template <typename T, typename ArgList, typename = void>
-struct is_function_call_impl : std::false_type {
-};
-template <typename T, template <class...> class ArgList, typename... Args>
-struct is_function_call_impl<T, ArgList<Args...>, std::void_t<decltype(std::declval<T>()(std::declval<Args>()...))>>
-  : std::true_type {
-};
-// is_nothrow_function_call
-template <typename T, typename ArgList, typename Valid = void, typename = void>
-struct is_nothrow_function_call_impl : std::false_type {
-};
-template <typename T, template <class...> class ArgList, typename Valid, typename... Args>
-struct is_nothrow_function_call_impl<T, ArgList<Args...>, Valid,
-                                     std::enable_if_t<noexcept(std::declval<T>()(std::declval<Args>()...))>>
-  : is_function_call_impl<T, ArgList<Args...>, Valid> {
-};
-
 }}} // namespace traits::utility::details
 
 
