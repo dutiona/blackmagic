@@ -672,7 +672,7 @@ constexpr bool greater_equal_than_v = greater_equal_than<T, U>::value;
 
 // invocable
 template <typename T, typename... Args>
-struct Holder {
+struct _holder {
 };
 template <typename Holder, typename = void>
 struct invocable_impl : std::false_type {
@@ -685,7 +685,7 @@ struct invocable_impl<
   : std::true_type {
 };
 template <typename T, typename... Args>
-using invocable = invocable_impl<Holder<T, Args...>>;
+using invocable = invocable_impl<_holder<T, Args...>>;
 template <typename T, typename... Args>
 using invocable_t = typename invocable<T, Args...>::type;
 template <typename T, typename... Args>
@@ -693,7 +693,7 @@ constexpr bool invocable_v = invocable<T, Args...>::value;
 
 // invocable r
 template <typename R, typename T, typename... Args>
-struct HolderR {
+struct _holder_r {
 };
 template <typename Holder, typename = void>
 struct invocable_r_impl : std::false_type {
@@ -706,7 +706,7 @@ struct invocable_r_impl<Holder<R, T, Args...>,
   : std::true_type {
 };
 template <typename R, typename T, typename... Args>
-using invocable_r = invocable_impl<Holder<R, T, Args...>>;
+using invocable_r = invocable_impl<_holder_r<R, T, Args...>>;
 template <typename R, typename T, typename... Args>
 using invocable_r_t = typename invocable_r<R, T, Args...>::type;
 template <typename R, typename T, typename... Args>
