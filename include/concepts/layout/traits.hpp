@@ -31,14 +31,6 @@ using is_standard_layout_t = typename is_standard_layout<T>::type;
 template <typename T>
 constexpr bool is_standard_layout_v = is_standard_layout<T>::value;
 
-// POD type
-template <typename T>
-using is_pod = std::is_pod<T>;
-template <typename T>
-using is_pod_t = typename is_pod<T>::type;
-template <typename T>
-constexpr bool is_pod_v = is_pod<T>::value;
-
 }} // namespace traits::layout
 
 #endif // CONCEPTS_LAYOUT_TRAITS_HPP_

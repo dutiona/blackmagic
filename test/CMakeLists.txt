@@ -10,6 +10,10 @@ macro(add_unit_test Executable Source)
     target_include_directories(test_${Executable} PRIVATE ${CMAKE_CURRENT_SOURCE_DIR})
     target_include_directories(test_${Executable} PRIVATE ${GTEST_INCLUDE_DIRS})
     
+    if(UNIX)
+        target_compile_options(test_${Executable} PRIVATE -Wno-unused-private-field)
+    endif(UNIX)
+    
     if (WIN32)
         target_link_libraries(test_${Executable} PRIVATE ${GTEST_BOTH_LIBRARIES})
     else (WIN32)

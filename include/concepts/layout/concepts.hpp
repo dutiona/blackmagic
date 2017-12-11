@@ -32,10 +32,6 @@ constexpr bool trivial = details::trivial_v<T>;
 template <typename T>
 constexpr bool standard_layout = details::standard_layout_v<T>;
 
-// POD
-template <typename T>
-constexpr bool pod = details::pod_v<T>;
-
 }} // namespace concepts::layout
 
 #endif // CONCEPTS_LAYOUT_CONCEPTS_HPP_

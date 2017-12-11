@@ -47,7 +47,7 @@ struct standard_layout_impl : std::false_type {
   static_assert(sizeof(T) == -1, "T fails to model the standard layout concept.");
 };
 template <typename T>
-struct standard_layout_impl<T, std::enable_if_t<traits::standard_layout_impl_v<T>>> : std::true_type {
+struct standard_layout_impl<T, std::enable_if_t<traits::is_standard_layout_v<T>>> : std::true_type {
 };
 template <typename T>
 using standard_layout = standard_layout_impl<T>;
@@ -55,21 +55,6 @@ template <typename T>
 using standard_layout_t = typename standard_layout<T>::type;
 template <typename T>
 constexpr bool standard_layout_v = standard_layout<T>::value;
-
-// pod
-template <typename T, typename = void>
-struct pod_impl : std::false_type {
-  static_assert(sizeof(T) == -1, "T fails to model the POD concept.");
-};
-template <typename T>
-struct pod_impl<T, std::enable_if_t<traits::is_pod_v<T>>> : std::true_type {
-};
-template <typename T>
-using pod = pod_impl<T>;
-template <typename T>
-using pod_t = typename pod<T>::type;
-template <typename T>
-constexpr bool pod_v = pod<T>::value;
 
 }}} // namespace concepts::layout::details
 
