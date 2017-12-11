@@ -3,6 +3,7 @@
 #ifndef CONCEPTS_HELPERS_HPP_
 #define CONCEPTS_HELPERS_HPP_
 
+#include <functional>
 #include <type_traits>
 #include <utility>
 
@@ -16,6 +17,7 @@ struct nonesuch {
   nonesuch(nonesuch const&) = delete;
   void operator=(nonesuch const&) = delete;
 };
+
 
 // is_detected
 
@@ -61,6 +63,27 @@ using is_detected_convertible = std::is_convertible<detected_t<Op, Args...>, To>
 
 template <class To, template <class...> class Op, class... Args>
 constexpr bool is_detected_convertible_v = is_detected_convertible<To, Op, Args...>::value;
+
+
+// invoke_result
+
+namespace details {
+
+template <typename AlwaysVoid, typename, typename...>
+struct invoke_result {
+};
+template <typename F, typename... Args>
+struct invoke_result<decltype(void(std::invoke(std::declval<F>(), std::declval<Args>()...))), F, Args...> {
+  using type = decltype(std::invoke(std::declval<F>(), std::declval<Args>()...));
+};
+
+} // namespace details
+
+template <typename F, typename... Args>
+struct invoke_result : details::invoke_result<void, F, Args...> {
+};
+template <typename F, typename... Args>
+using invoke_result_t = typename invoke_result<F, Args...>::type;
 
 }} // namespace concepts::helpers
 
