@@ -13,17 +13,22 @@
 #include "basic/concepts.hpp"
 #include "basic/traits.hpp"
 
+#include "layout/concepts.hpp"
+#include "layout/traits.hpp"
+
 #include "utility/concepts.hpp"
 #include "utility/traits.hpp"
 
 namespace concepts {
 using namespace concepts::basic;
 using namespace concepts::utility;
+using namespace concepts::layout;
 } // namespace concepts
 
 namespace traits {
 using namespace traits::basic;
 using namespace traits::utility;
+using namespace traits::layout;
 } // namespace traits
 
 #endif // CONCEPTS_HPP_
