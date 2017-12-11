@@ -176,12 +176,12 @@ constexpr bool greater_equal_than = details::greater_equal_than_v<T, U>;
 // other
 
 // invocable
-template <typename T, typename... Args>
-constexpr bool invocable = details::invocable_v<T, Args...>;
+template <typename F, typename... Args>
+constexpr bool invocable = details::invocable_v<F, Args...>;
 
 // invocable r
-template <typename R, typename T, typename... Args>
-constexpr bool invocable_r = details::invocable_r_v<R, T, Args...>;
+template <typename R, typename F, typename... Args>
+constexpr bool invocable_r = details::invocable_r_v<R, F, Args...>;
 
 }} // namespace concepts::utility
 

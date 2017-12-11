@@ -3,6 +3,9 @@
 #ifndef CONCEPTS_UTILIY_DETAILS_TRAITS_IMPL_HPP_
 #define CONCEPTS_UTILIY_DETAILS_TRAITS_IMPL_HPP_
 
+#include <concepts/helpers.hpp>
+
+#include <functional>
 #include <type_traits>
 #include <utility>
 
@@ -634,6 +637,50 @@ struct is_nothrow_greater_equal_than_impl<T, U, Valid,
                                           std::enable_if_t<noexcept(std::declval<T>() >= std::declval<U>())>>
   : is_greater_equal_than_impl<T, U, Valid> {
 };
+
+
+// other
+
+// is_invocable
+template <typename Holder, typename = void>
+struct is_invocable_impl : std::false_type {
+};
+template <template <class F, class... Args> class Holder, typename F, typename... Args>
+struct is_invocable_impl<Holder<F, Args...>,
+                         std::void_t<decltype(std::invoke(std::declval<F>(), std::declval<Args>()...))>>
+  : std::true_type {
+};
+// is_nothrow_invocable
+template <typename Holder, typename Valid = void, typename = void>
+struct is_nothrow_invocable_impl : std::false_type {
+};
+template <template <class F, class... Args> class Holder, typename Valid, typename F, typename... Args>
+struct is_nothrow_invocable_impl<Holder<F, Args...>, Valid,
+                                 std::enable_if_t<noexcept(std::invoke(std::declval<F>(), std::declval<Args>()...))>>
+  : is_invocable_impl<Holder<F, Args...>, Valid> {
+};
+
+// is_invocable_r
+template <typename Holder, typename Valid = void, typename = void>
+struct is_invocable_r_impl : std::false_type {
+};
+template <template <class R, class F, class... Args> class Holder, typename Valid, typename R, typename F,
+          typename... Args>
+struct is_invocable_r_impl<Holder<R, F, Args...>, Valid,
+                           std::enable_if_t<std::is_same_v<R, concepts::helpers::invoke_result_t<F, Args...>>>>
+  : is_invocable_impl<Holder<F, Args...>, Valid> {
+};
+// is_nothrow_invocable_r
+template <typename Holder, typename Valid = void, typename = void>
+struct is_nothrow_invocable_r_impl : std::false_type {
+};
+template <template <class R, class F, class... Args> class Holder, typename Valid, typename R, typename F,
+          typename... Args>
+struct is_nothrow_invocable_r_impl<Holder<R, F, Args...>, Valid,
+                                   std::enable_if_t<std::is_same_v<R, concepts::helpers::invoke_result_t<F, Args...>>>>
+  : is_nothrow_invocable_impl<Holder<F, Args...>, Valid> {
+};
+
 
 }}} // namespace traits::utility::details
 

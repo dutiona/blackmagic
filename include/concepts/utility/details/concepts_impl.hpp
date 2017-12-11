@@ -671,46 +671,42 @@ constexpr bool greater_equal_than_v = greater_equal_than<T, U>::value;
 // other
 
 // invocable
-template <typename T, typename... Args>
-struct _holder {
-};
 template <typename Holder, typename = void>
 struct invocable_impl : std::false_type {
-  static_assert(sizeof(Holder) == -1, "T fails to model the invocable concept.");
+  static_assert(sizeof(Holder) == -1, "Holder<F, Args...> fails to model the invocable concept.");
 };
-template <template <class T, class... Args> class Holder, typename T, typename... Args>
+template <template <class F, class... Args> class Holder, typename F, typename... Args>
 struct invocable_impl<
-  Holder<T, Args...>,
-  std::enable_if_t<std::disjunction_v<traits::is_invocable<T, Args...>, traits::is_nothrow_invocable<T, Args...>>>>
+  Holder<F, Args...>,
+  std::enable_if_t<std::disjunction_v<traits::is_invocable<F, Args...>, traits::is_nothrow_invocable<F, Args...>>>>
   : std::true_type {
 };
-template <typename T, typename... Args>
-using invocable = invocable_impl<_holder<T, Args...>>;
-template <typename T, typename... Args>
-using invocable_t = typename invocable<T, Args...>::type;
-template <typename T, typename... Args>
-constexpr bool invocable_v = invocable<T, Args...>::value;
+template <typename F, typename... Args>
+using invocable = invocable_impl<traits::_holder<F, Args...>>;
+template <typename F, typename... Args>
+using invocable_t = typename invocable<F, Args...>::type;
+template <typename F, typename... Args>
+constexpr bool invocable_v = invocable<F, Args...>::value;
+
 
 // invocable r
-template <typename R, typename T, typename... Args>
-struct _holder_r {
-};
 template <typename Holder, typename = void>
 struct invocable_r_impl : std::false_type {
-  static_assert(sizeof(Holder) == -1, "T fails to model the invocable r concept.");
+  static_assert(sizeof(Holder) == -1, "Holder<R, F, Args...> fails to model the invocable r concept.");
 };
-template <template <class R, class T, class... Args> class Holder, typename R, typename T, typename... Args>
-struct invocable_r_impl<Holder<R, T, Args...>,
-                        std::enable_if_t<std::disjunction_v<traits::is_invocable_r<R, T, Args...>,
-                                                            traits::is_nothrow_invocable_r<R, T, Args...>>>>
+template <template <class R, class F, class... Args> class Holder, typename R, typename F, typename... Args>
+struct invocable_r_impl<Holder<R, F, Args...>,
+                        std::enable_if_t<std::disjunction_v<traits::is_invocable_r<R, F, Args...>,
+                                                            traits::is_nothrow_invocable_r<R, F, Args...>>>>
   : std::true_type {
 };
-template <typename R, typename T, typename... Args>
-using invocable_r = invocable_impl<_holder_r<R, T, Args...>>;
-template <typename R, typename T, typename... Args>
-using invocable_r_t = typename invocable_r<R, T, Args...>::type;
-template <typename R, typename T, typename... Args>
-constexpr bool invocable_r_v = invocable_r<R, T, Args...>::value;
+template <typename R, typename F, typename... Args>
+using invocable_r = invocable_impl<traits::_holder_r<R, F, Args...>>;
+template <typename R, typename F, typename... Args>
+using invocable_r_t = typename invocable_r<R, F, Args...>::type;
+template <typename R, typename F, typename... Args>
+constexpr bool invocable_r_v = invocable_r<R, F, Args...>::value;
+
 
 }}} // namespace concepts::utility::details
 

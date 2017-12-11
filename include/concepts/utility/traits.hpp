@@ -600,33 +600,40 @@ constexpr bool is_nothrow_greater_equal_than_v = is_nothrow_greater_equal_than<T
 
 // is_invocable : f(args...)
 template <typename T, typename... Args>
-using is_invocable = std::is_invocable<T, Args...>;
+struct _holder {
+};
+template <typename T, typename... Args>
+using is_invocable = details::is_invocable_impl<_holder<T, Args...>>;
 template <typename T, typename... Args>
 using is_invocable_t = typename is_invocable<T, Args...>::type;
 template <typename T, typename... Args>
 constexpr bool is_invocable_v = is_invocable<T, Args...>::value;
 // is_nothrow_invocable
 template <typename T, typename... Args>
-using is_nothrow_invocable = std::is_nothrow_invocable<T, Args...>;
+using is_nothrow_invocable = details::is_nothrow_invocable_impl<_holder<T, Args...>>;
 template <typename T, typename... Args>
 using is_nothrow_invocable_t = typename is_nothrow_invocable<T, Args...>::type;
 template <typename T, typename... Args>
 constexpr bool is_nothrow_invocable_v = is_nothrow_invocable<T, Args...>::value;
 
+
 // is_invocable_r : r f(args...)
-template <typename R, typename T, typename... Args>
-using is_invocable_r = std::is_invocable_r<R, T, Args...>;
-template <typename R, typename T, typename... Args>
-using is_invocable_r_t = typename is_invocable_r<R, T, Args...>::type;
-template <typename R, typename T, typename... Args>
-constexpr bool is_invocable_r_v = is_invocable_r<R, T, Args...>::value;
+template <typename R, typename F, typename... Args>
+struct _holder_r {
+};
+template <typename R, typename F, typename... Args>
+using is_invocable_r = details::is_invocable_r_impl<_holder_r<R, F, Args...>>;
+template <typename R, typename F, typename... Args>
+using is_invocable_r_t = typename is_invocable_r<R, F, Args...>::type;
+template <typename R, typename F, typename... Args>
+constexpr bool is_invocable_r_v = is_invocable_r<R, F, Args...>::value;
 // is_nothrow_invocable_r : r f(args...)
-template <typename R, typename T, typename... Args>
-using is_nothrow_invocable_r = std::is_nothrow_invocable_r<R, T, Args...>;
-template <typename R, typename T, typename... Args>
-using is_nothrow_invocable_r_t = typename is_nothrow_invocable_r<R, T, Args...>::type;
-template <typename R, typename T, typename... Args>
-constexpr bool is_nothrow_invocable_r_v = is_nothrow_invocable_r<R, T, Args...>::value;
+template <typename R, typename F, typename... Args>
+using is_nothrow_invocable_r = details::is_nothrow_invocable_r_impl<_holder_r<R, F, Args...>>;
+template <typename R, typename F, typename... Args>
+using is_nothrow_invocable_r_t = typename is_nothrow_invocable_r<R, F, Args...>::type;
+template <typename R, typename F, typename... Args>
+constexpr bool is_nothrow_invocable_r_v = is_nothrow_invocable_r<R, F, Args...>::value;
 
 
 }} // namespace traits::utility
