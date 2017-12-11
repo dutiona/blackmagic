@@ -5,9 +5,6 @@
 
 #include "details/traits_impl.hpp"
 
-#include <functional>
-#include <type_traits>
-
 namespace traits { namespace utility {
 
 // validity

@@ -7,7 +7,6 @@
 
 #include <functional>
 #include <type_traits>
-#include <utility>
 
 namespace traits { namespace utility { namespace details {
 
