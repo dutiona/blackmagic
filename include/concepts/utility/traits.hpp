@@ -7,39 +7,22 @@
 
 namespace traits { namespace utility {
 
-// validity
-
-// is_valid
-template <typename T>
-using is_valid = details::is_valid_impl<T>;
-template <typename T>
-using is_valid_t = typename is_valid<T>::type;
-template <typename T>
-constexpr bool is_valid_v = is_valid<T>::value;
-// is_nothrow_valid
-template <typename T>
-using is_nothrow_valid = details::is_nothrow_valid_impl<T>;
-template <typename T>
-using is_nothrow_valid_t = typename is_nothrow_valid<T>::type;
-template <typename T>
-constexpr bool is_nothrow_valid_v = is_nothrow_valid<T>::value;
-
 // member access
 
-// is_dereferenceable : *a
+// is_indirection : *a
 template <typename T>
-using is_dereferenceable = details::is_dereferenceable_impl<T>;
+using is_indirection = details::is_indirection_impl<T>;
 template <typename T>
-using is_dereferenceable_t = typename is_dereferenceable<T>::type;
+using is_indirection_t = typename is_indirection<T>::type;
 template <typename T>
-constexpr bool is_dereferenceable_v = is_dereferenceable<T>::value;
-// is_nothrow_dereferenceable
+constexpr bool is_indirection_v = is_indirection<T>::value;
+// is_nothrow_indirection
 template <typename T>
-using is_nothrow_dereferenceable = details::is_nothrow_dereferenceable_impl<T>;
+using is_nothrow_indirection = details::is_nothrow_indirection_impl<T>;
 template <typename T>
-using is_nothrow_dereferenceable_t = typename is_nothrow_dereferenceable<T>::type;
+using is_nothrow_indirection_t = typename is_nothrow_indirection<T>::type;
 template <typename T>
-constexpr bool is_nothrow_dereferenceable_v = is_nothrow_dereferenceable<T>::value;
+constexpr bool is_nothrow_indirection_v = is_nothrow_indirection<T>::value;
 
 // is_address_of : &a
 template <typename T>
@@ -70,6 +53,36 @@ template <typename T, typename I>
 using is_nothrow_subscript_t = typename is_nothrow_subscript<T, I>::type;
 template <typename T, typename I>
 constexpr bool is_nothrow_subscript_v = is_nothrow_subscript<T, I>::value;
+
+// is_pointer_to_member_of_object : a.*b
+template <typename T, typename I>
+using is_pointer_to_member_of_object = details::is_pointer_to_member_of_object_impl<T, I>;
+template <typename T, typename I>
+using is_pointer_to_member_of_object_t = typename is_pointer_to_member_of_object<T, I>::type;
+template <typename T, typename I>
+constexpr bool is_pointer_to_member_of_object_v = is_pointer_to_member_of_object<T, I>::value;
+// is_nothrow_pointer_to_member_of_object
+template <typename T, typename I>
+using is_nothrow_pointer_to_member_of_object = details::is_nothrow_pointer_to_member_of_object_impl<T, I>;
+template <typename T, typename I>
+using is_nothrow_pointer_to_member_of_object_t = typename is_nothrow_pointer_to_member_of_object<T, I>::type;
+template <typename T, typename I>
+constexpr bool is_nothrow_pointer_to_member_of_object_v = is_nothrow_pointer_to_member_of_object<T, I>::value;
+
+// is_pointer_to_member_of_pointer : a->*b
+template <typename T, typename I>
+using is_pointer_to_member_of_pointer = details::is_pointer_to_member_of_pointer_impl<T, I>;
+template <typename T, typename I>
+using is_pointer_to_member_of_pointer_t = typename is_pointer_to_member_of_pointer<T, I>::type;
+template <typename T, typename I>
+constexpr bool is_pointer_to_member_of_pointer_v = is_pointer_to_member_of_pointer<T, I>::value;
+// is_nothrow_pointer_to_member_of_pointer
+template <typename T, typename I>
+using is_nothrow_pointer_to_member_of_pointer = details::is_nothrow_pointer_to_member_of_pointer_impl<T, I>;
+template <typename T, typename I>
+using is_nothrow_pointer_to_member_of_pointer_t = typename is_nothrow_pointer_to_member_of_pointer<T, I>::type;
+template <typename T, typename I>
+constexpr bool is_nothrow_pointer_to_member_of_pointer_v = is_nothrow_pointer_to_member_of_pointer<T, I>::value;
 
 
 // assignement
@@ -502,6 +515,7 @@ constexpr bool is_nothrow_post_decrementable_v = is_nothrow_post_decrementable<T
 
 
 // comparison
+
 // is_equality : a == b
 template <typename T, typename U = T>
 using is_equality = details::is_equality_impl<T, U>;
@@ -593,45 +607,115 @@ template <typename T, typename U = T>
 constexpr bool is_nothrow_greater_equal_than_v = is_nothrow_greater_equal_than<T, U>::value;
 
 
+// logical
+
+// is_logical_not
+template <typename T>
+using is_logical_not = details::is_logical_not_impl<T>;
+template <typename T>
+using is_logical_not_t = typename is_logical_not<T>::type;
+template <typename T>
+constexpr bool is_logical_not_v = is_logical_not<T>::value;
+// is_nothrow_logical_not
+template <typename T>
+using is_nothrow_logical_not = details::is_nothrow_logical_not_impl<T>;
+template <typename T>
+using is_nothrow_logical_not_t = typename is_nothrow_logical_not<T>::type;
+template <typename T>
+constexpr bool is_nothrow_logical_not_v = is_nothrow_logical_not<T>::value;
+
+// is_logical_and
+template <typename T, typename U = T>
+using is_logical_and = details::is_logical_and_impl<T, U>;
+template <typename T, typename U = T>
+using is_logical_and_t = typename is_logical_and<T, U>::type;
+template <typename T, typename U = T>
+constexpr bool is_logical_and_v = is_logical_and<T, U>::value;
+// is_nothrow_logical_and
+template <typename T, typename U = T>
+using is_nothrow_logical_and = details::is_nothrow_logical_and_impl<T, U>;
+template <typename T, typename U = T>
+using is_nothrow_logical_and_t = typename is_nothrow_logical_and<T, U>::type;
+template <typename T, typename U = T>
+constexpr bool is_nothrow_logical_and_v = is_nothrow_logical_and<T, U>::value;
+
+// is_logical_or
+template <typename T, typename U = T>
+using is_logical_or = details::is_logical_or_impl<T, U>;
+template <typename T, typename U = T>
+using is_logical_or_t = typename is_logical_or<T, U>::type;
+template <typename T, typename U = T>
+constexpr bool is_logical_or_v = is_logical_or<T, U>::value;
+// is_nothrow_logical_or
+template <typename T, typename U = T>
+using is_nothrow_logical_or = details::is_nothrow_logical_or_impl<T, U>;
+template <typename T, typename U = T>
+using is_nothrow_logical_or_t = typename is_nothrow_logical_or<T, U>::type;
+template <typename T, typename U = T>
+constexpr bool is_nothrow_logical_or_v = is_nothrow_logical_or<T, U>::value;
+
+
 // other
+
+// is_comma
+template <typename T, typename U = T>
+using is_comma = details::is_comma_impl<T, U>;
+template <typename T, typename U = T>
+using is_comma_t = typename is_comma<T, U>::type;
+template <typename T, typename U = T>
+constexpr bool is_comma_v = is_comma<T, U>::value;
+// is_nothrow_comma
+template <typename T, typename U = T>
+using is_nothrow_comma = details::is_nothrow_comma_impl<T, U>;
+template <typename T, typename U = T>
+using is_nothrow_comma_t = typename is_nothrow_comma<T, U>::type;
+template <typename T, typename U = T>
+constexpr bool is_nothrow_comma_v = is_nothrow_comma<T, U>::value;
+
+// is_ternary
+template <typename B, typename T, typename U = T>
+using is_ternary = details::is_ternary_impl<B, T, U>;
+template <typename B, typename T, typename U = T>
+using is_ternary_t = typename is_ternary<T, U>::type;
+template <typename B, typename T, typename U = T>
+constexpr bool is_ternary_v = is_ternary<T, U>::value;
+// is_nothrow_ternary
+template <typename B, typename T, typename U = T>
+using is_nothrow_ternary = details::is_nothrow_ternary_impl<B, T, U>;
+template <typename B, typename T, typename U = T>
+using is_nothrow_ternary_t = typename is_nothrow_ternary<T, U>::type;
+template <typename B, typename T, typename U = T>
+constexpr bool is_nothrow_ternary_v = is_nothrow_ternary<T, U>::value;
 
 // is_invocable : f(args...)
 template <typename T, typename... Args>
-struct _holder {
-};
-template <typename T, typename... Args>
-using is_invocable = details::is_invocable_impl<_holder<T, Args...>>;
+using is_invocable = details::is_invocable_impl<details::_holder<T, Args...>>;
 template <typename T, typename... Args>
 using is_invocable_t = typename is_invocable<T, Args...>::type;
 template <typename T, typename... Args>
 constexpr bool is_invocable_v = is_invocable<T, Args...>::value;
 // is_nothrow_invocable
 template <typename T, typename... Args>
-using is_nothrow_invocable = details::is_nothrow_invocable_impl<_holder<T, Args...>>;
+using is_nothrow_invocable = details::is_nothrow_invocable_impl<details::_holder<T, Args...>>;
 template <typename T, typename... Args>
 using is_nothrow_invocable_t = typename is_nothrow_invocable<T, Args...>::type;
 template <typename T, typename... Args>
 constexpr bool is_nothrow_invocable_v = is_nothrow_invocable<T, Args...>::value;
 
-
 // is_invocable_r : r f(args...)
 template <typename R, typename F, typename... Args>
-struct _holder_r {
-};
-template <typename R, typename F, typename... Args>
-using is_invocable_r = details::is_invocable_r_impl<_holder_r<R, F, Args...>>;
+using is_invocable_r = details::is_invocable_r_impl<details::_holder_r<R, F, Args...>>;
 template <typename R, typename F, typename... Args>
 using is_invocable_r_t = typename is_invocable_r<R, F, Args...>::type;
 template <typename R, typename F, typename... Args>
 constexpr bool is_invocable_r_v = is_invocable_r<R, F, Args...>::value;
 // is_nothrow_invocable_r : r f(args...)
 template <typename R, typename F, typename... Args>
-using is_nothrow_invocable_r = details::is_nothrow_invocable_r_impl<_holder_r<R, F, Args...>>;
+using is_nothrow_invocable_r = details::is_nothrow_invocable_r_impl<details::_holder_r<R, F, Args...>>;
 template <typename R, typename F, typename... Args>
 using is_nothrow_invocable_r_t = typename is_nothrow_invocable_r<R, F, Args...>::type;
 template <typename R, typename F, typename... Args>
 constexpr bool is_nothrow_invocable_r_v = is_nothrow_invocable_r<R, F, Args...>::value;
-
 
 }} // namespace traits::utility
 

@@ -21,13 +21,13 @@ struct nonesuch {
 // is_detected
 
 namespace details {
-template <class Default, class AlwaysVoid, template <class...> class Op, class... Args>
+template <typename Default, typename AlwaysVoid, template <typename...> typename Op, typename... Args>
 struct detector {
   using value_t = std::false_type;
   using type    = Default;
 };
 
-template <class Default, template <class...> class Op, class... Args>
+template <typename Default, template <typename...> typename Op, typename... Args>
 struct detector<Default, std::void_t<Op<Args...>>, Op, Args...> {
   // Note that std::void_t is a C++17 feature
   using value_t = std::true_type;
@@ -36,31 +36,31 @@ struct detector<Default, std::void_t<Op<Args...>>, Op, Args...> {
 
 } // namespace details
 
-template <template <class...> class Op, class... Args>
+template <template <typename...> typename Op, typename... Args>
 using is_detected = typename details::detector<nonesuch, void, Op, Args...>::value_t;
 
-template <template <class...> class Op, class... Args>
+template <template <typename...> typename Op, typename... Args>
 using detected_t = typename details::detector<nonesuch, void, Op, Args...>::type;
 
-template <class Default, template <class...> class Op, class... Args>
+template <typename Default, template <typename...> typename Op, typename... Args>
 using detected_or = details::detector<Default, void, Op, Args...>;
 
-template <template <class...> class Op, class... Args>
+template <template <typename...> typename Op, typename... Args>
 constexpr bool is_detected_v = is_detected<Op, Args...>::value;
 
-template <class Default, template <class...> class Op, class... Args>
+template <typename Default, template <typename...> typename Op, typename... Args>
 using detected_or_t = typename detected_or<Default, Op, Args...>::type;
 
-template <class Expected, template <class...> class Op, class... Args>
+template <typename Expected, template <typename...> typename Op, typename... Args>
 using is_detected_exact = std::is_same<Expected, detected_t<Op, Args...>>;
 
-template <class Expected, template <class...> class Op, class... Args>
+template <typename Expected, template <typename...> typename Op, typename... Args>
 constexpr bool is_detected_exact_v = is_detected_exact<Expected, Op, Args...>::value;
 
-template <class To, template <class...> class Op, class... Args>
+template <typename To, template <typename...> typename Op, typename... Args>
 using is_detected_convertible = std::is_convertible<detected_t<Op, Args...>, To>;
 
-template <class To, template <class...> class Op, class... Args>
+template <typename To, template <typename...> typename Op, typename... Args>
 constexpr bool is_detected_convertible_v = is_detected_convertible<To, Op, Args...>::value;
 
 
@@ -83,6 +83,18 @@ struct invoke_result : details::invoke_result<void, F, Args...> {
 };
 template <typename F, typename... Args>
 using invoke_result_t = typename invoke_result<F, Args...>::type;
+
+
+// dependent false
+template <typename... Args>
+struct dependent_false : std::false_type {
+  constexpr operator bool()
+  {
+    return std::false_type::value;
+  }
+};
+template <typename... Args>
+constexpr bool dependent_false_v = static_cast<bool>(dependent_false<Args...>{});
 
 }} // namespace concepts::helpers
 

@@ -20,6 +20,6 @@ option(WITH_EXAMPLES "Compile and run examples" OFF)
 
 if(WITH_EXAMPLES)
     
-    add_example(regular_type "regular_type.cpp")
+    add_example(empty "empty.cpp")
     
 endif(WITH_EXAMPLES)

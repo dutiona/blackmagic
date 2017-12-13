@@ -33,7 +33,6 @@ if(WITH_TESTS)
     add_unit_test(basic "basic.cpp")
     add_unit_test(layout "layout.cpp")
     add_unit_test(utility "utility.cpp")
-    add_unit_test(regular_type "regular_type.cpp")
 
 endif(WITH_TESTS)
 

@@ -23,7 +23,7 @@ option(WITH_BENCHMARK "Enable benchmark (requires google benchmark installed" OF
 if(WITH_BENCHMARK)
 
     find_package(benchmark REQUIRED)
-    add_benchmark(regular_type "regular_type.cpp")
+    add_benchmark(empty "empty.cpp")
 
 endif(WITH_BENCHMARK)
 

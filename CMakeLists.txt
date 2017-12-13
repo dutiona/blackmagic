@@ -26,7 +26,6 @@ else(MSVC)
     add_compile_options(-Wall -Wextra -Werror -pedantic -std=c++1z)
 endif(MSVC)
 
-install(FILES     include/concepts.hpp DESTINATION include)
 install(DIRECTORY include/concepts     DESTINATION include FILES_MATCHING PATTERN "*.hpp")
 
 add_subdirectory(example)

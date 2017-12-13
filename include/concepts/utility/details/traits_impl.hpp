@@ -3,47 +3,30 @@
 #ifndef CONCEPTS_UTILIY_DETAILS_TRAITS_IMPL_HPP_
 #define CONCEPTS_UTILIY_DETAILS_TRAITS_IMPL_HPP_
 
-#include <concepts/helpers.hpp>
+//#include <concepts/helpers.hpp>
+#include "../../helpers.hpp"
 
 #include <functional>
 #include <type_traits>
 
 namespace traits { namespace utility { namespace details {
 
-// validity
-
-// is_valid
-template <typename T, typename = void>
-struct is_valid_impl : std::false_type {
-};
-template <typename T>
-struct is_valid_impl<T, std::void_t<decltype(std::declval<T>())>> : std::true_type {
-};
-// is_nothrow_valid
-template <typename T, typename Valid = void, typename = void>
-struct is_nothrow_valid_impl : std::false_type {
-};
-template <typename T, typename Valid>
-struct is_nothrow_valid_impl<T, Valid, std::enable_if_t<noexcept(std::declval<T>())>> : is_valid_impl<T, Valid> {
-};
-
-
 // member access
 
-// is_dereferenceable
+// is_indirection
 template <typename T, typename = void>
-struct is_dereferenceable_impl : std::false_type {
+struct is_indirection_impl : std::false_type {
 };
 template <typename T>
-struct is_dereferenceable_impl<T, std::void_t<decltype(*std::declval<T>())>> : std::true_type {
+struct is_indirection_impl<T, std::void_t<decltype(*std::declval<T>())>> : std::true_type {
 };
-// is_nothrow_dereferenceable
+// is_nothrow_indirection
 template <typename T, typename Valid = void, typename = void>
-struct is_nothrow_dereferenceable_impl : std::false_type {
+struct is_nothrow_indirection_impl : std::false_type {
 };
 template <typename T, typename Valid>
-struct is_nothrow_dereferenceable_impl<T, Valid, std::enable_if_t<noexcept(*std::declval<T>())>>
-  : is_dereferenceable_impl<T, Valid> {
+struct is_nothrow_indirection_impl<T, Valid, std::enable_if_t<noexcept(*std::declval<T>())>>
+  : is_indirection_impl<T, Valid> {
 };
 
 // is_address_of
@@ -78,6 +61,42 @@ struct is_nothrow_subscript_impl<T, I, Valid, std::enable_if_t<noexcept(std::dec
   : is_subscript_impl<T, I, Valid> {
 };
 
+// is_pointer_to_member_of_object
+template <typename T, typename I, typename = void>
+struct is_pointer_to_member_of_object_impl : std::false_type {
+};
+template <typename T, typename I>
+struct is_pointer_to_member_of_object_impl<T, I, std::void_t<decltype(std::declval<T>().*std::declval<I>())>>
+  : std::true_type {
+};
+// is_nothrow_pointer_to_member_of_object
+template <typename T, typename I, typename Valid = void, typename = void>
+struct is_nothrow_pointer_to_member_of_object_impl : std::false_type {
+};
+template <typename T, typename I, typename Valid>
+struct is_nothrow_pointer_to_member_of_object_impl<T, I, Valid,
+                                                   std::enable_if_t<noexcept(std::declval<T>().*std::declval<I>())>>
+  : is_pointer_to_member_of_object_impl<T, I, Valid> {
+};
+
+// is_pointer_to_member_of_pointer
+template <typename T, typename I, typename = void>
+struct is_pointer_to_member_of_pointer_impl : std::false_type {
+};
+template <typename T, typename I>
+struct is_pointer_to_member_of_pointer_impl<T, I, std::void_t<decltype(std::declval<T>()->*std::declval<I>())>>
+  : std::true_type {
+};
+// is_nothrow_pointer_to_member_of_pointer
+template <typename T, typename I, typename Valid = void, typename = void>
+struct is_nothrow_pointer_to_member_of_pointer_impl : std::false_type {
+};
+template <typename T, typename I, typename Valid>
+struct is_nothrow_pointer_to_member_of_pointer_impl<T, I, Valid,
+                                                    std::enable_if_t<noexcept(std::declval<T>()->*std::declval<I>())>>
+  : is_pointer_to_member_of_pointer_impl<T, I, Valid> {
+};
+
 
 // assignement
 
@@ -86,14 +105,16 @@ template <typename T, typename U = T, typename = void>
 struct is_assignable_impl : std::false_type {
 };
 template <typename T, typename U>
-struct is_assignable_impl<T, U, std::void_t<decltype(std::declval<T>() = std::declval<U>())>> : std::true_type {
+struct is_assignable_impl<T, U, std::void_t<decltype(std::declval<std::remove_reference_t<T>&>() = std::declval<U>())>>
+  : std::true_type {
 };
 // is_nothrow_assignable
 template <typename T, typename U = T, typename Valid = void, typename = void>
 struct is_nothrow_assignable_impl : std::false_type {
 };
 template <typename T, typename U, typename Valid>
-struct is_nothrow_assignable_impl<T, U, Valid, std::enable_if_t<noexcept(std::declval<T>() = std::declval<U>())>>
+struct is_nothrow_assignable_impl<
+  T, U, Valid, std::enable_if_t<noexcept(std::declval<std::remove_reference_t<T>&>() = std::declval<U>())>>
   : is_assignable_impl<T, U, Valid> {
 };
 
@@ -102,14 +123,17 @@ template <typename T, typename U = T, typename = void>
 struct is_plus_assignable_impl : std::false_type {
 };
 template <typename T, typename U>
-struct is_plus_assignable_impl<T, U, std::void_t<decltype(std::declval<T>() += std::declval<U>())>> : std::true_type {
+struct is_plus_assignable_impl<T, U,
+                               std::void_t<decltype(std::declval<std::remove_reference_t<T>&>() += std::declval<U>())>>
+  : std::true_type {
 };
 // is_nothrow_plus_assignable
 template <typename T, typename U = T, typename Valid = void, typename = void>
 struct is_nothrow_plus_assignable_impl : std::false_type {
 };
 template <typename T, typename U, typename Valid>
-struct is_nothrow_plus_assignable_impl<T, U, Valid, std::enable_if_t<noexcept(std::declval<T>() += std::declval<U>())>>
+struct is_nothrow_plus_assignable_impl<
+  T, U, Valid, std::enable_if_t<noexcept(std::declval<std::remove_reference_t<T>&>() += std::declval<U>())>>
   : is_plus_assignable_impl<T, U, Valid> {
 };
 
@@ -118,14 +142,17 @@ template <typename T, typename U = T, typename = void>
 struct is_less_assignable_impl : std::false_type {
 };
 template <typename T, typename U>
-struct is_less_assignable_impl<T, U, std::void_t<decltype(std::declval<T>() -= std::declval<U>())>> : std::true_type {
+struct is_less_assignable_impl<T, U,
+                               std::void_t<decltype(std::declval<std::remove_reference_t<T>&>() -= std::declval<U>())>>
+  : std::true_type {
 };
 // is_nothrow_less_assignable
 template <typename T, typename U = T, typename Valid = void, typename = void>
 struct is_nothrow_less_assignable_impl : std::false_type {
 };
 template <typename T, typename U, typename Valid>
-struct is_nothrow_less_assignable_impl<T, U, Valid, std::enable_if_t<noexcept(std::declval<T>() -= std::declval<U>())>>
+struct is_nothrow_less_assignable_impl<
+  T, U, Valid, std::enable_if_t<noexcept(std::declval<std::remove_reference_t<T>&>() -= std::declval<U>())>>
   : is_less_assignable_impl<T, U, Valid> {
 };
 
@@ -134,14 +161,17 @@ template <typename T, typename U = T, typename = void>
 struct is_mult_assignable_impl : std::false_type {
 };
 template <typename T, typename U>
-struct is_mult_assignable_impl<T, U, std::void_t<decltype(std::declval<T>() *= std::declval<U>())>> : std::true_type {
+struct is_mult_assignable_impl<T, U,
+                               std::void_t<decltype(std::declval<std::remove_reference_t<T>&>() *= std::declval<U>())>>
+  : std::true_type {
 };
 // is_nothrow_mult_assignable
 template <typename T, typename U = T, typename Valid = void, typename = void>
 struct is_nothrow_mult_assignable_impl : std::false_type {
 };
 template <typename T, typename U, typename Valid>
-struct is_nothrow_mult_assignable_impl<T, U, Valid, std::enable_if_t<noexcept(std::declval<T>() *= std::declval<U>())>>
+struct is_nothrow_mult_assignable_impl<
+  T, U, Valid, std::enable_if_t<noexcept(std::declval<std::remove_reference_t<T>&>() *= std::declval<U>())>>
   : is_mult_assignable_impl<T, U, Valid> {
 };
 
@@ -150,14 +180,17 @@ template <typename T, typename U = T, typename = void>
 struct is_div_assignable_impl : std::false_type {
 };
 template <typename T, typename U>
-struct is_div_assignable_impl<T, U, std::void_t<decltype(std::declval<T>() /= std::declval<U>())>> : std::true_type {
+struct is_div_assignable_impl<T, U,
+                              std::void_t<decltype(std::declval<std::remove_reference_t<T>&>() /= std::declval<U>())>>
+  : std::true_type {
 };
 // is_nothrow_div_assignable
 template <typename T, typename U = T, typename Valid = void, typename = void>
 struct is_nothrow_div_assignable_impl : std::false_type {
 };
 template <typename T, typename U, typename Valid>
-struct is_nothrow_div_assignable_impl<T, U, Valid, std::enable_if_t<noexcept(std::declval<T>() /= std::declval<U>())>>
+struct is_nothrow_div_assignable_impl<
+  T, U, Valid, std::enable_if_t<noexcept(std::declval<std::remove_reference_t<T>&>() /= std::declval<U>())>>
   : is_div_assignable_impl<T, U, Valid> {
 };
 
@@ -166,14 +199,17 @@ template <typename T, typename U = T, typename = void>
 struct is_mod_assignable_impl : std::false_type {
 };
 template <typename T, typename U>
-struct is_mod_assignable_impl<T, U, std::void_t<decltype(std::declval<T>() %= std::declval<U>())>> : std::true_type {
+struct is_mod_assignable_impl<T, U,
+                              std::void_t<decltype(std::declval<std::remove_reference_t<T>&>() %= std::declval<U>())>>
+  : std::true_type {
 };
 // is_nothrow_mod_assignable
 template <typename T, typename U = T, typename Valid = void, typename = void>
 struct is_nothrow_mod_assignable_impl : std::false_type {
 };
 template <typename T, typename U, typename Valid>
-struct is_nothrow_mod_assignable_impl<T, U, Valid, std::enable_if_t<noexcept(std::declval<T>() %= std::declval<U>())>>
+struct is_nothrow_mod_assignable_impl<
+  T, U, Valid, std::enable_if_t<noexcept(std::declval<std::remove_reference_t<T>&>() %= std::declval<U>())>>
   : is_mod_assignable_impl<T, U, Valid> {
 };
 
@@ -182,14 +218,17 @@ template <typename T, typename U = T, typename = void>
 struct is_or_assignable_impl : std::false_type {
 };
 template <typename T, typename U>
-struct is_or_assignable_impl<T, U, std::void_t<decltype(std::declval<T>() |= std::declval<U>())>> : std::true_type {
+struct is_or_assignable_impl<T, U,
+                             std::void_t<decltype(std::declval<std::remove_reference_t<T>&>() |= std::declval<U>())>>
+  : std::true_type {
 };
 // is_nothrow_or_assignable
 template <typename T, typename U = T, typename Valid = void, typename = void>
 struct is_nothrow_or_assignable_impl : std::false_type {
 };
 template <typename T, typename U, typename Valid>
-struct is_nothrow_or_assignable_impl<T, U, Valid, std::enable_if_t<noexcept(std::declval<T>() |= std::declval<U>())>>
+struct is_nothrow_or_assignable_impl<
+  T, U, Valid, std::enable_if_t<noexcept(std::declval<std::remove_reference_t<T>&>() |= std::declval<U>())>>
   : is_or_assignable_impl<T, U, Valid> {
 };
 
@@ -198,14 +237,17 @@ template <typename T, typename U = T, typename = void>
 struct is_and_assignable_impl : std::false_type {
 };
 template <typename T, typename U>
-struct is_and_assignable_impl<T, U, std::void_t<decltype(std::declval<T>() &= std::declval<U>())>> : std::true_type {
+struct is_and_assignable_impl<T, U,
+                              std::void_t<decltype(std::declval<std::remove_reference_t<T>&>() &= std::declval<U>())>>
+  : std::true_type {
 };
 // is_nothrow_and_assignable
 template <typename T, typename U = T, typename Valid = void, typename = void>
 struct is_nothrow_and_assignable_impl : std::false_type {
 };
 template <typename T, typename U, typename Valid>
-struct is_nothrow_and_assignable_impl<T, U, Valid, std::enable_if_t<noexcept(std::declval<T>() &= std::declval<U>())>>
+struct is_nothrow_and_assignable_impl<
+  T, U, Valid, std::enable_if_t<noexcept(std::declval<std::remove_reference_t<T>&>() &= std::declval<U>())>>
   : is_and_assignable_impl<T, U, Valid> {
 };
 
@@ -214,14 +256,17 @@ template <typename T, typename U = T, typename = void>
 struct is_xor_assignable_impl : std::false_type {
 };
 template <typename T, typename U>
-struct is_xor_assignable_impl<T, U, std::void_t<decltype(std::declval<T>() ^= std::declval<U>())>> : std::true_type {
+struct is_xor_assignable_impl<T, U,
+                              std::void_t<decltype(std::declval<std::remove_reference_t<T>&>() ^= std::declval<U>())>>
+  : std::true_type {
 };
 // is_nothrow_xor_assignable
 template <typename T, typename U = T, typename Valid = void, typename = void>
 struct is_nothrow_xor_assignable_impl : std::false_type {
 };
 template <typename T, typename U, typename Valid>
-struct is_nothrow_xor_assignable_impl<T, U, Valid, std::enable_if_t<noexcept(std::declval<T>() ^= std::declval<U>())>>
+struct is_nothrow_xor_assignable_impl<
+  T, U, Valid, std::enable_if_t<noexcept(std::declval<std::remove_reference_t<T>&>() ^= std::declval<U>())>>
   : is_xor_assignable_impl<T, U, Valid> {
 };
 
@@ -230,16 +275,16 @@ template <typename T, typename U = T, typename = void>
 struct is_lshift_assignable_impl : std::false_type {
 };
 template <typename T, typename U>
-struct is_lshift_assignable_impl<T, U, std::void_t<decltype(std::declval<T>() <<= std::declval<U>())>>
-  : std::true_type {
+struct is_lshift_assignable_impl<
+  T, U, std::void_t<decltype(std::declval<std::remove_reference_t<T>&>() <<= std::declval<U>())>> : std::true_type {
 };
 // is_nothrow_lshift_assignable
 template <typename T, typename U = T, typename Valid = void, typename = void>
 struct is_nothrow_lshift_assignable_impl : std::false_type {
 };
 template <typename T, typename U, typename Valid>
-struct is_nothrow_lshift_assignable_impl<T, U, Valid,
-                                         std::enable_if_t<noexcept(std::declval<T>() <<= std::declval<U>())>>
+struct is_nothrow_lshift_assignable_impl<
+  T, U, Valid, std::enable_if_t<noexcept(std::declval<std::remove_reference_t<T>&>() <<= std::declval<U>())>>
   : is_lshift_assignable_impl<T, U, Valid> {
 };
 
@@ -248,16 +293,16 @@ template <typename T, typename U = T, typename = void>
 struct is_rshift_assignable_impl : std::false_type {
 };
 template <typename T, typename U>
-struct is_rshift_assignable_impl<T, U, std::void_t<decltype(std::declval<T>() >>= std::declval<U>())>>
-  : std::true_type {
+struct is_rshift_assignable_impl<
+  T, U, std::void_t<decltype(std::declval<std::remove_reference_t<T>&>() >>= std::declval<U>())>> : std::true_type {
 };
 // is_nothrow_rshift_assignable
 template <typename T, typename U = T, typename Valid = void, typename = void>
 struct is_nothrow_rshift_assignable_impl : std::false_type {
 };
 template <typename T, typename U, typename Valid>
-struct is_nothrow_rshift_assignable_impl<T, U, Valid,
-                                         std::enable_if_t<noexcept(std::declval<T>() >>= std::declval<U>())>>
+struct is_nothrow_rshift_assignable_impl<
+  T, U, Valid, std::enable_if_t<noexcept(std::declval<std::remove_reference_t<T>&>() >>= std::declval<U>())>>
   : is_rshift_assignable_impl<T, U, Valid> {
 };
 
@@ -458,7 +503,7 @@ template <typename T, typename U = T, typename = void>
 struct is_rshift_impl : std::false_type {
 };
 template <typename T, typename U>
-struct is_rshift_impl<T, U, std::void_t<decltype(std::declval<T>() << std::declval<U>())>> : std::true_type {
+struct is_rshift_impl<T, U, std::void_t<decltype(std::declval<T>() >> std::declval<U>())>> : std::true_type {
 };
 // is_nothrow_rshift
 template <typename T, typename U = T, typename Valid = void, typename = void>
@@ -477,14 +522,16 @@ template <typename T, typename = void>
 struct is_pre_incrementable_impl : std::false_type {
 };
 template <typename T>
-struct is_pre_incrementable_impl<T, std::void_t<decltype(++std::declval<T>())>> : std::true_type {
+struct is_pre_incrementable_impl<T, std::void_t<decltype(++std::declval<std::remove_reference_t<T>&>())>>
+  : std::true_type {
 };
 // is_nothrow_pre_incrementable
 template <typename T, typename Valid = void, typename = void>
 struct is_nothrow_pre_incrementable_impl : std::false_type {
 };
 template <typename T, typename Valid>
-struct is_nothrow_pre_incrementable_impl<T, Valid, std::enable_if_t<noexcept(++std::declval<T>())>>
+struct is_nothrow_pre_incrementable_impl<T, Valid,
+                                         std::enable_if_t<noexcept(++std::declval<std::remove_reference_t<T>&>())>>
   : is_pre_incrementable_impl<T, Valid> {
 };
 
@@ -493,14 +540,16 @@ template <typename T, typename = void>
 struct is_post_incrementable_impl : std::false_type {
 };
 template <typename T>
-struct is_post_incrementable_impl<T, std::void_t<decltype(std::declval<T>()++)>> : std::true_type {
+struct is_post_incrementable_impl<T, std::void_t<decltype(std::declval<std::remove_reference_t<T>&>()++)>>
+  : std::true_type {
 };
 // is_nothrow_post_incrementable
 template <typename T, typename Valid = void, typename = void>
 struct is_nothrow_post_incrementable_impl : std::false_type {
 };
 template <typename T, typename Valid>
-struct is_nothrow_post_incrementable_impl<T, Valid, std::enable_if_t<noexcept(std::declval<T>()++)>>
+struct is_nothrow_post_incrementable_impl<T, Valid,
+                                          std::enable_if_t<noexcept(std::declval<std::remove_reference_t<T>&>()++)>>
   : is_post_incrementable_impl<T, Valid> {
 };
 
@@ -509,14 +558,16 @@ template <typename T, typename = void>
 struct is_pre_decrementable_impl : std::false_type {
 };
 template <typename T>
-struct is_pre_decrementable_impl<T, std::void_t<decltype(--std::declval<T>())>> : std::true_type {
+struct is_pre_decrementable_impl<T, std::void_t<decltype(--std::declval<std::remove_reference_t<T>&>())>>
+  : std::true_type {
 };
 // is_nothrow_pre_decrementable
 template <typename T, typename Valid = void, typename = void>
 struct is_nothrow_pre_decrementable_impl : std::false_type {
 };
 template <typename T, typename Valid>
-struct is_nothrow_pre_decrementable_impl<T, Valid, std::enable_if_t<noexcept(--std::declval<T>())>>
+struct is_nothrow_pre_decrementable_impl<T, Valid,
+                                         std::enable_if_t<noexcept(--std::declval<std::remove_reference_t<T>&>())>>
   : is_pre_decrementable_impl<T, Valid> {
 };
 
@@ -525,14 +576,16 @@ template <typename T, typename = void>
 struct is_post_decrementable_impl : std::false_type {
 };
 template <typename T>
-struct is_post_decrementable_impl<T, std::void_t<decltype(std::declval<T>()--)>> : std::true_type {
+struct is_post_decrementable_impl<T, std::void_t<decltype(std::declval<std::remove_reference_t<T>&>()--)>>
+  : std::true_type {
 };
 // is_nothrow_post_decrementable
 template <typename T, typename Valid = void, typename = void>
 struct is_nothrow_post_decrementable_impl : std::false_type {
 };
 template <typename T, typename Valid>
-struct is_nothrow_post_decrementable_impl<T, Valid, std::enable_if_t<noexcept(std::declval<T>()--)>>
+struct is_nothrow_post_decrementable_impl<T, Valid,
+                                          std::enable_if_t<noexcept(std::declval<std::remove_reference_t<T>&>()--)>>
   : is_post_decrementable_impl<T, Valid> {
 };
 
@@ -638,13 +691,99 @@ struct is_nothrow_greater_equal_than_impl<T, U, Valid,
 };
 
 
+// is_logical_not
+template <typename T, typename = void>
+struct is_logical_not_impl : std::false_type {
+};
+template <typename T>
+struct is_logical_not_impl<T, std::void_t<decltype(!std::declval<T>())>> : std::true_type {
+};
+// is_nothrow_logical_not
+template <typename T, typename Valid = void, typename = void>
+struct is_nothrow_logical_not_impl : std::false_type {
+};
+template <typename T, typename Valid>
+struct is_nothrow_logical_not_impl<T, Valid, std::enable_if_t<noexcept(!std::declval<T>())>>
+  : is_logical_not_impl<T, Valid> {
+};
+
+// is_logical_and
+template <typename T, typename U = T, typename = void>
+struct is_logical_and_impl : std::false_type {
+};
+template <typename T, typename U>
+struct is_logical_and_impl<T, U, std::void_t<decltype(std::declval<T>() && std::declval<U>())>> : std::true_type {
+};
+// is_nothrow_logical_and
+template <typename T, typename U = T, typename Valid = void, typename = void>
+struct is_nothrow_logical_and_impl : std::false_type {
+};
+template <typename T, typename U, typename Valid>
+struct is_nothrow_logical_and_impl<T, U, Valid, std::enable_if_t<noexcept(std::declval<T>() && std::declval<U>())>>
+  : is_logical_and_impl<T, U, Valid> {
+};
+
+// is_logical_or
+template <typename T, typename U = T, typename = void>
+struct is_logical_or_impl : std::false_type {
+};
+template <typename T, typename U>
+struct is_logical_or_impl<T, U, std::void_t<decltype(std::declval<T>() || std::declval<U>())>> : std::true_type {
+};
+// is_nothrow_logical_or
+template <typename T, typename U = T, typename Valid = void, typename = void>
+struct is_nothrow_logical_or_impl : std::false_type {
+};
+template <typename T, typename U, typename Valid>
+struct is_nothrow_logical_or_impl<T, U, Valid, std::enable_if_t<noexcept(std::declval<T>() || std::declval<U>())>>
+  : is_logical_or_impl<T, U, Valid> {
+};
+
+
 // other
 
+// is_comma
+template <typename T, typename U = T, typename = void>
+struct is_comma_impl : std::false_type {
+};
+template <typename T, typename U>
+struct is_comma_impl<T, U, std::void_t<decltype(std::declval<T>(), std::declval<U>())>> : std::true_type {
+};
+// is_nothrow_comma
+template <typename T, typename U = T, typename Valid = void, typename = void>
+struct is_nothrow_comma_impl : std::false_type {
+};
+template <typename T, typename U, typename Valid>
+struct is_nothrow_comma_impl<T, U, Valid, std::enable_if_t<noexcept(std::declval<T>(), std::declval<U>())>>
+  : is_comma_impl<T, U, Valid> {
+};
+
+// is_ternary
+template <typename B, typename T, typename U = T, typename = void>
+struct is_ternary_impl : std::false_type {
+};
+template <typename B, typename T, typename U>
+struct is_ternary_impl<B, T, U, std::void_t<decltype(std::declval<B>() ? std::declval<T>() : std::declval<U>())>>
+  : std::true_type {
+};
+// is_nothrow_ternary
+template <typename B, typename T, typename U = T, typename Valid = void, typename = void>
+struct is_nothrow_ternary_impl : std::false_type {
+};
+template <typename B, typename T, typename U, typename Valid>
+struct is_nothrow_ternary_impl<B, T, U, Valid,
+                               std::enable_if_t<noexcept(std::declval<B>() ? std::declval<T>() : std::declval<U>())>>
+  : is_ternary_impl<B, T, U, Valid> {
+};
+
 // is_invocable
+template <typename T, typename... Args>
+struct _holder {
+};
 template <typename Holder, typename = void>
 struct is_invocable_impl : std::false_type {
 };
-template <template <class F, class... Args> class Holder, typename F, typename... Args>
+template <template <typename F, typename... Args> typename Holder, typename F, typename... Args>
 struct is_invocable_impl<Holder<F, Args...>,
                          std::void_t<decltype(std::invoke(std::declval<F>(), std::declval<Args>()...))>>
   : std::true_type {
@@ -653,33 +792,35 @@ struct is_invocable_impl<Holder<F, Args...>,
 template <typename Holder, typename Valid = void, typename = void>
 struct is_nothrow_invocable_impl : std::false_type {
 };
-template <template <class F, class... Args> class Holder, typename Valid, typename F, typename... Args>
+template <template <typename F, typename... Args> typename Holder, typename Valid, typename F, typename... Args>
 struct is_nothrow_invocable_impl<Holder<F, Args...>, Valid,
                                  std::enable_if_t<noexcept(std::invoke(std::declval<F>(), std::declval<Args>()...))>>
-  : is_invocable_impl<Holder<F, Args...>, Valid> {
+  : is_invocable_impl<_holder<F, Args...>, Valid> {
 };
 
 // is_invocable_r
+template <typename R, typename F, typename... Args>
+struct _holder_r {
+};
 template <typename Holder, typename Valid = void, typename = void>
 struct is_invocable_r_impl : std::false_type {
 };
-template <template <class R, class F, class... Args> class Holder, typename Valid, typename R, typename F,
+template <template <typename R, typename F, typename... Args> typename Holder, typename Valid, typename R, typename F,
           typename... Args>
 struct is_invocable_r_impl<Holder<R, F, Args...>, Valid,
                            std::enable_if_t<std::is_same_v<R, concepts::helpers::invoke_result_t<F, Args...>>>>
-  : is_invocable_impl<Holder<F, Args...>, Valid> {
+  : is_invocable_impl<_holder<F, Args...>, Valid> {
 };
 // is_nothrow_invocable_r
 template <typename Holder, typename Valid = void, typename = void>
 struct is_nothrow_invocable_r_impl : std::false_type {
 };
-template <template <class R, class F, class... Args> class Holder, typename Valid, typename R, typename F,
+template <template <typename R, typename F, typename... Args> typename Holder, typename Valid, typename R, typename F,
           typename... Args>
 struct is_nothrow_invocable_r_impl<Holder<R, F, Args...>, Valid,
                                    std::enable_if_t<std::is_same_v<R, concepts::helpers::invoke_result_t<F, Args...>>>>
-  : is_nothrow_invocable_impl<Holder<F, Args...>, Valid> {
+  : is_nothrow_invocable_impl<_holder<F, Args...>, Valid> {
 };
-
 
 }}} // namespace traits::utility::details
 
