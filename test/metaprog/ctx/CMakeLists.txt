@@ -1,0 +1,6 @@
+add_unit_test(ctx_algorithm "algorithm.cpp")
+add_unit_test(ctx_map "map.cpp")
+add_unit_test(ctx_optional "optional.cpp")
+add_unit_test(ctx_pair "pair.cpp")
+add_unit_test(ctx_string "string.cpp")
+add_unit_test(ctx_vector "vector.cpp")

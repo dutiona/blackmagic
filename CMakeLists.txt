@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.8.2) # required for cxx_std_17
 
-project(Concepts VERSION 0.0.1 LANGUAGES CXX)
+project(Metaprog VERSION 0.0.1 LANGUAGES CXX)
 
 set_property(GLOBAL PROPERTY USE_FOLDERS ON)
 
@@ -8,15 +8,15 @@ set(CONCEPTS_INCLUDE_DIR "${PROJECT_SOURCE_DIR}/include")
 file(GLOB_RECURSE CONCEPTS_SOURCES  *.hpp)
 
 if(MSVC)
-	add_library(Concepts STATIC ${CONCEPTS_SOURCES})
-	set_target_properties(Concepts PROPERTIES LINKER_LANGUAGE CXX)
-	target_compile_features(Concepts PUBLIC cxx_std_17)
-	target_include_directories(Concepts PUBLIC ${CONCEPTS_INCLUDE_DIR})
+	add_library(Metaprog STATIC ${CONCEPTS_SOURCES})
+	set_target_properties(Metaprog PROPERTIES LINKER_LANGUAGE CXX)
+	target_compile_features(Metaprog PUBLIC cxx_std_17)
+	target_include_directories(Metaprog PUBLIC ${CONCEPTS_INCLUDE_DIR})
 	source_group(TREE ${CONCEPTS_INCLUDE_DIR} FILES ${CONCEPTS_SOURCES})
 else(MSVC)
-	add_library(Concepts INTERFACE)
-	target_compile_features(Concepts INTERFACE cxx_std_17)
-	target_include_directories(Concepts INTERFACE ${CONCEPTS_INCLUDE_DIR})
+	add_library(Metaprog INTERFACE)
+	target_compile_features(Metaprog INTERFACE cxx_std_17)
+	target_include_directories(Metaprog INTERFACE ${CONCEPTS_INCLUDE_DIR})
 endif(MSVC)
 
 
@@ -26,7 +26,7 @@ else(MSVC)
     add_compile_options(-Wall -Wextra -Werror -pedantic -std=c++1z)
 endif(MSVC)
 
-install(DIRECTORY include/concepts     DESTINATION include FILES_MATCHING PATTERN "*.hpp")
+install(DIRECTORY include DESTINATION include FILES_MATCHING PATTERN "*.hpp")
 
 add_subdirectory(example)
 

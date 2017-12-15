@@ -1,0 +1,1 @@
+add_benchmark(cpt_empty "empty.cpp")

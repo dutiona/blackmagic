@@ -4,7 +4,7 @@ add_custom_target(benchmarks
 macro(add_benchmark Executable Source)
     add_executable(benchmark_${Executable}.exe EXCLUDE_FROM_ALL ${Source})
 
-    target_link_libraries(benchmark_${Executable}.exe PRIVATE Concepts)
+    target_link_libraries(benchmark_${Executable}.exe PRIVATE Metaprog)
     target_link_libraries(benchmark_${Executable}.exe PRIVATE benchmark::benchmark)
     target_compile_options(benchmark_${Executable}.exe PRIVATE -O3)
     target_include_directories(benchmark_${Executable}.exe PRIVATE ${CMAKE_CURRENT_SOURCE_DIR})
@@ -23,7 +23,8 @@ option(WITH_BENCHMARK "Enable benchmark (requires google benchmark installed" OF
 if(WITH_BENCHMARK)
 
     find_package(benchmark REQUIRED)
-    add_benchmark(empty "empty.cpp")
+    
+    add_subdirectory(metaprog)
 
 endif(WITH_BENCHMARK)
 
