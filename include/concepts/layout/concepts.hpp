@@ -12,8 +12,6 @@
  * standard layout : non-virtual class containing only other StandardLayout
  * members, all with the same access control
  *
- * POD : POD (Plain Old Data) structure, compatible with C struct
- *
  */
 
 #include "details/concepts_impl.hpp"
