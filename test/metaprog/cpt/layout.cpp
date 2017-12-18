@@ -51,12 +51,12 @@ struct trivial_on_move_assignement {
 
 TEST(Cpt_Layout, trivially_copyable)
 {
-  ASSERT_TRUE((cpt::check<concepts::trivially_copyable, trivial_full>()));
-  ASSERT_TRUE((cpt::check<concepts::trivially_copyable, trivial_on_copy_constructor>()));
-  ASSERT_TRUE((cpt::check<concepts::trivially_copyable, trivial_on_move_constructor>()));
-  ASSERT_TRUE((cpt::check<concepts::trivially_copyable, trivial_on_copy_assignement>()));
-  ASSERT_TRUE((cpt::check<concepts::trivially_copyable, trivial_on_move_assignement>()));
-  ASSERT_FALSE((cpt::check<concepts::trivially_copyable, non_trivial_virtual_destructor>()));
+  EXPECT_TRUE((cpt::check<concepts::trivially_copyable, trivial_full>()));
+  EXPECT_TRUE((cpt::check<concepts::trivially_copyable, trivial_on_copy_constructor>()));
+  EXPECT_TRUE((cpt::check<concepts::trivially_copyable, trivial_on_move_constructor>()));
+  EXPECT_TRUE((cpt::check<concepts::trivially_copyable, trivial_on_copy_assignement>()));
+  EXPECT_TRUE((cpt::check<concepts::trivially_copyable, trivial_on_move_assignement>()));
+  EXPECT_FALSE((cpt::check<concepts::trivially_copyable, non_trivial_virtual_destructor>()));
 }
 
 struct non_trivial {
@@ -67,13 +67,13 @@ struct non_trivial {
 
 TEST(Cpt_Layout, trivial)
 {
-  ASSERT_TRUE((cpt::check<concepts::trivial, trivial_full>()));
-  ASSERT_TRUE((cpt::check<concepts::trivial, trivial_on_copy_constructor>()));
-  ASSERT_TRUE((cpt::check<concepts::trivial, trivial_on_move_constructor>()));
-  ASSERT_TRUE((cpt::check<concepts::trivial, trivial_on_copy_assignement>()));
-  ASSERT_TRUE((cpt::check<concepts::trivial, trivial_on_move_assignement>()));
-  ASSERT_FALSE((cpt::check<concepts::trivial, non_trivial_virtual_destructor>()));
-  ASSERT_FALSE((cpt::check<concepts::trivial, non_trivial>()));
+  EXPECT_TRUE((cpt::check<concepts::trivial, trivial_full>()));
+  EXPECT_TRUE((cpt::check<concepts::trivial, trivial_on_copy_constructor>()));
+  EXPECT_TRUE((cpt::check<concepts::trivial, trivial_on_move_constructor>()));
+  EXPECT_TRUE((cpt::check<concepts::trivial, trivial_on_copy_assignement>()));
+  EXPECT_TRUE((cpt::check<concepts::trivial, trivial_on_move_assignement>()));
+  EXPECT_FALSE((cpt::check<concepts::trivial, non_trivial_virtual_destructor>()));
+  EXPECT_FALSE((cpt::check<concepts::trivial, non_trivial>()));
 }
 
 struct standard_layout {

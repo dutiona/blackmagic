@@ -94,7 +94,7 @@ private:
   template <typename This>
   static constexpr auto find_impl(This&& t, const Key& k)
   {
-    return find_if(t.begin(), t.end(), [&k](const auto& d) { return Compare{}(d.first, k); });
+    return ctx::find_if(t.begin(), t.end(), [&k](const auto& d) { return Compare{}(d.first, k); });
   }
 
   std::array<pair<Key, Value>, Size> m_data{}; // for constexpr use, the std::array must be initialized

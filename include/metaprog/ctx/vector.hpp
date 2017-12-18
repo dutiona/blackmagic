@@ -168,7 +168,7 @@ private:
 template <typename T, size_t Size1, size_t Size2>
 constexpr bool operator==(const vector<T, Size1>& x, const vector<T, Size2>& y)
 {
-  return equal(x.begin(), x.end(), y.begin(), y.end());
+  return ctx::equal(x.begin(), x.end(), y.begin(), y.end());
 }
 
 

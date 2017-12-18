@@ -44,12 +44,12 @@ TEST(Cpt_Utility, address_of)
   const int* a = nullptr;
   const int  b = 0;
   const int& c = b;
-  ASSERT_TRUE((cpt::check<concepts::address_of, address_of_test>()));
-  ASSERT_TRUE((cpt::check<concepts::address_of, decltype(*a)>()));
-  ASSERT_TRUE((cpt::check<concepts::address_of, decltype(c)>()));
-  ASSERT_FALSE((cpt::check<concepts::address_of, no_operator_test>()));
-  ASSERT_FALSE((cpt::check<concepts::address_of, decltype(a)>()));
-  ASSERT_FALSE((cpt::check<concepts::address_of, decltype(b)>()));
+  EXPECT_TRUE((cpt::check<concepts::address_of, address_of_test>()));
+  EXPECT_TRUE((cpt::check<concepts::address_of, decltype(*a)>()));
+  EXPECT_TRUE((cpt::check<concepts::address_of, decltype(c)>()));
+  EXPECT_FALSE((cpt::check<concepts::address_of, no_operator_test>()));
+  EXPECT_FALSE((cpt::check<concepts::address_of, decltype(a)>()));
+  EXPECT_FALSE((cpt::check<concepts::address_of, decltype(b)>()));
 }
 
 struct subscript_test {
@@ -1372,14 +1372,14 @@ struct invocable_r_functor_test {
 TEST(Cpt_Utility, invocable)
 {
   static const auto a = 1.5;
-  ASSERT_TRUE((cpt::check<concepts::invocable, decltype(invocable_test)>()));
-  ASSERT_TRUE((cpt::check<concepts::invocable, decltype(invocable_int_test), int>()));
-  ASSERT_TRUE((cpt::check<concepts::invocable, decltype(invocable_r_test)>()));
-  ASSERT_TRUE((cpt::check<concepts::invocable_r, int, decltype(invocable_r_test)>()));
-  ASSERT_TRUE((cpt::check<concepts::invocable, decltype(invocable_r_double_test), double>()));
-  ASSERT_TRUE((cpt::check<concepts::invocable_r, int, decltype(invocable_r_double_test), double>()));
-  ASSERT_FALSE((cpt::check<concepts::invocable, decltype(invocable_r_double_test)>()));
-  ASSERT_FALSE((cpt::check<concepts::invocable_r, double, decltype(invocable_r_double_test), double>()));
-  ASSERT_FALSE((cpt::check<concepts::invocable, decltype(invocable_r_double_test)>()));
-  ASSERT_FALSE((cpt::check<concepts::invocable, decltype(a)>()));
+  EXPECT_TRUE((cpt::check<concepts::invocable, decltype(invocable_test)>()));
+  EXPECT_TRUE((cpt::check<concepts::invocable, decltype(invocable_int_test), int>()));
+  EXPECT_TRUE((cpt::check<concepts::invocable, decltype(invocable_r_test)>()));
+  EXPECT_TRUE((cpt::check<concepts::invocable_r, int, decltype(invocable_r_test)>()));
+  EXPECT_TRUE((cpt::check<concepts::invocable, decltype(invocable_r_double_test), double>()));
+  EXPECT_TRUE((cpt::check<concepts::invocable_r, int, decltype(invocable_r_double_test), double>()));
+  EXPECT_FALSE((cpt::check<concepts::invocable, decltype(invocable_r_double_test)>()));
+  EXPECT_FALSE((cpt::check<concepts::invocable_r, double, decltype(invocable_r_double_test), double>()));
+  EXPECT_FALSE((cpt::check<concepts::invocable, decltype(invocable_r_double_test)>()));
+  EXPECT_FALSE((cpt::check<concepts::invocable, decltype(a)>()));
 }
