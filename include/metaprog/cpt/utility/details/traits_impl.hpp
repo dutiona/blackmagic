@@ -783,14 +783,14 @@ struct _holder {
 template <typename Holder, typename = void>
 struct is_invocable_impl : std::false_type {
 };
-template <template <typename F, typename... Args> typename Holder, typename F, typename... Args>
+template <template <typename F, typename... Args> class Holder, typename F, typename... Args>
 struct is_invocable_impl<Holder<F, Args...>> : std::is_invocable<F, Args...>{
 };
 #else
 template <typename Holder, typename = void>
 struct is_invocable_impl : std::false_type {
 };
-template <template <typename F, typename... Args> typename Holder, typename F, typename... Args>
+template <template <typename F, typename... Args> class Holder, typename F, typename... Args>
 struct is_invocable_impl<Holder<F, Args...>,
                          std::void_t<decltype(std::invoke(std::declval<F>(), std::declval<Args>()...))>>
   : std::true_type {
@@ -802,14 +802,14 @@ struct is_invocable_impl<Holder<F, Args...>,
 template <typename Holder, typename = void>
 struct is_nothrow_invocable_impl : std::false_type {
 };
-template <template <typename F, typename... Args> typename Holder, typename F, typename... Args>
+template <template <typename F, typename... Args> class Holder, typename F, typename... Args>
 struct is_nothrow_invocable_impl<Holder<F, Args...>> : std::is_nothrow_invocable<F, Args...> {
 };
 #else
 template <typename Holder, typename Valid = void, typename = void>
 struct is_nothrow_invocable_impl : std::false_type {
 };
-template <template <typename F, typename... Args> typename Holder, typename Valid, typename F, typename... Args>
+template <template <typename F, typename... Args> class Holder, typename Valid, typename F, typename... Args>
 struct is_nothrow_invocable_impl<Holder<F, Args...>, Valid,
                                  std::enable_if_t<noexcept(std::invoke(std::declval<F>(), std::declval<Args>()...))>>
   : is_invocable_impl<_holder<F, Args...>, Valid> {
@@ -825,7 +825,7 @@ struct _holder_r {
 template <typename Holder, typename = void>
 struct is_invocable_r_impl : std::false_type {
 };
-template <template <typename R, typename F, typename... Args> typename Holder, typename R, typename F,
+template <template <typename R, typename F, typename... Args> class Holder, typename R, typename F,
   typename... Args>
   struct is_invocable_r_impl<Holder<R, F, Args...>> : std::is_invocable_r<R, F, Args...> {
 };
@@ -833,7 +833,7 @@ template <template <typename R, typename F, typename... Args> typename Holder, t
 template <typename Holder, typename Valid = void, typename = void>
 struct is_invocable_r_impl : std::false_type {
 };
-template <template <typename R, typename F, typename... Args> typename Holder, typename Valid, typename R, typename F,
+template <template <typename R, typename F, typename... Args> class Holder, typename Valid, typename R, typename F,
           typename... Args>
 struct is_invocable_r_impl<Holder<R, F, Args...>, Valid,
                            std::enable_if_t<std::is_same_v<R, cpt::helpers::invoke_result_t<F, Args...>>>>
@@ -846,7 +846,7 @@ struct is_invocable_r_impl<Holder<R, F, Args...>, Valid,
 template <typename Holder, typename = void>
 struct is_nothrow_invocable_r_impl : std::false_type {
 };
-template <template <typename R, typename F, typename... Args> typename Holder, typename R, typename F,
+template <template <typename R, typename F, typename... Args> class Holder, typename R, typename F,
   typename... Args>
   struct is_nothrow_invocable_r_impl<Holder<R, F, Args...>> : std::is_nothrow_invocable_r<R, F, Args...> {
 };
@@ -854,7 +854,7 @@ template <template <typename R, typename F, typename... Args> typename Holder, t
 template <typename Holder, typename Valid = void, typename = void>
 struct is_nothrow_invocable_r_impl : std::false_type {
 };
-template <template <typename R, typename F, typename... Args> typename Holder, typename Valid, typename R, typename F,
+template <template <typename R, typename F, typename... Args> class Holder, typename Valid, typename R, typename F,
           typename... Args>
 struct is_nothrow_invocable_r_impl<Holder<R, F, Args...>, Valid,
                                    std::enable_if_t<std::is_same_v<R, cpt::helpers::invoke_result_t<F, Args...>>>>

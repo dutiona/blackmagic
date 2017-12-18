@@ -10,11 +10,10 @@
 #include <cstddef>
 #include <functional>
 #include <stdexcept>
-#include <type_traits>
 
 namespace ctx {
 
-template <typename Key, typename Value, std::size_t Size = 5, typename Compare = std::equal_to<Key>>
+template <typename Key, typename Value, size_t Size = 5, typename Compare = std::equal_to<Key>>
 class map {
 public:
   constexpr auto begin() const
@@ -63,9 +62,7 @@ public:
     if (itr != end()) {
       return itr->second;
     }
-    else {
-      throw std::range_error("Key not found");
-    }
+    throw std::range_error("Key not found");
   }
 
   constexpr Value& operator[](const Key& k)
@@ -76,9 +73,7 @@ public:
       data.first = k;
       return data.second;
     }
-    else {
-      return itr->second;
-    }
+    return itr->second;
   }
 
   constexpr auto size() const
@@ -98,7 +93,7 @@ private:
   }
 
   std::array<pair<Key, Value>, Size> m_data{}; // for constexpr use, the std::array must be initialized
-  std::size_t                        m_size{0};
+  size_t                             m_size{0};
 };
 
 } // namespace ctx

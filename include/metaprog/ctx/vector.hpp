@@ -12,7 +12,7 @@
 
 namespace ctx {
 
-template <typename Value, std::size_t Size = 5>
+template <typename Value, size_t Size = 5>
 class vector {
   using storage_t = std::array<Value, Size>;
 
@@ -71,36 +71,32 @@ public:
     return m_data.begin() + m_size;
   }
 
-  constexpr const Value& operator[](const std::size_t t_pos) const
+  constexpr const Value& operator[](const size_t t_pos) const
   {
     return m_data[t_pos];
   }
 
-  constexpr Value& operator[](const std::size_t t_pos)
+  constexpr Value& operator[](const size_t t_pos)
   {
     return m_data[t_pos];
   }
 
-  constexpr Value& at(const std::size_t t_pos)
+  constexpr Value& at(const size_t t_pos)
   {
     if (t_pos >= m_size) {
       // This is allowed in constexpr context, but if the constexpr evaluation
       // hits this exception the compile would fail
       throw std::range_error("Index past end of vector");
     }
-    else {
-      return m_data[t_pos];
-    }
+    return m_data[t_pos];
   }
 
-  constexpr const Value& at(const std::size_t t_pos) const
+  constexpr const Value& at(const size_t t_pos) const
   {
     if (t_pos >= m_size) {
       throw std::range_error("Index past end of vector");
     }
-    else {
-      return m_data[t_pos];
-    }
+    return m_data[t_pos];
   }
 
   constexpr Value& push_back(Value t_v)
@@ -108,11 +104,9 @@ public:
     if (m_size >= Size) {
       throw std::range_error("Index past end of vector");
     }
-    else {
-      Value& v = m_data[m_size++];
-      v        = std::move(t_v);
-      return v;
-    }
+    Value& v = m_data[m_size++];
+    v        = std::move(t_v);
+    return v;
   }
 
   constexpr const Value& back() const
@@ -120,9 +114,7 @@ public:
     if (empty()) {
       throw std::range_error("Index past end of vector");
     }
-    else {
-      return m_data[m_size - 1];
-    }
+    return m_data[m_size - 1];
   }
 
   constexpr Value& back()
@@ -130,9 +122,7 @@ public:
     if (empty()) {
       throw std::range_error("Index past end of vector");
     }
-    else {
-      return m_data[m_size - 1];
-    }
+    return m_data[m_size - 1];
   }
 
   constexpr auto capacity() const
@@ -161,8 +151,8 @@ public:
   }
 
 private:
-  storage_t   m_data{};
-  std::size_t m_size{0};
+  storage_t m_data{};
+  size_t    m_size{0};
 };
 
 template <typename T, size_t Size1, size_t Size2>
@@ -175,7 +165,7 @@ constexpr bool operator==(const vector<T, Size1>& x, const vector<T, Size2>& y)
 // Is addition (concatenation) on strings useful? Not sure yet. But it does
 // allow us to carry the type information properly.
 
-template <typename Value, std::size_t S1, std::size_t S2>
+template <typename Value, size_t S1, size_t S2>
 constexpr auto operator+(vector<Value, S1> a, vector<Value, S2> b)
 {
   vector<Value, S1 + S2> v;

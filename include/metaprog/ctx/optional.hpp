@@ -17,8 +17,6 @@ using std::experimental::optional;
 } // namespace details
 #endif
 
-#include <utility>
-
 namespace ctx {
 
 template <typename T>
@@ -28,6 +26,7 @@ struct optional {
   constexpr optional(details::nullopt_t)
   {
   }
+
   constexpr explicit optional(const T& t)
     : m_valid(true)
     , m_t(t)

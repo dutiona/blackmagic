@@ -6,20 +6,19 @@
 #include "algorithm.hpp"
 #include "vector.hpp"
 
-#include <array>
 #include <cstddef>
 #include <string_view>
 
 namespace ctx {
 
 struct static_string {
-  template <std::size_t N>
+  template <size_t N>
   constexpr static_string(const char (&str)[N])
     : m_size(N - 1)
     , m_data(&str[0])
   {
   }
-  constexpr static_string(const char* str, std::size_t s)
+  constexpr static_string(const char* str, size_t s)
     : m_size(s)
     , m_data(str)
   {
@@ -47,7 +46,7 @@ struct static_string {
     return m_data + m_size;
   }
 
-  std::size_t m_size{0};
+  size_t      m_size{0};
   const char* m_data = nullptr;
 };
 
@@ -109,7 +108,8 @@ constexpr auto operator""_s(const char* str, size_t s)
 
 #ifdef _MSC_VER
 #pragma warning(push)
-#pragma warning(disable: 4455 ) // 'operator ""sv': literal suffix identifiers that do not start with an underscore are reserved
+#pragma warning(                                                                                                       \
+  disable : 4455) // 'operator ""sv': literal suffix identifiers that do not start with an underscore are reserved
 #endif
 using std::literals::operator""sv;
 #ifdef _MSC_VER

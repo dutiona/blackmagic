@@ -22,7 +22,10 @@ target_include_directories(Metaprog INTERFACE ${CONCEPTS_INCLUDE_DIR})
 
 
 if(MSVC)
-    add_compile_options(/W4 /WX /permissive- /std:c++17)
+	# MSVC
+	add_compile_options(/W4 /WX /permissive- /std:c++17)
+    # Clang/C2
+	# add_compile_options(-Wall -Werror -pedantic -std=c++1z)
 else(MSVC)
     add_compile_options(-Wall -Wextra -Werror -pedantic -std=c++1z)
 endif(MSVC)
