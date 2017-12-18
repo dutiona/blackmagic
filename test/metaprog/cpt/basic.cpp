@@ -12,15 +12,14 @@ struct not_default_constructible_test {
 
 TEST(Cpt_Basic, default_constructible)
 {
-  // using namespace ctx::literals;
-  // constexpr auto cpt_item =
-  //  cpt::make_concept_item<concepts::default_constructible, true, default_constructible_test>("test1"_s);
-  //
-  // constexpr auto cpt_item2 =
-  //  cpt::make_concept_item<concepts::default_constructible, true, default_constructible_test>("test2"_s);
-  //
-  // constexpr auto cpt_map = cpt::make_concept_map(cpt_item, cpt_item2);
-  // cpt::require_map(cpt_map);
+  using namespace ctx::literals;
+  constexpr auto cpt_item  = cpt::make_concept_item<concepts::default_constructible>("test1"_s);
+  constexpr auto cpt_item2 = cpt::make_concept_item<concepts::default_constructible>("test2"_s);
+  constexpr auto cpt_map   = cpt::make_concept_map(cpt_item, cpt_item2);
+  cpt::require_map<default_constructible_test>(cpt_map);
+  cpt::require_map_at<default_constructible_test>(cpt_map, "test2"_s);
+  [[maybe_unused]] constexpr bool ret  = cpt::check_map<default_constructible_test>(cpt_map);
+  [[maybe_unused]] constexpr bool ret2 = cpt::check_map_at<default_constructible_test>(cpt_map, "test2"_s);
 
   ASSERT_TRUE((cpt::check<concepts::default_constructible, default_constructible_test>()));
   ASSERT_FALSE((cpt::check<concepts::default_constructible, not_default_constructible_test>()));

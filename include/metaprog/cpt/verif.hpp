@@ -53,39 +53,101 @@ constexpr bool check()
   return concept_checker<Concept>{}.template check<Args...>();
 }
 
-
 template <typename Concept>
 using concept_item_t = ctx::pair<ctx::string, concept_checker<Concept>>;
 
 template <typename Concept>
 constexpr decltype(auto) make_concept_item(ctx::string s)
 {
-  return concept_item_t<Concept>{s, Concept{}};
-}
+  return concept_item_t<Concept>{s, concept_checker<Concept>{}};
+};
 
-/*
 template <typename... Concepts>
 using concept_map_t = std::tuple<concept_item_t<Concepts>...>;
 
 template <typename... Concepts>
 constexpr decltype(auto) make_concept_map(concept_item_t<Concepts>... concept_items)
 {
-  return std::make_tuple(concept_items...);
+  return concept_map_t<Concepts...>{concept_items...};
 }
 
-template <typename... Concepts, size_t... I>
+namespace details {
+
+template <bool... Bools>
+inline constexpr bool all_of = std::conjunction_v<std::bool_constant<Bools>...>;
+template <bool... Bools>
+inline constexpr bool any_of = std::disjunction_v<std::bool_constant<Bools>...>;
+
+
+template <typename... Args, typename... Concepts, size_t... I>
 constexpr void require_map_impl(concept_map_t<Concepts...> concept_map, std::index_sequence<I...>)
 {
-  ((std::cout << typeid(require<std::get<I>(concept_map).second>()).name()), ...) << std::endl;
-  //(std::get<I>(concept_map), ...);
+  (std::get<I>(concept_map).second.template require<Args...>(), ...);
 }
 
-template <typename... Concepts>
+template <typename... Args, typename... Concepts, size_t... I>
+constexpr void require_map_at_impl(concept_map_t<Concepts...> concept_map, ctx::string index, std::index_sequence<I...>)
+{
+  const auto require_if = [index](auto cpt) {
+    if (cpt.first == index) {
+      cpt.second.template require<Args...>();
+    }
+  };
+  (require_if(std::get<I>(concept_map)), ...);
+}
+
+
+template <typename... Args, typename... Concepts, size_t... I>
+constexpr bool check_map_impl(concept_map_t<Concepts...> concept_map, std::index_sequence<I...>)
+{
+  return all_of<std::get<I>(concept_map).second.template check<Args...>()...>;
+}
+
+template <typename... Args, typename Concept>
+constexpr bool check_if(concept_item_t<Concept> cpt_item, ctx::string index)
+{
+  if (cpt_item.first == index) {
+    return cpt_item.second.template check<Args...>();
+  }
+  return true;
+}
+template <typename... Args, typename... Concepts, size_t... I>
+constexpr bool check_map_at_impl(concept_map_t<Concepts...> /*concept_map*/, ctx::string /*index*/,
+                                 std::index_sequence<I...>)
+{
+  // FIXME
+  return true; // all_of<check_if<Args...>(std::get<I>(concept_map), index)...>;
+}
+} // namespace details
+
+
+// require map functions
+template <typename... Args, typename... Concepts>
 constexpr void require_map(concept_map_t<Concepts...> concept_map)
 {
-  require_map_impl(concept_map, std::make_index_sequence<sizeof...(Concepts)>{});
+  details::require_map_impl<Args...>(concept_map, std::make_index_sequence<sizeof...(Concepts)>{});
 }
-*/
+
+template <typename... Args, typename... Concepts>
+constexpr void require_map_at(concept_map_t<Concepts...> concept_map, ctx::string index)
+{
+  details::require_map_at_impl<Args...>(concept_map, index, std::make_index_sequence<sizeof...(Concepts)>{});
+}
+
+// check map functions
+
+
+template <typename... Args, typename... Concepts>
+constexpr bool check_map(concept_map_t<Concepts...> concept_map)
+{
+  return details::check_map_impl<Args...>(concept_map, std::make_index_sequence<sizeof...(Concepts)>{});
+}
+
+template <typename... Args, typename... Concepts>
+constexpr bool check_map_at(concept_map_t<Concepts...> concept_map, ctx::string index)
+{
+  return details::check_map_at_impl<Args...>(concept_map, index, std::make_index_sequence<sizeof...(Concepts)>{});
+}
 
 } // namespace cpt
 
