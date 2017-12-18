@@ -29,52 +29,65 @@
 namespace cpt { namespace concepts { namespace basic {
 
 // default constructible
-template <bool SilentFailure, typename T>
-using default_constructible = details::default_constructible_impl<SilentFailure, T>;
-template <bool SilentFailure, typename T>
-using default_constructible_t = typename default_constructible<SilentFailure, T>::type;
-template <bool SilentFailure, typename T>
-constexpr bool default_constructible_v = default_constructible<SilentFailure, T>::value;
+struct default_constructible {
+  template <bool SilentFailure, typename T>
+  using type = details::default_constructible_impl<SilentFailure, T>;
+  template <bool SilentFailure, typename T>
+  using underlying_type = typename type<SilentFailure, T>::type;
+  template <bool SilentFailure, typename T>
+  static constexpr bool value = type<SilentFailure, T>::value;
+};
 
 // move constructible
-template <bool SilentFailure, typename T>
-using move_constructible = details::move_constructible_impl<SilentFailure, T>;
-template <bool SilentFailure, typename T>
-using move_constructible_t = typename move_constructible<SilentFailure, T>::type;
-template <bool SilentFailure, typename T>
-constexpr bool move_constructible_v = move_constructible<SilentFailure, T>::value;
+struct move_constructible {
+  template <bool SilentFailure, typename T>
+  using type = details::move_constructible_impl<SilentFailure, T>;
+  template <bool SilentFailure, typename T>
+  using underlying_type = typename type<SilentFailure, T>::type;
+  template <bool SilentFailure, typename T>
+  static constexpr bool value = type<SilentFailure, T>::value;
+};
 
 // copy constructible
-template <bool SilentFailure, typename T>
-using copy_constructible = details::copy_constructible_impl<SilentFailure, T>;
-template <bool SilentFailure, typename T>
-using copy_constructible_t = typename copy_constructible<SilentFailure, T>::type;
-template <bool SilentFailure, typename T>
-constexpr bool copy_constructible_v = copy_constructible<SilentFailure, T>::value;
+struct copy_constructible {
+  template <bool SilentFailure, typename T>
+  using type = details::copy_constructible_impl<SilentFailure, T>;
+  template <bool SilentFailure, typename T>
+  using underlying_type = typename type<SilentFailure, T>::type;
+  template <bool SilentFailure, typename T>
+  static constexpr bool value = type<SilentFailure, T>::value;
+};
+
 
 // move assignable
-template <bool SilentFailure, typename T>
-using move_assignable = details::move_assignable_impl<SilentFailure, T>;
-template <bool SilentFailure, typename T>
-using move_assignable_t = typename move_assignable<SilentFailure, T>::type;
-template <bool SilentFailure, typename T>
-constexpr bool move_assignable_v = move_assignable<SilentFailure, T>::value;
+struct move_assignable {
+  template <bool SilentFailure, typename T>
+  using type = details::move_assignable_impl<SilentFailure, T>;
+  template <bool SilentFailure, typename T>
+  using underlying_type = typename type<SilentFailure, T>::type;
+  template <bool SilentFailure, typename T>
+  static constexpr bool value = type<SilentFailure, T>::value;
+};
 
 // copy assignable
-template <bool SilentFailure, typename T>
-using copy_assignable = details::copy_assignable_impl<SilentFailure, T>;
-template <bool SilentFailure, typename T>
-using copy_assignable_t = typename copy_assignable<SilentFailure, T>::type;
-template <bool SilentFailure, typename T>
-constexpr bool copy_assignable_v = copy_assignable<SilentFailure, T>::value;
+struct copy_assignable {
+  template <bool SilentFailure, typename T>
+  using type = details::copy_assignable_impl<SilentFailure, T>;
+  template <bool SilentFailure, typename T>
+  using underlying_type = typename type<SilentFailure, T>::type;
+  template <bool SilentFailure, typename T>
+  static constexpr bool value = type<SilentFailure, T>::value;
+};
 
 // destructible
-template <bool SilentFailure, typename T>
-using destructible = details::destructible_impl<SilentFailure, T>;
-template <bool SilentFailure, typename T>
-using destructible_t = typename destructible<SilentFailure, T>::type;
-template <bool SilentFailure, typename T>
-constexpr bool destructible_v = destructible<SilentFailure, T>::value;
+struct destructible {
+  template <bool SilentFailure, typename T>
+  using type = details::destructible_impl<SilentFailure, T>;
+  template <bool SilentFailure, typename T>
+  using underlying_type = typename type<SilentFailure, T>::type;
+  template <bool SilentFailure, typename T>
+  static constexpr bool value = type<SilentFailure, T>::value;
+};
 
 }}} // namespace cpt::concepts::basic
 

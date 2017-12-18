@@ -19,28 +19,34 @@
 namespace cpt { namespace concepts { namespace layout {
 
 // trivially copyable
-template <bool SilentFailure, typename T>
-using trivially_copyable = details::trivially_copyable_impl<SilentFailure, T>;
-template <bool SilentFailure, typename T>
-using trivially_copyable_t = typename trivially_copyable<SilentFailure, T>::type;
-template <bool SilentFailure, typename T>
-constexpr bool trivially_copyable_v = trivially_copyable<SilentFailure, T>::value;
+struct trivially_copyable {
+  template <bool SilentFailure, typename T>
+  using type = details::trivially_copyable_impl<SilentFailure, T>;
+  template <bool SilentFailure, typename T>
+  using underlying_type = typename type<SilentFailure, T>::type;
+  template <bool SilentFailure, typename T>
+  static constexpr bool value = type<SilentFailure, T>::value;
+};
 
 // trivial
-template <bool SilentFailure, typename T>
-using trivial = details::trivial_impl<SilentFailure, T>;
-template <bool SilentFailure, typename T>
-using trivial_t = typename trivial<SilentFailure, T>::type;
-template <bool SilentFailure, typename T>
-constexpr bool trivial_v = trivial<SilentFailure, T>::value;
+struct trivial {
+  template <bool SilentFailure, typename T>
+  using type = details::trivial_impl<SilentFailure, T>;
+  template <bool SilentFailure, typename T>
+  using underlying_type = typename type<SilentFailure, T>::type;
+  template <bool SilentFailure, typename T>
+  static constexpr bool value = type<SilentFailure, T>::value;
+};
 
 // standard layout
-template <bool SilentFailure, typename T>
-using standard_layout = details::standard_layout_impl<SilentFailure, T>;
-template <bool SilentFailure, typename T>
-using standard_layout_t = typename standard_layout<SilentFailure, T>::type;
-template <bool SilentFailure, typename T>
-constexpr bool standard_layout_v = standard_layout<SilentFailure, T>::value;
+struct standard_layout {
+  template <bool SilentFailure, typename T>
+  using type = details::standard_layout_impl<SilentFailure, T>;
+  template <bool SilentFailure, typename T>
+  using underlying_type = typename type<SilentFailure, T>::type;
+  template <bool SilentFailure, typename T>
+  static constexpr bool value = type<SilentFailure, T>::value;
+};
 
 }}} // namespace cpt::concepts::layout
 
