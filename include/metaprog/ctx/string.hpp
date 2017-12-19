@@ -106,15 +106,8 @@ constexpr auto operator""_s(const char* str, size_t s)
   return string{static_string{str, s}};
 }
 
-#ifdef _MSC_VER
-#pragma warning(push)
-#pragma warning(                                                                                                       \
-  disable : 4455) // 'operator ""sv': literal suffix identifiers that do not start with an underscore are reserved
-#endif
-using std::literals::operator""sv;
-#ifdef _MSC_VER
-#pragma warning(pop)
-#endif
+using namespace std::literals;
+
 } // namespace literals
 
 } // namespace ctx

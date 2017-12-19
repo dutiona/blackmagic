@@ -8,6 +8,7 @@
 #include <stdexcept>
 #include <tuple>
 #include <utility>
+#include <string_view>
 
 namespace cpt {
 
@@ -36,9 +37,8 @@ struct concept_checker {
   }
 };
 
-template <typename Concept> // TODO/FIXME use ctx::string as key when impl is confirmed to work on MSVC...
-// using concept_item_t = ctx::pair<ctx::string, concept_checker<Concept>>;
-using concept_item_t = ctx::pair<int, concept_checker<Concept>>;
+template <typename Concept>
+using concept_item_t = std::pair<std::string_view, concept_checker<Concept>>;
 
 template <typename... Concepts>
 using concept_map_t = std::tuple<concept_item_t<Concepts>...>;
@@ -62,11 +62,11 @@ constexpr void require_map_impl(concept_map_t<Concepts...> concept_map, std::ind
 }
 
 template <typename... Args, typename... Concepts, size_t... I>
-constexpr void require_map_at_impl(concept_map_t<Concepts...> concept_map, int /*ctx::string*/ index,
+constexpr void require_map_at_impl(concept_map_t<Concepts...> concept_map, std::string_view index,
                                    std::index_sequence<I...>)
 {
   const auto require_if = [index](auto cpt) {
-    if (cpt.first == index) {
+    if (ctx::equal(cpt.first.cbegin(), cpt.first.cend(), index.cbegin(), index.cend())) {
       cpt.second.template require<Args...>();
     }
   };
@@ -80,11 +80,11 @@ constexpr bool check_map_impl(concept_map_t<Concepts...> concept_map, std::index
 }
 
 template <typename... Args, typename... Concepts, size_t... I>
-constexpr bool check_map_at_impl(concept_map_t<Concepts...> concept_map, int /*ctx::string*/ index,
+constexpr bool check_map_at_impl(concept_map_t<Concepts...> concept_map, std::string_view index,
                                  std::index_sequence<I...>)
 {
   const auto check_if = [index](auto cpt) {
-    if (cpt.first == index) {
+    if (ctx::equal(cpt.first.cbegin(), cpt.first.cend(), index.cbegin(), index.cend())) {
       return cpt.second.template check<Args...>();
     }
     return true;
@@ -110,9 +110,9 @@ constexpr bool check()
 
 // helpers functions
 template <typename Concept>
-constexpr decltype(auto) make_concept_item(int /*ctx::string*/ s)
+constexpr decltype(auto) make_concept_item(std::string_view s)
 {
-  return ctx::make_pair(s, concept_checker<Concept>{});
+  return std::make_pair(s, concept_checker<Concept>{});
 };
 
 template <typename... Concepts>
@@ -129,7 +129,7 @@ constexpr void require_map(concept_map_t<Concepts...> concept_map)
 }
 
 template <typename... Args, typename... Concepts>
-constexpr void require_map_at(concept_map_t<Concepts...> concept_map, int /*ctx::string*/ index)
+constexpr void require_map_at(concept_map_t<Concepts...> concept_map, std::string_view index)
 {
   details::require_map_at_impl<Args...>(concept_map, index, std::make_index_sequence<sizeof...(Concepts)>{});
 }
@@ -143,7 +143,7 @@ constexpr bool check_map(concept_map_t<Concepts...> concept_map)
 }
 
 template <typename... Args, typename... Concepts>
-constexpr bool check_map_at(concept_map_t<Concepts...> concept_map, int /*ctx::string*/ index)
+constexpr bool check_map_at(concept_map_t<Concepts...> concept_map, std::string_view index)
 {
   return details::check_map_at_impl<Args...>(concept_map, index, std::make_index_sequence<sizeof...(Concepts)>{});
 }
