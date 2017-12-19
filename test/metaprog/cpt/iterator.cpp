@@ -1,4 +1,4 @@
-#include "../../../include/metaprog/cpt/cpt.hpp"
+#include <metaprog/cpt/cpt.hpp>
 
 #include <gtest/gtest.h>
 

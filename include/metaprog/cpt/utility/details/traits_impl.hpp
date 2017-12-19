@@ -784,7 +784,7 @@ template <typename Holder, typename = void>
 struct is_invocable_impl : std::false_type {
 };
 template <template <typename F, typename... Args> class Holder, typename F, typename... Args>
-struct is_invocable_impl<Holder<F, Args...>> : std::is_invocable<F, Args...>{
+struct is_invocable_impl<Holder<F, Args...>> : std::is_invocable<F, Args...> {
 };
 #else
 template <typename Holder, typename = void>
@@ -825,9 +825,8 @@ struct _holder_r {
 template <typename Holder, typename = void>
 struct is_invocable_r_impl : std::false_type {
 };
-template <template <typename R, typename F, typename... Args> class Holder, typename R, typename F,
-  typename... Args>
-  struct is_invocable_r_impl<Holder<R, F, Args...>> : std::is_invocable_r<R, F, Args...> {
+template <template <typename R, typename F, typename... Args> class Holder, typename R, typename F, typename... Args>
+struct is_invocable_r_impl<Holder<R, F, Args...>> : std::is_invocable_r<R, F, Args...> {
 };
 #else
 template <typename Holder, typename Valid = void, typename = void>
@@ -846,9 +845,8 @@ struct is_invocable_r_impl<Holder<R, F, Args...>, Valid,
 template <typename Holder, typename = void>
 struct is_nothrow_invocable_r_impl : std::false_type {
 };
-template <template <typename R, typename F, typename... Args> class Holder, typename R, typename F,
-  typename... Args>
-  struct is_nothrow_invocable_r_impl<Holder<R, F, Args...>> : std::is_nothrow_invocable_r<R, F, Args...> {
+template <template <typename R, typename F, typename... Args> class Holder, typename R, typename F, typename... Args>
+struct is_nothrow_invocable_r_impl<Holder<R, F, Args...>> : std::is_nothrow_invocable_r<R, F, Args...> {
 };
 #else
 template <typename Holder, typename Valid = void, typename = void>
@@ -856,8 +854,8 @@ struct is_nothrow_invocable_r_impl : std::false_type {
 };
 template <template <typename R, typename F, typename... Args> class Holder, typename Valid, typename R, typename F,
           typename... Args>
-struct is_nothrow_invocable_r_impl<Holder<R, F, Args...>, Valid,
-                                   std::enable_if_t<std::is_convertible_v<R, cpt::helpers::invoke_result_t<F, Args...>>>>
+struct is_nothrow_invocable_r_impl<
+  Holder<R, F, Args...>, Valid, std::enable_if_t<std::is_convertible_v<R, cpt::helpers::invoke_result_t<F, Args...>>>>
   : is_nothrow_invocable_impl<_holder<F, Args...>, Valid> {
 };
 #endif

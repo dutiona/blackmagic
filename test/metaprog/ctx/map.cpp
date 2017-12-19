@@ -1,14 +1,14 @@
-#include <gtest/gtest.h>
-
-#include "../../../include/metaprog/ctx/ctx.hpp"
+#include <metaprog/ctx/ctx.hpp>
 
 #include <string_view>
 
-using namespace ctx::literals;
+#include <gtest/gtest.h>
+
+using namespace std::literals;
 
 TEST(Ctx_Map, basic_indexing)
 {
-  ctx::map<ctx::string, bool> m;
-  m["test"_s] = true;
-  ASSERT_TRUE(m.at("test"_s));
+  ctx::map<std::string_view, bool> m;
+  m["test"sv] = true;
+  ASSERT_TRUE(m.at("test"sv));
 }
