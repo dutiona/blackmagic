@@ -81,11 +81,11 @@ TEST(Cpt_Layout, trivial)
 }
 
 struct standard_layout {
-  void* v_;
+  void* v;
 };
 
 struct non_standard_layout_ref {
-  int& v_;
+  int& v;
 };
 
 struct non_standard_layout_virtual {
@@ -100,7 +100,7 @@ private:
 };
 
 struct non_standard_layout_private {
-  int j_;
+  int j;
 
 private:
   int i_;
