@@ -47,9 +47,7 @@ TEST(Cpt_Utility, address_of)
   ASSERT_TRUE((cpt::check<concepts::address_of, address_of_test>()));
   ASSERT_TRUE((cpt::check<concepts::address_of, decltype(*a)>()));
   ASSERT_TRUE((cpt::check<concepts::address_of, decltype(c)>()));
-#ifdef _MSC_VER // TODO remove when reported bug is fixed
-  ASSERT_TRUE((cpt::check<concepts::address_of, no_operator_test>()));
-#else
+#ifndef _MSC_VER // TODO remove when reported bug is fixed
   ASSERT_FALSE((cpt::check<concepts::address_of, no_operator_test>()));
 #endif
   ASSERT_FALSE((cpt::check<concepts::address_of, decltype(a)>()));
