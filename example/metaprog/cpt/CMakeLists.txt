@@ -1,1 +1,1 @@
-add_example(cpt_empty "empty.cpp")
+add_example(cpt_custom "custom.cpp")
