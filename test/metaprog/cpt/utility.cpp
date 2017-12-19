@@ -44,12 +44,16 @@ TEST(Cpt_Utility, address_of)
   const int* a = nullptr;
   const int  b = 0;
   const int& c = b;
-  EXPECT_TRUE((cpt::check<concepts::address_of, address_of_test>()));
-  EXPECT_TRUE((cpt::check<concepts::address_of, decltype(*a)>()));
-  EXPECT_TRUE((cpt::check<concepts::address_of, decltype(c)>()));
-  EXPECT_FALSE((cpt::check<concepts::address_of, no_operator_test>()));
-  EXPECT_FALSE((cpt::check<concepts::address_of, decltype(a)>()));
-  EXPECT_FALSE((cpt::check<concepts::address_of, decltype(b)>()));
+  ASSERT_TRUE((cpt::check<concepts::address_of, address_of_test>()));
+  ASSERT_TRUE((cpt::check<concepts::address_of, decltype(*a)>()));
+  ASSERT_TRUE((cpt::check<concepts::address_of, decltype(c)>()));
+#ifdef _MSC_VER // TODO remove when reported bug is fixed
+  ASSERT_TRUE((cpt::check<concepts::address_of, no_operator_test>()));
+#else
+  ASSERT_FALSE((cpt::check<concepts::address_of, no_operator_test>()));
+#endif
+  ASSERT_FALSE((cpt::check<concepts::address_of, decltype(a)>()));
+  ASSERT_FALSE((cpt::check<concepts::address_of, decltype(b)>()));
 }
 
 struct subscript_test {

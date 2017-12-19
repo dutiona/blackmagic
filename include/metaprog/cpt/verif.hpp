@@ -4,12 +4,9 @@
 #define METAPROG_CPT_VERIF_HPP_
 
 #include "../ctx/ctx.hpp"
-#include "cpt.hpp"
 
-#include <iostream>
 #include <stdexcept>
 #include <tuple>
-#include <typeinfo>
 #include <utility>
 
 namespace cpt {
@@ -39,38 +36,12 @@ struct concept_checker {
   }
 };
 
-// Quick require via helper function
-template <typename Concept, typename... Args>
-constexpr void require()
-{
-  concept_checker<Concept>{}.template require<Args...>();
-}
-
-// Quick check via helper function
-template <typename Concept, typename... Args>
-constexpr bool check()
-{
-  return concept_checker<Concept>{}.template check<Args...>();
-}
-
-template <typename Concept>
+template <typename Concept> // TODO/FIXME use ctx::string as key when impl is confirmed to work on MSVC...
 // using concept_item_t = ctx::pair<ctx::string, concept_checker<Concept>>;
 using concept_item_t = ctx::pair<int, concept_checker<Concept>>;
 
-template <typename Concept>
-constexpr decltype(auto) make_concept_item(int /*ctx::string*/ s)
-{
-  return ctx::make_pair(s, concept_checker<Concept>{});
-};
-
 template <typename... Concepts>
 using concept_map_t = std::tuple<concept_item_t<Concepts>...>;
-
-template <typename... Concepts>
-constexpr decltype(auto) make_concept_map(concept_item_t<Concepts>... concept_items)
-{
-  return std::make_tuple(concept_items...);
-}
 
 namespace details {
 
@@ -109,8 +80,8 @@ constexpr bool check_map_impl(concept_map_t<Concepts...> concept_map, std::index
 }
 
 template <typename... Args, typename... Concepts, size_t... I>
-constexpr bool check_map_at_impl([[maybe_unused]] concept_map_t<Concepts...> concept_map,
-                                 [[maybe_unused]] int /*ctx::string*/        index, std::index_sequence<I...>)
+constexpr bool check_map_at_impl(concept_map_t<Concepts...> concept_map, int /*ctx::string*/ index,
+                                 std::index_sequence<I...>)
 {
   const auto check_if = [index](auto cpt) {
     if (cpt.first == index) {
@@ -122,6 +93,33 @@ constexpr bool check_map_at_impl([[maybe_unused]] concept_map_t<Concepts...> con
 }
 
 } // namespace details
+
+// Quick require via helper function
+template <typename Concept, typename... Args>
+constexpr void require()
+{
+  concept_checker<Concept>{}.template require<Args...>();
+}
+
+// Quick check via helper function
+template <typename Concept, typename... Args>
+constexpr bool check()
+{
+  return concept_checker<Concept>{}.template check<Args...>();
+}
+
+// helpers functions
+template <typename Concept>
+constexpr decltype(auto) make_concept_item(int /*ctx::string*/ s)
+{
+  return ctx::make_pair(s, concept_checker<Concept>{});
+};
+
+template <typename... Concepts>
+constexpr decltype(auto) make_concept_map(concept_item_t<Concepts>... concept_items)
+{
+  return std::make_tuple(concept_items...);
+}
 
 // require map functions
 template <typename... Args, typename... Concepts>
