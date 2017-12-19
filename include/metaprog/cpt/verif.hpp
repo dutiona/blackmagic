@@ -56,6 +56,7 @@ constexpr bool all_of(T b, Ts... bools)
 {
   return b && all_of(bools...);
 }
+
 template <typename... Args, typename... Concepts, size_t... I>
 constexpr void require_map_impl(concept_map_t<Concepts...> concept_map, std::index_sequence<I...>)
 {
