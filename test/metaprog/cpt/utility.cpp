@@ -1378,8 +1378,8 @@ TEST(Cpt_Utility, invocable)
   EXPECT_TRUE((cpt::check<concepts::invocable_r, int, decltype(invocable_r_test)>()));
   EXPECT_TRUE((cpt::check<concepts::invocable, decltype(invocable_r_double_test), double>()));
   EXPECT_TRUE((cpt::check<concepts::invocable_r, int, decltype(invocable_r_double_test), double>()));
+  EXPECT_TRUE((cpt::check<concepts::invocable_r, double, decltype(invocable_r_double_test), double>()));
   EXPECT_FALSE((cpt::check<concepts::invocable, decltype(invocable_r_double_test)>()));
-  EXPECT_FALSE((cpt::check<concepts::invocable_r, double, decltype(invocable_r_double_test), double>()));
   EXPECT_FALSE((cpt::check<concepts::invocable, decltype(invocable_r_double_test)>()));
   EXPECT_FALSE((cpt::check<concepts::invocable, decltype(a)>()));
 }
