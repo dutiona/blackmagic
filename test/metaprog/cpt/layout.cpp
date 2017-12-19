@@ -100,7 +100,6 @@ private:
 };
 
 struct non_standard_layout_private {
-public:
   int j_;
 
 private:
