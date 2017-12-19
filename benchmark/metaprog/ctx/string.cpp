@@ -2,7 +2,7 @@
 
 #ifdef _MSC_VER
 #pragma warning(push)
-#pragma warning(disable: 4141 ) // 'inline': used more than once
+#pragma warning(disable : 4141) // 'inline': used more than once
 #endif
 #include <benchmark/benchmark.h>
 #ifdef _MSC_VER

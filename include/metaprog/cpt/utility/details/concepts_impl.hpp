@@ -559,8 +559,8 @@ template <bool SilentFailure, typename Holder, typename = void>
 struct invocable_r_impl : std::false_type {
   static_assert(SilentFailure, "Holder<R, F, Args...> fails to model the invocable_r concept.");
 };
-template <bool SilentFailure, template <typename R, typename F, typename... Args> class Holder, typename R,
-          typename F, typename... Args>
+template <bool SilentFailure, template <typename R, typename F, typename... Args> class Holder, typename R, typename F,
+          typename... Args>
 struct invocable_r_impl<SilentFailure, Holder<R, F, Args...>,
                         std::enable_if_t<std::disjunction_v<traits::is_invocable_r<R, F, Args...>,
                                                             traits::is_nothrow_invocable_r<R, F, Args...>>>>

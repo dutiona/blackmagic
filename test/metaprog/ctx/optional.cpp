@@ -1,6 +1,6 @@
-#include <gtest/gtest.h>
+#include <metaprog/ctx/ctx.hpp>
 
-#include "../../../include/metaprog/ctx/ctx.hpp"
+#include <gtest/gtest.h>
 
 TEST(Ctx_Optional, always_true)
 {
