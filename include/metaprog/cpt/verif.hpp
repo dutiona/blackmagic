@@ -67,12 +67,12 @@ template <typename... Args, typename... Concepts, size_t... I>
 constexpr void require_map_at_impl(concept_map_t<Concepts...> concept_map, std::string_view index,
                                    std::index_sequence<I...>)
 {
-  const auto require_if = [index](auto cpt) {
+  const auto require_if = [](auto cpt, std::string_view index) {
     if (ctx::equal(cpt.first.cbegin(), cpt.first.cend(), index.cbegin(), index.cend())) {
-      cpt.second.require<Args...>();
+      cpt.second.template require<Args...>();
     }
   };
-  (require_if(std::get<I>(concept_map)), ...);
+  (require_if(std::get<I>(concept_map), index), ...);
 }
 
 template <typename... Args, typename... Concepts, size_t... I>
@@ -85,13 +85,13 @@ template <typename... Args, typename... Concepts, size_t... I>
 constexpr bool check_map_at_impl(concept_map_t<Concepts...> concept_map, std::string_view index,
                                  std::index_sequence<I...>)
 {
-  const auto check_if = [index](auto cpt) {
+  const auto check_if = [](auto cpt, std::string_view index) {
     if (ctx::equal(cpt.first.cbegin(), cpt.first.cend(), index.cbegin(), index.cend())) {
-      return cpt.second.check<Args...>();
+      return cpt.second.template check<Args...>();
     }
     return true;
   };
-  return all_of(check_if(std::get<I>(concept_map))...);
+  return all_of(check_if(std::get<I>(concept_map), index)...);
 }
 
 } // namespace details
@@ -113,7 +113,7 @@ template <typename Concept>
 constexpr decltype(auto) make_concept_item(std::string_view s)
 {
   return std::make_pair(s, concept_checker<Concept>{});
-};
+}
 template <typename... Concepts>
 constexpr decltype(auto) make_concept_map(concept_item_t<Concepts>... concept_items)
 {

@@ -33,20 +33,6 @@
             "group": "build"
         },
         {
-            "label": "copy-cdb-to-workspaceRoot",
-            "type": "shell",
-            "dependsOn": "configure-with-cdb",
-            "options": {
-                "cwd": "${workspaceRoot}/build"
-            },
-            "args": [
-                "compile_commands.json",
-                ".."
-            ],
-            "command": "cp",
-            "group": "build"
-        },
-        {
             "label": "build-debug-all",
             "type": "shell",
             "options": {
@@ -59,9 +45,7 @@
                 "--target",
                 "check",
                 "--config",
-                "Debug",
-                "--",
-                "-j6"
+                "Debug"
             ],
             "command": "cmake",
             "group": {
@@ -94,11 +78,95 @@
                 "--target",
                 "check",
                 "--config",
-                "Release",
-                "--",
-                "-j6"
+                "Release"
             ],
             "command": "cmake",
+            "group": "build",
+            "problemMatcher": {
+                "owner": "cpp",
+                "fileLocation": "absolute",
+                "pattern": {
+                    "regexp": "^(.*):(\\d+):(\\d+):\\s+(warning|error|note|info):\\s+(.*)$",
+                    "file": 1,
+                    "line": 2,
+                    "column": 3,
+                    "severity": 4,
+                    "message": 5
+                }
+            }
+        },
+        {
+            "label": "configure-gcc-with-cdb",
+            "type": "shell",
+            "options": {
+                "cwd": "${workspaceRoot}/build-gcc",
+                "env": {
+                    "CC": "gcc-7",
+                    "CXX": "gcc-7",
+                }
+            },
+            "args": [
+                "cmake",
+                "-G",
+                "Ninja",
+                "..",
+                "-DCMAKE_EXPORT_COMPILE_COMMANDS=ON"
+            ],
+            // needs to remove /opt/local/bin from PATH...
+            "command": "PATH=/opt/local/libexec/gnubin:/opt/local/sbin:/opt/local/libexec/gnubin:/opt/local/sbin:/usr/bin:/bin:/usr/sbin:/sbin:/usr/local/bin:/Library/TeX/texbin:/usr/local/share/dotnet:/opt/X11/bin:/Library/Frameworks/Mono.framework/Versions/Current/Commands:/usr/local/git/bin:/Users/dutiona/.dotfiles/bin:/Users/dutiona/.local/bin:/Users/dutiona/.local/sbin",
+            "group": "build"
+        },
+        {
+            "label": "build-gcc-debug-all",
+            "type": "shell",
+            "options": {
+                "cwd": "${workspaceRoot}/build-gcc"
+            },
+            "dependsOn": "configure-gcc-with-cdb",
+            "args": [
+                "cmake",
+                "--build",
+                ".",
+                "--target",
+                "check",
+                "--config",
+                "Debug"
+            ],
+            "command": "PATH=/opt/local/libexec/gnubin:/opt/local/sbin:/opt/local/libexec/gnubin:/opt/local/sbin:/usr/bin:/bin:/usr/sbin:/sbin:/usr/local/bin:/Library/TeX/texbin:/usr/local/share/dotnet:/opt/X11/bin:/Library/Frameworks/Mono.framework/Versions/Current/Commands:/usr/local/git/bin:/Users/dutiona/.dotfiles/bin:/Users/dutiona/.local/bin:/Users/dutiona/.local/sbin",
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            },
+            "problemMatcher": {
+                "owner": "cpp",
+                "fileLocation": "absolute",
+                "pattern": {
+                    "regexp": "^(.*):(\\d+):(\\d+):\\s+(warning|error|note|info):\\s+(.*)$",
+                    "file": 1,
+                    "line": 2,
+                    "column": 3,
+                    "severity": 4,
+                    "message": 5
+                }
+            }
+        },
+        {
+            "label": "build-gcc-release-all",
+            "type": "shell",
+            "options": {
+                "cwd": "${workspaceRoot}/build-gcc"
+            },
+            "dependsOn": "configure-gcc-with-cdb",
+            "args": [
+                "cmake",
+                "--build",
+                ".",
+                "--target",
+                "check",
+                "--config",
+                "Release"
+            ],
+            "command": "PATH=/opt/local/libexec/gnubin:/opt/local/sbin:/opt/local/libexec/gnubin:/opt/local/sbin:/usr/bin:/bin:/usr/sbin:/sbin:/usr/local/bin:/Library/TeX/texbin:/usr/local/share/dotnet:/opt/X11/bin:/Library/Frameworks/Mono.framework/Versions/Current/Commands:/usr/local/git/bin:/Users/dutiona/.dotfiles/bin:/Users/dutiona/.local/bin:/Users/dutiona/.local/sbin",
             "group": "build",
             "problemMatcher": {
                 "owner": "cpp",

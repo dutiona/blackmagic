@@ -17,6 +17,7 @@ endif(MSVC)
 
 add_library(Metaprog INTERFACE)
 target_compile_features(Metaprog INTERFACE cxx_std_17)
+# target_link_libraries(Metaprog INTERFACE stdc++) # gcc for mac needs -lstdc++
 target_include_directories(Metaprog INTERFACE ${CONCEPTS_INCLUDE_DIR})
 
 
@@ -27,7 +28,8 @@ if(MSVC)
     # Clang/C2
 	# add_compile_options(-Wall -Werror -pedantic -std=c++1z)
 else(MSVC)
-    add_compile_options(-Wall -Wextra -Werror -pedantic -std=c++1z)
+	add_compile_options(-Wall -Wextra -Werror -pedantic -std=c++1z)
+	# add_compile_options(-Wall -Wextra -Werror -pedantic -std=c++17)
 endif(MSVC)
 
 install(DIRECTORY include DESTINATION include FILES_MATCHING PATTERN "*.hpp")
