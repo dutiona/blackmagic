@@ -1,5 +1,25 @@
 {
-    "cquery.launch.workingDirectory": "/Users/dutiona/Dev/vendor/cquery/build",
-    "cquery.cacheDirectory": "/Users/dutiona/Dev/LRDE/concepts/.vscode/cquery_cached_index/",
-    "cSpell.language": "en"
+    "cSpell.enabledLanguageIds": [
+        "c",
+        "cpp",
+        "csharp",
+        "go",
+        "handlebars",
+        "javascript",
+        "javascriptreact",
+        "json",
+        "markdown",
+        "php",
+        "plaintext",
+        "python",
+        "restructuredtext",
+        "text",
+        "typescript",
+        "typescriptreact",
+        "yml"
+    ],
+    "cSpell.language": "en,en-GB,en-US,fr-FR,fr",
+    "cSpell.enabled": true,
+    "cquery.cacheDirectory": "${workspaceFolder}/.vscode/cquery_cached_index/",
+    "cquery.launch.workingDirectory": "/Users/dutiona/Dev/vendor/cquery/build"
 }
