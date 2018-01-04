@@ -26,10 +26,10 @@ if(MSVC)
 	# MSVC
 	add_compile_options(/W4 /WX /permissive- /std:c++17)
     # Clang/C2
-	# add_compile_options(-Wall -Werror -pedantic -std=c++1z)
+	# add_compile_options(-Wall -Werror -pedantic)
 else(MSVC)
-	add_compile_options(-Wall -Wextra -Werror -pedantic -std=c++1z)
-	# add_compile_options(-Wall -Wextra -Werror -pedantic -std=c++17)
+	add_compile_options(-Wall -Wextra -Werror -pedantic)
+	# add_compile_options(-Wall -Wextra -Werror -pedantic)
 endif(MSVC)
 
 install(DIRECTORY include DESTINATION include FILES_MATCHING PATTERN "*.hpp")

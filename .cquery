@@ -1,0 +1,15 @@
+# Driver
+/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++
+
+# Language
+-xc++
+-std=gnu++1z
+-Wall
+-Wextra
+-Werror
+-pedantic
+
+# Includes
+-I../include
+-isystem /usr/local/include
+-isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.13.sdk
