@@ -1380,8 +1380,14 @@ TEST(Cpt_Utility, invocable)
   EXPECT_TRUE((cpt::check<concepts::invocable, decltype(invocable_r_double_test), double>()));
   EXPECT_TRUE((cpt::check<concepts::invocable_r, int, decltype(invocable_r_double_test), double>()));
   EXPECT_TRUE((cpt::check<concepts::invocable_r, double, decltype(invocable_r_double_test), double>()));
+  EXPECT_TRUE((cpt::check<concepts::invocable, invocable_functor_test, int, double>()));
+  EXPECT_TRUE((cpt::check<concepts::invocable, invocable_r_functor_test, int, double>()));
+  EXPECT_TRUE((cpt::check<concepts::invocable_r, std::tuple<int, double>, invocable_r_functor_test, int, double>()));
+  EXPECT_TRUE((cpt::check<concepts::invocable_r, std::tuple<double, double>, invocable_r_functor_test, int, double>()));
   EXPECT_FALSE((cpt::check<concepts::invocable_r, std::vector<double>, decltype(invocable_r_double_test), double>()));
   EXPECT_FALSE((cpt::check<concepts::invocable, decltype(invocable_r_double_test)>()));
   EXPECT_FALSE((cpt::check<concepts::invocable, decltype(invocable_r_double_test)>()));
   EXPECT_FALSE((cpt::check<concepts::invocable, decltype(a)>()));
+  EXPECT_FALSE((cpt::check<concepts::invocable, invocable_r_functor_test, std::vector<double>>()));
+  EXPECT_FALSE((cpt::check<concepts::invocable_r, int, invocable_functor_test, int, double>()));
 }
