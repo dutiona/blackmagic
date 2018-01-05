@@ -4,7 +4,6 @@
 #define METAPROG_CPT_CUSTOM_HPP_
 
 #include <type_traits>
-#include <utility>
 
 namespace cpt {
 
@@ -34,6 +33,7 @@ struct custom_concept {
   template <bool SilentFailure, typename... Parameters>
   static constexpr bool value = type<SilentFailure, Parameters...>::value;
 };
+
 
 } // namespace cpt
 
