@@ -96,6 +96,35 @@ constexpr auto pixel_concept = cpt::make_concept_map(
   pixel_concept_traits::has_method_val_predicate_concept, pixel_concept_traits::has_method_point_predicate_concept,
   pixel_concept_traits::has_method_site_predicate_concept, pixel_concept_traits::has_method_image_predicate_concept);
 
+namespace concept_diagnostic_traits {
+
+template <typename PixelType>
+constexpr void diagnostic(decltype(pixel_concept))
+{
+  static_assert(cpt::check<PixelType>(pixel_concept_traits::value_type_concept), "value_type_concept");
+  static_assert(cpt::check<PixelType>(pixel_concept_traits::reference_concept), "reference_concept");
+  static_assert(cpt::check<PixelType>(pixel_concept_traits::point_type_concept), "point_type_concept");
+  static_assert(cpt::check<PixelType>(pixel_concept_traits::site_type_concept), "site_type_concept");
+  static_assert(cpt::check<PixelType>(pixel_concept_traits::image_type_concept), "image_type_concept");
+
+  static_assert(cpt::check<PixelType>(pixel_concept_traits::point_type_is_site_type_predicate_concept),
+                "point_type_is_site_type_predicate_concept");
+  static_assert(cpt::check<PixelType>(pixel_concept_traits::value_type_is_not_a_reference_predicate_concept),
+                "value_type_is_not_a_reference_predicate_concept");
+
+  static_assert(cpt::check<PixelType>(pixel_concept_traits::has_method_val_predicate_concept),
+                "has_method_val_predicate_concept");
+  static_assert(cpt::check<PixelType>(pixel_concept_traits::has_method_point_predicate_concept),
+                "has_method_point_predicate_concept");
+  static_assert(cpt::check<PixelType>(pixel_concept_traits::has_method_site_predicate_concept),
+                "has_method_site_predicate_concept");
+  static_assert(cpt::check<PixelType>(pixel_concept_traits::has_method_image_predicate_concept),
+                "has_method_image_predicate_concept");
+}
+
+} // namespace concept_diagnostic_traits
+
+
 struct MyPixel {
   using value_type = int;
   using reference  = int&;
@@ -122,10 +151,15 @@ struct MyBadPixel {
   image_type image();
 };
 
-static_assert(cpt::check_map<MyPixel>(pixel_concept), "Check concept map for MyPixel");
-static_assert(!cpt::check_map<MyBadPixel>(pixel_concept), "Check concept map for MyBadPixel");
 
 int main()
 {
+  if constexpr (!cpt::check_map<MyPixel>(pixel_concept)) {
+    DIAGNOSTIC(pixel_concept, MyPixel);
+  }
+  if constexpr (!cpt::check_map<MyBadPixel>(pixel_concept)) {
+    DIAGNOSTIC(pixel_concept, MyBadPixel);
+  }
+
   return 0;
 }
