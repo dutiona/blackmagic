@@ -144,6 +144,22 @@ constexpr bool check_map_at(concept_map_t<Concepts...> concept_map, std::string_
   return details::check_map_at_impl<Args...>(concept_map, index, std::make_index_sequence<sizeof...(Concepts)>{});
 }
 
+// Merge maps functions
+template <typename... ConceptLhs, typename... ConceptRhs>
+constexpr auto merge_maps(concept_map_t<ConceptLhs...> map_lhs, concept_map_t<ConceptRhs...> map_rhs) {
+  return std::tuple_cat(map_lhs, map_rhs);
+}
+
+template <typename ConceptMap>
+constexpr auto merge_all_maps(ConceptMap concept_map) {
+  return concept_map;
+}
+
+template <typename ConceptMap, typename... ConceptMaps>
+constexpr auto merge_all_maps(ConceptMap map, ConceptMaps... concept_maps) {
+  return merge_maps(map, merge_all_maps(concept_maps...));
+}
+
 } // namespace cpt
 
 #endif // METAPROG_CPT_VERIF_HPP_
