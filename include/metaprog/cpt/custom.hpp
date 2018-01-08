@@ -46,10 +46,10 @@ struct make_custom_concept_from_construct {
   static constexpr bool value = type<SilentFailure, Parameters...>::value;
 };
 
-template <template <typename...> class Constraint>
+template <template <typename...> class Predicate>
 struct make_custom_concept_from_predicate {
   template <bool SilentFailure, typename... Parameters>
-  using type = details::make_custom_concept_from_predicate_impl<SilentFailure, Constraint,
+  using type = details::make_custom_concept_from_predicate_impl<SilentFailure, Predicate,
                                                                 details::_parameters_pack<Parameters...>>;
   template <bool SilentFailure, typename... Parameters>
   using underlying_type = typename type<SilentFailure, Parameters...>::type;
