@@ -96,7 +96,7 @@ constexpr bool check_map_at_impl(concept_map_t<Concepts...> concept_map, std::st
 
 } // namespace details
 
-// Quick check/require via helper function
+// Quick check/require a concept via helper function
 template <typename Concept, typename... Args>
 constexpr void require()
 {
@@ -108,11 +108,23 @@ constexpr bool check()
   return concept_checker<Concept>{}.template check<Args...>();
 }
 
+// Quick check/require an item via helper function
+template <typename... Args, typename Concept>
+constexpr void require(concept_item_t<Concept> concept_item)
+{
+  concept_item.second.template require<Args...>();
+}
+template <typename... Args, typename Concept>
+constexpr bool check(concept_item_t<Concept> concept_item)
+{
+  return concept_item.second.template check<Args...>();
+}
+
 // helpers functions
 template <typename Concept>
-constexpr decltype(auto) make_concept_item(std::string_view s)
+constexpr decltype(auto) make_concept_item(std::string_view concept_name)
 {
-  return std::make_pair(s, concept_checker<Concept>{});
+  return std::make_pair(concept_name, concept_checker<Concept>{});
 }
 template <typename... Concepts>
 constexpr decltype(auto) make_concept_map(concept_item_t<Concepts>... concept_items)
@@ -127,9 +139,9 @@ constexpr void require_map(concept_map_t<Concepts...> concept_map)
   details::require_map_impl<Args...>(concept_map, std::make_index_sequence<sizeof...(Concepts)>{});
 }
 template <typename... Args, typename... Concepts>
-constexpr void require_map_at(concept_map_t<Concepts...> concept_map, std::string_view index)
+constexpr void require_map_at(concept_map_t<Concepts...> concept_map, std::string_view concept_name)
 {
-  details::require_map_at_impl<Args...>(concept_map, index, std::make_index_sequence<sizeof...(Concepts)>{});
+  details::require_map_at_impl<Args...>(concept_map, concept_name, std::make_index_sequence<sizeof...(Concepts)>{});
 }
 
 // check map functions
@@ -139,9 +151,9 @@ constexpr bool check_map(concept_map_t<Concepts...> concept_map)
   return details::check_map_impl<Args...>(concept_map, std::make_index_sequence<sizeof...(Concepts)>{});
 }
 template <typename... Args, typename... Concepts>
-constexpr bool check_map_at(concept_map_t<Concepts...> concept_map, std::string_view index)
+constexpr bool check_map_at(concept_map_t<Concepts...> concept_map, std::string_view concept_name)
 {
-  return details::check_map_at_impl<Args...>(concept_map, index, std::make_index_sequence<sizeof...(Concepts)>{});
+  return details::check_map_at_impl<Args...>(concept_map, concept_name, std::make_index_sequence<sizeof...(Concepts)>{});
 }
 
 // Merge maps functions
@@ -158,6 +170,16 @@ constexpr auto merge_all_maps(ConceptMap concept_map) {
 template <typename ConceptMap, typename... ConceptMaps>
 constexpr auto merge_all_maps(ConceptMap map, ConceptMaps... concept_maps) {
   return merge_maps(map, merge_all_maps(concept_maps...));
+}
+
+// helpers for custom concepts
+template <template <typename...> class Constraint>
+constexpr auto make_custom_concept_item_from_construct(std::string_view concept_name) {
+  return cpt::make_concept_item<cpt::make_custom_concept_from_construct<Constraint>>(concept_name);
+}
+template <template <typename...> class Predicate>
+constexpr auto make_custom_concept_item_from_predicate(std::string_view concept_name) {
+  return cpt::make_concept_item<cpt::make_custom_concept_from_predicate<Predicate>>(concept_name);
 }
 
 } // namespace cpt
