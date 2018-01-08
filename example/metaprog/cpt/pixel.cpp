@@ -7,14 +7,18 @@ namespace pixel_concept_traits {
 
 template <typename PixelType>
 using has_value_type = typename PixelType::value_type;
+using has_value_type_concept = cpt::make_custom_concept_from_construct<has_value_type>;
 constexpr auto value_type_concept_item =
-  cpt::make_concept_item<cpt::custom_concept_construct<has_value_type>>("value_type_concept"sv);
+  cpt::make_concept_item<has_value_type_concept>("value_type_concept"sv);
 
-template <typename PixelType>
-using has_getV = cpt::traits::is_invocable_r<typename PixelType::value_type, decltype(&PixelType::getV), PixelType>;
+template<typename PixelType>
+using has_getV_predicate = cpt::make_predicate<
+  cpt::make_condition<cpt::check<has_value_type_concept, PixelType>()>,
+  cpt::make_condition<cpt::check<cpt::concepts::invocable_r, typename PixelType::value_type, decltype(&PixelType::getV), PixelType>()>
+>;
+
 constexpr auto getV_concept_item =
-  cpt::make_concept_item<cpt::custom_concept_predicate<has_getV>>("has_getV_concept"sv);
-
+  cpt::make_concept_item<cpt::make_custom_concept_from_predicate<has_getV_predicate>>("has_getV_concept"sv);
 
 } // namespace pixel_concept_traits
 
