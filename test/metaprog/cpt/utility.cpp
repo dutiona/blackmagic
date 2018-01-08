@@ -1324,7 +1324,7 @@ TEST(Cpt_Utility, comma)
 {
   comma_restrict_test{}, comma_restrict_test::rhs{};
   ASSERT_FALSE((cpt::check<concepts::comma, comma_restrict_test, int>()));
-  ASSERT_TRUE((cpt::check<concepts::comma, comma_restrict_test, comma_restrict_test::rhs>) );
+  ASSERT_TRUE((cpt::check<concepts::comma, comma_restrict_test, comma_restrict_test::rhs>()));
   ASSERT_TRUE((cpt::check<concepts::comma, no_operator_test, int>()));
 }
 
