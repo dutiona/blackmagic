@@ -1370,6 +1370,19 @@ struct invocable_r_functor_test {
   }
 };
 
+struct invocable_nested_functor_test {
+  void test(int, double)
+  {
+  }
+};
+
+struct invocable_nested_r_functor_test {
+  std::tuple<int, double> test(int, double)
+  {
+    return {0, 0.};
+  }
+};
+
 TEST(Cpt_Utility, invocable)
 {
   static const auto a = 1.5;
@@ -1384,6 +1397,13 @@ TEST(Cpt_Utility, invocable)
   EXPECT_TRUE((cpt::check<concepts::invocable, invocable_r_functor_test, int, double>()));
   EXPECT_TRUE((cpt::check<concepts::invocable_r, std::tuple<int, double>, invocable_r_functor_test, int, double>()));
   EXPECT_TRUE((cpt::check<concepts::invocable_r, std::tuple<double, double>, invocable_r_functor_test, int, double>()));
+  EXPECT_TRUE((cpt::check<concepts::invocable, decltype(&invocable_nested_functor_test::test),
+                          invocable_nested_functor_test, int, double>()));
+  EXPECT_TRUE((cpt::check<concepts::invocable, decltype(&invocable_nested_r_functor_test::test),
+                          invocable_nested_r_functor_test, int, double>()));
+  EXPECT_TRUE(
+    (cpt::check<concepts::invocable_r, std::tuple<double, double>, decltype(&invocable_nested_r_functor_test::test),
+                invocable_nested_r_functor_test, int, double>()));
   EXPECT_FALSE((cpt::check<concepts::invocable_r, std::vector<double>, decltype(invocable_r_double_test), double>()));
   EXPECT_FALSE((cpt::check<concepts::invocable, decltype(invocable_r_double_test)>()));
   EXPECT_FALSE((cpt::check<concepts::invocable, decltype(invocable_r_double_test)>()));
