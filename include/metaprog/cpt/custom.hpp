@@ -14,7 +14,7 @@ struct _parameters_pack {
 
 template <bool SilentFailure, template <typename...> class Constraint, typename Holder, typename = void>
 struct make_custom_concept_from_construct_impl : std::false_type {
-  static_assert(SilentFailure, "Custom concept failed");
+  static_assert(SilentFailure, "Concept failed");
 };
 
 template <bool SilentFailure, template <typename...> class Constraint, template <typename...> class ParametersPack,
@@ -25,7 +25,7 @@ struct make_custom_concept_from_construct_impl<SilentFailure, Constraint, Parame
 
 template <bool SilentFailure, template <typename...> class Predicate, typename Holder, typename = void>
 struct make_custom_concept_from_predicate_impl : std::false_type {
-  static_assert(SilentFailure, "Custom concept failed");
+  static_assert(SilentFailure, "Concept failed");
 };
 
 template <bool SilentFailure, template <typename...> class Predicate, template <typename...> class ParametersPack,
