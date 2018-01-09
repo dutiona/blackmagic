@@ -16,37 +16,24 @@
 
 #include "details/concepts_impl.hpp"
 
+#include "../verif.hpp"
+
+#include <string_view>
+
 namespace cpt { namespace concepts { namespace layout {
 
+using namespace std::literals;
+
 // trivially copyable
-struct trivially_copyable {
-  template <bool SilentFailure, typename T>
-  using type = details::trivially_copyable_impl<SilentFailure, T>;
-  template <bool SilentFailure, typename T>
-  using underlying_type = typename type<SilentFailure, T>::type;
-  template <bool SilentFailure, typename T>
-  static constexpr bool value = type<SilentFailure, T>::value;
-};
+inline constexpr auto trivially_copyable =
+  make_custom_concept_item_from_predicate<details::trivially_copyable_impl>("trivially_copyable"sv);
 
 // trivial
-struct trivial {
-  template <bool SilentFailure, typename T>
-  using type = details::trivial_impl<SilentFailure, T>;
-  template <bool SilentFailure, typename T>
-  using underlying_type = typename type<SilentFailure, T>::type;
-  template <bool SilentFailure, typename T>
-  static constexpr bool value = type<SilentFailure, T>::value;
-};
+inline constexpr auto trivial = make_custom_concept_item_from_predicate<details::trivial_impl>("trivial"sv);
 
 // standard layout
-struct standard_layout {
-  template <bool SilentFailure, typename T>
-  using type = details::standard_layout_impl<SilentFailure, T>;
-  template <bool SilentFailure, typename T>
-  using underlying_type = typename type<SilentFailure, T>::type;
-  template <bool SilentFailure, typename T>
-  static constexpr bool value = type<SilentFailure, T>::value;
-};
+inline constexpr auto standard_layout =
+  make_custom_concept_item_from_predicate<details::standard_layout_impl>("standard_layout"sv);
 
 }}} // namespace cpt::concepts::layout
 
