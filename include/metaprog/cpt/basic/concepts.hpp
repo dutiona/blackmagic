@@ -26,68 +26,36 @@
 
 #include "details/concepts_impl.hpp"
 
+#include "../verif.hpp"
+
+#include <string_view>
+
 namespace cpt { namespace concepts { namespace basic {
 
+using namespace std::literals;
+
 // default constructible
-struct default_constructible {
-  template <bool SilentFailure, typename T>
-  using type = details::default_constructible_impl<SilentFailure, T>;
-  template <bool SilentFailure, typename T>
-  using underlying_type = typename type<SilentFailure, T>::type;
-  template <bool SilentFailure, typename T>
-  static constexpr bool value = type<SilentFailure, T>::value;
-};
+inline constexpr auto default_constructible =
+  make_custom_concept_item_from_predicate<details::default_constructible_impl>("default_constructible"sv);
 
 // move constructible
-struct move_constructible {
-  template <bool SilentFailure, typename T>
-  using type = details::move_constructible_impl<SilentFailure, T>;
-  template <bool SilentFailure, typename T>
-  using underlying_type = typename type<SilentFailure, T>::type;
-  template <bool SilentFailure, typename T>
-  static constexpr bool value = type<SilentFailure, T>::value;
-};
+inline constexpr auto move_constructible =
+  make_custom_concept_item_from_predicate<details::move_constructible_impl>("move_constructible"sv);
 
 // copy constructible
-struct copy_constructible {
-  template <bool SilentFailure, typename T>
-  using type = details::copy_constructible_impl<SilentFailure, T>;
-  template <bool SilentFailure, typename T>
-  using underlying_type = typename type<SilentFailure, T>::type;
-  template <bool SilentFailure, typename T>
-  static constexpr bool value = type<SilentFailure, T>::value;
-};
-
+inline constexpr auto copy_constructible =
+  make_custom_concept_item_from_predicate<details::copy_constructible_impl>("copy_constructible"sv);
 
 // move assignable
-struct move_assignable {
-  template <bool SilentFailure, typename T>
-  using type = details::move_assignable_impl<SilentFailure, T>;
-  template <bool SilentFailure, typename T>
-  using underlying_type = typename type<SilentFailure, T>::type;
-  template <bool SilentFailure, typename T>
-  static constexpr bool value = type<SilentFailure, T>::value;
-};
+inline constexpr auto move_assignable =
+  make_custom_concept_item_from_predicate<details::move_assignable_impl>("move_assignable"sv);
 
 // copy assignable
-struct copy_assignable {
-  template <bool SilentFailure, typename T>
-  using type = details::copy_assignable_impl<SilentFailure, T>;
-  template <bool SilentFailure, typename T>
-  using underlying_type = typename type<SilentFailure, T>::type;
-  template <bool SilentFailure, typename T>
-  static constexpr bool value = type<SilentFailure, T>::value;
-};
+inline constexpr auto copy_assignable =
+  make_custom_concept_item_from_predicate<details::copy_assignable_impl>("copy_assignable"sv);
 
 // destructible
-struct destructible {
-  template <bool SilentFailure, typename T>
-  using type = details::destructible_impl<SilentFailure, T>;
-  template <bool SilentFailure, typename T>
-  using underlying_type = typename type<SilentFailure, T>::type;
-  template <bool SilentFailure, typename T>
-  static constexpr bool value = type<SilentFailure, T>::value;
-};
+inline constexpr auto destructible = make_custom_concept_item_from_predicate<details::destructible_impl>("destructible"sv);
 
 }}} // namespace cpt::concepts::basic
 
