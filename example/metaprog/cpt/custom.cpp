@@ -15,13 +15,13 @@ constexpr auto cpt_map = cpt::make_concept_map(concepts::default_constructible, 
 
 constexpr bool f() {
   cpt::require_map<default_constructible_test>(cpt_map);
-  cpt::require_map_at<default_constructible_test>(cpt_map, "test1"sv);
+  cpt::require_map_at<default_constructible_test>(cpt_map, "default_constructible"sv);
   return true;
 }
 
 static_assert(f(), "");
 static_assert(cpt::check_map<default_constructible_test>(cpt_map), "");
-static_assert(cpt::check_map_at<default_constructible_test>(cpt_map, "test2"sv), "");
+static_assert(cpt::check_map_at<default_constructible_test>(cpt_map, "destructible"sv), "");
 
 int main()
 {

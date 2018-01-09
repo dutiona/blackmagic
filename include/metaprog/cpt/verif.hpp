@@ -55,11 +55,21 @@ constexpr bool all_of(T b)
 {
   return b;
 }
-
 template <typename T, typename... Ts>
 constexpr bool all_of(T b, Ts... bools)
 {
   return b && all_of(bools...);
+}
+
+template <typename T>
+constexpr bool any_of(T b)
+{
+  return b;
+}
+template <typename T, typename... Ts>
+constexpr bool any_of(T b, Ts... bools)
+{
+  return b || any_of(bools...);
 }
 
 template <typename... Args, typename... Concepts, size_t... I>
@@ -72,12 +82,19 @@ template <typename... Args, typename... Concepts, size_t... I>
 constexpr void require_map_at_impl(concept_map_t<Concepts...> concept_map, std::string_view concept_name,
                                    std::index_sequence<I...>)
 {
-  const auto require_if = [](auto cpt, std::string_view concept_name) {
+  bool found = false;
+  constexpr auto require_if = [](bool& found, auto cpt, std::string_view concept_name) {
     if (ctx::equal(cpt.first.cbegin(), cpt.first.cend(), concept_name.cbegin(), concept_name.cend())) {
       cpt.second.template require<Args...>();
+      found = true;
     }
   };
-  (require_if(std::get<I>(concept_map), concept_name), ...);
+
+  (require_if(found, std::get<I>(concept_map), concept_name), ...);
+
+  if (!found) {
+    throw std::logic_error("This concept key doesn't exists in this concept map!");
+  }
 }
 
 template <typename... Args, typename... Concepts, size_t... I>
@@ -90,13 +107,22 @@ template <typename... Args, typename... Concepts, size_t... I>
 constexpr bool check_map_at_impl(concept_map_t<Concepts...> concept_map, std::string_view concept_name,
                                  std::index_sequence<I...>)
 {
-  const auto check_if = [](auto cpt, std::string_view concept_name) {
+  auto found    = false;
+  constexpr auto check_if = [](bool& found, auto cpt, std::string_view concept_name) -> bool {
     if (ctx::equal(cpt.first.cbegin(), cpt.first.cend(), concept_name.cbegin(), concept_name.cend())) {
+      found = true;
       return cpt.second.template check<Args...>();
     }
     return true;
   };
-  return all_of(check_if(std::get<I>(concept_map), concept_name)...);
+
+  const auto ret = all_of(check_if(found, std::get<I>(concept_map), concept_name)...);
+
+  if (!found) {
+    throw std::logic_error("This concept key doesn't exists in this concept map!");
+  }
+
+  return ret;
 }
 
 // Quick check/require a concept via helper function
