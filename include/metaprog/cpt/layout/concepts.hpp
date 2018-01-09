@@ -26,14 +26,14 @@ using namespace std::literals;
 
 // trivially copyable
 inline constexpr auto trivially_copyable =
-  make_custom_concept_item_from_predicate<details::trivially_copyable_impl>("trivially_copyable"sv);
+  make_concept_item_from_predicate<details::trivially_copyable_impl>("trivially_copyable"sv);
 
 // trivial
-inline constexpr auto trivial = make_custom_concept_item_from_predicate<details::trivial_impl>("trivial"sv);
+inline constexpr auto trivial = make_concept_item_from_predicate<details::trivial_impl>("trivial"sv);
 
 // standard layout
 inline constexpr auto standard_layout =
-  make_custom_concept_item_from_predicate<details::standard_layout_impl>("standard_layout"sv);
+  make_concept_item_from_predicate<details::standard_layout_impl>("standard_layout"sv);
 
 }}} // namespace cpt::concepts::layout
 

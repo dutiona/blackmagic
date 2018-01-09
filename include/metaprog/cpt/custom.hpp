@@ -8,38 +8,40 @@
 namespace cpt {
 
 namespace details {
+
 template <typename...>
 struct _parameters_pack {
 };
 
 template <bool SilentFailure, template <typename...> class Constraint, typename Holder, typename = void>
-struct make_custom_concept_from_construct_impl : std::false_type {
+struct make_concept_from_construct_impl : std::false_type {
   static_assert(SilentFailure, "Concept checking failed. Use diagnostic to have more detailed about the failure.");
 };
 
 template <bool SilentFailure, template <typename...> class Constraint, template <typename...> class ParametersPack,
           typename... Parameters>
-struct make_custom_concept_from_construct_impl<SilentFailure, Constraint, ParametersPack<Parameters...>,
-                                               std::void_t<Constraint<Parameters...>>> : std::true_type {
+struct make_concept_from_construct_impl<SilentFailure, Constraint, ParametersPack<Parameters...>,
+                                        std::void_t<Constraint<Parameters...>>> : std::true_type {
 };
 
 template <bool SilentFailure, template <typename...> class Predicate, typename Holder, typename = void>
-struct make_custom_concept_from_predicate_impl : std::false_type {
+struct make_concept_from_predicate_impl : std::false_type {
   static_assert(SilentFailure, "Concept checking failed. Use diagnostic to have more detailed about the failure.");
 };
 
 template <bool SilentFailure, template <typename...> class Predicate, template <typename...> class ParametersPack,
           typename... Parameters>
-struct make_custom_concept_from_predicate_impl<SilentFailure, Predicate, ParametersPack<Parameters...>,
-                                               std::enable_if_t<Predicate<Parameters...>::value>> : std::true_type {
+struct make_concept_from_predicate_impl<SilentFailure, Predicate, ParametersPack<Parameters...>,
+                                        std::enable_if_t<Predicate<Parameters...>::value>> : std::true_type {
 };
+
 } // namespace details
 
 template <template <typename...> class Constraint>
-struct make_custom_concept_from_construct {
+struct make_concept_from_construct {
   template <bool SilentFailure, typename... Parameters>
-  using type = details::make_custom_concept_from_construct_impl<SilentFailure, Constraint,
-                                                                details::_parameters_pack<Parameters...>>;
+  using type =
+    details::make_concept_from_construct_impl<SilentFailure, Constraint, details::_parameters_pack<Parameters...>>;
   template <bool SilentFailure, typename... Parameters>
   using underlying_type = typename type<SilentFailure, Parameters...>::type;
   template <bool SilentFailure, typename... Parameters>
@@ -47,10 +49,10 @@ struct make_custom_concept_from_construct {
 };
 
 template <template <typename...> class Predicate>
-struct make_custom_concept_from_predicate {
+struct make_concept_from_predicate {
   template <bool SilentFailure, typename... Parameters>
-  using type = details::make_custom_concept_from_predicate_impl<SilentFailure, Predicate,
-                                                                details::_parameters_pack<Parameters...>>;
+  using type =
+    details::make_concept_from_predicate_impl<SilentFailure, Predicate, details::_parameters_pack<Parameters...>>;
   template <bool SilentFailure, typename... Parameters>
   using underlying_type = typename type<SilentFailure, Parameters...>::type;
   template <bool SilentFailure, typename... Parameters>

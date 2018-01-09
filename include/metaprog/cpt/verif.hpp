@@ -3,8 +3,8 @@
 #ifndef METAPROG_CPT_VERIF_HPP_
 #define METAPROG_CPT_VERIF_HPP_
 
-#include "verif.hpp"
 #include "helpers.hpp"
+#include "verif.hpp"
 
 #include "../ctx/ctx.hpp"
 
@@ -15,7 +15,7 @@
 #include <utility>
 
 namespace cpt {
-
+namespace details {
 // Helper class storing a concept to perform a check later on
 template <typename Concept>
 struct concept_checker {
@@ -40,15 +40,15 @@ struct concept_checker {
     }
   }
 };
+} // namespace details
 
 template <typename Concept>
-using concept_item_t = std::pair<std::string_view, concept_checker<Concept>>;
+using concept_item_t = std::pair<std::string_view, details::concept_checker<Concept>>;
 
 template <typename... Concepts>
 using concept_map_t = std::tuple<concept_item_t<Concepts>...>;
 
 namespace details {
-
 // TODO/FIXME remove this once fold expression are implemented
 template <typename T>
 constexpr bool all_of(T b)
@@ -101,37 +101,38 @@ constexpr bool check_map_at_impl(concept_map_t<Concepts...> concept_map, std::st
 
 } // namespace details
 
+// TODO/FIXME deprecate those 2 functions and put them in details
 // Quick check/require a concept via helper function
 template <typename Concept, typename... Args>
 constexpr void require()
 {
-  concept_checker<Concept>{}.template require<Args...>();
+  details::concept_checker<Concept>{}.template require<Args...>();
 }
 
 template <typename Concept, typename... Args>
 constexpr bool check()
 {
-  return concept_checker<Concept>{}.template check<Args...>();
+  return details::concept_checker<Concept>{}.template check<Args...>();
 }
 
 // Quick check/require an item via helper function
 template <typename... Args, typename Concept>
-constexpr void require(concept_item_t<Concept> concept_item)
+constexpr void require(concept_item_t<Concept>)
 {
-  concept_item.second.template require<Args...>();
+  require<Concept, Args...>();
 }
 
 template <typename... Args, typename Concept>
-constexpr bool check(concept_item_t<Concept> concept_item)
+constexpr bool check(concept_item_t<Concept>)
 {
-  return concept_item.second.template check<Args...>();
+  return check<Concept, Args...>();
 }
 
 // helpers functions
 template <typename Concept>
 constexpr decltype(auto) make_concept_item(std::string_view concept_name)
 {
-  return std::make_pair(concept_name, concept_checker<Concept>{});
+  return std::make_pair(concept_name, details::concept_checker<Concept>{});
 }
 
 template <typename... Concepts>
@@ -160,6 +161,7 @@ constexpr bool check_map(concept_map_t<Concepts...> concept_map)
   return details::check_map_impl<Args...>(concept_map, std::make_index_sequence<sizeof...(Concepts)>{});
 }
 
+// TODO/FIXME this doesn't work... The result cannot be stored/used in a constexpr context...
 template <typename... Args, typename... Concepts>
 constexpr bool check_map_at(concept_map_t<Concepts...> concept_map, std::string_view concept_name)
 {
@@ -186,21 +188,22 @@ constexpr auto merge_all_maps(ConceptMap map, ConceptMaps... concept_maps)
   return merge_maps(map, merge_all_maps(concept_maps...));
 }
 
-// helpers for custom concepts
+// helpers for building concepts
 template <template <typename...> class Constraint>
-constexpr auto make_custom_concept_item_from_construct(std::string_view concept_name)
+constexpr auto make_concept_item_from_construct(std::string_view concept_name)
 {
-  return cpt::make_concept_item<cpt::make_custom_concept_from_construct<Constraint>>(concept_name);
+  return cpt::make_concept_item<cpt::make_concept_from_construct<Constraint>>(concept_name);
 }
 
 template <template <typename...> class Predicate>
-constexpr auto make_custom_concept_item_from_predicate(std::string_view concept_name)
+constexpr auto make_concept_item_from_predicate(std::string_view concept_name)
 {
-  return cpt::make_concept_item<cpt::make_custom_concept_from_predicate<Predicate>>(concept_name);
+  return cpt::make_concept_item<cpt::make_concept_from_predicate<Predicate>>(concept_name);
 }
 
 } // namespace cpt
 
+// Diagnostic helpers
 namespace concept_diagnostic_traits {
 template <typename... Args, typename ConceptMap>
 constexpr void diagnostic(ConceptMap)
@@ -211,11 +214,10 @@ constexpr void diagnostic(ConceptMap)
 
 } // namespace concept_diagnostic_traits
 
-// Here we cannot make a helpers function because of two phase name lookup.
+// Here we cannot make a helpers function template because of the two phase name lookup.
 // Even if a more specialized diagnostic overload exists, it won't be selected at ADL
 // So we have to make a macro
-#define DIAGNOSTIC(concept_map, ...) \
-  concept_diagnostic_traits::diagnostic<__VA_ARGS__>(concept_map)
+#define DIAGNOSTIC(concept_map, ...) concept_diagnostic_traits::diagnostic<__VA_ARGS__>(concept_map)
 
 
 #endif // METAPROG_CPT_VERIF_HPP_
