@@ -691,19 +691,19 @@ template <typename B, typename T, typename U = T>
 constexpr bool is_nothrow_ternary_v = is_nothrow_ternary<T, U>::value;
 
 // is_invocable : f(args...)
-template <typename T, typename... Args>
-using is_invocable = details::is_invocable_impl<details::_holder<T, Args...>>;
-template <typename T, typename... Args>
-using is_invocable_t = typename is_invocable<T, Args...>::type;
-template <typename T, typename... Args>
-constexpr bool is_invocable_v = is_invocable<T, Args...>::value;
+template <typename F, typename... Args>
+using is_invocable = details::is_invocable_impl<details::_holder<F, Args...>>;
+template <typename F, typename... Args>
+using is_invocable_t = typename is_invocable<F, Args...>::type;
+template <typename F, typename... Args>
+constexpr bool is_invocable_v = is_invocable<F, Args...>::value;
 // is_nothrow_invocable
-template <typename T, typename... Args>
-using is_nothrow_invocable = details::is_nothrow_invocable_impl<details::_holder<T, Args...>>;
-template <typename T, typename... Args>
-using is_nothrow_invocable_t = typename is_nothrow_invocable<T, Args...>::type;
-template <typename T, typename... Args>
-constexpr bool is_nothrow_invocable_v = is_nothrow_invocable<T, Args...>::value;
+template <typename F, typename... Args>
+using is_nothrow_invocable = details::is_nothrow_invocable_impl<details::_holder<F, Args...>>;
+template <typename F, typename... Args>
+using is_nothrow_invocable_t = typename is_nothrow_invocable<F, Args...>::type;
+template <typename F, typename... Args>
+constexpr bool is_nothrow_invocable_v = is_nothrow_invocable<F, Args...>::value;
 
 // is_invocable_r : r f(args...)
 template <typename R, typename F, typename... Args>
