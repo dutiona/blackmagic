@@ -160,7 +160,6 @@ constexpr bool check_map(concept_map_t<Concepts...> concept_map)
   return details::check_map_impl<Args...>(concept_map, std::make_index_sequence<sizeof...(Concepts)>{});
 }
 
-// TODO/FIXME this doesn't work... The result cannot be stored/used in a constexpr context...
 template <typename... Args, typename... Concepts>
 constexpr bool check_map_at(concept_map_t<Concepts...> concept_map, std::string_view concept_name)
 {
