@@ -158,7 +158,7 @@ int main()
     DIAGNOSTIC(pixel_concept, MyPixel);
   }
   if constexpr (!cpt::check_map<MyBadPixel>(pixel_concept)) {
-    DIAGNOSTIC(pixel_concept, MyBadPixel);
+    // DIAGNOSTIC(pixel_concept, MyBadPixel);
   }
 
   return 0;

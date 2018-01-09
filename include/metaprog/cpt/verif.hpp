@@ -3,11 +3,15 @@
 #ifndef METAPROG_CPT_VERIF_HPP_
 #define METAPROG_CPT_VERIF_HPP_
 
+#include "verif.hpp"
+#include "helpers.hpp"
+
 #include "../ctx/ctx.hpp"
 
 #include <stdexcept>
 #include <string_view>
 #include <tuple>
+#include <type_traits>
 #include <utility>
 
 namespace cpt {
@@ -211,7 +215,7 @@ constexpr void diagnostic(ConceptMap)
 // Even if a more specialized diagnostic overload exists, it won't be selected at ADL
 // So we have to make a macro
 #define DIAGNOSTIC(concept_map, ...) \
-  concept_diagnostic_traits::diagnostic<__VA_ARGS__>(concept_map);
+  concept_diagnostic_traits::diagnostic<__VA_ARGS__>(concept_map)
 
 
 #endif // METAPROG_CPT_VERIF_HPP_

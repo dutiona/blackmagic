@@ -9,13 +9,12 @@ struct not_default_constructible_test {
 };
 
 namespace concepts = cpt::concepts;
+using namespace std::literals;
 
 int main()
 {
   using namespace std::literals;
-  constexpr auto cpt_item  = cpt::make_concept_item<concepts::default_constructible>("test1"sv);
-  constexpr auto cpt_item2 = cpt::make_concept_item<concepts::default_constructible>("test2"sv);
-  constexpr auto cpt_map   = cpt::make_concept_map(cpt_item, cpt_item2);
+  constexpr auto cpt_map   = cpt::make_concept_map(concepts::default_constructible, concepts::destructible);
   cpt::require_map<default_constructible_test>(cpt_map);
   cpt::require_map_at<default_constructible_test>(cpt_map, "test1"sv);
   [[maybe_unused]] constexpr bool ret  = cpt::check_map<default_constructible_test>(cpt_map);
