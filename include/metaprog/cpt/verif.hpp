@@ -99,9 +99,6 @@ constexpr bool check_map_at_impl(concept_map_t<Concepts...> concept_map, std::st
   return all_of(check_if(std::get<I>(concept_map), concept_name)...);
 }
 
-} // namespace details
-
-// TODO/FIXME deprecate those 2 functions and put them in details
 // Quick check/require a concept via helper function
 template <typename Concept, typename... Args>
 constexpr void require()
@@ -115,17 +112,19 @@ constexpr bool check()
   return details::concept_checker<Concept>{}.template check<Args...>();
 }
 
+} // namespace details
+
 // Quick check/require an item via helper function
 template <typename... Args, typename Concept>
 constexpr void require(concept_item_t<Concept>)
 {
-  require<Concept, Args...>();
+  details::require<Concept, Args...>();
 }
 
 template <typename... Args, typename Concept>
 constexpr bool check(concept_item_t<Concept>)
 {
-  return check<Concept, Args...>();
+  return details::check<Concept, Args...>();
 }
 
 // helpers functions
