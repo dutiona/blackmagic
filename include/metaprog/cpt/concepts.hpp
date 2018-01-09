@@ -12,10 +12,10 @@
 namespace cpt { namespace concepts {
 
 using namespace concepts::basic;
-using namespace concepts::utility;
+using namespace concepts::iterator;
 using namespace concepts::layout;
 using namespace concepts::library;
-using namespace concepts::iterator;
+using namespace concepts::utility;
 
 }} // namespace cpt::concepts
 

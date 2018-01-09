@@ -12,10 +12,10 @@
 namespace cpt { namespace traits {
 
 using namespace traits::basic;
-using namespace traits::utility;
+using namespace traits::iterator;
 using namespace traits::layout;
 using namespace traits::library;
-using namespace traits::iterator;
+using namespace traits::utility;
 
 }} // namespace cpt::traits
 
