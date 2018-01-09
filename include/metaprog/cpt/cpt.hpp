@@ -12,6 +12,8 @@
  */
 
 #include "concepts.hpp"
+#include "custom.hpp"
+#include "diagnostic.hpp"
 #include "helpers.hpp"
 #include "traits.hpp"
 #include "verif.hpp"

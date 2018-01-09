@@ -5,6 +5,8 @@
 
 #include "../traits.hpp"
 
+#include "../../verif.hpp"
+
 #include <type_traits>
 
 namespace cpt { namespace concepts { namespace layout { namespace details {
@@ -12,32 +14,16 @@ namespace cpt { namespace concepts { namespace layout { namespace details {
 namespace traits = traits::layout;
 
 // trivially copyable
-template <bool SilentFailure, typename T, typename = void>
-struct trivially_copyable_impl : std::false_type {
-  static_assert(SilentFailure, "Given types fail to model the trivially_copyable concept.");
-};
-template <bool SilentFailure, typename T>
-struct trivially_copyable_impl<SilentFailure, T, std::enable_if_t<traits::is_trivially_copyable_v<T>>>
-  : std::true_type {
-};
+template <typename T>
+using trivially_copyable_impl = make_predicate<make_condition<traits::is_trivially_copyable_v<T>>>;
 
 // trivial
-template <bool SilentFailure, typename T, typename = void>
-struct trivial_impl : std::false_type {
-  static_assert(SilentFailure, "Given types fail to model the trivial concept.");
-};
-template <bool SilentFailure, typename T>
-struct trivial_impl<SilentFailure, T, std::enable_if_t<traits::is_trivial_v<T>>> : std::true_type {
-};
+template <typename T>
+using trivial_impl = make_predicate<make_condition<traits::is_trivial_v<T>>>;
 
 // standard layout
-template <bool SilentFailure, typename T, typename = void>
-struct standard_layout_impl : std::false_type {
-  static_assert(SilentFailure, "Given types fail to model the standard_layout concept.");
-};
-template <bool SilentFailure, typename T>
-struct standard_layout_impl<SilentFailure, T, std::enable_if_t<traits::is_standard_layout_v<T>>> : std::true_type {
-};
+template <typename T>
+using standard_layout_impl = make_predicate<make_condition<traits::is_standard_layout_v<T>>>;
 
 }}}} // namespace cpt::concepts::layout::details
 

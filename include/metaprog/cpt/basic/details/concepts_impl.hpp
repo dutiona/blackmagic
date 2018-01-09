@@ -5,6 +5,8 @@
 
 #include "../traits.hpp"
 
+#include "../../custom.hpp"
+
 #include <type_traits>
 
 namespace cpt { namespace concepts { namespace basic { namespace details {
@@ -12,76 +14,28 @@ namespace cpt { namespace concepts { namespace basic { namespace details {
 namespace traits = traits::basic;
 
 // default constructible
-template <bool SilentFailure, typename T, typename = void>
-struct default_constructible_impl : std::false_type {
-  static_assert(SilentFailure, "Given types fail to model the default_constructible concept.");
-};
-template <bool SilentFailure, typename T>
-struct default_constructible_impl<
-  SilentFailure, T,
-  std::enable_if_t<std::disjunction_v<traits::is_default_constructible<T>, traits::is_nothrow_default_constructible<T>,
-                                      traits::is_trivially_default_constructible<T>>>> : std::true_type {
-};
+template <typename T>
+using default_constructible_impl = make_predicate<make_condition<traits::is_default_constructible_v<T>>>;
 
 // move constructible
-template <bool SilentFailure, typename T, typename = void>
-struct move_constructible_impl : std::false_type {
-  static_assert(SilentFailure, "Given types fail to model the move_constructible concept.");
-};
-template <bool SilentFailure, typename T>
-struct move_constructible_impl<
-  SilentFailure, T,
-  std::enable_if_t<std::disjunction_v<traits::is_move_constructible<T>, traits::is_nothrow_move_constructible<T>,
-                                      traits::is_trivially_move_constructible<T>>>> : std::true_type {
-};
+template <typename T>
+using move_constructible_impl = make_predicate<make_condition<traits::is_move_constructible_v<T>>>;
 
 // copy constructible
-template <bool SilentFailure, typename T, typename = void>
-struct copy_constructible_impl : std::false_type {
-  static_assert(SilentFailure, "Given types fail to model the copy_constructible concept.");
-};
-template <bool SilentFailure, typename T>
-struct copy_constructible_impl<
-  SilentFailure, T,
-  std::enable_if_t<std::disjunction_v<traits::is_copy_constructible<T>, traits::is_nothrow_copy_constructible<T>,
-                                      traits::is_trivially_copy_constructible<T>>>> : std::true_type {
-};
+template <typename T>
+using copy_constructible_impl = make_predicate<make_condition<traits::is_copy_constructible_v<T>>>;
 
 // move assignable
-template <bool SilentFailure, typename T, typename = void>
-struct move_assignable_impl : std::false_type {
-  static_assert(SilentFailure, "Given types fail to model the move_assignable concept.");
-};
-template <bool SilentFailure, typename T>
-struct move_assignable_impl<
-  SilentFailure, T,
-  std::enable_if_t<std::disjunction_v<traits::is_move_assignable<T>, traits::is_nothrow_move_assignable<T>,
-                                      traits::is_trivially_move_assignable<T>>>> : std::true_type {
-};
+template <typename T>
+using move_assignable_impl = make_predicate<make_condition<traits::is_move_assignable_v<T>>>;
 
 // copy assignable
-template <bool SilentFailure, typename T, typename = void>
-struct copy_assignable_impl : std::false_type {
-  static_assert(SilentFailure, "Given types fail to model the copy_assignable concept.");
-};
-template <bool SilentFailure, typename T>
-struct copy_assignable_impl<
-  SilentFailure, T,
-  std::enable_if_t<std::disjunction_v<traits::is_copy_assignable<T>, traits::is_nothrow_copy_assignable<T>,
-                                      traits::is_trivially_copy_assignable<T>>>> : std::true_type {
-};
+template <typename T>
+using copy_assignable_impl = make_predicate<make_condition<traits::is_copy_assignable_v<T>>>;
 
 // destructible
-template <bool SilentFailure, typename T, typename = void>
-struct destructible_impl : std::false_type {
-  static_assert(SilentFailure, "Given types fail to model the destructible concept.");
-};
-template <bool SilentFailure, typename T>
-struct destructible_impl<
-  SilentFailure, T,
-  std::enable_if_t<std::disjunction_v<traits::is_destructible<T>, traits::is_nothrow_destructible<T>,
-                                      traits::is_trivially_destructible<T>>>> : std::true_type {
-};
+template <typename T>
+using destructible_impl = make_predicate<make_condition<traits::is_destructible_v<T>>>;
 
 }}}} // namespace cpt::concepts::basic::details
 

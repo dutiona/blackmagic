@@ -96,6 +96,45 @@ struct dependent_false : std::false_type {
 template <typename... Args>
 constexpr bool dependent_false_v = static_cast<bool>(dependent_false<Args...>{});
 
+
+// traits helper
+namespace details {
+
+template <typename...>
+struct _parameters_pack {
+};
+
+template <typename Holder, typename = void>
+struct make_trait_from_constructs_impl : std::false_type {
+};
+template <template <typename... Constraints> class Holder, typename... Constraints>
+struct make_trait_from_constructs_impl<Holder<Constraints...>, std::void_t<Constraints...>> : std::true_type {
+};
+
+template <typename Holder, typename = void>
+struct make_trait_from_predicates_impl : std::false_type {
+};
+template <template <typename... Predicates> class Holder, typename... Predicates>
+struct make_trait_from_predicates_impl<Holder<Predicates...>, std::enable_if_t<std::conjunction_v<Predicates...>>>
+  : std::true_type {
+};
+
+} // namespace details
+
+template <typename... Constraints>
+using make_trait_from_constructs = details::make_trait_from_constructs_impl<details::_parameters_pack<Constraints...>>;
+
+template <typename... Predicates>
+using make_trait_from_predicates = details::make_trait_from_predicates_impl<details::_parameters_pack<Predicates...>>;
+
+// We can't use :
+//template <typename T>
+//struct is_mytrait : helpers::make_trait_from_constructs<decltype(...<T>...)> {};
+// yet because it's not a SFINAE context... :(
+// Maybe in a fully fledge c++17/20 compiler with the extension of SFINAE context...
+// Or maybe it's a compiler bug.
+// TODO/FIXME investigate this issue.
+
 }} // namespace cpt::helpers
 
 #endif // METAPROG_CPT_CONCEPTS_HELPERS_HPP_
