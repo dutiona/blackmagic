@@ -13,7 +13,7 @@ template <typename...>
 struct _parameters_pack {
 };
 
-template <bool SilentFailure, template <typename...> class Constraint, typename Holder, typename = void>
+template <bool SilentFailure, template <typename...> class Constraint, typename ParametersPack, typename = void>
 struct make_concept_from_construct_impl : std::false_type {
   static_assert(SilentFailure, "Concept checking failed. Use diagnostic to have more detailed about the failure.");
 };
@@ -24,7 +24,7 @@ struct make_concept_from_construct_impl<SilentFailure, Constraint, ParametersPac
                                         std::void_t<Constraint<Parameters...>>> : std::true_type {
 };
 
-template <bool SilentFailure, template <typename...> class Predicate, typename Holder, typename = void>
+template <bool SilentFailure, template <typename...> class Predicate, typename ParametersPack, typename = void>
 struct make_concept_from_predicate_impl : std::false_type {
   static_assert(SilentFailure, "Concept checking failed. Use diagnostic to have more detailed about the failure.");
 };
