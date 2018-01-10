@@ -56,7 +56,7 @@ struct make_concept_from_predicate {
   template <bool SilentFailure, typename... Parameters>
   using underlying_type = typename type<SilentFailure, Parameters...>::type;
   template <bool SilentFailure, typename... Parameters>
-  static constexpr bool value = true;// type<SilentFailure, Parameters...>::value;
+  static constexpr bool value = type<SilentFailure, Parameters...>::value;
 };
 
 template <typename... Bs>
