@@ -7,9 +7,7 @@
 
 #include "../../core.hpp"
 
-#include <type_traits>
-
-namespace cpt { namespace concepts { namespace basic { namespace details {
+namespace cpt::concepts::basic::details {
 
 namespace traits = traits::basic;
 
@@ -37,6 +35,6 @@ using copy_assignable_impl = make_predicate<make_condition<traits::is_copy_assig
 template <typename T>
 using destructible_impl = make_predicate<make_condition<traits::is_destructible_v<T>>>;
 
-}}}} // namespace cpt::concepts::basic::details
+} // namespace cpt::concepts::basic::details
 
 #endif // CONCEPTS_BASIC_DETAILS_CONCEPTS_IMPL_HPP_

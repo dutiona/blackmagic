@@ -5,52 +5,50 @@
 
 #include "concepts.hpp"
 
-#include "../core.hpp"
-
-namespace cpt { namespace basic { namespace diagnostic {
+namespace cpt::basic::diagnostic {
 
 // default constructible
 template <typename T>
-constexpr void diagnostic(decltype(cpt::concepts::DefaultConstructible))
+constexpr void diagnostic(decltype(concepts::DefaultConstructible))
 {
-  static_assert(cpt::concepts::DefaultConstructible.check<T>(), "T is not default constructible");
+  static_assert(concepts::DefaultConstructible.check<T>(), "T is not default constructible");
 }
 
 // move constructible
 template <typename T>
-constexpr void diagnostic(decltype(cpt::concepts::MoveConstructible))
+constexpr void diagnostic(decltype(concepts::MoveConstructible))
 {
-  static_assert(cpt::concepts::MoveConstructible.check<T>(), "T is not move constructible");
+  static_assert(concepts::MoveConstructible.check<T>(), "T is not move constructible");
 }
 
 // copy constructible
 template <typename T>
-constexpr void diagnostic(decltype(cpt::concepts::CopyConstructible))
+constexpr void diagnostic(decltype(concepts::CopyConstructible))
 {
-  static_assert(cpt::concepts::CopyConstructible.check<T>(), "T is not copy constructible");
+  static_assert(concepts::CopyConstructible.check<T>(), "T is not copy constructible");
 }
 
 // move assignable
 template <typename T>
-constexpr void diagnostic(decltype(cpt::concepts::MoveAssignable))
+constexpr void diagnostic(decltype(concepts::MoveAssignable))
 {
-  static_assert(cpt::concepts::MoveAssignable.check<T>(), "T is not move assignable");
+  static_assert(concepts::MoveAssignable.check<T>(), "T is not move assignable");
 }
 
 // copy assignable
 template <typename T>
-constexpr void diagnostic(decltype(cpt::concepts::CopyAssignable))
+constexpr void diagnostic(decltype(concepts::CopyAssignable))
 {
-  static_assert(cpt::concepts::CopyAssignable.check<T>(), "T is not copy assignable");
+  static_assert(concepts::CopyAssignable.check<T>(), "T is not copy assignable");
 }
 
 // destructible
 template <typename T>
-constexpr void diagnostic(decltype(cpt::concepts::Destructible))
+constexpr void diagnostic(decltype(concepts::Destructible))
 {
-  static_assert(cpt::concepts::Destructible.check<T>(), "T is not destructible");
+  static_assert(concepts::Destructible.check<T>(), "T is not destructible");
 }
 
-}}} // namespace cpt::basic::diagnostic
+} // namespace cpt::basic::diagnostic
 
 #endif // METAPROG_CPT_BASIC_DIAGNOSTIC_HPP_

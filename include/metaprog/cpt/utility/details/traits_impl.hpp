@@ -3,12 +3,13 @@
 #ifndef METAPROG_CPT_UTILIY_DETAILS_TRAITS_IMPL_HPP_
 #define METAPROG_CPT_UTILIY_DETAILS_TRAITS_IMPL_HPP_
 
+#ifndef _MSC_VER
 #include "../../core.hpp"
+#endif
 
-#include <functional>
 #include <type_traits>
 
-namespace cpt { namespace traits { namespace utility { namespace details {
+namespace cpt::traits::utility::details {
 
 // member access
 
@@ -854,13 +855,13 @@ struct is_nothrow_invocable_r_impl : std::false_type {
 };
 template <template <typename R, typename F, typename... Args> class Holder, typename Valid, typename R, typename F,
           typename... Args>
-struct is_nothrow_invocable_r_impl<
-  Holder<R, F, Args...>, Valid, std::enable_if_t<std::is_convertible_v<R, helpers::invoke_result_t<F, Args...>>>>
+struct is_nothrow_invocable_r_impl<Holder<R, F, Args...>, Valid,
+                                   std::enable_if_t<std::is_convertible_v<R, helpers::invoke_result_t<F, Args...>>>>
   : is_nothrow_invocable_impl<_holder<F, Args...>, Valid> {
 };
 #endif
 
-}}}} // namespace cpt::traits::utility::details
+} // namespace cpt::traits::utility::details
 
 
 #endif // METAPROG_CPT_UTILIY_DETAILS_TRAITS_IMPL_HPP_

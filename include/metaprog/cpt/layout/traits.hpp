@@ -5,7 +5,7 @@
 
 #include <type_traits>
 
-namespace cpt { namespace traits { namespace layout {
+namespace cpt::traits::layout {
 
 // trivially copyable
 template <typename T>
@@ -31,6 +31,6 @@ using is_standard_layout_t = typename is_standard_layout<T>::type;
 template <typename T>
 constexpr bool is_standard_layout_v = is_standard_layout<T>::value;
 
-}}} // namespace cpt::traits::layout
+} // namespace cpt::traits::layout
 
 #endif // CONCEPTS_LAYOUT_TRAITS_HPP_

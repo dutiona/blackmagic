@@ -21,9 +21,9 @@
  *
  */
 
-namespace cpt { namespace concepts { namespace iterator {
+namespace cpt::concepts::iterator {
 
 
-}}} // namespace cpt::concepts::iterator
+} // namespace cpt::concepts::iterator
 
 #endif // METAPROG_CPT_ITERATOR_CONCEPTS_HPP_

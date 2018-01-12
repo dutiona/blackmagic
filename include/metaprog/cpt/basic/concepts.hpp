@@ -3,34 +3,13 @@
 #ifndef METAPROG_CPT_BASIC_CONCEPTS_HPP_
 #define METAPROG_CPT_BASIC_CONCEPTS_HPP_
 
-/**
- *
- * default constructible : specifies that an object of the type can be default
- * constructed
- *
- * move constructible : specifies that an object of the type can be constructed
- * from rvalue
- *
- * copy constructible : specifies that an object of the type can be constructed
- * from lvalue
- *
- * move assignable : specifies that an object of the type can be assigned from
- * rvalue
- *
- * copy assignable : specifies that an object of the type can be assigned from
- * lvalue
- *
- * destructible : specifies that an object of the type can be destroyed
- *
- */
-
 #include "details/concepts_impl.hpp"
 
 #include "../core.hpp"
 
 #include <string_view>
 
-namespace cpt { namespace concepts { namespace basic {
+namespace cpt::concepts::basic {
 
 using namespace std::literals;
 
@@ -57,6 +36,6 @@ inline constexpr auto CopyAssignable =
 // destructible
 inline constexpr auto Destructible = make_concept_item_from_predicate<details::destructible_impl>("Destructible"sv);
 
-}}} // namespace cpt::concepts::basic
+} // namespace cpt::concepts::basic
 
 #endif // METAPROG_CPT_BASIC_CONCEPTS_HPP_

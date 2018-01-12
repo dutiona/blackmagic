@@ -5,7 +5,6 @@
 
 #include "helpers.hpp"
 
-
 // Diagnostic helpers
 namespace concept_diagnostic_traits {
 template <typename... Args, typename ConceptMap>

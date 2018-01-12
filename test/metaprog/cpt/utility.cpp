@@ -89,8 +89,8 @@ TEST(Cpt_Utility, PointerToMemberOfObject)
   pointer_to_member_of_object_test obj{};
   ASSERT_TRUE(
     (concepts::PointerToMemberOfObject.check<decltype(obj), decltype(&pointer_to_member_of_object_test::a)>()));
-  ASSERT_FALSE((concepts::PointerToMemberOfObject
-                  .check<decltype(obj), decltype(&pointer_to_member_of_object_other_test::a)>()));
+  ASSERT_FALSE(
+    (concepts::PointerToMemberOfObject.check<decltype(obj), decltype(&pointer_to_member_of_object_other_test::a)>()));
 }
 
 struct pointer_to_member_of_pointer_test {
@@ -105,8 +105,8 @@ TEST(Cpt_Utility, PointerToMemberOfPointer)
   pointer_to_member_of_pointer_test obj{};
   ASSERT_TRUE(
     (concepts::PointerToMemberOfPointer.check<decltype(&obj), decltype(&pointer_to_member_of_pointer_test::a)>()));
-  ASSERT_FALSE((concepts::PointerToMemberOfPointer
-                  .check<decltype(&obj), decltype(&pointer_to_member_of_pointer_other_test::a)>()));
+  ASSERT_FALSE((
+    concepts::PointerToMemberOfPointer.check<decltype(&obj), decltype(&pointer_to_member_of_pointer_other_test::a)>()));
 }
 
 
@@ -1411,7 +1411,7 @@ TEST(Cpt_Utility, InvocableR)
   EXPECT_TRUE((concepts::InvocableR.check<std::tuple<int, double>, invocable_r_functor_test, int, double>()));
   EXPECT_TRUE((concepts::InvocableR.check<std::tuple<double, double>, invocable_r_functor_test, int, double>()));
   EXPECT_TRUE((concepts::InvocableR.check<std::tuple<double, double>, decltype(&invocable_nested_r_functor_test::test),
-                                           invocable_nested_r_functor_test, int, double>()));
+                                          invocable_nested_r_functor_test, int, double>()));
   EXPECT_FALSE((concepts::InvocableR.check<std::vector<double>, decltype(invocable_r_double_test), double>()));
   EXPECT_FALSE((concepts::InvocableR.check<int, invocable_functor_test, int, double>()));
 }

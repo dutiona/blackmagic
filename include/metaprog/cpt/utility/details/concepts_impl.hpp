@@ -7,9 +7,7 @@
 
 #include "../../core.hpp"
 
-#include <type_traits>
-
-namespace cpt { namespace concepts { namespace utility { namespace details {
+namespace cpt::concepts::utility::details {
 
 namespace traits = traits::utility;
 
@@ -218,7 +216,7 @@ using invocable_impl = make_predicate<make_condition<traits::is_invocable_v<F, A
 template <typename R, typename F, typename... Args>
 using invocable_r_impl = make_predicate<make_condition<traits::is_invocable_r_v<R, F, Args...>>>;
 
-}}}} // namespace cpt::concepts::utility::details
+} // namespace cpt::concepts::utility::details
 
 
 #endif // METAPROG_CPT_UTILIY_DETAILS_CONCEPTS_IMPL_HPP_

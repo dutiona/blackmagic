@@ -6,7 +6,7 @@
 #include <functional>
 #include <type_traits>
 
-namespace cpt { namespace helpers {
+namespace cpt::helpers {
 
 // nonesuch
 
@@ -90,7 +90,7 @@ template <typename... Args>
 struct dependent_false : std::false_type {
   constexpr operator bool()
   {
-    return std::false_type::value;
+    return value;
   }
 };
 template <typename... Args>
@@ -218,10 +218,10 @@ constexpr size_t count(T b)
 template <typename T, typename... Ts>
 constexpr size_t count(T b, Ts... bools)
 {
-  return b + any_of(bools...);
+  return b + count(bools...);
 }
 
 
-}} // namespace cpt::helpers
+} // namespace cpt::helpers
 
 #endif // METAPROG_CPT_CORE_HELPERS_HPP_

@@ -13,7 +13,8 @@ struct not_default_constructible_test {
 
 constexpr auto cpt_map = cpt::make_concept_map(concepts::DefaultConstructible, concepts::Destructible);
 
-constexpr bool f() {
+constexpr bool f()
+{
   cpt_map.require<default_constructible_test>();
   cpt_map.require_at<default_constructible_test>("DefaultConstructible"sv);
   return true;

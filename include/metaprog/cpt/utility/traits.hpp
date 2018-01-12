@@ -5,12 +5,9 @@
 
 #include "details/traits_impl.hpp"
 
-#include "../core.hpp"
-
-namespace cpt { namespace traits { namespace utility {
+namespace cpt::traits::utility {
 
 // member access
-
 
 // is_indirection : *a
 template <typename T>
@@ -720,7 +717,7 @@ using is_nothrow_invocable_r_t = typename is_nothrow_invocable_r<R, F, Args...>:
 template <typename R, typename F, typename... Args>
 constexpr bool is_nothrow_invocable_r_v = is_nothrow_invocable_r<R, F, Args...>::value;
 
-}}} // namespace cpt::traits::utility
+} // namespace cpt::traits::utility
 
 
 #endif // METAPROG_CPT_TRAITS_UTILIY_HPP_

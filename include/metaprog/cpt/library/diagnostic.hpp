@@ -5,11 +5,9 @@
 
 #include "concepts.hpp"
 
-#include "../core.hpp"
-
-namespace cpt { namespace library { namespace diagnostic {
+namespace cpt::library::diagnostic {
 
 
-}}} // namespace cpt::library::diagnostic
+} // namespace cpt::library::diagnostic
 
 #endif // METAPROG_CPT_LIBRARY_DIAGNOSTIC_HPP_

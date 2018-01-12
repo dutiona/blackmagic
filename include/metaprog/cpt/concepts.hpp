@@ -9,7 +9,7 @@
 #include "library/concepts.hpp"
 #include "utility/concepts.hpp"
 
-namespace cpt { namespace concepts {
+namespace cpt::concepts {
 
 using namespace basic;
 using namespace iterator;
@@ -17,6 +17,6 @@ using namespace layout;
 using namespace library;
 using namespace utility;
 
-}} // namespace cpt::concepts
+} // namespace cpt::concepts
 
 #endif // METAPROG_CPT_CONCEPTS_HPP_

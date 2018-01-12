@@ -9,7 +9,7 @@
 
 #include <string_view>
 
-namespace cpt { namespace concepts { namespace utility {
+namespace cpt::concepts::utility {
 
 using namespace std::literals;
 
@@ -183,7 +183,7 @@ inline constexpr auto Invocable = make_concept_item_from_predicate<details::invo
 // invocable r
 inline constexpr auto InvocableR = make_concept_item_from_predicate<details::invocable_r_impl>("InvocableR"sv);
 
-}}} // namespace cpt::concepts::utility
+} // namespace cpt::concepts::utility
 
 
 #endif // METAPROG_CPT_UTILIY_CONCEPTS_HPP_

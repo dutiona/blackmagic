@@ -29,7 +29,7 @@ constexpr bool map_count_if_impl(concept_map<Concepts...> concept_map, std::stri
                                  std::index_sequence<I...>)
 {
   constexpr auto has_item = [](auto cpt, std::string_view cn) { return cpt.is(cn); };
-  return count(has_item(std::get<I>(concept_map), concept_name)...);
+  return helpers::count(has_item(std::get<I>(concept_map), concept_name)...);
 }
 
 template <typename... Args, typename... Concepts, size_t... I>
@@ -80,7 +80,7 @@ constexpr bool check_map_at_impl(concept_map<Concepts...> concept_map, std::stri
 }
 
 template <typename... Concepts, size_t... I>
-constexpr bool ensure_unique_keys_impl(std::index_sequence<I...>, std::tuple<concept_item<Concepts>...> concept_items)
+constexpr bool ensure_unique_keys_impl(std::tuple<concept_item<Concepts>...> concept_items, std::index_sequence<I...>)
 {
   auto keys = ctx::vector<std::string_view, sizeof...(Concepts)>{};
 
@@ -104,8 +104,8 @@ constexpr bool ensure_unique_keys_impl(std::index_sequence<I...>, std::tuple<con
 template <typename... Concepts>
 constexpr bool ensure_unique_keys(concept_item<Concepts>... concept_items)
 {
-  return ensure_unique_keys_impl(std::make_index_sequence<sizeof...(Concepts)>{},
-                                 std::make_tuple(std::forward<concept_item<Concepts>>(concept_items)...));
+  return ensure_unique_keys_impl(std::make_tuple(std::forward<concept_item<Concepts>>(concept_items)...),
+                                 std::make_index_sequence<sizeof...(Concepts)>{});
 }
 
 } // namespace details
@@ -117,7 +117,7 @@ struct concept_map : std::tuple<concept_item<Concepts>...> {
     : std::tuple<concept_item<Concepts>...>{concept_items...}
   {
     if (!details::ensure_unique_keys(concept_items...)) {
-      throw "Duplicate keys (concept name) in the concept map : the same concept is here twice !";
+      throw "Duplicate keys (concept name) in the concept map : the same concept is here twice ?";
     }
   }
 

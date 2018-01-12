@@ -5,11 +5,11 @@
 
 #include "basic/diagnostic.hpp"
 #include "iterator/diagnostic.hpp"
+#include "layout/diagnostic.hpp"
 #include "library/diagnostic.hpp"
 #include "utility/diagnostic.hpp"
-#include "layout/diagnostic.hpp"
 
-namespace cpt { namespace diagnostic {
+namespace cpt::diagnostic {
 
 using namespace basic::diagnostic;
 using namespace iterator::diagnostic;
@@ -17,7 +17,7 @@ using namespace layout::diagnostic;
 using namespace library::diagnostic;
 using namespace utility::diagnostic;
 
-}} // namespace cpt::diagnostic
+} // namespace cpt::diagnostic
 
 // public API
 namespace concept_diagnostic_traits {

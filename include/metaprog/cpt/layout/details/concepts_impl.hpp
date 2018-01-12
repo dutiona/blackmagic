@@ -7,9 +7,7 @@
 
 #include "../../core.hpp"
 
-#include <type_traits>
-
-namespace cpt { namespace concepts { namespace layout { namespace details {
+namespace cpt::concepts::layout::details {
 
 namespace traits = traits::layout;
 
@@ -25,6 +23,6 @@ using trivial_impl = make_predicate<make_condition<traits::is_trivial_v<T>>>;
 template <typename T>
 using standard_layout_impl = make_predicate<make_condition<traits::is_standard_layout_v<T>>>;
 
-}}}} // namespace cpt::concepts::layout::details
+} // namespace cpt::concepts::layout::details
 
 #endif // METAPROG_CPT_LAYOUT_DETAILS_CONCEPTS_IMPL_HPP_

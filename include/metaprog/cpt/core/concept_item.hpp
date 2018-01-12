@@ -15,7 +15,6 @@ namespace cpt {
 
 template <typename Concept>
 struct concept_item : std::pair<std::string_view, concept_checker<Concept>> {
-
   constexpr concept_item(std::string_view concept_name, concept_checker<Concept> cpt_ckr)
     : std::pair<std::string_view, concept_checker<Concept>>{concept_name, cpt_ckr}
   {
@@ -40,7 +39,8 @@ struct concept_item : std::pair<std::string_view, concept_checker<Concept>> {
 };
 
 template <typename ConceptLhs, typename ConceptRhs>
-bool operator==(concept_item<ConceptLhs> lhs, concept_item<ConceptRhs> rhs) {
+bool operator==(concept_item<ConceptLhs> lhs, concept_item<ConceptRhs> rhs)
+{
   return lhs.is(rhs.first) && std::is_same_v<ConceptLhs, ConceptRhs>;
 };
 
