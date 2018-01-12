@@ -48,16 +48,16 @@ struct trivial_on_move_assignement {
   trivial_on_move_assignement& operator=(trivial_on_move_assignement&&) = default;
 };
 
-TEST(Cpt_Layout, trivially_copyable)
+TEST(Cpt_Layout, TriviallyCopyable)
 {
-  ASSERT_TRUE((concepts::trivially_copyable.check<trivial_full>()));
+  ASSERT_TRUE((concepts::TriviallyCopyable.check<trivial_full>()));
 #ifndef _MSC_VER
-  ASSERT_TRUE((concepts::trivially_copyable.check<trivial_on_copy_constructor>()));
-  ASSERT_TRUE((concepts::trivially_copyable.check<trivial_on_move_constructor>()));
-  ASSERT_TRUE((concepts::trivially_copyable.check<trivial_on_copy_assignement>()));
-  ASSERT_TRUE((concepts::trivially_copyable.check<trivial_on_move_assignement>()));
+  ASSERT_TRUE((concepts::TriviallyCopyable.check<trivial_on_copy_constructor>()));
+  ASSERT_TRUE((concepts::TriviallyCopyable.check<trivial_on_move_constructor>()));
+  ASSERT_TRUE((concepts::TriviallyCopyable.check<trivial_on_copy_assignement>()));
+  ASSERT_TRUE((concepts::TriviallyCopyable.check<trivial_on_move_assignement>()));
 #endif
-  ASSERT_FALSE((concepts::trivially_copyable.check<non_trivial_virtual_destructor>()));
+  ASSERT_FALSE((concepts::TriviallyCopyable.check<non_trivial_virtual_destructor>()));
 }
 
 struct non_trivial {
@@ -66,17 +66,17 @@ struct non_trivial {
   }
 };
 
-TEST(Cpt_Layout, trivial)
+TEST(Cpt_Layout, Trivial)
 {
-  ASSERT_TRUE((concepts::trivial.check<trivial_full>()));
+  ASSERT_TRUE((concepts::Trivial.check<trivial_full>()));
 #ifndef _MSC_VER
-  ASSERT_TRUE((concepts::trivial.check<trivial_on_copy_constructor>()));
-  ASSERT_TRUE((concepts::trivial.check<trivial_on_move_constructor>()));
-  ASSERT_TRUE((concepts::trivial.check<trivial_on_copy_assignement>()));
-  ASSERT_TRUE((concepts::trivial.check<trivial_on_move_assignement>()));
+  ASSERT_TRUE((concepts::Trivial.check<trivial_on_copy_constructor>()));
+  ASSERT_TRUE((concepts::Trivial.check<trivial_on_move_constructor>()));
+  ASSERT_TRUE((concepts::Trivial.check<trivial_on_copy_assignement>()));
+  ASSERT_TRUE((concepts::Trivial.check<trivial_on_move_assignement>()));
 #endif
-  ASSERT_FALSE((concepts::trivial.check<non_trivial_virtual_destructor>()));
-  ASSERT_FALSE((concepts::trivial.check<non_trivial>()));
+  ASSERT_FALSE((concepts::Trivial.check<non_trivial_virtual_destructor>()));
+  ASSERT_FALSE((concepts::Trivial.check<non_trivial>()));
 }
 
 struct standard_layout {
@@ -138,15 +138,15 @@ struct non_standard_layout_composition {
 
 TEST(Cpt_Layout, standard_layout)
 {
-  ASSERT_TRUE((concepts::standard_layout.check<standard_layout>()));
-  ASSERT_TRUE((concepts::standard_layout.check<standard_layout_bis>()));
-  ASSERT_TRUE((concepts::standard_layout.check<standard_layout_private>()));
-  ASSERT_TRUE((concepts::standard_layout.check<standard_layout_protected>()));
-  ASSERT_FALSE((concepts::standard_layout.check<non_standard_layout_ref>()));
-  ASSERT_FALSE((concepts::standard_layout.check<non_standard_layout_virtual>()));
-  ASSERT_FALSE((concepts::standard_layout.check<non_standard_layout_private>()));
-  ASSERT_FALSE((concepts::standard_layout.check<non_standard_layout_protected>()));
-  ASSERT_FALSE((concepts::standard_layout.check<non_standard_layout_inherited>()));
-  ASSERT_FALSE((concepts::standard_layout.check<non_standard_layout_diamond_inheritance>()));
-  ASSERT_FALSE((concepts::standard_layout.check<non_standard_layout_composition>()));
+  ASSERT_TRUE((concepts::StandardLayout.check<standard_layout>()));
+  ASSERT_TRUE((concepts::StandardLayout.check<standard_layout_bis>()));
+  ASSERT_TRUE((concepts::StandardLayout.check<standard_layout_private>()));
+  ASSERT_TRUE((concepts::StandardLayout.check<standard_layout_protected>()));
+  ASSERT_FALSE((concepts::StandardLayout.check<non_standard_layout_ref>()));
+  ASSERT_FALSE((concepts::StandardLayout.check<non_standard_layout_virtual>()));
+  ASSERT_FALSE((concepts::StandardLayout.check<non_standard_layout_private>()));
+  ASSERT_FALSE((concepts::StandardLayout.check<non_standard_layout_protected>()));
+  ASSERT_FALSE((concepts::StandardLayout.check<non_standard_layout_inherited>()));
+  ASSERT_FALSE((concepts::StandardLayout.check<non_standard_layout_diamond_inheritance>()));
+  ASSERT_FALSE((concepts::StandardLayout.check<non_standard_layout_composition>()));
 }

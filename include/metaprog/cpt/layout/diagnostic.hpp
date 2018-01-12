@@ -11,23 +11,23 @@ namespace cpt { namespace layout { namespace diagnostic {
 
 // trivially copyable
 template <typename T>
-constexpr void diagnostic(decltype(cpt::concepts::trivially_copyable))
+constexpr void diagnostic(decltype(cpt::concepts::TriviallyCopyable))
 {
-  static_assert(cpt::concepts::trivially_copyable.check<T>(), "T is not trivially copyable");
+  static_assert(cpt::concepts::TriviallyCopyable.check<T>(), "T is not trivially copyable");
 }
 
 // trivial
 template <typename T>
-constexpr void diagnostic(decltype(cpt::concepts::trivial))
+constexpr void diagnostic(decltype(cpt::concepts::Trivial))
 {
-  static_assert(cpt::concepts::trivial.check<T>(), "T is not trivial");
+  static_assert(cpt::concepts::Trivial.check<T>(), "T is not trivial");
 }
 
 // standard layout
 template <typename T>
-constexpr void diagnostic(decltype(cpt::concepts::standard_layout))
+constexpr void diagnostic(decltype(cpt::concepts::StandardLayout))
 {
-  static_assert(cpt::concepts::standard_layout.check<T>(), "T is not a standard layout");
+  static_assert(cpt::concepts::StandardLayout.check<T>(), "T is not a standard layout");
 }
 
 }}} // namespace cpt::layout::diagnostic
