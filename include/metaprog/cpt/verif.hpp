@@ -8,7 +8,6 @@
 
 #include "../ctx/ctx.hpp"
 
-#include <stdexcept>
 #include <string_view>
 #include <tuple>
 #include <type_traits>
@@ -34,10 +33,7 @@ struct concept_checker {
   constexpr void require()
   {
     const auto silent_failure = false; // force trace (i.e. static_assert) upon failure
-    if constexpr (!Concept::template value<silent_failure, Args...>) {
-      // needed only for ill-implemented concept that don't static_assert upon failure
-      throw std::logic_error("Concept assertion error");
-    }
+    static_assert(Concept::template value<silent_failure, Args...>, "Concept assertion error");
   }
 };
 } // namespace details
@@ -47,6 +43,11 @@ using concept_item_t = std::pair<std::string_view, details::concept_checker<Conc
 
 template <typename... Concepts>
 using concept_map_t = std::tuple<concept_item_t<Concepts>...>;
+
+template <typename Concept>
+constexpr bool concept_is_named(concept_item_t<Concept> cpt, std::string_view concept_name) {
+  return ctx::equal(cpt.first.cbegin(), cpt.first.cend(), concept_name.cbegin(), concept_name.cend());
+}
 
 namespace details {
 // TODO/FIXME remove this once fold expression are implemented
@@ -72,6 +73,22 @@ constexpr bool any_of(T b, Ts... bools)
   return b || any_of(bools...);
 }
 
+template <typename... Concepts, size_t... I>
+constexpr bool map_has_item_impl(concept_map_t<Concepts...> concept_map, std::string_view concept_name, std::index_sequence<I...>)
+{
+  constexpr auto has_item = [](auto cpt, std::string_view cn) {
+    return concept_is_named(cpt, cn);
+  };
+
+  return any_of(has_item(std::get<I>(concept_map), concept_name)...);
+}
+
+template <typename... Concepts>
+constexpr bool map_has_item(concept_map_t<Concepts...> concept_map, std::string_view concept_name)
+{
+  return map_has_item_impl(concept_map, concept_name, std::make_index_sequence<sizeof...(Concepts)>{});
+}
+
 template <typename... Args, typename... Concepts, size_t... I>
 constexpr void require_map_impl(concept_map_t<Concepts...> concept_map, std::index_sequence<I...>)
 {
@@ -82,19 +99,17 @@ template <typename... Args, typename... Concepts, size_t... I>
 constexpr void require_map_at_impl(concept_map_t<Concepts...> concept_map, std::string_view concept_name,
                                    std::index_sequence<I...>)
 {
-  bool found = false;
-  constexpr auto require_if = [](bool& found, auto cpt, std::string_view concept_name) {
+  if (!map_has_item(concept_map, concept_name)) {
+    throw "This concept key doesn't exists in this concept map!";
+  }
+
+  constexpr auto require_if = [](auto cpt, std::string_view concept_name) {
     if (ctx::equal(cpt.first.cbegin(), cpt.first.cend(), concept_name.cbegin(), concept_name.cend())) {
       cpt.second.template require<Args...>();
-      found = true;
     }
   };
 
-  (require_if(found, std::get<I>(concept_map), concept_name), ...);
-
-  if (!found) {
-    throw std::logic_error("This concept key doesn't exists in this concept map!");
-  }
+  (require_if(std::get<I>(concept_map), concept_name), ...);
 }
 
 template <typename... Args, typename... Concepts, size_t... I>
@@ -107,22 +122,18 @@ template <typename... Args, typename... Concepts, size_t... I>
 constexpr bool check_map_at_impl(concept_map_t<Concepts...> concept_map, std::string_view concept_name,
                                  std::index_sequence<I...>)
 {
-  auto found    = false;
-  constexpr auto check_if = [](bool& found, auto cpt, std::string_view concept_name) -> bool {
-    if (ctx::equal(cpt.first.cbegin(), cpt.first.cend(), concept_name.cbegin(), concept_name.cend())) {
-      found = true;
+  if (!map_has_item(concept_map, concept_name)) {
+    throw "This concept key doesn't exists in this concept map!";
+  }
+
+  constexpr auto check_if = [](auto cpt, std::string_view cn) -> bool {
+    if (ctx::equal(cpt.first.cbegin(), cpt.first.cend(), cn.cbegin(), cn.cend())) {
       return cpt.second.template check<Args...>();
     }
     return true;
   };
 
-  const auto ret = all_of(check_if(found, std::get<I>(concept_map), concept_name)...);
-
-  if (!found) {
-    throw std::logic_error("This concept key doesn't exists in this concept map!");
-  }
-
-  return ret;
+  return all_of(check_if(std::get<I>(concept_map), concept_name)...);
 }
 
 // Quick check/require a concept via helper function
@@ -139,6 +150,8 @@ constexpr bool check()
 }
 
 } // namespace details
+
+using details::map_has_item;
 
 // Quick check/require an item via helper function
 template <typename... Args, typename Concept>

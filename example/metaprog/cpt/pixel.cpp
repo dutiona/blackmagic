@@ -90,21 +90,19 @@ namespace concept_diagnostic_traits {
 template <typename PixelType>
 constexpr void diagnostic(decltype(pixel_concept))
 {
-  static_assert(cpt::check<PixelType>(pixel_concept_traits::value_type), "value_type attribute missing");
-  static_assert(cpt::check<PixelType>(pixel_concept_traits::reference), "reference attribute missing");
-  static_assert(cpt::check<PixelType>(pixel_concept_traits::point_type), "point_type attribute missing");
-  static_assert(cpt::check<PixelType>(pixel_concept_traits::site_type), "site_type attribute missing");
-  static_assert(cpt::check<PixelType>(pixel_concept_traits::image_type), "image_type attribute missing");
+  static_assert(cpt::check_map_at<PixelType>(pixel_concept, "value_type"sv), "value_type attribute missing");
+  static_assert(cpt::check_map_at<PixelType>(pixel_concept, "reference"sv), "reference attribute missing");
+  static_assert(cpt::check_map_at<PixelType>(pixel_concept, "point_type"sv), "point_type attribute missing");
+  static_assert(cpt::check_map_at<PixelType>(pixel_concept, "site_type"sv), "site_type attribute missing");
+  static_assert(cpt::check_map_at<PixelType>(pixel_concept, "image_type"sv), "image_type attribute missing");
 
-  static_assert(cpt::check<PixelType>(pixel_concept_traits::point_type_is_site_type),
-                "point_type should alias site_type");
-  static_assert(cpt::check<PixelType>(pixel_concept_traits::value_type_is_not_a_reference),
-                "value_type should not be a reference");
+  static_assert(cpt::check_map_at<PixelType>(pixel_concept, "point_type_is_site_type"sv), "point_type should alias site_type");
+  static_assert(cpt::check_map_at<PixelType>(pixel_concept, "value_type_is_not_a_reference"sv), "value_type should not be a reference");
 
-  static_assert(cpt::check<PixelType>(pixel_concept_traits::has_method_val), "method val missing or ill-defined");
-  static_assert(cpt::check<PixelType>(pixel_concept_traits::has_method_point), "method point missing or ill-defined");
-  static_assert(cpt::check<PixelType>(pixel_concept_traits::has_method_site), "method site missing or ill-defined");
-  static_assert(cpt::check<PixelType>(pixel_concept_traits::has_method_image), "method image missing or ill-defined");
+  static_assert(cpt::check_map_at<PixelType>(pixel_concept, "has_method_val"sv), "method val missing or ill-defined");
+  static_assert(cpt::check_map_at<PixelType>(pixel_concept, "has_method_point"sv), "method point missing or ill-defined");
+  static_assert(cpt::check_map_at<PixelType>(pixel_concept, "has_method_site"sv), "method site missing or ill-defined");
+  static_assert(cpt::check_map_at<PixelType>(pixel_concept, "has_method_image"sv), "method image missing or ill-defined");
 }
 
 } // namespace concept_diagnostic_traits
@@ -143,7 +141,7 @@ int main()
     DIAGNOSTIC(pixel_concept, MyPixel);
   }
   if constexpr (!cpt::check_map<MyBadPixel>(pixel_concept)) {
-    // DIAGNOSTIC(pixel_concept, MyBadPixel);
+    DIAGNOSTIC(pixel_concept, MyBadPixel);
   }
 
   return 0;
