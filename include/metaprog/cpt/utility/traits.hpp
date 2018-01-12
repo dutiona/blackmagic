@@ -5,7 +5,7 @@
 
 #include "details/traits_impl.hpp"
 
-#include "../helpers.hpp"
+#include "../core.hpp"
 
 namespace cpt { namespace traits { namespace utility {
 

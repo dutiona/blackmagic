@@ -1,7 +1,7 @@
 #pragma once
 
-#ifndef METAPROG_CPT_HELPERS_HPP_
-#define METAPROG_CPT_HELPERS_HPP_
+#ifndef METAPROG_CPT_CORE_HELPERS_HPP_
+#define METAPROG_CPT_CORE_HELPERS_HPP_
 
 #include <functional>
 #include <type_traits>
@@ -127,14 +127,101 @@ using make_trait_from_constructs = details::make_trait_from_constructs_impl<deta
 template <typename... Predicates>
 using make_trait_from_predicates = details::make_trait_from_predicates_impl<details::_parameters_pack<Predicates...>>;
 
+// TODO/FIXME investigate this issue.
 // We can't use :
-//template <typename T>
-//struct is_mytrait : helpers::make_trait_from_constructs<decltype(...<T>...)> {};
+// template <typename T>
+// struct is_mytrait : helpers::make_trait_from_constructs<decltype(...<T>...)> {};
 // yet because it's not a SFINAE context... :(
 // Maybe in a fully fledge c++17/20 compiler with the extension of SFINAE context...
 // Or maybe it's a compiler bug.
-// TODO/FIXME investigate this issue.
+
+
+// concept helpers
+namespace details {
+
+template <bool SilentFailure, template <typename...> class Constraint, typename ParametersPack, typename = void>
+struct make_concept_from_construct_impl : std::false_type {
+  static_assert(SilentFailure, "Concept checking failed. Use diagnostic to have more detailed about the failure.");
+};
+
+template <bool SilentFailure, template <typename...> class Constraint, template <typename...> class ParametersPack,
+          typename... Parameters>
+struct make_concept_from_construct_impl<SilentFailure, Constraint, ParametersPack<Parameters...>,
+                                        std::void_t<Constraint<Parameters...>>> : std::true_type {
+};
+
+template <bool SilentFailure, template <typename...> class Predicate, typename ParametersPack, typename = void>
+struct make_concept_from_predicate_impl : std::false_type {
+  static_assert(SilentFailure, "Concept checking failed. Use diagnostic to have more detailed about the failure.");
+};
+
+template <bool SilentFailure, template <typename...> class Predicate, template <typename...> class ParametersPack,
+          typename... Parameters>
+struct make_concept_from_predicate_impl<SilentFailure, Predicate, ParametersPack<Parameters...>,
+                                        std::enable_if_t<Predicate<Parameters...>::value>> : std::true_type {
+};
+
+} // namespace details
+
+template <template <typename...> class Constraint>
+struct make_concept_from_construct {
+  template <bool SilentFailure, typename... Parameters>
+  using type =
+    details::make_concept_from_construct_impl<SilentFailure, Constraint, details::_parameters_pack<Parameters...>>;
+  template <bool SilentFailure, typename... Parameters>
+  using underlying_type = typename type<SilentFailure, Parameters...>::type;
+  template <bool SilentFailure, typename... Parameters>
+  static constexpr bool value = type<SilentFailure, Parameters...>::value;
+};
+
+template <template <typename...> class Predicate>
+struct make_concept_from_predicate {
+  template <bool SilentFailure, typename... Parameters>
+  using type =
+    details::make_concept_from_predicate_impl<SilentFailure, Predicate, details::_parameters_pack<Parameters...>>;
+  template <bool SilentFailure, typename... Parameters>
+  using underlying_type = typename type<SilentFailure, Parameters...>::type;
+  template <bool SilentFailure, typename... Parameters>
+  static constexpr bool value = type<SilentFailure, Parameters...>::value;
+};
+
+
+// all_of / any_of constexpr
+// TODO/FIXME remove this once fold expression are implemented
+template <typename T>
+constexpr bool all_of(T b)
+{
+  return b;
+}
+template <typename T, typename... Ts>
+constexpr bool all_of(T b, Ts... bools)
+{
+  return b && all_of(bools...);
+}
+
+template <typename T>
+constexpr bool any_of(T b)
+{
+  return b;
+}
+template <typename T, typename... Ts>
+constexpr bool any_of(T b, Ts... bools)
+{
+  return b || any_of(bools...);
+}
+
+template <typename T>
+constexpr size_t count(T b)
+{
+  return b;
+}
+template <typename T, typename... Ts>
+constexpr size_t count(T b, Ts... bools)
+{
+  return b + any_of(bools...);
+}
+
 
 }} // namespace cpt::helpers
 
-#endif // METAPROG_CPT_CONCEPTS_HELPERS_HPP_
+#endif // METAPROG_CPT_CORE_HELPERS_HPP_

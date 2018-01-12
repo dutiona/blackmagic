@@ -5,7 +5,7 @@
 
 #include "concepts.hpp"
 
-#include "../verif.hpp"
+#include "../core.hpp"
 
 namespace cpt { namespace basic { namespace diagnostic {
 
@@ -13,44 +13,44 @@ namespace cpt { namespace basic { namespace diagnostic {
 template <typename T>
 constexpr void diagnostic(decltype(cpt::concepts::default_constructible))
 {
-  static_assert(cpt::check<T>(cpt::concepts::default_constructible), "T is not default constructible");
+  static_assert(cpt::concepts::default_constructible.check<T>(), "T is not default constructible");
 }
 
 // move constructible
 template <typename T>
 constexpr void diagnostic(decltype(cpt::concepts::move_constructible))
 {
-  static_assert(cpt::check<T>(cpt::concepts::move_constructible), "T is not move constructible");
+  static_assert(cpt::concepts::move_constructible.check<T>(), "T is not move constructible");
 }
 
 // copy constructible
 template <typename T>
 constexpr void diagnostic(decltype(cpt::concepts::copy_constructible))
 {
-  static_assert(cpt::check<T>(cpt::concepts::copy_constructible), "T is not copy constructible");
+  static_assert(cpt::concepts::copy_constructible.check<T>(), "T is not copy constructible");
 }
 
 // move assignable
 template <typename T>
 constexpr void diagnostic(decltype(cpt::concepts::move_assignable))
 {
-  static_assert(cpt::check<T>(cpt::concepts::move_assignable), "T is not move assignable");
+  static_assert(cpt::concepts::move_assignable.check<T>(), "T is not move assignable");
 }
 
 // copy assignable
 template <typename T>
 constexpr void diagnostic(decltype(cpt::concepts::copy_assignable))
 {
-  static_assert(cpt::check<T>(cpt::concepts::copy_assignable), "T is not copy assignable");
+  static_assert(cpt::concepts::copy_assignable.check<T>(), "T is not copy assignable");
 }
 
 // destructible
 template <typename T>
 constexpr void diagnostic(decltype(cpt::concepts::destructible))
 {
-  static_assert(cpt::check<T>(cpt::concepts::destructible), "T is not destructible");
+  static_assert(cpt::concepts::destructible.check<T>(), "T is not destructible");
 }
 
-}}} // namespace cpt::basic::concept_diagnostic_traits
+}}} // namespace cpt::basic::diagnostic
 
 #endif // METAPROG_CPT_BASIC_DIAGNOSTIC_HPP_

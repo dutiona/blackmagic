@@ -1,7 +1,7 @@
 #include <metaprog/cpt/cpt.hpp>
 
 using namespace std::literals;
-
+namespace concepts = cpt::concepts;
 
 namespace pixel_concept_traits {
 
@@ -28,7 +28,7 @@ inline constexpr auto image_type = cpt::make_concept_item_from_construct<image_t
 // point_type alias site_type
 template <typename PixelType>
 using point_type_is_site_type_predicate = cpt::make_predicate<
-  cpt::make_condition<cpt::check<PixelType>(point_type)>, cpt::make_condition<cpt::check<PixelType>(site_type)>,
+  cpt::make_condition<point_type.check<PixelType>()>, cpt::make_condition<site_type.check<PixelType>()>,
   cpt::make_condition<std::is_same_v<site_type_construct<PixelType>, point_type_construct<PixelType>>>>;
 inline constexpr auto point_type_is_site_type =
   cpt::make_concept_item_from_predicate<point_type_is_site_type_predicate>("point_type_is_site_type"sv);
@@ -36,7 +36,7 @@ inline constexpr auto point_type_is_site_type =
 // value type is not reference
 template <typename PixelType>
 using value_type_is_not_a_reference_predicate =
-  cpt::make_predicate<cpt::make_condition<cpt::check<PixelType>(value_type)>,
+  cpt::make_predicate<cpt::make_condition<value_type.check<PixelType>()>,
                       cpt::make_condition<!std::is_reference_v<value_type_construct<PixelType>>>>;
 inline constexpr auto value_type_is_not_a_reference =
   cpt::make_concept_item_from_predicate<value_type_is_not_a_reference_predicate>("value_type_is_not_a_reference"sv);
@@ -44,34 +44,34 @@ inline constexpr auto value_type_is_not_a_reference =
 // has method val
 template <typename PixelType>
 using has_method_val_predicate =
-  cpt::make_predicate<cpt::make_condition<cpt::check<PixelType>(reference)>,
-                      cpt::make_condition<cpt::check<reference_construct<PixelType>, decltype(&PixelType::val),
-                                                     PixelType>(cpt::concepts::invocable_r)>>;
+  cpt::make_predicate<cpt::make_condition<reference.check<PixelType>()>,
+                      cpt::make_condition<concepts::invocable_r.check<reference_construct<PixelType>,
+                                                                      decltype(&PixelType::val), PixelType>()>>;
 constexpr auto has_method_val = cpt::make_concept_item_from_predicate<has_method_val_predicate>("has_method_val"sv);
 
 // has method point
 template <typename PixelType>
 using has_method_point_predicate =
-  cpt::make_predicate<cpt::make_condition<cpt::check<PixelType>(point_type)>,
-                      cpt::make_condition<cpt::check<point_type_construct<PixelType>, decltype(&PixelType::point),
-                                                     PixelType>(cpt::concepts::invocable_r)>>;
+  cpt::make_predicate<cpt::make_condition<point_type.check<PixelType>()>,
+                      cpt::make_condition<concepts::invocable_r.check<point_type_construct<PixelType>,
+                                                                      decltype(&PixelType::point), PixelType>()>>;
 constexpr auto has_method_point =
   cpt::make_concept_item_from_predicate<has_method_point_predicate>("has_method_point"sv);
 
 // has method site
 template <typename PixelType>
 using has_method_site_predicate =
-  cpt::make_predicate<cpt::make_condition<cpt::check<PixelType>(site_type)>,
-                      cpt::make_condition<cpt::check<site_type_construct<PixelType>, decltype(&PixelType::site),
-                                                     PixelType>(cpt::concepts::invocable_r)>>;
+  cpt::make_predicate<cpt::make_condition<site_type.check<PixelType>()>,
+                      cpt::make_condition<concepts::invocable_r.check<site_type_construct<PixelType>,
+                                                                      decltype(&PixelType::site), PixelType>()>>;
 constexpr auto has_method_site = cpt::make_concept_item_from_predicate<has_method_site_predicate>("has_method_site"sv);
 
 // has method image
 template <typename PixelType>
 using has_method_image_predicate =
-  cpt::make_predicate<cpt::make_condition<cpt::check<PixelType>(image_type)>,
-                      cpt::make_condition<cpt::check<image_type_construct<PixelType>, decltype(&PixelType::image),
-                                                     PixelType>(cpt::concepts::invocable_r)>>;
+  cpt::make_predicate<cpt::make_condition<image_type.check<PixelType>()>,
+                      cpt::make_condition<concepts::invocable_r.check<image_type_construct<PixelType>,
+                                                                      decltype(&PixelType::image), PixelType>()>>;
 constexpr auto has_method_image =
   cpt::make_concept_item_from_predicate<has_method_image_predicate>("has_method_image"sv);
 
@@ -90,19 +90,20 @@ namespace concept_diagnostic_traits {
 template <typename PixelType>
 constexpr void diagnostic(decltype(pixel_concept))
 {
-  static_assert(cpt::check_map_at<PixelType>(pixel_concept, "value_type"sv), "value_type attribute missing");
-  static_assert(cpt::check_map_at<PixelType>(pixel_concept, "reference"sv), "reference attribute missing");
-  static_assert(cpt::check_map_at<PixelType>(pixel_concept, "point_type"sv), "point_type attribute missing");
-  static_assert(cpt::check_map_at<PixelType>(pixel_concept, "site_type"sv), "site_type attribute missing");
-  static_assert(cpt::check_map_at<PixelType>(pixel_concept, "image_type"sv), "image_type attribute missing");
+  static_assert(pixel_concept.check_at<PixelType>("value_type"sv), "value_type attribute missing");
+  static_assert(pixel_concept.check_at<PixelType>("reference"sv), "reference attribute missing");
+  static_assert(pixel_concept.check_at<PixelType>("point_type"sv), "point_type attribute missing");
+  static_assert(pixel_concept.check_at<PixelType>("site_type"sv), "site_type attribute missing");
+  static_assert(pixel_concept.check_at<PixelType>("image_type"sv), "image_type attribute missing");
 
-  static_assert(cpt::check_map_at<PixelType>(pixel_concept, "point_type_is_site_type"sv), "point_type should alias site_type");
-  static_assert(cpt::check_map_at<PixelType>(pixel_concept, "value_type_is_not_a_reference"sv), "value_type should not be a reference");
+  static_assert(pixel_concept.check_at<PixelType>("point_type_is_site_type"sv), "point_type should alias site_type");
+  static_assert(pixel_concept.check_at<PixelType>("value_type_is_not_a_reference"sv),
+                "value_type should not be a reference");
 
-  static_assert(cpt::check_map_at<PixelType>(pixel_concept, "has_method_val"sv), "method val missing or ill-defined");
-  static_assert(cpt::check_map_at<PixelType>(pixel_concept, "has_method_point"sv), "method point missing or ill-defined");
-  static_assert(cpt::check_map_at<PixelType>(pixel_concept, "has_method_site"sv), "method site missing or ill-defined");
-  static_assert(cpt::check_map_at<PixelType>(pixel_concept, "has_method_image"sv), "method image missing or ill-defined");
+  static_assert(pixel_concept.check_at<PixelType>("has_method_val"sv), "method val missing or ill-defined");
+  static_assert(pixel_concept.check_at<PixelType>("has_method_point"sv), "method point missing or ill-defined");
+  static_assert(pixel_concept.check_at<PixelType>("has_method_site"sv), "method site missing or ill-defined");
+  static_assert(pixel_concept.check_at<PixelType>("has_method_image"sv), "method image missing or ill-defined");
 }
 
 } // namespace concept_diagnostic_traits
@@ -137,11 +138,11 @@ struct MyBadPixel {
 
 int main()
 {
-  if constexpr (!cpt::check_map<MyPixel>(pixel_concept)) {
+  if constexpr (!pixel_concept.check<MyPixel>()) {
     DIAGNOSTIC(pixel_concept, MyPixel);
   }
-  if constexpr (!cpt::check_map<MyBadPixel>(pixel_concept)) {
-    DIAGNOSTIC(pixel_concept, MyBadPixel);
+  if constexpr (!pixel_concept.check<MyBadPixel>()) {
+    // DIAGNOSTIC(pixel_concept, MyBadPixel);
   }
 
   return 0;

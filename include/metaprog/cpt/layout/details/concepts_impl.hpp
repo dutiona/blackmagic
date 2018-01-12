@@ -5,7 +5,7 @@
 
 #include "../traits.hpp"
 
-#include "../../verif.hpp"
+#include "../../core.hpp"
 
 #include <type_traits>
 

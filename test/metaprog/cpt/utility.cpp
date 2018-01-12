@@ -25,10 +25,10 @@ TEST(Cpt_Utility, indirection)
 {
   const int* a = nullptr;
   const int  b = 0;
-  ASSERT_TRUE((cpt::check<indirection_test>(concepts::indirection)));
-  ASSERT_TRUE((cpt::check<decltype(a)>(concepts::indirection)));
-  ASSERT_FALSE((cpt::check<no_operator_test>(concepts::indirection)));
-  ASSERT_FALSE((cpt::check<decltype(b)>(concepts::indirection)));
+  ASSERT_TRUE((concepts::indirection.check<indirection_test>()));
+  ASSERT_TRUE((concepts::indirection.check<decltype(a)>()));
+  ASSERT_FALSE((concepts::indirection.check<no_operator_test>()));
+  ASSERT_FALSE((concepts::indirection.check<decltype(b)>()));
 }
 
 struct address_of_test {
@@ -43,14 +43,14 @@ TEST(Cpt_Utility, address_of)
   const int* a = nullptr;
   const int  b = 0;
   const int& c = b;
-  ASSERT_TRUE((cpt::check<address_of_test>(concepts::address_of)));
-  ASSERT_TRUE((cpt::check<decltype(*a)>(concepts::address_of)));
-  ASSERT_TRUE((cpt::check<decltype(c)>(concepts::address_of)));
+  ASSERT_TRUE((concepts::address_of.check<address_of_test>()));
+  ASSERT_TRUE((concepts::address_of.check<decltype(*a)>()));
+  ASSERT_TRUE((concepts::address_of.check<decltype(c)>()));
 #ifndef _MSC_VER // TODO/FIXME remove when reported bug is fixed
-  ASSERT_FALSE((cpt::check<no_operator_test>(concepts::address_of)));
+  ASSERT_FALSE((concepts::address_of.check<no_operator_test>()));
 #endif
-  ASSERT_FALSE((cpt::check<decltype(a)>(concepts::address_of)));
-  ASSERT_FALSE((cpt::check<decltype(b)>(concepts::address_of)));
+  ASSERT_FALSE((concepts::address_of.check<decltype(a)>()));
+  ASSERT_FALSE((concepts::address_of.check<decltype(b)>()));
 }
 
 struct subscript_test {
@@ -67,14 +67,14 @@ TEST(Cpt_Utility, subscript)
   int                 d   = 0;
   int                 e[] = {1, 2, 3};
   int*                f   = e;
-  ASSERT_TRUE((cpt::check<subscript_test, int>(concepts::subscript)));
-  ASSERT_TRUE((cpt::check<decltype(a), int>(concepts::subscript)));
-  ASSERT_TRUE((cpt::check<decltype(b), int>(concepts::subscript)));
-  ASSERT_TRUE((cpt::check<decltype(c), int>(concepts::subscript)));
-  ASSERT_TRUE((cpt::check<decltype(e), int>(concepts::subscript)));
-  ASSERT_TRUE((cpt::check<decltype(f), int>(concepts::subscript)));
-  ASSERT_FALSE((cpt::check<decltype(d), int>(concepts::subscript)));
-  ASSERT_FALSE((cpt::check<no_operator_test, int>(concepts::subscript)));
+  ASSERT_TRUE((concepts::subscript.check<subscript_test, int>()));
+  ASSERT_TRUE((concepts::subscript.check<decltype(a), int>()));
+  ASSERT_TRUE((concepts::subscript.check<decltype(b), int>()));
+  ASSERT_TRUE((concepts::subscript.check<decltype(c), int>()));
+  ASSERT_TRUE((concepts::subscript.check<decltype(e), int>()));
+  ASSERT_TRUE((concepts::subscript.check<decltype(f), int>()));
+  ASSERT_FALSE((concepts::subscript.check<decltype(d), int>()));
+  ASSERT_FALSE((concepts::subscript.check<no_operator_test, int>()));
 }
 
 struct pointer_to_member_of_object_test {
@@ -88,9 +88,9 @@ TEST(Cpt_Utility, pointer_to_member_of_object)
 {
   pointer_to_member_of_object_test obj{};
   ASSERT_TRUE(
-    (cpt::check<decltype(obj), decltype(&pointer_to_member_of_object_test::a)>(concepts::pointer_to_member_of_object)));
-  ASSERT_FALSE((cpt::check<decltype(obj), decltype(&pointer_to_member_of_object_other_test::a)>(
-    concepts::pointer_to_member_of_object)));
+    (concepts::pointer_to_member_of_object.check<decltype(obj), decltype(&pointer_to_member_of_object_test::a)>()));
+  ASSERT_FALSE((concepts::pointer_to_member_of_object
+                  .check<decltype(obj), decltype(&pointer_to_member_of_object_other_test::a)>()));
 }
 
 struct pointer_to_member_of_pointer_test {
@@ -103,10 +103,10 @@ struct pointer_to_member_of_pointer_other_test {
 TEST(Cpt_Utility, pointer_to_member_of_pointer)
 {
   pointer_to_member_of_pointer_test obj{};
-  ASSERT_TRUE((cpt::check<decltype(&obj), decltype(&pointer_to_member_of_pointer_test::a)>(
-    concepts::pointer_to_member_of_pointer)));
-  ASSERT_FALSE((cpt::check<decltype(&obj), decltype(&pointer_to_member_of_pointer_other_test::a)>(
-    concepts::pointer_to_member_of_pointer)));
+  ASSERT_TRUE(
+    (concepts::pointer_to_member_of_pointer.check<decltype(&obj), decltype(&pointer_to_member_of_pointer_test::a)>()));
+  ASSERT_FALSE((concepts::pointer_to_member_of_pointer
+                  .check<decltype(&obj), decltype(&pointer_to_member_of_pointer_other_test::a)>()));
 }
 
 
@@ -134,14 +134,14 @@ TEST(Cpt_Utility, assignable)
 {
   const int a = 0;
   int       b = 0;
-  ASSERT_TRUE((cpt::check<decltype(b)>(concepts::assignable)));
-  ASSERT_TRUE((cpt::check<decltype(b), double>(concepts::assignable)));
-  ASSERT_TRUE((cpt::check<decltype(b), int_convertible_test>(concepts::assignable)));
-  ASSERT_TRUE((cpt::check<no_operator_test>(concepts::assignable)));
-  ASSERT_TRUE((cpt::check<assignable_rhs_test, assignable_rhs_test::rhs>(concepts::assignable)));
-  ASSERT_FALSE((cpt::check<decltype(a), int>(concepts::assignable)));
-  ASSERT_FALSE((cpt::check<decltype(b), no_operator_test>(concepts::assignable)));
-  ASSERT_FALSE((cpt::check<non_assignable_test>(concepts::assignable)));
+  ASSERT_TRUE((concepts::assignable.check<decltype(b)>()));
+  ASSERT_TRUE((concepts::assignable.check<decltype(b), double>()));
+  ASSERT_TRUE((concepts::assignable.check<decltype(b), int_convertible_test>()));
+  ASSERT_TRUE((concepts::assignable.check<no_operator_test>()));
+  ASSERT_TRUE((concepts::assignable.check<assignable_rhs_test, assignable_rhs_test::rhs>()));
+  ASSERT_FALSE((concepts::assignable.check<decltype(a), int>()));
+  ASSERT_FALSE((concepts::assignable.check<decltype(b), no_operator_test>()));
+  ASSERT_FALSE((concepts::assignable.check<non_assignable_test>()));
 }
 
 struct plus_assignable_test {
@@ -169,16 +169,16 @@ TEST(Cpt_Utility, plus_assignable)
 {
   const int a = 0;
   int       b = 0;
-  ASSERT_TRUE((cpt::check<decltype(b)>(concepts::plus_assignable)));
-  ASSERT_TRUE((cpt::check<decltype(b), double>(concepts::plus_assignable)));
-  ASSERT_TRUE((cpt::check<decltype(b), int_convertible_test>(concepts::plus_assignable)));
-  ASSERT_TRUE((cpt::check<plus_assignable_test>(concepts::plus_assignable)));
-  ASSERT_TRUE((cpt::check<plus_assignable_int_test, int>(concepts::plus_assignable)));
-  ASSERT_TRUE((cpt::check<plus_assignable_rhs_test, plus_assignable_rhs_test::rhs>(concepts::plus_assignable)));
-  ASSERT_FALSE((cpt::check<decltype(a)>(concepts::plus_assignable)));
-  ASSERT_FALSE((cpt::check<decltype(b), plus_assignable_test>(concepts::plus_assignable)));
-  ASSERT_FALSE((cpt::check<no_operator_test>(concepts::plus_assignable)));
-  ASSERT_FALSE((cpt::check<plus_assignable_int_test>(concepts::plus_assignable)));
+  ASSERT_TRUE((concepts::plus_assignable.check<decltype(b)>()));
+  ASSERT_TRUE((concepts::plus_assignable.check<decltype(b), double>()));
+  ASSERT_TRUE((concepts::plus_assignable.check<decltype(b), int_convertible_test>()));
+  ASSERT_TRUE((concepts::plus_assignable.check<plus_assignable_test>()));
+  ASSERT_TRUE((concepts::plus_assignable.check<plus_assignable_int_test, int>()));
+  ASSERT_TRUE((concepts::plus_assignable.check<plus_assignable_rhs_test, plus_assignable_rhs_test::rhs>()));
+  ASSERT_FALSE((concepts::plus_assignable.check<decltype(a)>()));
+  ASSERT_FALSE((concepts::plus_assignable.check<decltype(b), plus_assignable_test>()));
+  ASSERT_FALSE((concepts::plus_assignable.check<no_operator_test>()));
+  ASSERT_FALSE((concepts::plus_assignable.check<plus_assignable_int_test>()));
 }
 
 struct less_assignable_test {
@@ -206,16 +206,16 @@ TEST(Cpt_Utility, less_assignable)
 {
   const int a = 0;
   int       b = 0;
-  ASSERT_TRUE((cpt::check<decltype(b)>(concepts::less_assignable)));
-  ASSERT_TRUE((cpt::check<decltype(b), double>(concepts::less_assignable)));
-  ASSERT_TRUE((cpt::check<decltype(b), int_convertible_test>(concepts::less_assignable)));
-  ASSERT_TRUE((cpt::check<less_assignable_test>(concepts::less_assignable)));
-  ASSERT_TRUE((cpt::check<less_assignable_int_test, int>(concepts::less_assignable)));
-  ASSERT_TRUE((cpt::check<less_assignable_rhs_test, less_assignable_rhs_test::rhs>(concepts::less_assignable)));
-  ASSERT_FALSE((cpt::check<decltype(a)>(concepts::less_assignable)));
-  ASSERT_FALSE((cpt::check<decltype(b), less_assignable_test>(concepts::less_assignable)));
-  ASSERT_FALSE((cpt::check<no_operator_test>(concepts::less_assignable)));
-  ASSERT_FALSE((cpt::check<less_assignable_int_test>(concepts::less_assignable)));
+  ASSERT_TRUE((concepts::less_assignable.check<decltype(b)>()));
+  ASSERT_TRUE((concepts::less_assignable.check<decltype(b), double>()));
+  ASSERT_TRUE((concepts::less_assignable.check<decltype(b), int_convertible_test>()));
+  ASSERT_TRUE((concepts::less_assignable.check<less_assignable_test>()));
+  ASSERT_TRUE((concepts::less_assignable.check<less_assignable_int_test, int>()));
+  ASSERT_TRUE((concepts::less_assignable.check<less_assignable_rhs_test, less_assignable_rhs_test::rhs>()));
+  ASSERT_FALSE((concepts::less_assignable.check<decltype(a)>()));
+  ASSERT_FALSE((concepts::less_assignable.check<decltype(b), less_assignable_test>()));
+  ASSERT_FALSE((concepts::less_assignable.check<no_operator_test>()));
+  ASSERT_FALSE((concepts::less_assignable.check<less_assignable_int_test>()));
 }
 
 struct mult_assignable_test {
@@ -243,16 +243,16 @@ TEST(Cpt_Utility, mult_assignable)
 {
   const int a = 0;
   int       b = 0;
-  ASSERT_TRUE((cpt::check<decltype(b)>(concepts::mult_assignable)));
-  ASSERT_TRUE((cpt::check<decltype(b), double>(concepts::mult_assignable)));
-  ASSERT_TRUE((cpt::check<decltype(b), int_convertible_test>(concepts::mult_assignable)));
-  ASSERT_TRUE((cpt::check<mult_assignable_test>(concepts::mult_assignable)));
-  ASSERT_TRUE((cpt::check<mult_assignable_int_test, int>(concepts::mult_assignable)));
-  ASSERT_TRUE((cpt::check<mult_assignable_rhs_test, mult_assignable_rhs_test::rhs>(concepts::mult_assignable)));
-  ASSERT_FALSE((cpt::check<decltype(a)>(concepts::mult_assignable)));
-  ASSERT_FALSE((cpt::check<decltype(b), mult_assignable_test>(concepts::mult_assignable)));
-  ASSERT_FALSE((cpt::check<no_operator_test>(concepts::mult_assignable)));
-  ASSERT_FALSE((cpt::check<mult_assignable_int_test>(concepts::mult_assignable)));
+  ASSERT_TRUE((concepts::mult_assignable.check<decltype(b)>()));
+  ASSERT_TRUE((concepts::mult_assignable.check<decltype(b), double>()));
+  ASSERT_TRUE((concepts::mult_assignable.check<decltype(b), int_convertible_test>()));
+  ASSERT_TRUE((concepts::mult_assignable.check<mult_assignable_test>()));
+  ASSERT_TRUE((concepts::mult_assignable.check<mult_assignable_int_test, int>()));
+  ASSERT_TRUE((concepts::mult_assignable.check<mult_assignable_rhs_test, mult_assignable_rhs_test::rhs>()));
+  ASSERT_FALSE((concepts::mult_assignable.check<decltype(a)>()));
+  ASSERT_FALSE((concepts::mult_assignable.check<decltype(b), mult_assignable_test>()));
+  ASSERT_FALSE((concepts::mult_assignable.check<no_operator_test>()));
+  ASSERT_FALSE((concepts::mult_assignable.check<mult_assignable_int_test>()));
 }
 
 struct div_assignable_test {
@@ -280,16 +280,16 @@ TEST(Cpt_Utility, div_assignable)
 {
   const int a = 0;
   int       b = 0;
-  ASSERT_TRUE((cpt::check<decltype(b)>(concepts::div_assignable)));
-  ASSERT_TRUE((cpt::check<decltype(b), double>(concepts::div_assignable)));
-  ASSERT_TRUE((cpt::check<decltype(b), int_convertible_test>(concepts::div_assignable)));
-  ASSERT_TRUE((cpt::check<div_assignable_test>(concepts::div_assignable)));
-  ASSERT_TRUE((cpt::check<div_assignable_int_test, int>(concepts::div_assignable)));
-  ASSERT_TRUE((cpt::check<div_assignable_rhs_test, div_assignable_rhs_test::rhs>(concepts::div_assignable)));
-  ASSERT_FALSE((cpt::check<decltype(a)>(concepts::div_assignable)));
-  ASSERT_FALSE((cpt::check<decltype(b), div_assignable_test>(concepts::div_assignable)));
-  ASSERT_FALSE((cpt::check<no_operator_test>(concepts::div_assignable)));
-  ASSERT_FALSE((cpt::check<div_assignable_int_test>(concepts::div_assignable)));
+  ASSERT_TRUE((concepts::div_assignable.check<decltype(b)>()));
+  ASSERT_TRUE((concepts::div_assignable.check<decltype(b), double>()));
+  ASSERT_TRUE((concepts::div_assignable.check<decltype(b), int_convertible_test>()));
+  ASSERT_TRUE((concepts::div_assignable.check<div_assignable_test>()));
+  ASSERT_TRUE((concepts::div_assignable.check<div_assignable_int_test, int>()));
+  ASSERT_TRUE((concepts::div_assignable.check<div_assignable_rhs_test, div_assignable_rhs_test::rhs>()));
+  ASSERT_FALSE((concepts::div_assignable.check<decltype(a)>()));
+  ASSERT_FALSE((concepts::div_assignable.check<decltype(b), div_assignable_test>()));
+  ASSERT_FALSE((concepts::div_assignable.check<no_operator_test>()));
+  ASSERT_FALSE((concepts::div_assignable.check<div_assignable_int_test>()));
 }
 
 struct mod_assignable_test {
@@ -317,16 +317,16 @@ TEST(Cpt_Utility, mod_assignable)
 {
   const int a = 0;
   int       b = 0;
-  ASSERT_TRUE((cpt::check<decltype(b)>(concepts::mod_assignable)));
-  ASSERT_TRUE((cpt::check<decltype(b), int_convertible_test>(concepts::mod_assignable)));
-  ASSERT_TRUE((cpt::check<mod_assignable_test>(concepts::mod_assignable)));
-  ASSERT_TRUE((cpt::check<mod_assignable_int_test, int>(concepts::mod_assignable)));
-  ASSERT_TRUE((cpt::check<mod_assignable_rhs_test, mod_assignable_rhs_test::rhs>(concepts::mod_assignable)));
-  ASSERT_FALSE((cpt::check<decltype(b), double>(concepts::mod_assignable)));
-  ASSERT_FALSE((cpt::check<decltype(a)>(concepts::mod_assignable)));
-  ASSERT_FALSE((cpt::check<decltype(b), mod_assignable_test>(concepts::mod_assignable)));
-  ASSERT_FALSE((cpt::check<no_operator_test>(concepts::mod_assignable)));
-  ASSERT_FALSE((cpt::check<mod_assignable_int_test>(concepts::mod_assignable)));
+  ASSERT_TRUE((concepts::mod_assignable.check<decltype(b)>()));
+  ASSERT_TRUE((concepts::mod_assignable.check<decltype(b), int_convertible_test>()));
+  ASSERT_TRUE((concepts::mod_assignable.check<mod_assignable_test>()));
+  ASSERT_TRUE((concepts::mod_assignable.check<mod_assignable_int_test, int>()));
+  ASSERT_TRUE((concepts::mod_assignable.check<mod_assignable_rhs_test, mod_assignable_rhs_test::rhs>()));
+  ASSERT_FALSE((concepts::mod_assignable.check<decltype(b), double>()));
+  ASSERT_FALSE((concepts::mod_assignable.check<decltype(a)>()));
+  ASSERT_FALSE((concepts::mod_assignable.check<decltype(b), mod_assignable_test>()));
+  ASSERT_FALSE((concepts::mod_assignable.check<no_operator_test>()));
+  ASSERT_FALSE((concepts::mod_assignable.check<mod_assignable_int_test>()));
 }
 
 struct and_assignable_test {
@@ -354,16 +354,16 @@ TEST(Cpt_Utility, and_assignable)
 {
   const int a = 0;
   int       b = 0;
-  ASSERT_TRUE((cpt::check<decltype(b)>(concepts::and_assignable)));
-  ASSERT_TRUE((cpt::check<decltype(b), int_convertible_test>(concepts::and_assignable)));
-  ASSERT_TRUE((cpt::check<and_assignable_test>(concepts::and_assignable)));
-  ASSERT_TRUE((cpt::check<and_assignable_int_test, int>(concepts::and_assignable)));
-  ASSERT_TRUE((cpt::check<and_assignable_rhs_test, and_assignable_rhs_test::rhs>(concepts::and_assignable)));
-  ASSERT_FALSE((cpt::check<decltype(b), double>(concepts::and_assignable)));
-  ASSERT_FALSE((cpt::check<decltype(a)>(concepts::and_assignable)));
-  ASSERT_FALSE((cpt::check<decltype(b), and_assignable_test>(concepts::and_assignable)));
-  ASSERT_FALSE((cpt::check<no_operator_test>(concepts::and_assignable)));
-  ASSERT_FALSE((cpt::check<and_assignable_int_test>(concepts::and_assignable)));
+  ASSERT_TRUE((concepts::and_assignable.check<decltype(b)>()));
+  ASSERT_TRUE((concepts::and_assignable.check<decltype(b), int_convertible_test>()));
+  ASSERT_TRUE((concepts::and_assignable.check<and_assignable_test>()));
+  ASSERT_TRUE((concepts::and_assignable.check<and_assignable_int_test, int>()));
+  ASSERT_TRUE((concepts::and_assignable.check<and_assignable_rhs_test, and_assignable_rhs_test::rhs>()));
+  ASSERT_FALSE((concepts::and_assignable.check<decltype(b), double>()));
+  ASSERT_FALSE((concepts::and_assignable.check<decltype(a)>()));
+  ASSERT_FALSE((concepts::and_assignable.check<decltype(b), and_assignable_test>()));
+  ASSERT_FALSE((concepts::and_assignable.check<no_operator_test>()));
+  ASSERT_FALSE((concepts::and_assignable.check<and_assignable_int_test>()));
 }
 
 struct or_assignable_test {
@@ -391,16 +391,16 @@ TEST(Cpt_Utility, or_assignable)
 {
   const int a = 0;
   int       b = 0;
-  ASSERT_TRUE((cpt::check<decltype(b)>(concepts::or_assignable)));
-  ASSERT_TRUE((cpt::check<decltype(b), int_convertible_test>(concepts::or_assignable)));
-  ASSERT_TRUE((cpt::check<or_assignable_test>(concepts::or_assignable)));
-  ASSERT_TRUE((cpt::check<or_assignable_int_test, int>(concepts::or_assignable)));
-  ASSERT_TRUE((cpt::check<or_assignable_rhs_test, or_assignable_rhs_test::rhs>(concepts::or_assignable)));
-  ASSERT_FALSE((cpt::check<decltype(b), double>(concepts::or_assignable)));
-  ASSERT_FALSE((cpt::check<decltype(a)>(concepts::or_assignable)));
-  ASSERT_FALSE((cpt::check<decltype(b), or_assignable_test>(concepts::or_assignable)));
-  ASSERT_FALSE((cpt::check<no_operator_test>(concepts::or_assignable)));
-  ASSERT_FALSE((cpt::check<or_assignable_int_test>(concepts::or_assignable)));
+  ASSERT_TRUE((concepts::or_assignable.check<decltype(b)>()));
+  ASSERT_TRUE((concepts::or_assignable.check<decltype(b), int_convertible_test>()));
+  ASSERT_TRUE((concepts::or_assignable.check<or_assignable_test>()));
+  ASSERT_TRUE((concepts::or_assignable.check<or_assignable_int_test, int>()));
+  ASSERT_TRUE((concepts::or_assignable.check<or_assignable_rhs_test, or_assignable_rhs_test::rhs>()));
+  ASSERT_FALSE((concepts::or_assignable.check<decltype(b), double>()));
+  ASSERT_FALSE((concepts::or_assignable.check<decltype(a)>()));
+  ASSERT_FALSE((concepts::or_assignable.check<decltype(b), or_assignable_test>()));
+  ASSERT_FALSE((concepts::or_assignable.check<no_operator_test>()));
+  ASSERT_FALSE((concepts::or_assignable.check<or_assignable_int_test>()));
 }
 
 struct xor_assignable_test {
@@ -428,16 +428,16 @@ TEST(Cpt_Utility, xor_assignable)
 {
   const int a = 0;
   int       b = 0;
-  ASSERT_TRUE((cpt::check<decltype(b)>(concepts::xor_assignable)));
-  ASSERT_TRUE((cpt::check<decltype(b), int_convertible_test>(concepts::xor_assignable)));
-  ASSERT_TRUE((cpt::check<xor_assignable_test>(concepts::xor_assignable)));
-  ASSERT_TRUE((cpt::check<xor_assignable_int_test, int>(concepts::xor_assignable)));
-  ASSERT_TRUE((cpt::check<xor_assignable_rhs_test, xor_assignable_rhs_test::rhs>(concepts::xor_assignable)));
-  ASSERT_FALSE((cpt::check<decltype(b), double>(concepts::xor_assignable)));
-  ASSERT_FALSE((cpt::check<decltype(a)>(concepts::xor_assignable)));
-  ASSERT_FALSE((cpt::check<decltype(b), xor_assignable_test>(concepts::xor_assignable)));
-  ASSERT_FALSE((cpt::check<no_operator_test>(concepts::xor_assignable)));
-  ASSERT_FALSE((cpt::check<xor_assignable_int_test>(concepts::xor_assignable)));
+  ASSERT_TRUE((concepts::xor_assignable.check<decltype(b)>()));
+  ASSERT_TRUE((concepts::xor_assignable.check<decltype(b), int_convertible_test>()));
+  ASSERT_TRUE((concepts::xor_assignable.check<xor_assignable_test>()));
+  ASSERT_TRUE((concepts::xor_assignable.check<xor_assignable_int_test, int>()));
+  ASSERT_TRUE((concepts::xor_assignable.check<xor_assignable_rhs_test, xor_assignable_rhs_test::rhs>()));
+  ASSERT_FALSE((concepts::xor_assignable.check<decltype(b), double>()));
+  ASSERT_FALSE((concepts::xor_assignable.check<decltype(a)>()));
+  ASSERT_FALSE((concepts::xor_assignable.check<decltype(b), xor_assignable_test>()));
+  ASSERT_FALSE((concepts::xor_assignable.check<no_operator_test>()));
+  ASSERT_FALSE((concepts::xor_assignable.check<xor_assignable_int_test>()));
 }
 
 struct lshift_assignable_test {
@@ -465,16 +465,16 @@ TEST(Cpt_Utility, lshift_assignable)
 {
   const int a = 0;
   int       b = 0;
-  ASSERT_TRUE((cpt::check<decltype(b)>(concepts::lshift_assignable)));
-  ASSERT_TRUE((cpt::check<decltype(b), int_convertible_test>(concepts::lshift_assignable)));
-  ASSERT_TRUE((cpt::check<lshift_assignable_int_test, int>(concepts::lshift_assignable)));
-  ASSERT_TRUE((cpt::check<lshift_assignable_rhs_test, lshift_assignable_rhs_test::rhs>(concepts::lshift_assignable)));
-  ASSERT_TRUE((cpt::check<lshift_assignable_test>(concepts::lshift_assignable)));
-  ASSERT_FALSE((cpt::check<decltype(b), double>(concepts::lshift_assignable)));
-  ASSERT_FALSE((cpt::check<decltype(a)>(concepts::lshift_assignable)));
-  ASSERT_FALSE((cpt::check<decltype(b), lshift_assignable_test>(concepts::lshift_assignable)));
-  ASSERT_FALSE((cpt::check<no_operator_test>(concepts::lshift_assignable)));
-  ASSERT_FALSE((cpt::check<lshift_assignable_int_test>(concepts::lshift_assignable)));
+  ASSERT_TRUE((concepts::lshift_assignable.check<decltype(b)>()));
+  ASSERT_TRUE((concepts::lshift_assignable.check<decltype(b), int_convertible_test>()));
+  ASSERT_TRUE((concepts::lshift_assignable.check<lshift_assignable_int_test, int>()));
+  ASSERT_TRUE((concepts::lshift_assignable.check<lshift_assignable_rhs_test, lshift_assignable_rhs_test::rhs>()));
+  ASSERT_TRUE((concepts::lshift_assignable.check<lshift_assignable_test>()));
+  ASSERT_FALSE((concepts::lshift_assignable.check<decltype(b), double>()));
+  ASSERT_FALSE((concepts::lshift_assignable.check<decltype(a)>()));
+  ASSERT_FALSE((concepts::lshift_assignable.check<decltype(b), lshift_assignable_test>()));
+  ASSERT_FALSE((concepts::lshift_assignable.check<no_operator_test>()));
+  ASSERT_FALSE((concepts::lshift_assignable.check<lshift_assignable_int_test>()));
 }
 
 struct rshift_assignable_test {
@@ -502,16 +502,16 @@ TEST(Cpt_Utility, rshift_assignable)
 {
   const int a = 0;
   int       b = 0;
-  ASSERT_TRUE((cpt::check<decltype(b)>(concepts::rshift_assignable)));
-  ASSERT_TRUE((cpt::check<decltype(b), int_convertible_test>(concepts::rshift_assignable)));
-  ASSERT_TRUE((cpt::check<rshift_assignable_test>(concepts::rshift_assignable)));
-  ASSERT_TRUE((cpt::check<rshift_assignable_int_test, int>(concepts::rshift_assignable)));
-  ASSERT_TRUE((cpt::check<rshift_assignable_rhs_test, rshift_assignable_rhs_test::rhs>(concepts::rshift_assignable)));
-  ASSERT_FALSE((cpt::check<decltype(b), double>(concepts::rshift_assignable)));
-  ASSERT_FALSE((cpt::check<decltype(a)>(concepts::rshift_assignable)));
-  ASSERT_FALSE((cpt::check<decltype(b), rshift_assignable_test>(concepts::rshift_assignable)));
-  ASSERT_FALSE((cpt::check<no_operator_test>(concepts::rshift_assignable)));
-  ASSERT_FALSE((cpt::check<rshift_assignable_int_test>(concepts::rshift_assignable)));
+  ASSERT_TRUE((concepts::rshift_assignable.check<decltype(b)>()));
+  ASSERT_TRUE((concepts::rshift_assignable.check<decltype(b), int_convertible_test>()));
+  ASSERT_TRUE((concepts::rshift_assignable.check<rshift_assignable_test>()));
+  ASSERT_TRUE((concepts::rshift_assignable.check<rshift_assignable_int_test, int>()));
+  ASSERT_TRUE((concepts::rshift_assignable.check<rshift_assignable_rhs_test, rshift_assignable_rhs_test::rhs>()));
+  ASSERT_FALSE((concepts::rshift_assignable.check<decltype(b), double>()));
+  ASSERT_FALSE((concepts::rshift_assignable.check<decltype(a)>()));
+  ASSERT_FALSE((concepts::rshift_assignable.check<decltype(b), rshift_assignable_test>()));
+  ASSERT_FALSE((concepts::rshift_assignable.check<no_operator_test>()));
+  ASSERT_FALSE((concepts::rshift_assignable.check<rshift_assignable_int_test>()));
 }
 
 
@@ -529,11 +529,11 @@ TEST(Cpt_Utility, positive)
   const int a = -1;
   int       b = 0;
   double    c = -3.14;
-  ASSERT_TRUE((cpt::check<decltype(a)>(concepts::positive)));
-  ASSERT_TRUE((cpt::check<decltype(b)>(concepts::positive)));
-  ASSERT_TRUE((cpt::check<decltype(c)>(concepts::positive)));
-  ASSERT_TRUE((cpt::check<positive_test>(concepts::positive)));
-  ASSERT_FALSE((cpt::check<no_operator_test>(concepts::positive)));
+  ASSERT_TRUE((concepts::positive.check<decltype(a)>()));
+  ASSERT_TRUE((concepts::positive.check<decltype(b)>()));
+  ASSERT_TRUE((concepts::positive.check<decltype(c)>()));
+  ASSERT_TRUE((concepts::positive.check<positive_test>()));
+  ASSERT_FALSE((concepts::positive.check<no_operator_test>()));
 }
 
 struct negative_test {
@@ -548,11 +548,11 @@ TEST(Cpt_Utility, negative)
   const int a = -1;
   int       b = 0;
   double    c = -3.14;
-  ASSERT_TRUE((cpt::check<decltype(a)>(concepts::negative)));
-  ASSERT_TRUE((cpt::check<decltype(b)>(concepts::negative)));
-  ASSERT_TRUE((cpt::check<decltype(c)>(concepts::negative)));
-  ASSERT_TRUE((cpt::check<negative_test>(concepts::negative)));
-  ASSERT_FALSE((cpt::check<no_operator_test>(concepts::negative)));
+  ASSERT_TRUE((concepts::negative.check<decltype(a)>()));
+  ASSERT_TRUE((concepts::negative.check<decltype(b)>()));
+  ASSERT_TRUE((concepts::negative.check<decltype(c)>()));
+  ASSERT_TRUE((concepts::negative.check<negative_test>()));
+  ASSERT_FALSE((concepts::negative.check<no_operator_test>()));
 }
 
 struct not_test {
@@ -567,11 +567,11 @@ TEST(Cpt_Utility, not)
   const int a = -1;
   int       b = 0;
   double    c = -3.14;
-  ASSERT_TRUE((cpt::check<decltype(a)>(concepts::Not)));
-  ASSERT_TRUE((cpt::check<decltype(b)>(concepts::Not)));
-  ASSERT_TRUE((cpt::check<not_test>(concepts::Not)));
-  ASSERT_FALSE((cpt::check<decltype(c)>(concepts::Not)));
-  ASSERT_FALSE((cpt::check<no_operator_test>(concepts::Not)));
+  ASSERT_TRUE((concepts::Not.check<decltype(a)>()));
+  ASSERT_TRUE((concepts::Not.check<decltype(b)>()));
+  ASSERT_TRUE((concepts::Not.check<not_test>()));
+  ASSERT_FALSE((concepts::Not.check<decltype(c)>()));
+  ASSERT_FALSE((concepts::Not.check<no_operator_test>()));
 }
 
 struct plus_test {
@@ -599,16 +599,16 @@ TEST(Cpt_Utility, plus)
 {
   const int a = 0;
   int       b = 0;
-  ASSERT_TRUE((cpt::check<decltype(a)>(concepts::plus)));
-  ASSERT_TRUE((cpt::check<decltype(b)>(concepts::plus)));
-  ASSERT_TRUE((cpt::check<decltype(b), double>(concepts::plus)));
-  ASSERT_TRUE((cpt::check<decltype(b), int_convertible_test>(concepts::plus)));
-  ASSERT_TRUE((cpt::check<plus_test>(concepts::plus)));
-  ASSERT_TRUE((cpt::check<plus_int_test, int>(concepts::plus)));
-  ASSERT_TRUE((cpt::check<plus_rhs_test, plus_rhs_test::rhs>(concepts::plus)));
-  ASSERT_FALSE((cpt::check<decltype(b), plus_test>(concepts::plus)));
-  ASSERT_FALSE((cpt::check<no_operator_test>(concepts::plus)));
-  ASSERT_FALSE((cpt::check<plus_int_test>(concepts::plus)));
+  ASSERT_TRUE((concepts::plus.check<decltype(a)>()));
+  ASSERT_TRUE((concepts::plus.check<decltype(b)>()));
+  ASSERT_TRUE((concepts::plus.check<decltype(b), double>()));
+  ASSERT_TRUE((concepts::plus.check<decltype(b), int_convertible_test>()));
+  ASSERT_TRUE((concepts::plus.check<plus_test>()));
+  ASSERT_TRUE((concepts::plus.check<plus_int_test, int>()));
+  ASSERT_TRUE((concepts::plus.check<plus_rhs_test, plus_rhs_test::rhs>()));
+  ASSERT_FALSE((concepts::plus.check<decltype(b), plus_test>()));
+  ASSERT_FALSE((concepts::plus.check<no_operator_test>()));
+  ASSERT_FALSE((concepts::plus.check<plus_int_test>()));
 }
 
 struct less_test {
@@ -636,16 +636,16 @@ TEST(Cpt_Utility, less)
 {
   const int a = 0;
   int       b = 0;
-  ASSERT_TRUE((cpt::check<decltype(a)>(concepts::less)));
-  ASSERT_TRUE((cpt::check<decltype(b)>(concepts::less)));
-  ASSERT_TRUE((cpt::check<decltype(b), double>(concepts::less)));
-  ASSERT_TRUE((cpt::check<decltype(b), int_convertible_test>(concepts::less)));
-  ASSERT_TRUE((cpt::check<less_test>(concepts::less)));
-  ASSERT_TRUE((cpt::check<less_int_test, int>(concepts::less)));
-  ASSERT_TRUE((cpt::check<less_rhs_test, less_rhs_test::rhs>(concepts::less)));
-  ASSERT_FALSE((cpt::check<decltype(b), less_test>(concepts::less)));
-  ASSERT_FALSE((cpt::check<no_operator_test>(concepts::less)));
-  ASSERT_FALSE((cpt::check<less_int_test>(concepts::less)));
+  ASSERT_TRUE((concepts::less.check<decltype(a)>()));
+  ASSERT_TRUE((concepts::less.check<decltype(b)>()));
+  ASSERT_TRUE((concepts::less.check<decltype(b), double>()));
+  ASSERT_TRUE((concepts::less.check<decltype(b), int_convertible_test>()));
+  ASSERT_TRUE((concepts::less.check<less_test>()));
+  ASSERT_TRUE((concepts::less.check<less_int_test, int>()));
+  ASSERT_TRUE((concepts::less.check<less_rhs_test, less_rhs_test::rhs>()));
+  ASSERT_FALSE((concepts::less.check<decltype(b), less_test>()));
+  ASSERT_FALSE((concepts::less.check<no_operator_test>()));
+  ASSERT_FALSE((concepts::less.check<less_int_test>()));
 }
 
 struct mult_test {
@@ -673,16 +673,16 @@ TEST(Cpt_Utility, mult)
 {
   const int a = 0;
   int       b = 0;
-  ASSERT_TRUE((cpt::check<decltype(a)>(concepts::mult)));
-  ASSERT_TRUE((cpt::check<decltype(b)>(concepts::mult)));
-  ASSERT_TRUE((cpt::check<decltype(b), double>(concepts::mult)));
-  ASSERT_TRUE((cpt::check<decltype(b), int_convertible_test>(concepts::mult)));
-  ASSERT_TRUE((cpt::check<mult_test>(concepts::mult)));
-  ASSERT_TRUE((cpt::check<mult_int_test, int>(concepts::mult)));
-  ASSERT_TRUE((cpt::check<mult_rhs_test, mult_rhs_test::rhs>(concepts::mult)));
-  ASSERT_FALSE((cpt::check<decltype(b), mult_test>(concepts::mult)));
-  ASSERT_FALSE((cpt::check<no_operator_test>(concepts::mult)));
-  ASSERT_FALSE((cpt::check<mult_int_test>(concepts::mult)));
+  ASSERT_TRUE((concepts::mult.check<decltype(a)>()));
+  ASSERT_TRUE((concepts::mult.check<decltype(b)>()));
+  ASSERT_TRUE((concepts::mult.check<decltype(b), double>()));
+  ASSERT_TRUE((concepts::mult.check<decltype(b), int_convertible_test>()));
+  ASSERT_TRUE((concepts::mult.check<mult_test>()));
+  ASSERT_TRUE((concepts::mult.check<mult_int_test, int>()));
+  ASSERT_TRUE((concepts::mult.check<mult_rhs_test, mult_rhs_test::rhs>()));
+  ASSERT_FALSE((concepts::mult.check<decltype(b), mult_test>()));
+  ASSERT_FALSE((concepts::mult.check<no_operator_test>()));
+  ASSERT_FALSE((concepts::mult.check<mult_int_test>()));
 }
 
 struct div_test {
@@ -710,16 +710,16 @@ TEST(Cpt_Utility, div)
 {
   const int a = 0;
   int       b = 0;
-  ASSERT_TRUE((cpt::check<decltype(a)>(concepts::div)));
-  ASSERT_TRUE((cpt::check<decltype(b)>(concepts::div)));
-  ASSERT_TRUE((cpt::check<decltype(b), double>(concepts::div)));
-  ASSERT_TRUE((cpt::check<decltype(b), int_convertible_test>(concepts::div)));
-  ASSERT_TRUE((cpt::check<div_test>(concepts::div)));
-  ASSERT_TRUE((cpt::check<div_int_test, int>(concepts::div)));
-  ASSERT_TRUE((cpt::check<div_rhs_test, div_rhs_test::rhs>(concepts::div)));
-  ASSERT_FALSE((cpt::check<decltype(b), div_test>(concepts::div)));
-  ASSERT_FALSE((cpt::check<no_operator_test>(concepts::div)));
-  ASSERT_FALSE((cpt::check<div_int_test>(concepts::div)));
+  ASSERT_TRUE((concepts::div.check<decltype(a)>()));
+  ASSERT_TRUE((concepts::div.check<decltype(b)>()));
+  ASSERT_TRUE((concepts::div.check<decltype(b), double>()));
+  ASSERT_TRUE((concepts::div.check<decltype(b), int_convertible_test>()));
+  ASSERT_TRUE((concepts::div.check<div_test>()));
+  ASSERT_TRUE((concepts::div.check<div_int_test, int>()));
+  ASSERT_TRUE((concepts::div.check<div_rhs_test, div_rhs_test::rhs>()));
+  ASSERT_FALSE((concepts::div.check<decltype(b), div_test>()));
+  ASSERT_FALSE((concepts::div.check<no_operator_test>()));
+  ASSERT_FALSE((concepts::div.check<div_int_test>()));
 }
 
 struct mod_test {
@@ -747,16 +747,16 @@ TEST(Cpt_Utility, mod)
 {
   const int a = 0;
   int       b = 0;
-  ASSERT_TRUE((cpt::check<decltype(a)>(concepts::mod)));
-  ASSERT_TRUE((cpt::check<decltype(b)>(concepts::mod)));
-  ASSERT_TRUE((cpt::check<decltype(b), int_convertible_test>(concepts::mod)));
-  ASSERT_TRUE((cpt::check<mod_test>(concepts::mod)));
-  ASSERT_TRUE((cpt::check<mod_int_test, int>(concepts::mod)));
-  ASSERT_TRUE((cpt::check<mod_rhs_test, mod_rhs_test::rhs>(concepts::mod)));
-  ASSERT_FALSE((cpt::check<decltype(b), double>(concepts::mod)));
-  ASSERT_FALSE((cpt::check<decltype(b), mod_test>(concepts::mod)));
-  ASSERT_FALSE((cpt::check<no_operator_test>(concepts::mod)));
-  ASSERT_FALSE((cpt::check<mod_int_test>(concepts::mod)));
+  ASSERT_TRUE((concepts::mod.check<decltype(a)>()));
+  ASSERT_TRUE((concepts::mod.check<decltype(b)>()));
+  ASSERT_TRUE((concepts::mod.check<decltype(b), int_convertible_test>()));
+  ASSERT_TRUE((concepts::mod.check<mod_test>()));
+  ASSERT_TRUE((concepts::mod.check<mod_int_test, int>()));
+  ASSERT_TRUE((concepts::mod.check<mod_rhs_test, mod_rhs_test::rhs>()));
+  ASSERT_FALSE((concepts::mod.check<decltype(b), double>()));
+  ASSERT_FALSE((concepts::mod.check<decltype(b), mod_test>()));
+  ASSERT_FALSE((concepts::mod.check<no_operator_test>()));
+  ASSERT_FALSE((concepts::mod.check<mod_int_test>()));
 }
 
 struct and_test {
@@ -784,16 +784,16 @@ TEST(Cpt_Utility, and)
 {
   const int a = 0;
   int       b = 0;
-  ASSERT_TRUE((cpt::check<decltype(a)>(concepts::And)));
-  ASSERT_TRUE((cpt::check<decltype(b)>(concepts::And)));
-  ASSERT_TRUE((cpt::check<decltype(b), int_convertible_test>(concepts::And)));
-  ASSERT_TRUE((cpt::check<and_test>(concepts::And)));
-  ASSERT_TRUE((cpt::check<and_int_test, int>(concepts::And)));
-  ASSERT_TRUE((cpt::check<and_rhs_test, and_rhs_test::rhs>(concepts::And)));
-  ASSERT_FALSE((cpt::check<decltype(b), double>(concepts::And)));
-  ASSERT_FALSE((cpt::check<decltype(b), and_test>(concepts::And)));
-  ASSERT_FALSE((cpt::check<no_operator_test>(concepts::And)));
-  ASSERT_FALSE((cpt::check<and_int_test>(concepts::And)));
+  ASSERT_TRUE((concepts::And.check<decltype(a)>()));
+  ASSERT_TRUE((concepts::And.check<decltype(b)>()));
+  ASSERT_TRUE((concepts::And.check<decltype(b), int_convertible_test>()));
+  ASSERT_TRUE((concepts::And.check<and_test>()));
+  ASSERT_TRUE((concepts::And.check<and_int_test, int>()));
+  ASSERT_TRUE((concepts::And.check<and_rhs_test, and_rhs_test::rhs>()));
+  ASSERT_FALSE((concepts::And.check<decltype(b), double>()));
+  ASSERT_FALSE((concepts::And.check<decltype(b), and_test>()));
+  ASSERT_FALSE((concepts::And.check<no_operator_test>()));
+  ASSERT_FALSE((concepts::And.check<and_int_test>()));
 }
 
 struct or_test {
@@ -821,16 +821,16 @@ TEST(Cpt_Utility, or)
 {
   const int a = 0;
   int       b = 0;
-  ASSERT_TRUE((cpt::check<decltype(a)>(concepts::Or)));
-  ASSERT_TRUE((cpt::check<decltype(b)>(concepts::Or)));
-  ASSERT_TRUE((cpt::check<decltype(b), int_convertible_test>(concepts::Or)));
-  ASSERT_TRUE((cpt::check<or_test>(concepts::Or)));
-  ASSERT_TRUE((cpt::check<or_int_test, int>(concepts::Or)));
-  ASSERT_TRUE((cpt::check<or_rhs_test, or_rhs_test::rhs>(concepts::Or)));
-  ASSERT_FALSE((cpt::check<decltype(b), double>(concepts::Or)));
-  ASSERT_FALSE((cpt::check<decltype(b), or_test>(concepts::Or)));
-  ASSERT_FALSE((cpt::check<no_operator_test>(concepts::Or)));
-  ASSERT_FALSE((cpt::check<or_int_test>(concepts::Or)));
+  ASSERT_TRUE((concepts::Or.check<decltype(a)>()));
+  ASSERT_TRUE((concepts::Or.check<decltype(b)>()));
+  ASSERT_TRUE((concepts::Or.check<decltype(b), int_convertible_test>()));
+  ASSERT_TRUE((concepts::Or.check<or_test>()));
+  ASSERT_TRUE((concepts::Or.check<or_int_test, int>()));
+  ASSERT_TRUE((concepts::Or.check<or_rhs_test, or_rhs_test::rhs>()));
+  ASSERT_FALSE((concepts::Or.check<decltype(b), double>()));
+  ASSERT_FALSE((concepts::Or.check<decltype(b), or_test>()));
+  ASSERT_FALSE((concepts::Or.check<no_operator_test>()));
+  ASSERT_FALSE((concepts::Or.check<or_int_test>()));
 }
 
 struct xor_test {
@@ -858,16 +858,16 @@ TEST(Cpt_Utility, xor)
 {
   const int a = 0;
   int       b = 0;
-  ASSERT_TRUE((cpt::check<decltype(a)>(concepts::Xor)));
-  ASSERT_TRUE((cpt::check<decltype(b)>(concepts::Xor)));
-  ASSERT_TRUE((cpt::check<decltype(b), int_convertible_test>(concepts::Xor)));
-  ASSERT_TRUE((cpt::check<xor_test>(concepts::Xor)));
-  ASSERT_TRUE((cpt::check<xor_int_test, int>(concepts::Xor)));
-  ASSERT_TRUE((cpt::check<xor_rhs_test, xor_rhs_test::rhs>(concepts::Xor)));
-  ASSERT_FALSE((cpt::check<decltype(b), double>(concepts::Xor)));
-  ASSERT_FALSE((cpt::check<decltype(b), xor_test>(concepts::Xor)));
-  ASSERT_FALSE((cpt::check<no_operator_test>(concepts::Xor)));
-  ASSERT_FALSE((cpt::check<xor_int_test>(concepts::Xor)));
+  ASSERT_TRUE((concepts::Xor.check<decltype(a)>()));
+  ASSERT_TRUE((concepts::Xor.check<decltype(b)>()));
+  ASSERT_TRUE((concepts::Xor.check<decltype(b), int_convertible_test>()));
+  ASSERT_TRUE((concepts::Xor.check<xor_test>()));
+  ASSERT_TRUE((concepts::Xor.check<xor_int_test, int>()));
+  ASSERT_TRUE((concepts::Xor.check<xor_rhs_test, xor_rhs_test::rhs>()));
+  ASSERT_FALSE((concepts::Xor.check<decltype(b), double>()));
+  ASSERT_FALSE((concepts::Xor.check<decltype(b), xor_test>()));
+  ASSERT_FALSE((concepts::Xor.check<no_operator_test>()));
+  ASSERT_FALSE((concepts::Xor.check<xor_int_test>()));
 }
 
 struct lshift_test {
@@ -895,16 +895,16 @@ TEST(Cpt_Utility, lshift)
 {
   const int a = 0;
   int       b = 0;
-  ASSERT_TRUE((cpt::check<decltype(a)>(concepts::lshift)));
-  ASSERT_TRUE((cpt::check<decltype(b)>(concepts::lshift)));
-  ASSERT_TRUE((cpt::check<decltype(b), int_convertible_test>(concepts::lshift)));
-  ASSERT_TRUE((cpt::check<lshift_test>(concepts::lshift)));
-  ASSERT_TRUE((cpt::check<lshift_int_test, int>(concepts::lshift)));
-  ASSERT_TRUE((cpt::check<lshift_rhs_test, lshift_rhs_test::rhs>(concepts::lshift)));
-  ASSERT_FALSE((cpt::check<decltype(b), double>(concepts::lshift)));
-  ASSERT_FALSE((cpt::check<decltype(b), lshift_test>(concepts::lshift)));
-  ASSERT_FALSE((cpt::check<no_operator_test>(concepts::lshift)));
-  ASSERT_FALSE((cpt::check<lshift_int_test>(concepts::lshift)));
+  ASSERT_TRUE((concepts::lshift.check<decltype(a)>()));
+  ASSERT_TRUE((concepts::lshift.check<decltype(b)>()));
+  ASSERT_TRUE((concepts::lshift.check<decltype(b), int_convertible_test>()));
+  ASSERT_TRUE((concepts::lshift.check<lshift_test>()));
+  ASSERT_TRUE((concepts::lshift.check<lshift_int_test, int>()));
+  ASSERT_TRUE((concepts::lshift.check<lshift_rhs_test, lshift_rhs_test::rhs>()));
+  ASSERT_FALSE((concepts::lshift.check<decltype(b), double>()));
+  ASSERT_FALSE((concepts::lshift.check<decltype(b), lshift_test>()));
+  ASSERT_FALSE((concepts::lshift.check<no_operator_test>()));
+  ASSERT_FALSE((concepts::lshift.check<lshift_int_test>()));
 }
 
 struct rshift_test {
@@ -932,16 +932,16 @@ TEST(Cpt_Utility, rshift)
 {
   const int a = 0;
   int       b = 0;
-  ASSERT_TRUE((cpt::check<decltype(a)>(concepts::rshift)));
-  ASSERT_TRUE((cpt::check<decltype(b)>(concepts::rshift)));
-  ASSERT_TRUE((cpt::check<decltype(b), int_convertible_test>(concepts::rshift)));
-  ASSERT_TRUE((cpt::check<rshift_test>(concepts::rshift)));
-  ASSERT_TRUE((cpt::check<rshift_int_test, int>(concepts::rshift)));
-  ASSERT_TRUE((cpt::check<rshift_rhs_test, rshift_rhs_test::rhs>(concepts::rshift)));
-  ASSERT_FALSE((cpt::check<decltype(b), double>(concepts::rshift)));
-  ASSERT_FALSE((cpt::check<decltype(b), rshift_test>(concepts::rshift)));
-  ASSERT_FALSE((cpt::check<no_operator_test>(concepts::rshift)));
-  ASSERT_FALSE((cpt::check<rshift_int_test>(concepts::rshift)));
+  ASSERT_TRUE((concepts::rshift.check<decltype(a)>()));
+  ASSERT_TRUE((concepts::rshift.check<decltype(b)>()));
+  ASSERT_TRUE((concepts::rshift.check<decltype(b), int_convertible_test>()));
+  ASSERT_TRUE((concepts::rshift.check<rshift_test>()));
+  ASSERT_TRUE((concepts::rshift.check<rshift_int_test, int>()));
+  ASSERT_TRUE((concepts::rshift.check<rshift_rhs_test, rshift_rhs_test::rhs>()));
+  ASSERT_FALSE((concepts::rshift.check<decltype(b), double>()));
+  ASSERT_FALSE((concepts::rshift.check<decltype(b), rshift_test>()));
+  ASSERT_FALSE((concepts::rshift.check<no_operator_test>()));
+  ASSERT_FALSE((concepts::rshift.check<rshift_int_test>()));
 }
 
 
@@ -961,14 +961,14 @@ TEST(Cpt_Utility, pre_incrementable)
   const double                 c = 0;
   double                       d = 0;
   const pre_incrementable_test co{};
-  ASSERT_TRUE((cpt::check<decltype(b)>(concepts::pre_incrementable)));
-  ASSERT_TRUE((cpt::check<decltype(d)>(concepts::pre_incrementable)));
-  ASSERT_TRUE((cpt::check<pre_incrementable_test>(concepts::pre_incrementable)));
-  ASSERT_FALSE((cpt::check<decltype(a)>(concepts::pre_incrementable)));
-  ASSERT_FALSE((cpt::check<decltype(c)>(concepts::pre_incrementable)));
-  ASSERT_FALSE((cpt::check<decltype(co)>(concepts::pre_incrementable)));
-  ASSERT_FALSE((cpt::check<no_operator_test>(concepts::pre_incrementable)));
-  ASSERT_FALSE((cpt::check<int_convertible_test>(concepts::pre_incrementable)));
+  ASSERT_TRUE((concepts::pre_incrementable.check<decltype(b)>()));
+  ASSERT_TRUE((concepts::pre_incrementable.check<decltype(d)>()));
+  ASSERT_TRUE((concepts::pre_incrementable.check<pre_incrementable_test>()));
+  ASSERT_FALSE((concepts::pre_incrementable.check<decltype(a)>()));
+  ASSERT_FALSE((concepts::pre_incrementable.check<decltype(c)>()));
+  ASSERT_FALSE((concepts::pre_incrementable.check<decltype(co)>()));
+  ASSERT_FALSE((concepts::pre_incrementable.check<no_operator_test>()));
+  ASSERT_FALSE((concepts::pre_incrementable.check<int_convertible_test>()));
 }
 
 struct post_incrementable_test {
@@ -985,14 +985,14 @@ TEST(Cpt_Utility, post_incrementable)
   const double                  c = 0;
   double                        d = 0;
   const post_incrementable_test co{};
-  ASSERT_TRUE((cpt::check<decltype(b)>(concepts::post_incrementable)));
-  ASSERT_TRUE((cpt::check<decltype(d)>(concepts::post_incrementable)));
-  ASSERT_TRUE((cpt::check<post_incrementable_test>(concepts::post_incrementable)));
-  ASSERT_FALSE((cpt::check<decltype(a)>(concepts::post_incrementable)));
-  ASSERT_FALSE((cpt::check<decltype(c)>(concepts::post_incrementable)));
-  ASSERT_FALSE((cpt::check<decltype(co)>(concepts::post_incrementable)));
-  ASSERT_FALSE((cpt::check<no_operator_test>(concepts::post_incrementable)));
-  ASSERT_FALSE((cpt::check<int_convertible_test>(concepts::post_incrementable)));
+  ASSERT_TRUE((concepts::post_incrementable.check<decltype(b)>()));
+  ASSERT_TRUE((concepts::post_incrementable.check<decltype(d)>()));
+  ASSERT_TRUE((concepts::post_incrementable.check<post_incrementable_test>()));
+  ASSERT_FALSE((concepts::post_incrementable.check<decltype(a)>()));
+  ASSERT_FALSE((concepts::post_incrementable.check<decltype(c)>()));
+  ASSERT_FALSE((concepts::post_incrementable.check<decltype(co)>()));
+  ASSERT_FALSE((concepts::post_incrementable.check<no_operator_test>()));
+  ASSERT_FALSE((concepts::post_incrementable.check<int_convertible_test>()));
 }
 
 struct pre_decrementable_test {
@@ -1009,14 +1009,14 @@ TEST(Cpt_Utility, pre_decrementable)
   const double                 c = 0;
   double                       d = 0;
   const pre_decrementable_test co{};
-  ASSERT_TRUE((cpt::check<decltype(b)>(concepts::pre_decrementable)));
-  ASSERT_TRUE((cpt::check<decltype(d)>(concepts::pre_decrementable)));
-  ASSERT_TRUE((cpt::check<pre_decrementable_test>(concepts::pre_decrementable)));
-  ASSERT_FALSE((cpt::check<decltype(a)>(concepts::pre_decrementable)));
-  ASSERT_FALSE((cpt::check<decltype(c)>(concepts::pre_decrementable)));
-  ASSERT_FALSE((cpt::check<decltype(co)>(concepts::pre_decrementable)));
-  ASSERT_FALSE((cpt::check<no_operator_test>(concepts::pre_decrementable)));
-  ASSERT_FALSE((cpt::check<int_convertible_test>(concepts::pre_decrementable)));
+  ASSERT_TRUE((concepts::pre_decrementable.check<decltype(b)>()));
+  ASSERT_TRUE((concepts::pre_decrementable.check<decltype(d)>()));
+  ASSERT_TRUE((concepts::pre_decrementable.check<pre_decrementable_test>()));
+  ASSERT_FALSE((concepts::pre_decrementable.check<decltype(a)>()));
+  ASSERT_FALSE((concepts::pre_decrementable.check<decltype(c)>()));
+  ASSERT_FALSE((concepts::pre_decrementable.check<decltype(co)>()));
+  ASSERT_FALSE((concepts::pre_decrementable.check<no_operator_test>()));
+  ASSERT_FALSE((concepts::pre_decrementable.check<int_convertible_test>()));
 }
 
 struct post_decrementable_test {
@@ -1033,14 +1033,14 @@ TEST(Cpt_Utility, post_decrementable)
   const double                  c = 0;
   double                        d = 0;
   const post_decrementable_test co{};
-  ASSERT_TRUE((cpt::check<decltype(b)>(concepts::post_decrementable)));
-  ASSERT_TRUE((cpt::check<decltype(d)>(concepts::post_decrementable)));
-  ASSERT_TRUE((cpt::check<post_decrementable_test>(concepts::post_decrementable)));
-  ASSERT_FALSE((cpt::check<decltype(a)>(concepts::post_decrementable)));
-  ASSERT_FALSE((cpt::check<decltype(c)>(concepts::post_decrementable)));
-  ASSERT_FALSE((cpt::check<decltype(co)>(concepts::post_decrementable)));
-  ASSERT_FALSE((cpt::check<no_operator_test>(concepts::post_decrementable)));
-  ASSERT_FALSE((cpt::check<int_convertible_test>(concepts::post_decrementable)));
+  ASSERT_TRUE((concepts::post_decrementable.check<decltype(b)>()));
+  ASSERT_TRUE((concepts::post_decrementable.check<decltype(d)>()));
+  ASSERT_TRUE((concepts::post_decrementable.check<post_decrementable_test>()));
+  ASSERT_FALSE((concepts::post_decrementable.check<decltype(a)>()));
+  ASSERT_FALSE((concepts::post_decrementable.check<decltype(c)>()));
+  ASSERT_FALSE((concepts::post_decrementable.check<decltype(co)>()));
+  ASSERT_FALSE((concepts::post_decrementable.check<no_operator_test>()));
+  ASSERT_FALSE((concepts::post_decrementable.check<int_convertible_test>()));
 }
 
 
@@ -1052,6 +1052,7 @@ struct bool_convertible_test {
     return true;
   }
 };
+
 struct equality_op_member_test {
   bool operator==(int)
   {
@@ -1071,14 +1072,14 @@ struct equality_op_friend_test {
 
 TEST(Cpt_Utility, equality)
 {
-  ASSERT_TRUE((cpt::check<equality_op_member_test, int>(concepts::equality)));
-  ASSERT_TRUE((cpt::check<equality_op_friend_test, int>(concepts::equality)));
-  ASSERT_TRUE((cpt::check<int, equality_op_friend_test>(concepts::equality)));
-  ASSERT_TRUE((cpt::check<bool, int>(concepts::equality)));
-  ASSERT_TRUE((cpt::check<double, int>(concepts::equality)));
-  ASSERT_TRUE((cpt::check<bool_convertible_test, int_convertible_test>(concepts::equality)));
-  ASSERT_FALSE((cpt::check<int, equality_op_member_test>(concepts::equality)));
-  ASSERT_FALSE((cpt::check<no_operator_test, no_operator_test>(concepts::equality)));
+  ASSERT_TRUE((concepts::equality.check<equality_op_member_test, int>()));
+  ASSERT_TRUE((concepts::equality.check<equality_op_friend_test, int>()));
+  ASSERT_TRUE((concepts::equality.check<int, equality_op_friend_test>()));
+  ASSERT_TRUE((concepts::equality.check<bool, int>()));
+  ASSERT_TRUE((concepts::equality.check<double, int>()));
+  ASSERT_TRUE((concepts::equality.check<bool_convertible_test, int_convertible_test>()));
+  ASSERT_FALSE((concepts::equality.check<int, equality_op_member_test>()));
+  ASSERT_FALSE((concepts::equality.check<no_operator_test, no_operator_test>()));
 }
 
 struct inequality_op_member_test {
@@ -1100,14 +1101,14 @@ struct inequality_op_friend_test {
 
 TEST(Cpt_Utility, inequality)
 {
-  ASSERT_TRUE((cpt::check<inequality_op_member_test, int>(concepts::inequality)));
-  ASSERT_TRUE((cpt::check<inequality_op_friend_test, int>(concepts::inequality)));
-  ASSERT_TRUE((cpt::check<int, inequality_op_friend_test>(concepts::inequality)));
-  ASSERT_TRUE((cpt::check<bool, int>(concepts::inequality)));
-  ASSERT_TRUE((cpt::check<double, int>(concepts::inequality)));
-  ASSERT_TRUE((cpt::check<bool_convertible_test, int_convertible_test>(concepts::inequality)));
-  ASSERT_FALSE((cpt::check<int, inequality_op_member_test>(concepts::inequality)));
-  ASSERT_FALSE((cpt::check<no_operator_test, no_operator_test>(concepts::inequality)));
+  ASSERT_TRUE((concepts::inequality.check<inequality_op_member_test, int>()));
+  ASSERT_TRUE((concepts::inequality.check<inequality_op_friend_test, int>()));
+  ASSERT_TRUE((concepts::inequality.check<int, inequality_op_friend_test>()));
+  ASSERT_TRUE((concepts::inequality.check<bool, int>()));
+  ASSERT_TRUE((concepts::inequality.check<double, int>()));
+  ASSERT_TRUE((concepts::inequality.check<bool_convertible_test, int_convertible_test>()));
+  ASSERT_FALSE((concepts::inequality.check<int, inequality_op_member_test>()));
+  ASSERT_FALSE((concepts::inequality.check<no_operator_test, no_operator_test>()));
 }
 
 struct less_than_op_member_test {
@@ -1129,14 +1130,14 @@ struct less_than_op_friend_test {
 
 TEST(Cpt_Utility, less_than)
 {
-  ASSERT_TRUE((cpt::check<less_than_op_member_test, int>(concepts::less_than)));
-  ASSERT_TRUE((cpt::check<less_than_op_friend_test, int>(concepts::less_than)));
-  ASSERT_TRUE((cpt::check<int, less_than_op_friend_test>(concepts::less_than)));
-  ASSERT_TRUE((cpt::check<bool, int>(concepts::less_than)));
-  ASSERT_TRUE((cpt::check<double, int>(concepts::less_than)));
-  ASSERT_TRUE((cpt::check<bool_convertible_test, int_convertible_test>(concepts::less_than)));
-  ASSERT_FALSE((cpt::check<int, less_than_op_member_test>(concepts::less_than)));
-  ASSERT_FALSE((cpt::check<no_operator_test, no_operator_test>(concepts::less_than)));
+  ASSERT_TRUE((concepts::less_than.check<less_than_op_member_test, int>()));
+  ASSERT_TRUE((concepts::less_than.check<less_than_op_friend_test, int>()));
+  ASSERT_TRUE((concepts::less_than.check<int, less_than_op_friend_test>()));
+  ASSERT_TRUE((concepts::less_than.check<bool, int>()));
+  ASSERT_TRUE((concepts::less_than.check<double, int>()));
+  ASSERT_TRUE((concepts::less_than.check<bool_convertible_test, int_convertible_test>()));
+  ASSERT_FALSE((concepts::less_than.check<int, less_than_op_member_test>()));
+  ASSERT_FALSE((concepts::less_than.check<no_operator_test, no_operator_test>()));
 }
 
 struct less_equal_than_op_member_test {
@@ -1158,14 +1159,14 @@ struct less_equal_than_op_friend_test {
 
 TEST(Cpt_Utility, less_equal_than)
 {
-  ASSERT_TRUE((cpt::check<less_equal_than_op_member_test, int>(concepts::less_equal_than)));
-  ASSERT_TRUE((cpt::check<less_equal_than_op_friend_test, int>(concepts::less_equal_than)));
-  ASSERT_TRUE((cpt::check<int, less_equal_than_op_friend_test>(concepts::less_equal_than)));
-  ASSERT_TRUE((cpt::check<bool, int>(concepts::less_equal_than)));
-  ASSERT_TRUE((cpt::check<double, int>(concepts::less_equal_than)));
-  ASSERT_TRUE((cpt::check<bool_convertible_test, int_convertible_test>(concepts::less_equal_than)));
-  ASSERT_FALSE((cpt::check<int, less_equal_than_op_member_test>(concepts::less_equal_than)));
-  ASSERT_FALSE((cpt::check<no_operator_test, no_operator_test>(concepts::less_equal_than)));
+  ASSERT_TRUE((concepts::less_equal_than.check<less_equal_than_op_member_test, int>()));
+  ASSERT_TRUE((concepts::less_equal_than.check<less_equal_than_op_friend_test, int>()));
+  ASSERT_TRUE((concepts::less_equal_than.check<int, less_equal_than_op_friend_test>()));
+  ASSERT_TRUE((concepts::less_equal_than.check<bool, int>()));
+  ASSERT_TRUE((concepts::less_equal_than.check<double, int>()));
+  ASSERT_TRUE((concepts::less_equal_than.check<bool_convertible_test, int_convertible_test>()));
+  ASSERT_FALSE((concepts::less_equal_than.check<int, less_equal_than_op_member_test>()));
+  ASSERT_FALSE((concepts::less_equal_than.check<no_operator_test, no_operator_test>()));
 }
 
 struct greater_than_op_member_test {
@@ -1187,14 +1188,14 @@ struct greater_than_op_friend_test {
 
 TEST(Cpt_Utility, greater_than)
 {
-  ASSERT_TRUE((cpt::check<greater_than_op_member_test, int>(concepts::greater_than)));
-  ASSERT_TRUE((cpt::check<greater_than_op_friend_test, int>(concepts::greater_than)));
-  ASSERT_TRUE((cpt::check<int, greater_than_op_friend_test>(concepts::greater_than)));
-  ASSERT_TRUE((cpt::check<bool, int>(concepts::greater_than)));
-  ASSERT_TRUE((cpt::check<double, int>(concepts::greater_than)));
-  ASSERT_TRUE((cpt::check<bool_convertible_test, int_convertible_test>(concepts::greater_than)));
-  ASSERT_FALSE((cpt::check<int, greater_than_op_member_test>(concepts::greater_than)));
-  ASSERT_FALSE((cpt::check<no_operator_test, no_operator_test>(concepts::greater_than)));
+  ASSERT_TRUE((concepts::greater_than.check<greater_than_op_member_test, int>()));
+  ASSERT_TRUE((concepts::greater_than.check<greater_than_op_friend_test, int>()));
+  ASSERT_TRUE((concepts::greater_than.check<int, greater_than_op_friend_test>()));
+  ASSERT_TRUE((concepts::greater_than.check<bool, int>()));
+  ASSERT_TRUE((concepts::greater_than.check<double, int>()));
+  ASSERT_TRUE((concepts::greater_than.check<bool_convertible_test, int_convertible_test>()));
+  ASSERT_FALSE((concepts::greater_than.check<int, greater_than_op_member_test>()));
+  ASSERT_FALSE((concepts::greater_than.check<no_operator_test, no_operator_test>()));
 }
 
 struct greater_equal_than_op_member_test {
@@ -1216,14 +1217,14 @@ struct greater_equal_than_op_friend_test {
 
 TEST(Cpt_Utility, greater_equal_than)
 {
-  ASSERT_TRUE((cpt::check<greater_equal_than_op_member_test, int>(concepts::greater_equal_than)));
-  ASSERT_TRUE((cpt::check<greater_equal_than_op_friend_test, int>(concepts::greater_equal_than)));
-  ASSERT_TRUE((cpt::check<int, greater_equal_than_op_friend_test>(concepts::greater_equal_than)));
-  ASSERT_TRUE((cpt::check<bool, int>(concepts::greater_equal_than)));
-  ASSERT_TRUE((cpt::check<double, int>(concepts::greater_equal_than)));
-  ASSERT_TRUE((cpt::check<bool_convertible_test, int_convertible_test>(concepts::greater_equal_than)));
-  ASSERT_FALSE((cpt::check<int, greater_equal_than_op_member_test>(concepts::greater_equal_than)));
-  ASSERT_FALSE((cpt::check<no_operator_test, no_operator_test>(concepts::greater_equal_than)));
+  ASSERT_TRUE((concepts::greater_equal_than.check<greater_equal_than_op_member_test, int>()));
+  ASSERT_TRUE((concepts::greater_equal_than.check<greater_equal_than_op_friend_test, int>()));
+  ASSERT_TRUE((concepts::greater_equal_than.check<int, greater_equal_than_op_friend_test>()));
+  ASSERT_TRUE((concepts::greater_equal_than.check<bool, int>()));
+  ASSERT_TRUE((concepts::greater_equal_than.check<double, int>()));
+  ASSERT_TRUE((concepts::greater_equal_than.check<bool_convertible_test, int_convertible_test>()));
+  ASSERT_FALSE((concepts::greater_equal_than.check<int, greater_equal_than_op_member_test>()));
+  ASSERT_FALSE((concepts::greater_equal_than.check<no_operator_test, no_operator_test>()));
 }
 
 
@@ -1238,11 +1239,11 @@ struct logical_not_test {
 
 TEST(Cpt_Utility, logical_not)
 {
-  ASSERT_TRUE((cpt::check<logical_not_test>(concepts::logical_not)));
-  ASSERT_TRUE((cpt::check<bool>(concepts::logical_not)));
-  ASSERT_TRUE((cpt::check<int>(concepts::logical_not)));
-  ASSERT_TRUE((cpt::check<decltype(!std::declval<int>())>(concepts::logical_not)));
-  ASSERT_FALSE((cpt::check<no_operator_test>(concepts::logical_not)));
+  ASSERT_TRUE((concepts::logical_not.check<logical_not_test>()));
+  ASSERT_TRUE((concepts::logical_not.check<bool>()));
+  ASSERT_TRUE((concepts::logical_not.check<int>()));
+  ASSERT_TRUE((concepts::logical_not.check<decltype(!std::declval<int>())>()));
+  ASSERT_FALSE((concepts::logical_not.check<no_operator_test>()));
 }
 
 struct logical_and_op_member_test {
@@ -1264,14 +1265,14 @@ struct logical_and_op_friend_test {
 
 TEST(Cpt_Utility, logical_and)
 {
-  ASSERT_TRUE((cpt::check<logical_and_op_member_test, int>(concepts::logical_and)));
-  ASSERT_TRUE((cpt::check<logical_and_op_friend_test, int>(concepts::logical_and)));
-  ASSERT_TRUE((cpt::check<int, logical_and_op_friend_test>(concepts::logical_and)));
-  ASSERT_TRUE((cpt::check<bool, int>(concepts::logical_and)));
-  ASSERT_TRUE((cpt::check<double, int>(concepts::logical_and)));
-  ASSERT_TRUE((cpt::check<bool_convertible_test, int_convertible_test>(concepts::logical_and)));
-  ASSERT_FALSE((cpt::check<int, logical_and_op_member_test>(concepts::logical_and)));
-  ASSERT_FALSE((cpt::check<no_operator_test, no_operator_test>(concepts::logical_and)));
+  ASSERT_TRUE((concepts::logical_and.check<logical_and_op_member_test, int>()));
+  ASSERT_TRUE((concepts::logical_and.check<logical_and_op_friend_test, int>()));
+  ASSERT_TRUE((concepts::logical_and.check<int, logical_and_op_friend_test>()));
+  ASSERT_TRUE((concepts::logical_and.check<bool, int>()));
+  ASSERT_TRUE((concepts::logical_and.check<double, int>()));
+  ASSERT_TRUE((concepts::logical_and.check<bool_convertible_test, int_convertible_test>()));
+  ASSERT_FALSE((concepts::logical_and.check<int, logical_and_op_member_test>()));
+  ASSERT_FALSE((concepts::logical_and.check<no_operator_test, no_operator_test>()));
 }
 
 struct logical_or_op_member_test {
@@ -1293,14 +1294,14 @@ struct logical_or_op_friend_test {
 
 TEST(Cpt_Utility, logical_or)
 {
-  ASSERT_TRUE((cpt::check<logical_or_op_member_test, int>(concepts::logical_or)));
-  ASSERT_TRUE((cpt::check<logical_or_op_friend_test, int>(concepts::logical_or)));
-  ASSERT_TRUE((cpt::check<int, logical_or_op_friend_test>(concepts::logical_or)));
-  ASSERT_TRUE((cpt::check<bool, int>(concepts::logical_or)));
-  ASSERT_TRUE((cpt::check<double, int>(concepts::logical_or)));
-  ASSERT_TRUE((cpt::check<bool_convertible_test, int_convertible_test>(concepts::logical_or)));
-  ASSERT_FALSE((cpt::check<int, logical_or_op_member_test>(concepts::logical_or)));
-  ASSERT_FALSE((cpt::check<no_operator_test, no_operator_test>(concepts::logical_or)));
+  ASSERT_TRUE((concepts::logical_or.check<logical_or_op_member_test, int>()));
+  ASSERT_TRUE((concepts::logical_or.check<logical_or_op_friend_test, int>()));
+  ASSERT_TRUE((concepts::logical_or.check<int, logical_or_op_friend_test>()));
+  ASSERT_TRUE((concepts::logical_or.check<bool, int>()));
+  ASSERT_TRUE((concepts::logical_or.check<double, int>()));
+  ASSERT_TRUE((concepts::logical_or.check<bool_convertible_test, int_convertible_test>()));
+  ASSERT_FALSE((concepts::logical_or.check<int, logical_or_op_member_test>()));
+  ASSERT_FALSE((concepts::logical_or.check<no_operator_test, no_operator_test>()));
 }
 
 
@@ -1322,21 +1323,20 @@ struct comma_restrict_test {
 
 TEST(Cpt_Utility, comma)
 {
-  comma_restrict_test{}, comma_restrict_test::rhs{};
-  ASSERT_FALSE((cpt::check<comma_restrict_test, int>(concepts::comma)));
-  ASSERT_TRUE((cpt::check<comma_restrict_test, comma_restrict_test::rhs>(concepts::comma)));
-  ASSERT_TRUE((cpt::check<no_operator_test, int>(concepts::comma)));
+  ASSERT_FALSE((concepts::comma.check<comma_restrict_test, int>()));
+  ASSERT_TRUE((concepts::comma.check<comma_restrict_test, comma_restrict_test::rhs>()));
+  ASSERT_TRUE((concepts::comma.check<no_operator_test, int>()));
 }
 
 TEST(Cpt_Utility, ternary)
 {
-  ASSERT_TRUE((cpt::check<bool, int, const double>(concepts::ternary)));
-  ASSERT_TRUE((cpt::check<bool, const volatile int, float>(concepts::ternary)));
-  ASSERT_TRUE((cpt::check<bool_convertible_test, int_convertible_test, double>(concepts::ternary)));
-  ASSERT_FALSE((cpt::check<bool, no_operator_test, no_operator_test>(concepts::ternary)));
-  ASSERT_FALSE((cpt::check<bool, no_operator_test, bool>(concepts::ternary)));
-  ASSERT_FALSE((cpt::check<bool, std::map<int, double>, std::vector<int>>(concepts::ternary)));
-  ASSERT_FALSE((cpt::check<bool_convertible_test, std::vector<float>, const float>(concepts::ternary)));
+  ASSERT_TRUE((concepts::ternary.check<bool, int, const double>()));
+  ASSERT_TRUE((concepts::ternary.check<bool, const volatile int, float>()));
+  ASSERT_TRUE((concepts::ternary.check<bool_convertible_test, int_convertible_test, double>()));
+  ASSERT_FALSE((concepts::ternary.check<bool, no_operator_test, no_operator_test>()));
+  ASSERT_FALSE((concepts::ternary.check<bool, no_operator_test, bool>()));
+  ASSERT_FALSE((concepts::ternary.check<bool, std::map<int, double>, std::vector<int>>()));
+  ASSERT_FALSE((concepts::ternary.check<bool_convertible_test, std::vector<float>, const float>()));
 }
 
 void invocable_test()
@@ -1386,28 +1386,32 @@ struct invocable_nested_r_functor_test {
 TEST(Cpt_Utility, invocable)
 {
   static const auto a = 1.5;
-  EXPECT_TRUE((cpt::check<decltype(invocable_test)>(concepts::invocable)));
-  EXPECT_TRUE((cpt::check<decltype(invocable_int_test), int>(concepts::invocable)));
-  EXPECT_TRUE((cpt::check<decltype(invocable_r_test)>(concepts::invocable)));
-  EXPECT_TRUE((cpt::check<int, decltype(invocable_r_test)>(concepts::invocable_r)));
-  EXPECT_TRUE((cpt::check<decltype(invocable_r_double_test), double>(concepts::invocable)));
-  EXPECT_TRUE((cpt::check<int, decltype(invocable_r_double_test), double>(concepts::invocable_r)));
-  EXPECT_TRUE((cpt::check<double, decltype(invocable_r_double_test), double>(concepts::invocable_r)));
-  EXPECT_TRUE((cpt::check<invocable_functor_test, int, double>(concepts::invocable)));
-  EXPECT_TRUE((cpt::check<invocable_r_functor_test, int, double>(concepts::invocable)));
-  EXPECT_TRUE((cpt::check<std::tuple<int, double>, invocable_r_functor_test, int, double>(concepts::invocable_r)));
-  EXPECT_TRUE((cpt::check<std::tuple<double, double>, invocable_r_functor_test, int, double>(concepts::invocable_r)));
-  EXPECT_TRUE((cpt::check<decltype(&invocable_nested_functor_test::test), invocable_nested_functor_test, int, double>(
-    concepts::invocable)));
+  EXPECT_TRUE((concepts::invocable.check<decltype(invocable_test)>()));
+  EXPECT_TRUE((concepts::invocable.check<decltype(invocable_int_test), int>()));
+  EXPECT_TRUE((concepts::invocable.check<decltype(invocable_r_test)>()));
+  EXPECT_TRUE((concepts::invocable.check<decltype(invocable_r_double_test), double>()));
+  EXPECT_TRUE((concepts::invocable.check<invocable_functor_test, int, double>()));
+  EXPECT_TRUE((concepts::invocable.check<invocable_r_functor_test, int, double>()));
+  EXPECT_TRUE((concepts::invocable
+                 .check<decltype(&invocable_nested_functor_test::test), invocable_nested_functor_test, int, double>()));
   EXPECT_TRUE(
-    (cpt::check<decltype(&invocable_nested_r_functor_test::test), invocable_nested_r_functor_test, int, double>(
-      concepts::invocable)));
-  EXPECT_TRUE((cpt::check<std::tuple<double, double>, decltype(&invocable_nested_r_functor_test::test),
-                          invocable_nested_r_functor_test, int, double>(concepts::invocable_r)));
-  EXPECT_FALSE((cpt::check<std::vector<double>, decltype(invocable_r_double_test), double>(concepts::invocable_r)));
-  EXPECT_FALSE((cpt::check<decltype(invocable_r_double_test)>(concepts::invocable)));
-  EXPECT_FALSE((cpt::check<decltype(invocable_r_double_test)>(concepts::invocable)));
-  EXPECT_FALSE((cpt::check<decltype(a)>(concepts::invocable)));
-  EXPECT_FALSE((cpt::check<invocable_r_functor_test, std::vector<double>>(concepts::invocable)));
-  EXPECT_FALSE((cpt::check<int, invocable_functor_test, int, double>(concepts::invocable_r)));
+    (concepts::invocable
+       .check<decltype(&invocable_nested_r_functor_test::test), invocable_nested_r_functor_test, int, double>()));
+  EXPECT_FALSE((concepts::invocable.check<decltype(invocable_r_double_test)>()));
+  EXPECT_FALSE((concepts::invocable.check<decltype(invocable_r_double_test)>()));
+  EXPECT_FALSE((concepts::invocable.check<decltype(a)>()));
+  EXPECT_FALSE((concepts::invocable.check<invocable_r_functor_test, std::vector<double>>()));
+}
+
+TEST(Cpt_Utility, invocable_r)
+{
+  EXPECT_TRUE((concepts::invocable_r.check<int, decltype(invocable_r_test)>()));
+  EXPECT_TRUE((concepts::invocable_r.check<int, decltype(invocable_r_double_test), double>()));
+  EXPECT_TRUE((concepts::invocable_r.check<double, decltype(invocable_r_double_test), double>()));
+  EXPECT_TRUE((concepts::invocable_r.check<std::tuple<int, double>, invocable_r_functor_test, int, double>()));
+  EXPECT_TRUE((concepts::invocable_r.check<std::tuple<double, double>, invocable_r_functor_test, int, double>()));
+  EXPECT_TRUE((concepts::invocable_r.check<std::tuple<double, double>, decltype(&invocable_nested_r_functor_test::test),
+                                           invocable_nested_r_functor_test, int, double>()));
+  EXPECT_FALSE((concepts::invocable_r.check<std::vector<double>, decltype(invocable_r_double_test), double>()));
+  EXPECT_FALSE((concepts::invocable_r.check<int, invocable_functor_test, int, double>()));
 }

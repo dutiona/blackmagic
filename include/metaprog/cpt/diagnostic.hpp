@@ -5,9 +5,9 @@
 
 #include "basic/diagnostic.hpp"
 #include "iterator/diagnostic.hpp"
-#include "layout/diagnostic.hpp"
 #include "library/diagnostic.hpp"
 #include "utility/diagnostic.hpp"
+#include "layout/diagnostic.hpp"
 
 namespace cpt { namespace diagnostic {
 

@@ -5,7 +5,7 @@
 
 #include "concepts.hpp"
 
-#include "../verif.hpp"
+#include "../core.hpp"
 
 namespace cpt { namespace library { namespace diagnostic {
 

@@ -14,14 +14,14 @@ struct not_default_constructible_test {
 constexpr auto cpt_map = cpt::make_concept_map(concepts::default_constructible, concepts::destructible);
 
 constexpr bool f() {
-  cpt::require_map<default_constructible_test>(cpt_map);
-  cpt::require_map_at<default_constructible_test>(cpt_map, "default_constructible"sv);
+  cpt_map.require<default_constructible_test>();
+  cpt_map.require_at<default_constructible_test>("default_constructible"sv);
   return true;
 }
 
 static_assert(f(), "");
-static_assert(cpt::check_map<default_constructible_test>(cpt_map), "");
-static_assert(cpt::check_map_at<default_constructible_test>(cpt_map, "destructible"sv), "");
+static_assert(cpt_map.check<default_constructible_test>(), "");
+static_assert(cpt_map.check_at<default_constructible_test>("destructible"sv), "");
 
 int main()
 {

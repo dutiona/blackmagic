@@ -11,11 +11,11 @@
 
 namespace cpt { namespace concepts {
 
-using namespace concepts::basic;
-using namespace concepts::iterator;
-using namespace concepts::layout;
-using namespace concepts::library;
-using namespace concepts::utility;
+using namespace basic;
+using namespace iterator;
+using namespace layout;
+using namespace library;
+using namespace utility;
 
 }} // namespace cpt::concepts
 

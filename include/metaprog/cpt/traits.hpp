@@ -11,11 +11,11 @@
 
 namespace cpt { namespace traits {
 
-using namespace traits::basic;
-using namespace traits::iterator;
-using namespace traits::layout;
-using namespace traits::library;
-using namespace traits::utility;
+using namespace basic;
+using namespace iterator;
+using namespace layout;
+using namespace library;
+using namespace utility;
 
 }} // namespace cpt::traits
 

@@ -13,8 +13,8 @@ struct not_default_constructible_test {
 
 TEST(Cpt_Basic, default_constructible)
 {
-  ASSERT_TRUE((cpt::check<default_constructible_test>(concepts::default_constructible)));
-  ASSERT_FALSE((cpt::check<not_default_constructible_test>(concepts::default_constructible)));
+  ASSERT_TRUE((concepts::default_constructible.check<default_constructible_test>()));
+  ASSERT_FALSE((concepts::default_constructible.check<not_default_constructible_test>()));
 }
 
 struct copy_constructible_test {
@@ -31,10 +31,10 @@ struct not_copy_constructible_test {
 
 TEST(Cpt_Basic, copy_constructible)
 {
-  ASSERT_TRUE((cpt::check<default_constructible_test>(concepts::copy_constructible)));
-  ASSERT_TRUE((cpt::check<not_default_constructible_test>(concepts::copy_constructible)));
-  ASSERT_TRUE((cpt::check<copy_constructible_test>(concepts::copy_constructible)));
-  ASSERT_FALSE((cpt::check<not_copy_constructible_test>(concepts::copy_constructible)));
+  ASSERT_TRUE((concepts::copy_constructible.check<default_constructible_test>()));
+  ASSERT_TRUE((concepts::copy_constructible.check<not_default_constructible_test>()));
+  ASSERT_TRUE((concepts::copy_constructible.check<copy_constructible_test>()));
+  ASSERT_FALSE((concepts::copy_constructible.check<not_copy_constructible_test>()));
 }
 
 struct move_constructible_test {
@@ -55,12 +55,12 @@ struct not_move_constructible_test {
 
 TEST(Cpt_Basic, move_constructible)
 {
-  ASSERT_TRUE((cpt::check<default_constructible_test>(concepts::move_constructible)));
-  ASSERT_TRUE((cpt::check<not_default_constructible_test>(concepts::move_constructible)));
-  ASSERT_TRUE((cpt::check<copy_constructible_test>(concepts::move_constructible)));
-  ASSERT_TRUE((cpt::check<move_constructible_test>(concepts::move_constructible)));
-  ASSERT_FALSE((cpt::check<not_copy_constructible_test>(concepts::move_constructible)));
-  ASSERT_FALSE((cpt::check<not_move_constructible_test>(concepts::move_constructible)));
+  ASSERT_TRUE((concepts::move_constructible.check<default_constructible_test>()));
+  ASSERT_TRUE((concepts::move_constructible.check<not_default_constructible_test>()));
+  ASSERT_TRUE((concepts::move_constructible.check<copy_constructible_test>()));
+  ASSERT_TRUE((concepts::move_constructible.check<move_constructible_test>()));
+  ASSERT_FALSE((concepts::move_constructible.check<not_copy_constructible_test>()));
+  ASSERT_FALSE((concepts::move_constructible.check<not_move_constructible_test>()));
 }
 
 struct copy_assignable_test {
@@ -77,10 +77,10 @@ struct not_copy_assignable_test {
 
 TEST(Cpt_Basic, copy_assignable)
 {
-  ASSERT_TRUE((cpt::check<default_constructible_test>(concepts::copy_assignable)));
-  ASSERT_TRUE((cpt::check<not_default_constructible_test>(concepts::copy_assignable)));
-  ASSERT_TRUE((cpt::check<copy_assignable_test>(concepts::copy_assignable)));
-  ASSERT_FALSE((cpt::check<not_copy_assignable_test>(concepts::copy_assignable)));
+  ASSERT_TRUE((concepts::copy_assignable.check<default_constructible_test>()));
+  ASSERT_TRUE((concepts::copy_assignable.check<not_default_constructible_test>()));
+  ASSERT_TRUE((concepts::copy_assignable.check<copy_assignable_test>()));
+  ASSERT_FALSE((concepts::copy_assignable.check<not_copy_assignable_test>()));
 }
 
 struct move_assignable_test {
@@ -101,12 +101,12 @@ struct not_move_assignable_test {
 
 TEST(Cpt_Basic, move_assignable)
 {
-  ASSERT_TRUE((cpt::check<default_constructible_test>(concepts::move_assignable)));
-  ASSERT_TRUE((cpt::check<not_default_constructible_test>(concepts::move_assignable)));
-  ASSERT_TRUE((cpt::check<copy_assignable_test>(concepts::move_assignable)));
-  ASSERT_TRUE((cpt::check<move_assignable_test>(concepts::move_assignable)));
-  ASSERT_FALSE((cpt::check<not_copy_assignable_test>(concepts::move_assignable)));
-  ASSERT_FALSE((cpt::check<not_move_assignable_test>(concepts::move_assignable)));
+  ASSERT_TRUE((concepts::move_assignable.check<default_constructible_test>()));
+  ASSERT_TRUE((concepts::move_assignable.check<not_default_constructible_test>()));
+  ASSERT_TRUE((concepts::move_assignable.check<copy_assignable_test>()));
+  ASSERT_TRUE((concepts::move_assignable.check<move_assignable_test>()));
+  ASSERT_FALSE((concepts::move_assignable.check<not_copy_assignable_test>()));
+  ASSERT_FALSE((concepts::move_assignable.check<not_move_assignable_test>()));
 }
 
 struct destructible_test {
@@ -118,6 +118,6 @@ struct not_destructible_test {
 
 TEST(Cpt_Basic, destructible)
 {
-  ASSERT_TRUE((cpt::check<destructible_test>(concepts::destructible)));
-  ASSERT_FALSE((cpt::check<not_destructible_test>(concepts::destructible)));
+  ASSERT_TRUE((concepts::destructible.check<destructible_test>()));
+  ASSERT_FALSE((concepts::destructible.check<not_destructible_test>()));
 }
