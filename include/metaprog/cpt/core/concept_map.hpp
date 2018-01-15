@@ -17,7 +17,7 @@ struct concept_map;
 namespace details {
 
 template <typename... Concepts, size_t... I>
-constexpr bool map_has_impl(concept_map<Concepts...> concept_map, std::string_view concept_name,
+constexpr bool has_impl(concept_map<Concepts...> concept_map, std::string_view concept_name,
                             std::index_sequence<I...>)
 {
   constexpr auto has_item = [](auto cpt, std::string_view cn) { return cpt.is(cn); };
@@ -25,7 +25,7 @@ constexpr bool map_has_impl(concept_map<Concepts...> concept_map, std::string_vi
 }
 
 template <typename... Concepts, size_t... I>
-constexpr bool map_count_if_impl(concept_map<Concepts...> concept_map, std::string_view concept_name,
+constexpr bool count_if_impl(concept_map<Concepts...> concept_map, std::string_view concept_name,
                                  std::index_sequence<I...>)
 {
   constexpr auto has_item = [](auto cpt, std::string_view cn) { return cpt.is(cn); };
@@ -33,13 +33,13 @@ constexpr bool map_count_if_impl(concept_map<Concepts...> concept_map, std::stri
 }
 
 template <typename... Args, typename... Concepts, size_t... I>
-constexpr void require_map_impl(concept_map<Concepts...> concept_map, std::index_sequence<I...>)
+constexpr void require_impl(concept_map<Concepts...> concept_map, std::index_sequence<I...>)
 {
   (std::get<I>(concept_map).second.template require<Args...>(), ...);
 }
 
 template <typename... Args, typename... Concepts, size_t... I>
-constexpr void require_map_at_impl(concept_map<Concepts...> concept_map, std::string_view concept_name,
+constexpr void require_at_impl(concept_map<Concepts...> concept_map, std::string_view concept_name,
                                    std::index_sequence<I...>)
 {
   if (!concept_map.has(concept_name)) {
@@ -56,13 +56,13 @@ constexpr void require_map_at_impl(concept_map<Concepts...> concept_map, std::st
 }
 
 template <typename... Args, typename... Concepts, size_t... I>
-constexpr bool check_map_impl(concept_map<Concepts...> concept_map, std::index_sequence<I...>)
+constexpr bool check_impl(concept_map<Concepts...> concept_map, std::index_sequence<I...>)
 {
   return helpers::all_of(std::get<I>(concept_map).second.template check<Args...>()...);
 }
 
 template <typename... Args, typename... Concepts, size_t... I>
-constexpr bool check_map_at_impl(concept_map<Concepts...> concept_map, std::string_view concept_name,
+constexpr bool check_at_impl(concept_map<Concepts...> concept_map, std::string_view concept_name,
                                  std::index_sequence<I...>)
 {
   if (!concept_map.has(concept_name)) {
@@ -128,36 +128,36 @@ struct concept_map : std::tuple<concept_item<Concepts>...> {
 
   constexpr size_t count_if(std::string_view concept_name) const
   {
-    return details::map_count_if_impl(*this, concept_name, std::make_index_sequence<sizeof...(Concepts)>{});
+    return details::count_if_impl(*this, concept_name, std::make_index_sequence<sizeof...(Concepts)>{});
   }
 
   constexpr bool has(std::string_view concept_name) const
   {
-    return details::map_has_impl(*this, concept_name, std::make_index_sequence<sizeof...(Concepts)>{});
+    return details::has_impl(*this, concept_name, std::make_index_sequence<sizeof...(Concepts)>{});
   }
 
   template <typename... Args>
   constexpr void require() const
   {
-    details::require_map_impl<Args...>(*this, std::make_index_sequence<sizeof...(Concepts)>{});
+    details::require_impl<Args...>(*this, std::make_index_sequence<sizeof...(Concepts)>{});
   }
 
   template <typename... Args>
   constexpr void require_at(std::string_view concept_name) const
   {
-    details::require_map_at_impl<Args...>(*this, concept_name, std::make_index_sequence<sizeof...(Concepts)>{});
+    details::require_at_impl<Args...>(*this, concept_name, std::make_index_sequence<sizeof...(Concepts)>{});
   }
 
   template <typename... Args>
   constexpr bool check() const
   {
-    return details::check_map_impl<Args...>(*this, std::make_index_sequence<sizeof...(Concepts)>{});
+    return details::check_impl<Args...>(*this, std::make_index_sequence<sizeof...(Concepts)>{});
   }
 
   template <typename... Args>
   constexpr bool check_at(std::string_view concept_name) const
   {
-    return details::check_map_at_impl<Args...>(*this, concept_name, std::make_index_sequence<sizeof...(Concepts)>{});
+    return details::check_at_impl<Args...>(*this, concept_name, std::make_index_sequence<sizeof...(Concepts)>{});
   }
 };
 
