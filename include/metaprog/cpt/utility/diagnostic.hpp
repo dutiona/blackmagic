@@ -5,43 +5,41 @@
 
 #include "concepts.hpp"
 
-#include "../verif.hpp"
-
-namespace cpt { namespace utility { namespace diagnostic {
+namespace cpt::utility::diagnostic {
 
 // indirection
 template <typename T>
-constexpr void diagnostic(decltype(cpt::concepts::indirection))
+constexpr void diagnostic(decltype(concepts::Indirection))
 {
-  static_assert(cpt::check<T>(cpt::concepts::indirection), "Expression < *a > is ill-formed.");
+  static_assert(concepts::Indirection.check<T>(), "Expression < *a > is ill-formed.");
 }
 
 // address_of
 template <typename T>
-constexpr void diagnostic(decltype(cpt::concepts::address_of))
+constexpr void diagnostic(decltype(concepts::AddressOf))
 {
-  static_assert(cpt::check<T>(cpt::concepts::address_of), "Expression < &a > is ill-formed.");
+  static_assert(concepts::AddressOf.check<T>(), "Expression < &a > is ill-formed.");
 }
 
 // subscript
 template <typename T, typename I>
-constexpr void diagnostic(decltype(cpt::concepts::subscript))
+constexpr void diagnostic(decltype(concepts::Subscript))
 {
-  static_assert(cpt::check<T, I>(cpt::concepts::subscript), "Expression < a[b] > is ill-formed.");
+  static_assert(concepts::Subscript.check<T, I>(), "Expression < a[b] > is ill-formed.");
 }
 
 // pointer_to_member_of_object
 template <typename T, typename I>
-constexpr void diagnostic(decltype(cpt::concepts::pointer_to_member_of_object))
+constexpr void diagnostic(decltype(concepts::PointerToMemberOfObject))
 {
-  static_assert(cpt::check<T, I>(cpt::concepts::pointer_to_member_of_object), "Expression < a.*b > is ill-formed.");
+  static_assert(concepts::PointerToMemberOfObject.check<T, I>(), "Expression < a.*b > is ill-formed.");
 }
 
 // pointer_to_member_of_pointer
 template <typename T, typename I>
-constexpr void diagnostic(decltype(cpt::concepts::pointer_to_member_of_pointer))
+constexpr void diagnostic(decltype(concepts::PointerToMemberOfPointer))
 {
-  static_assert(cpt::check<T, I>(cpt::concepts::pointer_to_member_of_pointer), "Expression < a->*b > is ill-formed.");
+  static_assert(concepts::PointerToMemberOfPointer.check<T, I>(), "Expression < a->*b > is ill-formed.");
 }
 
 
@@ -49,79 +47,79 @@ constexpr void diagnostic(decltype(cpt::concepts::pointer_to_member_of_pointer))
 
 // assignable
 template <typename T, typename U = T>
-constexpr void diagnostic(decltype(cpt::concepts::assignable))
+constexpr void diagnostic(decltype(concepts::Assignable))
 {
-  static_assert(cpt::check<T, U>(cpt::concepts::assignable), "Expression < a = b > is ill-formed.");
+  static_assert(concepts::Assignable.check<T, U>(), "Expression < a = b > is ill-formed.");
 }
 
 // plus_assignable
 template <typename T, typename U = T>
-constexpr void diagnostic(decltype(cpt::concepts::plus_assignable))
+constexpr void diagnostic(decltype(concepts::PlusAssignable))
 {
-  static_assert(cpt::check<T, U>(cpt::concepts::plus_assignable), "Expression < a += b > is ill-formed.");
+  static_assert(concepts::PlusAssignable.check<T, U>(), "Expression < a += b > is ill-formed.");
 }
 
 // less_assignable
 template <typename T, typename U = T>
-constexpr void diagnostic(decltype(cpt::concepts::less_assignable))
+constexpr void diagnostic(decltype(concepts::LessAssignable))
 {
-  static_assert(cpt::check<T, U>(cpt::concepts::less_assignable), "Expression < a -= b > is ill-formed.");
+  static_assert(concepts::LessAssignable.check<T, U>(), "Expression < a -= b > is ill-formed.");
 }
 
 // mult_assignable
 template <typename T, typename U = T>
-constexpr void diagnostic(decltype(cpt::concepts::mult_assignable))
+constexpr void diagnostic(decltype(concepts::MultAssignable))
 {
-  static_assert(cpt::check<T, U>(cpt::concepts::mult_assignable), "Expression < a *= b > is ill-formed.");
+  static_assert(concepts::MultAssignable.check<T, U>(), "Expression < a *= b > is ill-formed.");
 }
 
 // div_assignable
 template <typename T, typename U = T>
-constexpr void diagnostic(decltype(cpt::concepts::div_assignable))
+constexpr void diagnostic(decltype(concepts::DivAssignable))
 {
-  static_assert(cpt::check<T, U>(cpt::concepts::div_assignable), "Expression < a /= b > is ill-formed.");
+  static_assert(concepts::DivAssignable.check<T, U>(), "Expression < a /= b > is ill-formed.");
 }
 
 // mod_assignable
 template <typename T, typename U = T>
-constexpr void diagnostic(decltype(cpt::concepts::mod_assignable))
+constexpr void diagnostic(decltype(concepts::ModAssignable))
 {
-  static_assert(cpt::check<T, U>(cpt::concepts::mod_assignable), "Expression < a %= b > is ill-formed.");
+  static_assert(concepts::ModAssignable.check<T, U>(), "Expression < a %= b > is ill-formed.");
 }
 
 // and_assignable
 template <typename T, typename U = T>
-constexpr void diagnostic(decltype(cpt::concepts::and_assignable))
+constexpr void diagnostic(decltype(concepts::AndAssignable))
 {
-  static_assert(cpt::check<T, U>(cpt::concepts::and_assignable), "Expression < a &= b > is ill-formed.");
+  static_assert(concepts::AndAssignable.check<T, U>(), "Expression < a &= b > is ill-formed.");
 }
 
 // or_assignable
 template <typename T, typename U = T>
-constexpr void diagnostic(decltype(cpt::concepts::or_assignable))
+constexpr void diagnostic(decltype(concepts::OrAssignable))
 {
-  static_assert(cpt::check<T, U>(cpt::concepts::or_assignable), "Expression < a |= b > is ill-formed.");
+  static_assert(concepts::OrAssignable.check<T, U>(), "Expression < a |= b > is ill-formed.");
 }
 
 // xor_assignable
 template <typename T, typename U = T>
-constexpr void diagnostic(decltype(cpt::concepts::xor_assignable))
+constexpr void diagnostic(decltype(concepts::XorAssignable))
 {
-  static_assert(cpt::check<T, U>(cpt::concepts::xor_assignable), "Expression < a ^= b > is ill-formed.");
+  static_assert(concepts::XorAssignable.check<T, U>(), "Expression < a ^= b > is ill-formed.");
 }
 
 // lshift_assignable
 template <typename T, typename U = T>
-constexpr void diagnostic(decltype(cpt::concepts::lshift_assignable))
+constexpr void diagnostic(decltype(concepts::LshiftAssignable))
 {
-  static_assert(cpt::check<T, U>(cpt::concepts::lshift_assignable), "Expression < a <<= b > is ill-formed.");
+  static_assert(concepts::LshiftAssignable.check<T, U>(), "Expression < a <<= b > is ill-formed.");
 }
 
 // rshift_assignable
 template <typename T, typename U = T>
-constexpr void diagnostic(decltype(cpt::concepts::rshift_assignable))
+constexpr void diagnostic(decltype(concepts::RshiftAssignable))
 {
-  static_assert(cpt::check<T, U>(cpt::concepts::rshift_assignable), "Expression < a >>= b > is ill-formed.");
+  static_assert(concepts::RshiftAssignable.check<T, U>(), "Expression < a >>= b > is ill-formed.");
 }
 
 
@@ -129,93 +127,93 @@ constexpr void diagnostic(decltype(cpt::concepts::rshift_assignable))
 
 // positive
 template <typename T>
-constexpr void diagnostic(decltype(cpt::concepts::positive))
+constexpr void diagnostic(decltype(concepts::Positive))
 {
-  static_assert(cpt::check<T>(cpt::concepts::positive), "Expression < +a > is ill-formed.");
+  static_assert(concepts::Positive.check<T>(), "Expression < +a > is ill-formed.");
 }
 
 // negative
 template <typename T>
-constexpr void diagnostic(decltype(cpt::concepts::negative))
+constexpr void diagnostic(decltype(concepts::Negative))
 {
-  static_assert(cpt::check<T>(cpt::concepts::negative), "Expression < -a > is ill-formed.");
+  static_assert(concepts::Negative.check<T>(), "Expression < -a > is ill-formed.");
 }
 
 // not
 template <typename T>
-constexpr void diagnostic(decltype(cpt::concepts::Not))
+constexpr void diagnostic(decltype(concepts::Not))
 {
-  static_assert(cpt::check<T>(cpt::concepts::Not), "Expression < ~a > is ill-formed.");
+  static_assert(concepts::Not.check<T>(), "Expression < ~a > is ill-formed.");
 }
 
 // plus
 template <typename T, typename U = T>
-constexpr void diagnostic(decltype(cpt::concepts::plus))
+constexpr void diagnostic(decltype(concepts::Plus))
 {
-  static_assert(cpt::check<T, U>(cpt::concepts::plus), "Expression < a + b > is ill-formed.");
+  static_assert(concepts::Plus.check<T, U>(), "Expression < a + b > is ill-formed.");
 }
 
 // less
 template <typename T, typename U = T>
-constexpr void diagnostic(decltype(cpt::concepts::less))
+constexpr void diagnostic(decltype(concepts::Less))
 {
-  static_assert(cpt::check<T, U>(cpt::concepts::less), "Expression < a + b > is ill-formed.");
+  static_assert(concepts::Less.check<T, U>(), "Expression < a + b > is ill-formed.");
 }
 
 // mult
 template <typename T, typename U = T>
-constexpr void diagnostic(decltype(cpt::concepts::mult))
+constexpr void diagnostic(decltype(concepts::Mult))
 {
-  static_assert(cpt::check<T, U>(cpt::concepts::mult), "Expression < a * b > is ill-formed.");
+  static_assert(concepts::Mult.check<T, U>(), "Expression < a * b > is ill-formed.");
 }
 
 // div
 template <typename T, typename U = T>
-constexpr void diagnostic(decltype(cpt::concepts::div))
+constexpr void diagnostic(decltype(concepts::Div))
 {
-  static_assert(cpt::check<T, U>(cpt::concepts::div), "Expression < a / b > is ill-formed.");
+  static_assert(concepts::Div.check<T, U>(), "Expression < a / b > is ill-formed.");
 }
 
 // mod
 template <typename T, typename U = T>
-constexpr void diagnostic(decltype(cpt::concepts::mod))
+constexpr void diagnostic(decltype(concepts::Mod))
 {
-  static_assert(cpt::check<T, U>(cpt::concepts::mod), "Expression < a % b > is ill-formed.");
+  static_assert(concepts::Mod.check<T, U>(), "Expression < a % b > is ill-formed.");
 }
 
 // and
 template <typename T, typename U = T>
-constexpr void diagnostic(decltype(cpt::concepts::And))
+constexpr void diagnostic(decltype(concepts::And))
 {
-  static_assert(cpt::check<T, U>(cpt::concepts::And), "Expression < a & b > is ill-formed.");
+  static_assert(concepts::And.check<T, U>(), "Expression < a & b > is ill-formed.");
 }
 
 // or
 template <typename T, typename U = T>
-constexpr void diagnostic(decltype(cpt::concepts::Or))
+constexpr void diagnostic(decltype(concepts::Or))
 {
-  static_assert(cpt::check<T, U>(cpt::concepts::Or), "Expression < a | b > is ill-formed.");
+  static_assert(concepts::Or.check<T, U>(), "Expression < a | b > is ill-formed.");
 }
 
 // xor
 template <typename T, typename U = T>
-constexpr void diagnostic(decltype(cpt::concepts::Xor))
+constexpr void diagnostic(decltype(concepts::Xor))
 {
-  static_assert(cpt::check<T, U>(cpt::concepts::Xor), "Expression < a ^ b > is ill-formed.");
+  static_assert(concepts::Xor.check<T, U>(), "Expression < a ^ b > is ill-formed.");
 }
 
 // lshift
 template <typename T, typename U = T>
-constexpr void diagnostic(decltype(cpt::concepts::lshift))
+constexpr void diagnostic(decltype(concepts::Lshift))
 {
-  static_assert(cpt::check<T, U>(cpt::concepts::lshift), "Expression < a << b > is ill-formed.");
+  static_assert(concepts::Lshift.check<T, U>(), "Expression < a << b > is ill-formed.");
 }
 
 // rshift
 template <typename T, typename U = T>
-constexpr void diagnostic(decltype(cpt::concepts::rshift))
+constexpr void diagnostic(decltype(concepts::Rshift))
 {
-  static_assert(cpt::check<T, U>(cpt::concepts::rshift), "Expression < a >> b > is ill-formed.");
+  static_assert(concepts::Rshift.check<T, U>(), "Expression < a >> b > is ill-formed.");
 }
 
 
@@ -223,30 +221,30 @@ constexpr void diagnostic(decltype(cpt::concepts::rshift))
 
 // pre_incrementable
 template <typename T>
-constexpr void diagnostic(decltype(cpt::concepts::pre_incrementable))
+constexpr void diagnostic(decltype(concepts::PreIncrementable))
 {
-  static_assert(cpt::check<T>(cpt::concepts::pre_incrementable), "Expression < ++a > is ill-formed.");
+  static_assert(concepts::PreIncrementable.check<T>(), "Expression < ++a > is ill-formed.");
 }
 
 // post_incrementable
 template <typename T>
-constexpr void diagnostic(decltype(cpt::concepts::post_incrementable))
+constexpr void diagnostic(decltype(concepts::PostIncrementable))
 {
-  static_assert(cpt::check<T>(cpt::concepts::post_incrementable), "Expression < a++ > is ill-formed.");
+  static_assert(concepts::PostIncrementable.check<T>(), "Expression < a++ > is ill-formed.");
 }
 
 // pre_decrementable
 template <typename T>
-constexpr void diagnostic(decltype(cpt::concepts::pre_decrementable))
+constexpr void diagnostic(decltype(concepts::PreDecrementable))
 {
-  static_assert(cpt::check<T>(cpt::concepts::pre_decrementable), "Expression < --a > is ill-formed.");
+  static_assert(concepts::PreDecrementable.check<T>(), "Expression < --a > is ill-formed.");
 }
 
 // post_decrementable
 template <typename T>
-constexpr void diagnostic(decltype(cpt::concepts::post_decrementable))
+constexpr void diagnostic(decltype(concepts::PostDecrementable))
 {
-  static_assert(cpt::check<T>(cpt::concepts::post_decrementable), "Expression < a-- > is ill-formed.");
+  static_assert(concepts::PostDecrementable.check<T>(), "Expression < a-- > is ill-formed.");
 }
 
 
@@ -254,44 +252,44 @@ constexpr void diagnostic(decltype(cpt::concepts::post_decrementable))
 
 // equality
 template <typename T, typename U = T>
-constexpr void diagnostic(decltype(cpt::concepts::equality))
+constexpr void diagnostic(decltype(concepts::Equality))
 {
-  static_assert(cpt::check<T, U>(cpt::concepts::equality), "Expression < a == b > is ill-formed.");
+  static_assert(concepts::Equality.check<T, U>(), "Expression < a == b > is ill-formed.");
 }
 
 // inequality
 template <typename T, typename U = T>
-constexpr void diagnostic(decltype(cpt::concepts::inequality))
+constexpr void diagnostic(decltype(concepts::Inequality))
 {
-  static_assert(cpt::check<T, U>(cpt::concepts::inequality), "Expression < a != b > is ill-formed.");
+  static_assert(concepts::Inequality.check<T, U>(), "Expression < a != b > is ill-formed.");
 }
 
 // less_than
 template <typename T, typename U = T>
-constexpr void diagnostic(decltype(cpt::concepts::less_than))
+constexpr void diagnostic(decltype(concepts::LessThan))
 {
-  static_assert(cpt::check<T, U>(cpt::concepts::less_than), "Expression < a < b > is ill-formed.");
+  static_assert(concepts::LessThan.check<T, U>(), "Expression < a < b > is ill-formed.");
 }
 
 // less_equal_than
 template <typename T, typename U = T>
-constexpr void diagnostic(decltype(cpt::concepts::less_equal_than))
+constexpr void diagnostic(decltype(concepts::LessEqualThan))
 {
-  static_assert(cpt::check<T>(cpt::concepts::less_equal_than), "Expression < a <= b > is ill-formed.");
+  static_assert(concepts::LessEqualThan.check<T, U>(), "Expression < a <= b > is ill-formed.");
 }
 
 // greater_than
 template <typename T, typename U = T>
-constexpr void diagnostic(decltype(cpt::concepts::greater_than))
+constexpr void diagnostic(decltype(concepts::GreaterThan))
 {
-  static_assert(cpt::check<T, U>(cpt::concepts::greater_than), "Expression < a > b > is ill-formed.");
+  static_assert(concepts::GreaterThan.check<T, U>(), "Expression < a > b > is ill-formed.");
 }
 
 // greater_equal_than
 template <typename T, typename U = T>
-constexpr void diagnostic(decltype(cpt::concepts::greater_equal_than))
+constexpr void diagnostic(decltype(concepts::GreaterEqualThan))
 {
-  static_assert(cpt::check<T, U>(cpt::concepts::greater_equal_than), "Expression < a >= b > is ill-formed.");
+  static_assert(concepts::GreaterEqualThan.check<T, U>(), "Expression < a >= b > is ill-formed.");
 }
 
 
@@ -299,23 +297,23 @@ constexpr void diagnostic(decltype(cpt::concepts::greater_equal_than))
 
 // logical_not
 template <typename T>
-constexpr void diagnostic(decltype(cpt::concepts::logical_not))
+constexpr void diagnostic(decltype(concepts::LogicalNot))
 {
-  static_assert(cpt::check<T>(cpt::concepts::logical_not), "Expression < !a > is ill-formed.");
+  static_assert(concepts::LogicalNot.check<T>(), "Expression < !a > is ill-formed.");
 }
 
 // logical_and
 template <typename T, typename U = T>
-constexpr void diagnostic(decltype(cpt::concepts::logical_and))
+constexpr void diagnostic(decltype(concepts::LogicalAnd))
 {
-  static_assert(cpt::check<T, U>(cpt::concepts::logical_and), "Expression < a && b > is ill-formed.");
+  static_assert(concepts::LogicalAnd.check<T, U>(), "Expression < a && b > is ill-formed.");
 }
 
 // logical_or
 template <typename T, typename U = T>
-constexpr void diagnostic(decltype(cpt::concepts::logical_or))
+constexpr void diagnostic(decltype(concepts::LogicalOr))
 {
-  static_assert(cpt::check<T, U>(cpt::concepts::logical_or), "Expression < a || b > is ill-formed.");
+  static_assert(concepts::LogicalOr.check<T, U>(), "Expression < a || b > is ill-formed.");
 }
 
 
@@ -323,34 +321,33 @@ constexpr void diagnostic(decltype(cpt::concepts::logical_or))
 
 // comma
 template <typename T, typename U = T>
-constexpr void diagnostic(decltype(cpt::concepts::comma))
+constexpr void diagnostic(decltype(concepts::Comma))
 {
-  static_assert(cpt::check<T, U>(cpt::concepts::comma), "Expression < a, b > is ill-formed.");
+  static_assert(concepts::Comma.check<T, U>(), "Expression < a, b > is ill-formed.");
 }
 
 // ternary
 template <typename B, typename T, typename U = T>
-constexpr void diagnostic(decltype(cpt::concepts::ternary))
+constexpr void diagnostic(decltype(concepts::Ternary))
 {
-  static_assert(cpt::check<B, T, U>(cpt::concepts::ternary), "Expression < expr ? a : b > is ill-formed.");
+  static_assert(concepts::Ternary.check<B, T, U>(), "Expression < expr ? a : b > is ill-formed.");
 }
 
 // invocable
 template <typename F, typename... Args>
-constexpr void diagnostic(decltype(cpt::concepts::invocable))
+constexpr void diagnostic(decltype(concepts::Invocable))
 {
-  static_assert(cpt::check<F, Args...>(cpt::concepts::invocable),
-                "Expression < std::invoke(func, args...) > is ill-formed.");
+  static_assert(concepts::Invocable.check<F, Args...>(), "Expression < std::invoke(func, args...) > is ill-formed.");
 }
 
 // invocable r
 template <typename R, typename F, typename... Args>
-constexpr void diagnostic(decltype(cpt::concepts::invocable_r))
+constexpr void diagnostic(decltype(concepts::InvocableR))
 {
-  static_assert(cpt::check<R, F, Args...>(cpt::concepts::invocable_r),
+  static_assert(concepts::InvocableR.check<R, F, Args...>(),
                 "Expression < ret = std::invoke(func, args...) > is ill-formed.");
 }
 
-}}} // namespace cpt::utility::diagnostic
+} // namespace cpt::utility::diagnostic
 
 #endif // METAPROG_CPT_UTILITY_DIAGNOSTIC_HPP_

@@ -3,192 +3,187 @@
 #ifndef METAPROG_CPT_UTILIY_CONCEPTS_HPP_
 #define METAPROG_CPT_UTILIY_CONCEPTS_HPP_
 
-#include "../verif.hpp"
+#include "../core.hpp"
 
 #include "details/concepts_impl.hpp"
 
 #include <string_view>
 
-namespace cpt { namespace concepts { namespace utility {
+namespace cpt::concepts::utility {
 
 using namespace std::literals;
 
 // member access
 
 // indirection
-inline constexpr auto indirection = make_concept_item_from_predicate<details::indirection_impl>("indirection"sv);
+inline constexpr auto Indirection = make_concept_item_from_predicate<details::indirection_impl>("Indirection"sv);
 
 // address_of
-inline constexpr auto address_of = make_concept_item_from_predicate<details::address_of_impl>("address_of"sv);
+inline constexpr auto AddressOf = make_concept_item_from_predicate<details::address_of_impl>("AddressOf"sv);
 
 // subscript
-inline constexpr auto subscript = make_concept_item_from_predicate<details::subscript_impl>("subscript"sv);
+inline constexpr auto Subscript = make_concept_item_from_predicate<details::subscript_impl>("Subscript"sv);
 
 // pointer_to_member_of_object
-inline constexpr auto pointer_to_member_of_object =
-  make_concept_item_from_predicate<details::pointer_to_member_of_object_impl>("pointer_to_member_of_object"sv);
+inline constexpr auto PointerToMemberOfObject =
+  make_concept_item_from_predicate<details::pointer_to_member_of_object_impl>("PointerToMemberOfObject"sv);
 
 // pointer_to_member_of_pointer
-inline constexpr auto pointer_to_member_of_pointer =
-  make_concept_item_from_predicate<details::pointer_to_member_of_pointer_impl>("pointer_to_member_of_pointer"sv);
+inline constexpr auto PointerToMemberOfPointer =
+  make_concept_item_from_predicate<details::pointer_to_member_of_pointer_impl>("PointerToMemberOfPointer"sv);
 
 
 // assignement
 
 // assignable
-inline constexpr auto assignable = make_concept_item_from_predicate<details::assignable_impl>("assignable"sv);
+inline constexpr auto Assignable = make_concept_item_from_predicate<details::assignable_impl>("Assignable"sv);
 
 // plus_assignable
-inline constexpr auto plus_assignable =
-  make_concept_item_from_predicate<details::plus_assignable_impl>("plus_assignable"sv);
+inline constexpr auto PlusAssignable =
+  make_concept_item_from_predicate<details::plus_assignable_impl>("PlusAssignable"sv);
 
 // less_assignable
-inline constexpr auto less_assignable =
-  make_concept_item_from_predicate<details::less_assignable_impl>("less_assignable"sv);
+inline constexpr auto LessAssignable =
+  make_concept_item_from_predicate<details::less_assignable_impl>("LessAssignable"sv);
 
 // mult_assignable
-inline constexpr auto mult_assignable =
-  make_concept_item_from_predicate<details::mult_assignable_impl>("mult_assignable"sv);
+inline constexpr auto MultAssignable =
+  make_concept_item_from_predicate<details::mult_assignable_impl>("MultAssignable"sv);
 
 // div_assignable
-inline constexpr auto div_assignable =
-  make_concept_item_from_predicate<details::div_assignable_impl>("div_assignable"sv);
+inline constexpr auto DivAssignable = make_concept_item_from_predicate<details::div_assignable_impl>("DivAssignable"sv);
 
 // mod_assignable
-inline constexpr auto mod_assignable =
-  make_concept_item_from_predicate<details::mod_assignable_impl>("mod_assignable"sv);
+inline constexpr auto ModAssignable = make_concept_item_from_predicate<details::mod_assignable_impl>("ModAssignable"sv);
 
 // and_assignable
-inline constexpr auto and_assignable =
-  make_concept_item_from_predicate<details::and_assignable_impl>("and_assignable"sv);
+inline constexpr auto AndAssignable = make_concept_item_from_predicate<details::and_assignable_impl>("AndAssignable"sv);
 
 // or_assignable
-inline constexpr auto or_assignable = make_concept_item_from_predicate<details::or_assignable_impl>("or_assignable"sv);
+inline constexpr auto OrAssignable = make_concept_item_from_predicate<details::or_assignable_impl>("OrAssignable"sv);
 
 // xor_assignable
-inline constexpr auto xor_assignable =
-  make_concept_item_from_predicate<details::xor_assignable_impl>("xor_assignable"sv);
+inline constexpr auto XorAssignable = make_concept_item_from_predicate<details::xor_assignable_impl>("XorAssignable"sv);
 
 // lshift_assignable
-inline constexpr auto lshift_assignable =
-  make_concept_item_from_predicate<details::lshift_assignable_impl>("lshift_assignable"sv);
+inline constexpr auto LshiftAssignable =
+  make_concept_item_from_predicate<details::lshift_assignable_impl>("LshiftAssignable"sv);
 
 // rshift_assignable
-inline constexpr auto rshift_assignable =
-  make_concept_item_from_predicate<details::rshift_assignable_impl>("rshift_assignable"sv);
+inline constexpr auto RshiftAssignable =
+  make_concept_item_from_predicate<details::rshift_assignable_impl>("RshiftAssignable"sv);
 
 
 // arithmetic
 
 // positive
-inline constexpr auto positive = make_concept_item_from_predicate<details::positive_impl>("positive"sv);
+inline constexpr auto Positive = make_concept_item_from_predicate<details::positive_impl>("Positive"sv);
 
 // negative
-inline constexpr auto negative = make_concept_item_from_predicate<details::negative_impl>("negative"sv);
+inline constexpr auto Negative = make_concept_item_from_predicate<details::negative_impl>("Negative"sv);
 
 // not
-inline constexpr auto Not = make_concept_item_from_predicate<details::not_impl>("not"sv); // "not" is a c++ keyword
+inline constexpr auto Not = make_concept_item_from_predicate<details::not_impl>("Not"sv);
 
 // plus
-inline constexpr auto plus = make_concept_item_from_predicate<details::plus_impl>("plus"sv);
+inline constexpr auto Plus = make_concept_item_from_predicate<details::plus_impl>("Plus"sv);
 
 // less
-inline constexpr auto less = make_concept_item_from_predicate<details::less_impl>("less"sv);
+inline constexpr auto Less = make_concept_item_from_predicate<details::less_impl>("Less"sv);
 
 // mult
-inline constexpr auto mult = make_concept_item_from_predicate<details::mult_impl>("mult"sv);
+inline constexpr auto Mult = make_concept_item_from_predicate<details::mult_impl>("Mult"sv);
 
 // div
-inline constexpr auto div = make_concept_item_from_predicate<details::div_impl>("div"sv);
+inline constexpr auto Div = make_concept_item_from_predicate<details::div_impl>("Div"sv);
 
 // mod
-inline constexpr auto mod = make_concept_item_from_predicate<details::mod_impl>("mod"sv);
+inline constexpr auto Mod = make_concept_item_from_predicate<details::mod_impl>("Mod"sv);
 
 // and
-inline constexpr auto And = make_concept_item_from_predicate<details::and_impl>("and"sv); // "and" is a c++ keyword
+inline constexpr auto And = make_concept_item_from_predicate<details::and_impl>("And"sv);
 
 // or
-inline constexpr auto Or = make_concept_item_from_predicate<details::or_impl>("or"sv); // "or" is a c++ keyword
+inline constexpr auto Or = make_concept_item_from_predicate<details::or_impl>("Or"sv);
 
 // xor
-inline constexpr auto Xor = make_concept_item_from_predicate<details::xor_impl>("xor"sv); // "xor" is a c++ keyword
+inline constexpr auto Xor = make_concept_item_from_predicate<details::xor_impl>("Xor"sv);
 
 // lshift
-inline constexpr auto lshift = make_concept_item_from_predicate<details::lshift_impl>("lshift"sv);
+inline constexpr auto Lshift = make_concept_item_from_predicate<details::lshift_impl>("Lshift"sv);
 
 // rshift
-inline constexpr auto rshift = make_concept_item_from_predicate<details::rshift_impl>("rshift"sv);
+inline constexpr auto Rshift = make_concept_item_from_predicate<details::rshift_impl>("Rshift"sv);
 
 
 // increment / decrement
 
 // pre_incrementable
-inline constexpr auto pre_incrementable =
-  make_concept_item_from_predicate<details::pre_incrementable_impl>("pre_incrementable"sv);
+inline constexpr auto PreIncrementable =
+  make_concept_item_from_predicate<details::pre_incrementable_impl>("PreIncrementable"sv);
 
 // post_incrementable
-inline constexpr auto post_incrementable =
-  make_concept_item_from_predicate<details::post_incrementable_impl>("post_incrementable"sv);
+inline constexpr auto PostIncrementable =
+  make_concept_item_from_predicate<details::post_incrementable_impl>("PostIncrementable"sv);
 
 // pre_decrementable
-inline constexpr auto pre_decrementable =
-  make_concept_item_from_predicate<details::pre_decrementable_impl>("pre_decrementable"sv);
+inline constexpr auto PreDecrementable =
+  make_concept_item_from_predicate<details::pre_decrementable_impl>("PreDecrementable"sv);
 
 // post_decrementable
-inline constexpr auto post_decrementable =
-  make_concept_item_from_predicate<details::post_decrementable_impl>("post_decrementable"sv);
+inline constexpr auto PostDecrementable =
+  make_concept_item_from_predicate<details::post_decrementable_impl>("PostDecrementable"sv);
 
 
 // comparison
 
 // equality
-inline constexpr auto equality = make_concept_item_from_predicate<details::equality_impl>("equality"sv);
+inline constexpr auto Equality = make_concept_item_from_predicate<details::equality_impl>("Equality"sv);
 
 // inequality
-inline constexpr auto inequality = make_concept_item_from_predicate<details::inequality_impl>("inequality"sv);
+inline constexpr auto Inequality = make_concept_item_from_predicate<details::inequality_impl>("Inequality"sv);
 
 // less_than
-inline constexpr auto less_than = make_concept_item_from_predicate<details::less_than_impl>("less_than"sv);
+inline constexpr auto LessThan = make_concept_item_from_predicate<details::less_than_impl>("LessThan"sv);
 
 // less_equal_than
-inline constexpr auto less_equal_than =
-  make_concept_item_from_predicate<details::less_equal_than_impl>("less_equal_than"sv);
+inline constexpr auto LessEqualThan =
+  make_concept_item_from_predicate<details::less_equal_than_impl>("LessEqualThan"sv);
 
 // greater_than
-inline constexpr auto greater_than = make_concept_item_from_predicate<details::greater_than_impl>("greater_than"sv);
+inline constexpr auto GreaterThan = make_concept_item_from_predicate<details::greater_than_impl>("GreaterThan"sv);
 
 // greater_equal_than
-inline constexpr auto greater_equal_than =
-  make_concept_item_from_predicate<details::greater_equal_than_impl>("greater_equal_than"sv);
+inline constexpr auto GreaterEqualThan =
+  make_concept_item_from_predicate<details::greater_equal_than_impl>("GreaterEqualThan"sv);
 
 
 // logical
 
 // logical_not
-inline constexpr auto logical_not = make_concept_item_from_predicate<details::logical_not_impl>("logical_not"sv);
+inline constexpr auto LogicalNot = make_concept_item_from_predicate<details::logical_not_impl>("LogicalNot"sv);
 
 // logical_and
-inline constexpr auto logical_and = make_concept_item_from_predicate<details::logical_and_impl>("logical_and"sv);
-
+inline constexpr auto LogicalAnd = make_concept_item_from_predicate<details::logical_and_impl>("LogicalAnd"sv);
 // logical_or
-inline constexpr auto logical_or = make_concept_item_from_predicate<details::logical_or_impl>("logical_or"sv);
+inline constexpr auto LogicalOr = make_concept_item_from_predicate<details::logical_or_impl>("LogicalOr"sv);
 
 
 // other
 
 // comma
-inline constexpr auto comma = make_concept_item_from_predicate<details::comma_impl>("comma"sv);
+inline constexpr auto Comma = make_concept_item_from_predicate<details::comma_impl>("Comma"sv);
 
 // ternary
-inline constexpr auto ternary = make_concept_item_from_predicate<details::ternary_impl>("ternary"sv);
+inline constexpr auto Ternary = make_concept_item_from_predicate<details::ternary_impl>("Ternary"sv);
 
 // invocable
-inline constexpr auto invocable = make_concept_item_from_predicate<details::invocable_impl>("invocable"sv);
+inline constexpr auto Invocable = make_concept_item_from_predicate<details::invocable_impl>("Invocable"sv);
 
 // invocable r
-inline constexpr auto invocable_r = make_concept_item_from_predicate<details::invocable_r_impl>("invocable_r"sv);
+inline constexpr auto InvocableR = make_concept_item_from_predicate<details::invocable_r_impl>("InvocableR"sv);
 
-}}} // namespace cpt::concepts::utility
+} // namespace cpt::concepts::utility
 
 
 #endif // METAPROG_CPT_UTILIY_CONCEPTS_HPP_

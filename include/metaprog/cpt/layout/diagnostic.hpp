@@ -5,31 +5,29 @@
 
 #include "concepts.hpp"
 
-#include "../verif.hpp"
-
-namespace cpt { namespace layout { namespace diagnostic {
+namespace cpt::layout::diagnostic {
 
 // trivially copyable
 template <typename T>
-constexpr void diagnostic(decltype(cpt::concepts::trivially_copyable))
+constexpr void diagnostic(decltype(concepts::TriviallyCopyable))
 {
-  static_assert(cpt::check<T>(cpt::concepts::trivially_copyable), "T is not trivially copyable");
+  static_assert(concepts::TriviallyCopyable.check<T>(), "T is not trivially copyable");
 }
 
 // trivial
 template <typename T>
-constexpr void diagnostic(decltype(cpt::concepts::trivial))
+constexpr void diagnostic(decltype(concepts::Trivial))
 {
-  static_assert(cpt::check<T>(cpt::concepts::trivial), "T is not trivial");
+  static_assert(concepts::Trivial.check<T>(), "T is not trivial");
 }
 
 // standard layout
 template <typename T>
-constexpr void diagnostic(decltype(cpt::concepts::standard_layout))
+constexpr void diagnostic(decltype(concepts::StandardLayout))
 {
-  static_assert(cpt::check<T>(cpt::concepts::standard_layout), "T is not a standard layout");
+  static_assert(concepts::StandardLayout.check<T>(), "T is not a standard layout");
 }
 
-}}} // namespace cpt::layout::diagnostic
+} // namespace cpt::layout::diagnostic
 
 #endif // METAPROG_CPT_LAYOUT_DIAGNOSTIC_HPP_

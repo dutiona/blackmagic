@@ -54,7 +54,7 @@ using is_base_of_image = std::is_base_of<Image<I>, I>;
 
 template <typename I>
 using domain_matching =
-std::is_convertible<std::remove_reference_t<decltype(std::declval<I>().domain())>, domain_type<I>>;
+  std::is_convertible<std::remove_reference_t<decltype(std::declval<I>().domain())>, domain_type<I>>;
 
 template <typename I>
 using pixel_value_type_matching = std::is_convertible<typename pixel<I>::value_type, value<I>>();
@@ -68,6 +68,7 @@ template <typename I>
 using pixel_convert_to_const_pixel = std::is_convertible<pixel<I>, const_pixel<I>>();
 } // namespace image_concept_traits
 
-int main() {
+int main()
+{
   return 0;
 }

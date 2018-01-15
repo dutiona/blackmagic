@@ -9,14 +9,14 @@
 #include "library/traits.hpp"
 #include "utility/traits.hpp"
 
-namespace cpt { namespace traits {
+namespace cpt::traits {
 
-using namespace traits::basic;
-using namespace traits::iterator;
-using namespace traits::layout;
-using namespace traits::library;
-using namespace traits::utility;
+using namespace basic;
+using namespace iterator;
+using namespace layout;
+using namespace library;
+using namespace utility;
 
-}} // namespace cpt::traits
+} // namespace cpt::traits
 
 #endif // METAPROG_CPT_TRAITS_HPP_

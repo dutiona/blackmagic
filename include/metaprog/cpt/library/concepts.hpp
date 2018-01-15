@@ -31,9 +31,9 @@
  *
  */
 
-namespace cpt { namespace concepts { namespace library {
+namespace cpt::concepts::library {
 
 
-}}} // namespace cpt::concepts::library
+} // namespace cpt::concepts::library
 
 #endif // METAPROG_CPT_LIBRARY_CONCEPTS_HPP_

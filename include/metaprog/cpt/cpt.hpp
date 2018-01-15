@@ -12,10 +12,8 @@
  */
 
 #include "concepts.hpp"
-#include "custom.hpp"
+#include "core.hpp"
 #include "diagnostic.hpp"
-#include "helpers.hpp"
 #include "traits.hpp"
-#include "verif.hpp"
 
 #endif // METAPROG_CPT_CPT_HPP_

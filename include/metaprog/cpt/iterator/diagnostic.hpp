@@ -5,11 +5,9 @@
 
 #include "concepts.hpp"
 
-#include "../verif.hpp"
-
-namespace cpt { namespace iterator { namespace diagnostic {
+namespace cpt::iterator::diagnostic {
 
 
-}}} // namespace cpt::iterator::diagnostic
+} // namespace cpt::iterator::diagnostic
 
 #endif // METAPROG_CPT_ITERATOR_DIAGNOSTIC_HPP_
