@@ -1,5 +1,7 @@
 #include <metaprog/cpt/cpt.hpp>
 
+#include <string_view>
+
 using namespace std::literals;
 namespace concepts = cpt::concepts;
 
@@ -98,8 +100,7 @@ constexpr void diagnostic(decltype(Pixel))
   static_assert(Pixel.check_at<PixelType>("ImageType"sv), "image_type attribute missing");
 
   static_assert(Pixel.check_at<PixelType>("PointType_Is_SiteType"sv), "point_type should alias site_type");
-  static_assert(Pixel.check_at<PixelType>("ValueType_IsNot_Reference"sv),
-                "value_type should not be a reference");
+  static_assert(Pixel.check_at<PixelType>("ValueType_IsNot_Reference"sv), "value_type should not be a reference");
 
   static_assert(Pixel.check_at<PixelType>("HasMethod_Val"sv), "method val missing or ill-defined");
   static_assert(Pixel.check_at<PixelType>("HasMethod_Point"sv), "method point missing or ill-defined");
@@ -136,6 +137,8 @@ struct MyBadPixel {
   image_type image();
 };
 
+// Vérification
+static_assert(Pixel.check<MyPixel>(), "MyPixel doesn't model the Pixel concept!");
 
 int main()
 {
