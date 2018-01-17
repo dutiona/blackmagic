@@ -267,7 +267,7 @@ constexpr size_t end(std::tuple<Ts...>)
   return sizeof...(Ts);
 }
 
-// for_each/transform/accumulate for tuples
+// for_each/transform/accumulate/count_if/find_if for tuples
 namespace details {
 
 template <typename F, typename... Args, typename... Ts, size_t... I>
