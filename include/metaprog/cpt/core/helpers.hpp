@@ -4,6 +4,7 @@
 #define METAPROG_CPT_CORE_HELPERS_HPP_
 
 #include <functional>
+#include <tuple>
 #include <type_traits>
 
 namespace cpt::helpers {
