@@ -22,7 +22,7 @@ struct concept_item : std::pair<std::string_view, concept_checker<Concept>> {
 
   constexpr bool is(std::string_view concept_name) const
   {
-    return ctx::equal(this->first.cbegin(), this->first.cend(), concept_name.cbegin(), concept_name.cend());
+    return this->first == concept_name;
   }
 
   template <typename... Args>
