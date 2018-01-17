@@ -277,8 +277,7 @@ constexpr void for_each_impl(std::tuple<Ts...> tpl, std::index_sequence<I...>, F
 }
 
 template <typename F, typename... Args, typename... Ts, size_t... I>
-constexpr auto transform_impl(std::tuple<Ts...> tpl, std::index_sequence<I...>, F&& func, Args&&... args)
-  -> std::tuple<invoke_result_t<F, decltype(std::get<I>(tpl)), Args...>...>
+constexpr decltype(auto) transform_impl(std::tuple<Ts...> tpl, std::index_sequence<I...>, F&& func, Args&&... args)
 {
   return std::make_tuple(std::forward<F>(func)(std::get<I>(tpl), std::forward<Args>(args)...)...);
 };
