@@ -16,96 +16,18 @@ struct concept_map;
 
 namespace details {
 
-template <typename... Concepts, size_t... I>
-constexpr bool has_impl(concept_map<Concepts...> concept_map, std::string_view concept_name,
-                            std::index_sequence<I...>)
-{
-  constexpr auto has_item = [](auto cpt, std::string_view cn) { return cpt.is(cn); };
-  return helpers::any_of(has_item(std::get<I>(concept_map), concept_name)...);
-}
-
-template <typename... Concepts, size_t... I>
-constexpr bool count_if_impl(concept_map<Concepts...> concept_map, std::string_view concept_name,
-                                 std::index_sequence<I...>)
-{
-  constexpr auto has_item = [](auto cpt, std::string_view cn) { return cpt.is(cn); };
-  return helpers::count(has_item(std::get<I>(concept_map), concept_name)...);
-}
-
-template <typename... Args, typename... Concepts, size_t... I>
-constexpr void require_impl(concept_map<Concepts...> concept_map, std::index_sequence<I...>)
-{
-  (std::get<I>(concept_map).second.template require<Args...>(), ...);
-}
-
-template <typename... Args, typename... Concepts, size_t... I>
-constexpr void require_at_impl(concept_map<Concepts...> concept_map, std::string_view concept_name,
-                                   std::index_sequence<I...>)
-{
-  if (!concept_map.has(concept_name)) {
-    throw "This concept key doesn't exists in this concept map!";
-  }
-
-  constexpr auto require_if = [](auto cpt, std::string_view concept_name) {
-    if (ctx::equal(cpt.first.cbegin(), cpt.first.cend(), concept_name.cbegin(), concept_name.cend())) {
-      cpt.second.template require<Args...>();
-    }
-  };
-
-  (require_if(std::get<I>(concept_map), concept_name), ...);
-}
-
-template <typename... Args, typename... Concepts, size_t... I>
-constexpr bool check_impl(concept_map<Concepts...> concept_map, std::index_sequence<I...>)
-{
-  return helpers::all_of(std::get<I>(concept_map).second.template check<Args...>()...);
-}
-
-template <typename... Args, typename... Concepts, size_t... I>
-constexpr bool check_at_impl(concept_map<Concepts...> concept_map, std::string_view concept_name,
-                                 std::index_sequence<I...>)
-{
-  if (!concept_map.has(concept_name)) {
-    throw "This concept key doesn't exists in this concept map!";
-  }
-
-  constexpr auto check_if = [](auto cpt, std::string_view cn) -> bool {
-    if (ctx::equal(cpt.first.cbegin(), cpt.first.cend(), cn.cbegin(), cn.cend())) {
-      return cpt.second.template check<Args...>();
-    }
-    return true;
-  };
-
-  return helpers::all_of(check_if(std::get<I>(concept_map), concept_name)...);
-}
-
-template <typename... Concepts, size_t... I>
-constexpr bool ensure_unique_keys_impl(std::tuple<concept_item<Concepts>...> concept_items, std::index_sequence<I...>)
-{
-  auto keys = ctx::vector<std::string_view, sizeof...(Concepts)>{};
-
-  (keys.push_back(std::get<I>(concept_items).first), ...);
-
-  constexpr auto count_if = [](auto first, auto last, auto key) {
-    size_t ret = 0;
-    for (; first != last; ++first) {
-      if (ctx::equal(first->cbegin(), first->cend(), key.cbegin(), key.cend())) {
-        ret++;
-      }
-    }
-    return ret;
-  };
-
-  size_t count_elems = 0;
-  ((count_elems += count_if(keys.cbegin(), keys.cend(), std::get<I>(concept_items).first)), ...);
-
-  return count_elems == keys.size();
-}
 template <typename... Concepts>
 constexpr bool ensure_unique_keys(concept_item<Concepts>... concept_items)
 {
-  return ensure_unique_keys_impl(std::make_tuple(std::forward<concept_item<Concepts>>(concept_items)...),
-                                 std::make_index_sequence<sizeof...(Concepts)>{});
+  auto items = std::make_tuple(std::forward<concept_item<Concepts>>(concept_items)...);
+  return helpers::accumulate(
+           static_cast<size_t>(0), items,
+           [](int count, auto cpt, auto cpt_map) {
+             return count
+                    + helpers::count_if(cpt_map, [](auto cpt_, std::string_view cn) { return cpt_.is(cn); }, cpt.first);
+           },
+           items)
+         == sizeof...(Concepts);
 }
 
 } // namespace details
@@ -128,36 +50,59 @@ struct concept_map : std::tuple<concept_item<Concepts>...> {
 
   constexpr size_t count_if(std::string_view concept_name) const
   {
-    return details::count_if_impl(*this, concept_name, std::make_index_sequence<sizeof...(Concepts)>{});
+    return helpers::count_if(*this, [](auto cpt, std::string_view cn) { return cpt.is(cn); }, concept_name);
   }
 
   constexpr bool has(std::string_view concept_name) const
   {
-    return details::has_impl(*this, concept_name, std::make_index_sequence<sizeof...(Concepts)>{});
+    return helpers::find_if(*this, [](auto cpt, std::string_view cn) { return cpt.is(cn); }, concept_name)
+           != end(*this);
   }
 
   template <typename... Args>
   constexpr void require() const
   {
-    details::require_impl<Args...>(*this, std::make_index_sequence<sizeof...(Concepts)>{});
+    helpers::for_each(*this, [](auto cpt) { cpt.second.template require<Args...>(); });
   }
 
   template <typename... Args>
   constexpr void require_at(std::string_view concept_name) const
   {
-    details::require_at_impl<Args...>(*this, concept_name, std::make_index_sequence<sizeof...(Concepts)>{});
+    if (!has(concept_name)) {
+      throw "This concept key doesn't exists in this concept map!";
+    }
+
+    helpers::for_each(*this,
+                      [](auto cpt, std::string_view cn) {
+                        if (cpt.first == cn) {
+                          cpt.second.template require<Args...>();
+                        }
+                      },
+                      concept_name);
   }
 
   template <typename... Args>
   constexpr bool check() const
   {
-    return details::check_impl<Args...>(*this, std::make_index_sequence<sizeof...(Concepts)>{});
+    return helpers::all_of_tuple(
+      helpers::transform(*this, [](auto cpt) { return cpt.second.template check<Args...>(); }));
   }
 
   template <typename... Args>
   constexpr bool check_at(std::string_view concept_name) const
   {
-    return details::check_at_impl<Args...>(*this, concept_name, std::make_index_sequence<sizeof...(Concepts)>{});
+    if (!has(concept_name)) {
+      throw "This concept key doesn't exists in this concept map!";
+    }
+
+    return helpers::all_of_tuple(helpers::transform(*this,
+                                                    [](auto cpt, std::string_view cn) {
+                                                      if (cpt.first == cn) {
+                                                        return cpt.second.template check<Args...>();
+                                                      }
+                                                      return true;
+                                                    },
+                                                    concept_name));
   }
 };
 
