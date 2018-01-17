@@ -19,7 +19,7 @@ namespace details {
 template <typename... Concepts>
 constexpr bool ensure_unique_keys(concept_item<Concepts>... concept_items)
 {
-  const auto items = std::make_tuple(std::forward<concept_item<Concepts>>(concept_items)...);
+  const auto items = std::make_tuple(concept_items...);
   return helpers::accumulate(
            static_cast<size_t>(0), items,
            [](int count, auto cpt, auto cpt_map) {
