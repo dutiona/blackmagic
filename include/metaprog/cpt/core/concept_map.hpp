@@ -11,9 +11,6 @@
 
 namespace cpt {
 
-template <typename... Concepts>
-struct concept_map;
-
 namespace details {
 
 template <typename... Concepts>
