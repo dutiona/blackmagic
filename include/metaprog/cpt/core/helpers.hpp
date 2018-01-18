@@ -355,4 +355,16 @@ constexpr decltype(auto) find_if(std::tuple<Ts...> tpl, F&& func, Args&&... args
 
 } // namespace cpt::helpers
 
+
+#ifdef __GLIBCXX__
+
+#include "../../ctx/ctx.hpp"
+#include <string_view>
+
+constexpr bool operator==(std::string_view lhs, std::string_view rhs) {
+  return ctx::equal(lhs.cbegin(), lhs.cend(), rhs.cbegin(), rhs.cend());
+}
+
+#endif // __GLIBCXX__
+
 #endif // METAPROG_CPT_CORE_HELPERS_HPP_

@@ -18,7 +18,7 @@ constexpr bool ensure_unique_keys(concept_item<Concepts>... concept_items)
 {
   const auto items = std::make_tuple(concept_items...);
   return helpers::accumulate(
-           static_cast<size_t>(0), items,
+           size_t(0), items,
            [](int count, auto cpt, auto cpt_map) {
              return count
                     + helpers::count_if(cpt_map, [](auto cpt_, std::string_view cn) { return cpt_.is(cn); }, cpt.first);
