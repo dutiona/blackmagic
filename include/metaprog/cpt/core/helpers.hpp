@@ -368,7 +368,7 @@ constexpr decltype(auto) find_if(const std::tuple<Ts...>& tpl, F&& func, Args&&.
 
 } // namespace cpt::helpers
 
-
+// operator==(string_view, string_view) is not constexpr yet in libstdc++
 constexpr bool equals(std::string_view lhs, std::string_view rhs)
 {
 #ifdef __GLIBCXX__
