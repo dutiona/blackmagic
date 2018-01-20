@@ -59,7 +59,7 @@ struct concept_map : std::tuple<concept_item<Concepts>...> {
   template <typename... Args>
   constexpr void require() const
   {
-    helpers::for_each(*this, [](auto cpt) { cpt.second.template require<Args...>(); });
+    helpers::for_each(*this, [](auto cpt) { cpt.template require<Args...>(); });
   }
 
   template <typename... Args>
@@ -71,8 +71,8 @@ struct concept_map : std::tuple<concept_item<Concepts>...> {
 
     helpers::for_each(*this,
                       [](auto cpt, std::string_view cn) {
-                        if (cpt.first == cn) {
-                          cpt.second.template require<Args...>();
+                        if (cpt.is(cn)) {
+                          cpt.template require<Args...>();
                         }
                       },
                       concept_name);
@@ -81,8 +81,7 @@ struct concept_map : std::tuple<concept_item<Concepts>...> {
   template <typename... Args>
   constexpr bool check() const
   {
-    return helpers::all_of_tuple(
-      helpers::transform(*this, [](auto cpt) { return cpt.second.template check<Args...>(); }));
+    return helpers::all_of_tuple(helpers::transform(*this, [](auto cpt) { return cpt.template check<Args...>(); }));
   }
 
   template <typename... Args>
@@ -94,8 +93,8 @@ struct concept_map : std::tuple<concept_item<Concepts>...> {
 
     return helpers::all_of_tuple(helpers::transform(*this,
                                                     [](auto cpt, std::string_view cn) {
-                                                      if (cpt.first == cn) {
-                                                        return cpt.second.template check<Args...>();
+                                                      if (cpt.is(cn)) {
+                                                        return cpt.template check<Args...>();
                                                       }
                                                       return true;
                                                     },
