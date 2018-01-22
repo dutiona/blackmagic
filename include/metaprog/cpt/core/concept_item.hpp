@@ -42,7 +42,7 @@ template <typename ConceptLhs, typename ConceptRhs>
 bool operator==(concept_item<ConceptLhs> lhs, concept_item<ConceptRhs> rhs)
 {
   return lhs.is(rhs.first) && std::is_same_v<ConceptLhs, ConceptRhs>;
-};
+}
 
 template <typename Concept>
 constexpr decltype(auto) make_concept_item(std::string_view concept_name)

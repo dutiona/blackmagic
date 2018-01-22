@@ -290,7 +290,7 @@ constexpr decltype(auto) transform_impl(const std::tuple<Ts...>& tpl, std::index
                                         Args&&... args)
 {
   return std::make_tuple(std::forward<F>(func)(std::get<I>(tpl), std::forward<Args>(args)...)...);
-};
+}
 
 template <typename T, typename F, typename... Args, typename... Ts, size_t... I>
 constexpr T accumulate_impl(T&& init, const std::tuple<Ts...>& tpl, std::index_sequence<I...>, F&& func, Args&&... args)
@@ -311,19 +311,19 @@ template <typename... Ts>
 constexpr size_t find_index_if_impl(const std::tuple<Ts...>& tpl, std::index_sequence<>)
 {
   return end(tpl);
-};
+}
 
 template <typename... Ts, size_t I, size_t... J>
 constexpr size_t find_index_if_impl(const std::tuple<Ts...>& tpl, std::index_sequence<I, J...>)
 {
   return std::get<I>(tpl) ? I : find_index_if_impl(tpl, std::index_sequence<J...>{});
-};
+}
 
 template <typename F, typename... Args, typename... Ts, size_t... I>
 constexpr size_t find_if_impl(const std::tuple<Ts...>& tpl, std::index_sequence<I...> idx, F&& func, Args&&... args)
 {
   return find_index_if_impl(transform(tpl, std::forward<F>(func), std::forward<Args>(args)...), idx);
-};
+}
 
 } // namespace details
 
@@ -331,40 +331,40 @@ template <typename F, typename... Args, typename... Ts>
 constexpr void for_each(std::tuple<Ts...>& tpl, F&& func, Args&&... args)
 {
   details::for_each_impl(tpl, std::index_sequence_for<Ts...>{}, std::forward<F>(func), std::forward<Args>(args)...);
-};
+}
 template <typename F, typename... Args, typename... Ts>
 constexpr void for_each(const std::tuple<Ts...>& tpl, F&& func, Args&&... args)
 {
   details::for_each_impl(tpl, std::index_sequence_for<Ts...>{}, std::forward<F>(func), std::forward<Args>(args)...);
-};
+}
 
 template <typename F, typename... Args, typename... Ts>
 constexpr decltype(auto) transform(const std::tuple<Ts...>& tpl, F&& func, Args&&... args)
 {
   return details::transform_impl(tpl, std::index_sequence_for<Ts...>{}, std::forward<F>(func),
                                  std::forward<Args>(args)...);
-};
+}
 
 template <typename T, typename F, typename... Args, typename... Ts>
 constexpr decltype(auto) accumulate(T&& init, std::tuple<Ts...> tpl, F&& func, Args&&... args)
 {
   return details::accumulate_impl(std::forward<T>(init), tpl, std::index_sequence_for<Ts...>{}, std::forward<F>(func),
                                   std::forward<Args>(args)...);
-};
+}
 
 template <typename F, typename... Args, typename... Ts>
 constexpr decltype(auto) count_if(const std::tuple<Ts...>& tpl, F&& func, Args&&... args)
 {
   return details::count_if_impl(tpl, std::index_sequence_for<Ts...>{}, std::forward<F>(func),
                                 std::forward<Args>(args)...);
-};
+}
 
 template <typename F, typename... Args, typename... Ts>
 constexpr decltype(auto) find_if(const std::tuple<Ts...>& tpl, F&& func, Args&&... args)
 {
   return details::find_if_impl(tpl, std::index_sequence_for<Ts...>{}, std::forward<F>(func),
                                std::forward<Args>(args)...);
-};
+}
 
 } // namespace cpt::helpers
 
