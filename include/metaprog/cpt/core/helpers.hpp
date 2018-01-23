@@ -26,17 +26,18 @@ struct nonesuch {
 
 namespace details {
 
-template<typename...>
+template <typename...>
 struct _parameters_pack {
 };
 
-template <typename Default, template<typename...> class Op, typename ParametersPack, typename = void>
+template <typename Default, template <typename...> class Op, typename ParametersPack, typename = void>
 struct detector {
   using value_t = std::false_type;
   using type    = Default;
 };
 
-template <typename Default, template<typename...> class Op, template<typename...> class ParametersPack, typename... Args>
+template <typename Default, template <typename...> class Op, template <typename...> class ParametersPack,
+          typename... Args>
 struct detector<Default, Op, ParametersPack<Args...>, std::void_t<Op<Args...>>> {
   using value_t = std::true_type;
   using type    = Op<Args...>;
