@@ -25,15 +25,19 @@ struct nonesuch {
 // is_detected
 
 namespace details {
-template <typename Default, typename AlwaysVoid, template <typename...> class Op, typename... Args>
+
+template<typename...>
+struct _parameters_pack {
+};
+
+template <typename Default, template<typename...> class Op, typename ParametersPack, typename = void>
 struct detector {
   using value_t = std::false_type;
   using type    = Default;
 };
 
-template <typename Default, template <typename...> class Op, typename... Args>
-struct detector<Default, std::void_t<Op<Args...>>, Op, Args...> {
-  // Note that std::void_t is a C++17 feature
+template <typename Default, template<typename...> class Op, template<typename...> class ParametersPack, typename... Args>
+struct detector<Default, Op, ParametersPack<Args...>, std::void_t<Op<Args...>>> {
   using value_t = std::true_type;
   using type    = Op<Args...>;
 };
@@ -41,13 +45,13 @@ struct detector<Default, std::void_t<Op<Args...>>, Op, Args...> {
 } // namespace details
 
 template <template <typename...> class Op, typename... Args>
-using is_detected = typename details::detector<nonesuch, void, Op, Args...>::value_t;
+using is_detected = typename details::detector<nonesuch, Op, details::_parameters_pack<Args...>>::value_t;
 
 template <template <typename...> class Op, typename... Args>
-using detected_t = typename details::detector<nonesuch, void, Op, Args...>::type;
+using detected_t = typename details::detector<nonesuch, Op, details::_parameters_pack<Args...>>::type;
 
 template <typename Default, template <typename...> class Op, typename... Args>
-using detected_or = details::detector<Default, void, Op, Args...>;
+using detected_or = details::detector<Default, Op, details::_parameters_pack<Args...>>;
 
 template <template <typename...> class Op, typename... Args>
 constexpr bool is_detected_v = is_detected<Op, Args...>::value;
@@ -103,10 +107,6 @@ constexpr bool dependent_false_v = static_cast<bool>(dependent_false<Args...>{})
 
 // traits helper
 namespace details {
-
-template <typename...>
-struct _parameters_pack {
-};
 
 template <typename Holder, typename = void>
 struct make_trait_from_constructs_impl : std::false_type {
