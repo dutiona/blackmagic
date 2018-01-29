@@ -17,8 +17,8 @@ namespace cpt::helpers {
 struct nonesuch {
   nonesuch()                = delete;
   ~nonesuch()               = delete;
-  nonesuch(nonesuch const&) = delete;
-  void operator=(nonesuch const&) = delete;
+  nonesuch(const nonesuch&) = delete;
+  void operator=(const nonesuch&) = delete;
 };
 
 
@@ -294,7 +294,7 @@ constexpr decltype(auto) transform_impl(const std::tuple<Ts...>& tpl, std::index
 }
 
 template <typename T, typename F, typename... Args, typename... Ts, size_t... I>
-constexpr T accumulate_impl(T&& init, const std::tuple<Ts...>& tpl, std::index_sequence<I...>, F&& func, Args&&... args)
+constexpr decltype(auto) accumulate_impl(T&& init, const std::tuple<Ts...>& tpl, std::index_sequence<I...>, F&& func, Args&&... args)
 {
   ((init = std::forward<F>(func)(std::forward<T>(init), std::get<I>(tpl), std::forward<Args>(args)...)), ...);
   return init;
