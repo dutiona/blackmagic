@@ -294,7 +294,7 @@ constexpr decltype(auto) transform_impl(const std::tuple<Ts...>& tpl, std::index
 }
 
 template <typename T, typename F, typename... Args, typename... Ts, size_t... I>
-constexpr decltype(auto) accumulate_impl(T&& init, const std::tuple<Ts...>& tpl, std::index_sequence<I...>, F&& func, Args&&... args)
+constexpr T accumulate_impl(T&& init, const std::tuple<Ts...>& tpl, std::index_sequence<I...>, F&& func, Args&&... args)
 {
   ((init = std::forward<F>(func)(std::forward<T>(init), std::get<I>(tpl), std::forward<Args>(args)...)), ...);
   return init;
