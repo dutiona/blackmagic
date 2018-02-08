@@ -1,0 +1,36 @@
+stages:
+    - build
+
+.job-basic-build-linux: &distcheck-basic-linux
+    stage: build
+    image: mroynard/ubuntu-toolset
+    script:
+        /usr/local/bin/build-dispatch -g Ninja -c $COMPILER -t check -r $RELEASE_TYPE -- -DWITH_EXAMPLES=$BUILD_ALL -DWITH_BENCHMARK=$BUILD_ALL
+
+distcheck-linux-gcc-release:
+    <<: *distcheck-basic-linux
+    variables:
+        RELEASE_TYPE: "Release"
+        COMPILER: "gcc"
+        BUILD_ALL: "ON"
+
+distcheck-linux-clang-release:
+    <<: *distcheck-basic-linux
+    variables:
+        RELEASE_TYPE: "Release"
+        COMPILER: "clang"
+        BUILD_ALL: "ON"
+
+distcheck-linux-gcc-debug:
+    <<: *distcheck-basic-linux
+    variables:
+        RELEASE_TYPE: "Debug"
+        COMPILER: "gcc"
+        BUILD_ALL: "ON"
+
+distcheck-linux-clang-debug:
+    <<: *distcheck-basic-linux
+    variables:
+        RELEASE_TYPE: "Debug"
+        COMPILER: "clang"
+        BUILD_ALL: "ON"
