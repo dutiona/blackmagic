@@ -5,7 +5,7 @@ stages:
     stage: build
     image: mroynard/ubuntu-toolset
     script:
-        /usr/local/bin/build-dispatch -g Ninja -c $COMPILER -t check -r $RELEASE_TYPE -- -DWITH_EXAMPLES=$BUILD_ALL -DWITH_BENCHMARK=$BUILD_ALL
+        /usr/local/bin/build-dispatch -v -g Ninja -c $COMPILER -t check -r $RELEASE_TYPE -- -DWITH_EXAMPLES=$BUILD_ALL -DWITH_BENCHMARK=$BUILD_ALL
 
 distcheck-linux-gcc-release:
     <<: *distcheck-basic-linux
