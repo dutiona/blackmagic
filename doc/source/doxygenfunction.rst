@@ -1,0 +1,4 @@
+Doxygen function
+################
+
+.. doxygenfunction::

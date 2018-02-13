@@ -1,0 +1,4 @@
+Doxygen enum
+############
+
+.. doxygenenum::
