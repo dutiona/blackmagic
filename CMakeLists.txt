@@ -48,5 +48,5 @@ add_custom_target(check
     COMMENT "Build and run all the unit tests, examples and benchmarks.")
 
 add_custom_target(full
-        DEPENDS check docs
-        COMMENT "Build and run all tests, examples, benchmark in addition to building the documentation.")
+    DEPENDS check docs
+    COMMENT "Build and run all tests, examples, benchmark in addition to building the documentation.")

@@ -12,7 +12,7 @@ stages:
     stage: build
     image: mroynard/ubuntu-toolset
     script:
-        /usr/local/bin/build-dispatch -v -b $BUILD_DIR -g $CMAKE_GENERATOR -c $COMPILER -t $DEFAULT_TARGET -r $RELEASE_TYPE -- -DWITH_EXAMPLES=$BUILD_ALL -DWITH_BENCHMARK=$BUILD_ALL
+        /usr/local/bin/build-dispatch -v -g $CMAKE_GENERATOR -b $BUILD_DIR -c $COMPILER -t $DEFAULT_TARGET -r $RELEASE_TYPE -- -DWITH_EXAMPLES=$BUILD_ALL -DWITH_BENCHMARK=$BUILD_ALL
 
 distcheck-linux-gcc-release:
     <<: *distcheck-basic-linux
