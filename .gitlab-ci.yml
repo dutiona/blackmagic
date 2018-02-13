@@ -37,7 +37,7 @@ distcheck-linux-clang-debug:
         RELEASE_TYPE: "Debug"
         COMPILER: "clang"
 
-documentation-builder
+documentation-builder:
     stage: doc
     image: mroynard/ubuntu-toolset
     variables:
