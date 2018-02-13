@@ -34,6 +34,8 @@ endif(MSVC)
 
 install(DIRECTORY include DESTINATION include FILES_MATCHING PATTERN "*.hpp")
 
+add_subdirectory(doc)
+
 add_subdirectory(example)
 
 add_subdirectory(benchmark)
@@ -41,7 +43,10 @@ add_subdirectory(benchmark)
 enable_testing()
 add_subdirectory(test)
 
-#Setup the `check` convenience target, which is equivalent to examples + tests.
 add_custom_target(check
     DEPENDS examples tests benchmarks
-    COMMENT "Build and run all the unit tests and examples.")
+    COMMENT "Build and run all the unit tests, examples and benchmarks.")
+
+add_custom_target(full
+        DEPENDS check docs
+        COMMENT "Build and run all tests, examples, benchmark in addition to building the documentation.")
