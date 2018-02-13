@@ -45,7 +45,7 @@ documentation-builder:
         CMAKE_GENERATOR: "Ninja"
         DEFAULT_TARGET: "check"
     script:
-        /usr/local/bin/build-dispatch -v -g $CMAKE_GENERATOR -t $check -b $BUILD_DIR
+        /usr/local/bin/build-dispatch -v -g $CMAKE_GENERATOR -t $DEFAULT_TARGET -b $BUILD_DIR
     artifacts:
         name: "documentation"
         paths:
