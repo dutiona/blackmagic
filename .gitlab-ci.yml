@@ -19,7 +19,7 @@ stages:
           --cmake-generator $CMAKE_GENERATOR \
           --build-directory $BUILD_DIR \
           --compiler $COMPILER \
-          --targett $DEFAULT_TARGET \
+          --target $DEFAULT_TARGET \
           --release-type $RELEASE_TYPE \
           -- -DWITH_EXAMPLES=$BUILD_AND_RUN_EXAMPLES -DWITH_BENCHMARK=$BUILD_AND_RUN_BENCHMARKS
 
