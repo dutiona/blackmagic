@@ -13,14 +13,14 @@ stages:
     stage: build
     image: mroynard/ubuntu-toolset:stable
     script:
-        /usr/local/bin/build-dispatch \
-          --verbose \
-          --coverage \
-          --cmake-generator $CMAKE_GENERATOR \
-          --build-directory $BUILD_DIR \
-          --compiler $COMPILER \
-          --target $DEFAULT_TARGET \
-          --release-type $RELEASE_TYPE \
+        /usr/local/bin/build-dispatch
+          --verbose
+          --coverage
+          --cmake-generator $CMAKE_GENERATOR
+          --build-directory $BUILD_DIR
+          --compiler $COMPILER
+          --target $DEFAULT_TARGET
+          --release-type $RELEASE_TYPE
           -- -DWITH_EXAMPLES=$BUILD_AND_RUN_EXAMPLES -DWITH_BENCHMARK=$BUILD_AND_RUN_BENCHMARKS
 
 distcheck-linux-gcc-release:
@@ -53,10 +53,10 @@ documentation-builder:
     variables:
         DEFAULT_TARGET: "docs"
     script:
-        /usr/local/bin/build-dispatch \
-          --verbose \
-          --cmake-generator $CMAKE_GENERATOR \
-          --target $DEFAULT_TARGET \
+        /usr/local/bin/build-dispatch
+          --verbose
+          --cmake-generator $CMAKE_GENERATOR
+          --target $DEFAULT_TARGET
           --build-directory $BUILD_DIR
     artifacts:
         name: "documentation"
