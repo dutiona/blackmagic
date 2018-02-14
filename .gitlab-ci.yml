@@ -1,36 +1,52 @@
+variables:
+    BUILD_DIR: "build-in-docker"
+    BUILD_ALL: "ON"
+    CMAKE_GENERATOR: "Ninja"
+    DEFAULT_TARGET: "check"
+
 stages:
     - build
+    - doc
 
 .job-basic-build-linux: &distcheck-basic-linux
     stage: build
     image: mroynard/ubuntu-toolset
     script:
-        /usr/local/bin/build-dispatch -v -g Ninja -c $COMPILER -t check -r $RELEASE_TYPE -- -DWITH_EXAMPLES=$BUILD_ALL -DWITH_BENCHMARK=$BUILD_ALL
+        /usr/local/bin/build-dispatch -v -g $CMAKE_GENERATOR -b $BUILD_DIR -c $COMPILER -t $DEFAULT_TARGET -r $RELEASE_TYPE -- -DWITH_EXAMPLES=$BUILD_ALL -DWITH_BENCHMARK=$BUILD_ALL
 
 distcheck-linux-gcc-release:
     <<: *distcheck-basic-linux
     variables:
         RELEASE_TYPE: "Release"
         COMPILER: "gcc"
-        BUILD_ALL: "ON"
 
 distcheck-linux-clang-release:
     <<: *distcheck-basic-linux
     variables:
         RELEASE_TYPE: "Release"
         COMPILER: "clang"
-        BUILD_ALL: "ON"
 
 distcheck-linux-gcc-debug:
     <<: *distcheck-basic-linux
     variables:
         RELEASE_TYPE: "Debug"
         COMPILER: "gcc"
-        BUILD_ALL: "ON"
 
 distcheck-linux-clang-debug:
     <<: *distcheck-basic-linux
     variables:
         RELEASE_TYPE: "Debug"
         COMPILER: "clang"
-        BUILD_ALL: "ON"
+
+documentation-builder:
+    stage: doc
+    image: mroynard/ubuntu-toolset
+    variables:
+        DEFAULT_TARGET: "docs"
+    script:
+        /usr/local/bin/build-dispatch -v -g $CMAKE_GENERATOR -t $DEFAULT_TARGET -b $BUILD_DIR
+    artifacts:
+        name: "documentation"
+        paths:
+            - $BUILD_DIR/doc/api
+            - $BUILD_DIR/doc/user

@@ -1,0 +1,4 @@
+Doxygen typedef
+###############
+
+.. doxygentypedef::

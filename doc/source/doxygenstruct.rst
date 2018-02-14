@@ -1,0 +1,4 @@
+Doxygen struct
+##############
+
+.. doxygenstruct::
