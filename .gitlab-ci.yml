@@ -11,7 +11,7 @@ stages:
 
 .job-basic-build-linux: &distcheck-basic-linux
     stage: build
-    image: mroynard/ubuntu-toolset
+    image: mroynard/ubuntu-toolset:stable
     script:
         /usr/local/bin/build-dispatch \
           --verbose \
