@@ -20,8 +20,6 @@ target_compile_features(Metaprog INTERFACE cxx_std_17)
 #target_link_libraries(Metaprog INTERFACE stdc++) #gcc for mac needs - lstdc++
 target_include_directories(Metaprog INTERFACE ${METAPROG_INCLUDE_DIR})
 
-
-
 if(MSVC)
 #MSVC
     add_compile_options(/W4 /WX /permissive- /std:c++17)
@@ -31,6 +29,12 @@ else(MSVC)
     add_compile_options(-Wall -Wextra -Werror -pedantic)
 #add_compile_options(-Wall - Wextra - Werror - pedantic)
 endif(MSVC)
+
+option(WITH_CODE_COVERAGE "Add specific compile flag to enable proper code coverage" OFF)
+
+if(WITH_CODE_COVERAGE)
+    add_compile_options(-fprofile-arcs -ftest-coverage)
+endif(WITH_CODE_COVERAGE)
 
 install(DIRECTORY include DESTINATION include FILES_MATCHING PATTERN "*.hpp")
 
