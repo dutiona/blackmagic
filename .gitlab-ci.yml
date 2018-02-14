@@ -10,7 +10,7 @@ stages:
 
 .job-basic-build-linux: &distcheck-basic-linux
     stage: build
-    image: mroynard/ubuntu-toolset
+    image: mroynard/ubuntu-toolset:stable
     script:
         /usr/local/bin/build-dispatch -v -g $CMAKE_GENERATOR -b $BUILD_DIR -c $COMPILER -t $DEFAULT_TARGET -r $RELEASE_TYPE -- -DWITH_EXAMPLES=$BUILD_ALL -DWITH_BENCHMARK=$BUILD_ALL
 
