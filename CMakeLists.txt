@@ -20,8 +20,6 @@ target_compile_features(Metaprog INTERFACE cxx_std_17)
 #target_link_libraries(Metaprog INTERFACE stdc++) #gcc for mac needs - lstdc++
 target_include_directories(Metaprog INTERFACE ${METAPROG_INCLUDE_DIR})
 
-
-
 if(MSVC)
 #MSVC
     add_compile_options(/W4 /WX /permissive- /std:c++17)
@@ -31,6 +29,33 @@ else(MSVC)
     add_compile_options(-Wall -Wextra -Werror -pedantic)
 #add_compile_options(-Wall - Wextra - Werror - pedantic)
 endif(MSVC)
+
+option(WITH_CODE_COVERAGE "Add specific compile flag to enable proper code coverage" OFF)
+
+if(WITH_CODE_COVERAGE)
+
+    SET(GCC_COVERAGE_COMPILE_FLAGS "-fprofile-arcs -ftest-coverage")
+    SET(GCC_COVERAGE_LINK_FLAGS "-lgcov")
+    SET(CLANG_COVERAGE_COMPILE_FLAGS "-fprofile-arcs -ftest-coverage")
+    SET(CLANG_COVERAGE_LINK_FLAGS "--coverage")
+
+    if ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "Clang")
+        # using Clang
+        SET(CMAKE_CXX_FLAGS  "${CMAKE_CXX_FLAGS} ${CLANG_COVERAGE_COMPILE_FLAGS}")
+        SET(CMAKE_EXE_LINKER_FLAGS  "${CMAKE_EXE_LINKER_FLAGS} ${CLANG_COVERAGE_LINK_FLAGS}")
+    elseif ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "GNU")
+        # using GCC
+        SET(CMAKE_CXX_FLAGS  "${CMAKE_CXX_FLAGS} ${GCC_COVERAGE_COMPILE_FLAGS}" )
+        SET(CMAKE_EXE_LINKER_FLAGS  "${CMAKE_EXE_LINKER_FLAGS} ${GCC_COVERAGE_LINK_FLAGS}" )
+    elseif ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "Intel")
+        # using Intel C++
+        # no coverage
+    elseif ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "MSVC")
+        # using Visual Studio C++
+        # no coverage
+    endif()
+
+endif(WITH_CODE_COVERAGE)
 
 install(DIRECTORY include DESTINATION include FILES_MATCHING PATTERN "*.hpp")
 
