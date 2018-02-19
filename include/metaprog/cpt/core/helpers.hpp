@@ -193,34 +193,34 @@ struct make_concept_from_predicate {
 
 // all_of / any_of constexpr
 // TODO/FIXME remove this once fold expression are implemented
-template <typename T>
+template <typename T, std::enable_if_t<std::is_convertible_v<T, bool>, void>* = nullptr>
 constexpr bool all_of(T b)
 {
   return b;
 }
-template <typename T, typename... Ts>
+template <typename T, std::enable_if_t<std::is_convertible_v<T, bool>, void>* = nullptr, typename... Ts>
 constexpr bool all_of(T b, Ts... bools)
 {
   return b && all_of(bools...);
 }
 
-template <typename T>
+template <typename T, std::enable_if_t<std::is_convertible_v<T, bool>, void>* = nullptr>
 constexpr bool any_of(T b)
 {
   return b;
 }
-template <typename T, typename... Ts>
+template <typename T, std::enable_if_t<std::is_convertible_v<T, bool>, void>* = nullptr, typename... Ts>
 constexpr bool any_of(T b, Ts... bools)
 {
   return b || any_of(bools...);
 }
 
-template <typename T>
+template <typename T, std::enable_if_t<std::is_convertible_v<T, bool>, void>* = nullptr>
 constexpr size_t count(T b)
 {
   return b;
 }
-template <typename T, typename... Ts>
+template <typename T, std::enable_if_t<std::is_convertible_v<T, bool>, void>* = nullptr, typename... Ts>
 constexpr size_t count(T b, Ts... bools)
 {
   return b + count(bools...);
