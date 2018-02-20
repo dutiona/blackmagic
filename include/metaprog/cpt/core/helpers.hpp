@@ -269,7 +269,7 @@ constexpr bool count_tuple(std::tuple<Ts...> tpl)
 template <typename... Ts>
 constexpr size_t end(std::tuple<Ts...>)
 {
-  return sizeof...(Ts);
+  return std::tuple_size_v<std::tuple<Ts...>>;
 }
 
 // for_each/transform/accumulate/count_if/find_if for tuples
@@ -294,7 +294,8 @@ constexpr decltype(auto) transform_impl(const std::tuple<Ts...>& tpl, std::index
 }
 
 template <typename T, typename F, typename... Args, typename... Ts, size_t... I>
-constexpr auto accumulate_impl(T&& init, const std::tuple<Ts...>& tpl, std::index_sequence<I...>, F&& func, Args&&... args)
+constexpr auto accumulate_impl(T&& init, const std::tuple<Ts...>& tpl, std::index_sequence<I...>, F&& func,
+                               Args&&... args)
 {
   ((init = std::forward<F>(func)(std::forward<T>(init), std::get<I>(tpl), std::forward<Args>(args)...)), ...);
   return init;
@@ -308,22 +309,18 @@ constexpr size_t count_if_impl(const std::tuple<Ts...>& tpl, std::index_sequence
   return ret;
 }
 
-template <typename... Ts>
-constexpr size_t find_index_if_impl(const std::tuple<Ts...>& tpl, std::index_sequence<>)
+template <typename F, typename... Args, typename... Ts>
+constexpr size_t find_if_impl(const std::tuple<Ts...>& tpl, std::index_sequence<>, F&&, Args&&...)
 {
   return end(tpl);
 }
 
-template <typename... Ts, size_t I, size_t... J>
-constexpr size_t find_index_if_impl(const std::tuple<Ts...>& tpl, std::index_sequence<I, J...>)
+template <typename F, typename... Args, typename... Ts, size_t I, size_t... J>
+constexpr size_t find_if_impl(const std::tuple<Ts...>& tpl, std::index_sequence<I, J...>, F&& func, Args&&... args)
 {
-  return std::get<I>(tpl) ? I : find_index_if_impl(tpl, std::index_sequence<J...>{});
-}
-
-template <typename F, typename... Args, typename... Ts, size_t... I>
-constexpr size_t find_if_impl(const std::tuple<Ts...>& tpl, std::index_sequence<I...> idx, F&& func, Args&&... args)
-{
-  return find_index_if_impl(transform(tpl, std::forward<F>(func), std::forward<Args>(args)...), idx);
+  return std::forward<F>(func)(std::get<I>(tpl), std::forward<Args>(args)...)
+           ? I
+           : find_if_impl(tpl, std::index_sequence<J...>{}, std::forward<F>(func), std::forward<Args>(args)...);
 }
 
 } // namespace details
