@@ -318,9 +318,9 @@ constexpr size_t find_if_impl(const std::tuple<Ts...>& tpl, std::index_sequence<
 template <typename F, typename... Args, typename... Ts, size_t I, size_t... J>
 constexpr size_t find_if_impl(const std::tuple<Ts...>& tpl, std::index_sequence<I, J...>, F&& func, Args&&... args)
 {
-  return std::forward<F>(func)(std::get<I>(tpl), std::forward<Args>(args)...)
-           ? I
-           : find_if_impl(tpl, std::index_sequence<J...>{}, std::forward<F>(func), std::forward<Args>(args)...);
+  return !std::forward<F>(func)(std::get<I>(tpl), std::forward<Args>(args)...)
+           ? find_if_impl(tpl, std::index_sequence<J...>{}, std::forward<F>(func), std::forward<Args>(args)...)
+           : I;
 }
 
 } // namespace details
