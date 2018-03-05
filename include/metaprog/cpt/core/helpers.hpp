@@ -215,6 +215,12 @@ constexpr bool any_of(T b, Ts... bools)
   return b || any_of(bools...);
 }
 
+template <typename... Ts>
+constexpr bool none_of(Ts... bools)
+{
+  return !all_of(bools...);
+}
+
 template <typename T, std::enable_if_t<std::is_convertible_v<T, bool>, void>* = nullptr>
 constexpr size_t count(T b)
 {
@@ -228,42 +234,74 @@ constexpr size_t count(T b, Ts... bools)
 
 namespace details {
 
-template <typename... Ts, size_t... I>
-constexpr bool all_of_tuple(std::tuple<Ts...> tpl, std::index_sequence<I...>)
+inline constexpr auto identity_func = [](auto&& a) { return std::forward<decltype(a)>(a); };
+
+template <typename Func, typename... Ts, size_t... I>
+constexpr bool all_of_tuple(std::tuple<Ts...> tpl, Func&& f, std::index_sequence<I...>)
 {
-  return all_of(std::get<I>(tpl)...);
+  return all_of(std::forward<Func>(f)(std::get<I>(tpl))...);
 }
 
-template <typename... Ts, size_t... I>
-constexpr bool any_of_tuple(std::tuple<Ts...> tpl, std::index_sequence<I...>)
+template <typename Func, typename... Ts, size_t... I>
+constexpr bool any_of_tuple(std::tuple<Ts...> tpl, Func&& f, std::index_sequence<I...>)
 {
-  return any_of(std::get<I>(tpl)...);
+  return any_of(std::forward<Func>(f)(std::get<I>(tpl))...);
 }
 
-template <typename... Ts, size_t... I>
-constexpr bool count_tuple(std::tuple<Ts...> tpl, std::index_sequence<I...>)
+template <typename Func, typename... Ts, size_t... I>
+constexpr bool count_tuple(std::tuple<Ts...> tpl, Func&& f, std::index_sequence<I...>)
 {
-  return count(std::get<I>(tpl)...);
+  return count(std::forward<Func>(f)(std::get<I>(tpl))...);
 }
 
 } // namespace details
 
+template <typename Func, typename... Ts>
+constexpr bool all_of_tuple(std::tuple<Ts...> tpl, Func&& f)
+{
+  return details::all_of_tuple(tpl, std::forward<Func>(f), std::index_sequence_for<Ts...>{});
+}
+
 template <typename... Ts>
 constexpr bool all_of_tuple(std::tuple<Ts...> tpl)
 {
-  return details::all_of_tuple(tpl, std::index_sequence_for<Ts...>{});
+  return all_of_tuple(tpl, details::identity_func);
+}
+
+template <typename F, typename... Ts>
+constexpr bool any_of_tuple(std::tuple<Ts...> tpl, F&& func)
+{
+  return details::any_of_tuple(tpl, std::forward<F>(func), std::index_sequence_for<Ts...>{});
 }
 
 template <typename... Ts>
 constexpr bool any_of_tuple(std::tuple<Ts...> tpl)
 {
-  return details::any_of_tuple(tpl, std::index_sequence_for<Ts...>{});
+  return any_of_tuple(tpl, details::identity_func);
+}
+
+template <typename F, typename... Ts>
+constexpr bool none_of_tuple(std::tuple<Ts...> tpl, F&& func)
+{
+  return !all_of_tuple(tpl, std::forward<F>(func));
+}
+
+template <typename... Ts>
+constexpr bool none_of_tuple(std::tuple<Ts...> tpl)
+{
+  return !all_of_tuple(tpl);
+}
+
+template <typename F, typename... Ts>
+constexpr bool count_tuple(std::tuple<Ts...> tpl, F&& func)
+{
+  return details::count_tuple(tpl, std::forward<F>(func), std::index_sequence_for<Ts...>{});
 }
 
 template <typename... Ts>
 constexpr bool count_tuple(std::tuple<Ts...> tpl)
 {
-  return details::count_tuple(tpl, std::index_sequence_for<Ts...>{});
+  return count_tuple(tpl, details::identity_func);
 }
 
 template <typename... Ts>
@@ -323,6 +361,30 @@ constexpr size_t find_if_impl(const std::tuple<Ts...>& tpl, std::index_sequence<
            : I;
 }
 
+template <typename F, typename K, typename V, typename... Args, typename... Ts, size_t... I>
+constexpr decltype(auto) replace_if(const std::tuple<Ts...>& tpl, std::index_sequence<I...>, F&& func,
+                                    const std::pair<K, V>& e, Args&&... args)
+{
+  return std::make_tuple(
+    (std::forward<F>(func)(std::get<I>(tpl), std::forward<Args>(args)...) ? e : std::get<I>(tpl))...);
+}
+
+template <typename F, typename... Args, typename... Ts, size_t... I>
+constexpr decltype(auto) remove_if(const std::tuple<Ts...>& tpl, std::index_sequence<I...>, F&& func, Args&&... args)
+{
+  return std::tuple_cat((!std::forward<F>(func)(std::get<I>(tpl), std::forward<Args>(args)...)
+                           ? std::make_tuple(std::get<I>(tpl))
+                           : std::make_tuple())...);
+}
+
+template <typename F, typename... Args, typename... Ts, size_t... I>
+constexpr decltype(auto) copy_if(const std::tuple<Ts...>& tpl, std::index_sequence<I...>, F&& func, Args&&... args)
+{
+  return std::tuple_cat((std::forward<F>(func)(std::get<I>(tpl), std::forward<Args>(args)...)
+                         ? std::make_tuple(std::get<I>(tpl))
+                         : std::make_tuple())...);
+}
+
 } // namespace details
 
 template <typename F, typename... Args, typename... Ts>
@@ -362,6 +424,31 @@ constexpr decltype(auto) find_if(const std::tuple<Ts...>& tpl, F&& func, Args&&.
 {
   return details::find_if_impl(tpl, std::index_sequence_for<Ts...>{}, std::forward<F>(func),
                                std::forward<Args>(args)...);
+}
+
+template <typename F, typename K, typename V, typename... Args, typename... Ts>
+constexpr decltype(auto) replace_if(const std::tuple<Ts...>& tpl, F&& func, const std::pair<K, V>& e, Args&&... args)
+{
+  return details::replace_if(tpl, std::index_sequence_for<Ts...>{}, std::forward<F>(func), e,
+                             std::forward<Args>(args)...);
+}
+
+template <typename F, typename... Args, typename... Ts>
+constexpr decltype(auto) remove_if(const std::tuple<Ts...>& tpl, F&& func, Args&&... args)
+{
+  return details::remove_if(tpl, std::index_sequence_for<Ts...>{}, std::forward<F>(func), std::forward<Args>(args)...);
+}
+
+template <typename F, typename... Args, typename... Ts>
+constexpr decltype(auto) copy_if(const std::tuple<Ts...>& tpl, F&& func, Args&&... args)
+{
+  return details::copy_if(tpl, std::index_sequence_for<Ts...>{}, std::forward<F>(func), std::forward<Args>(args)...);
+}
+
+template <typename K, typename V, typename... Ts>
+constexpr decltype(auto) push_back(const std::tuple<Ts...>& tpl, const std::pair<K, V>& e)
+{
+  return std::tuple_cat(tpl, std::make_tuple(e));
 }
 
 } // namespace cpt::helpers
