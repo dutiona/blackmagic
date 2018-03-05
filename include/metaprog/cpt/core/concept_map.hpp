@@ -3,8 +3,8 @@
 #ifndef METAPROG_CPT_CORE_CONCEPT_MAP_HPP_
 #define METAPROG_CPT_CORE_CONCEPT_MAP_HPP_
 
+#include "../../tuple/tuple.hpp"
 #include "concept_item.hpp"
-#include "helpers.hpp"
 
 #include <string_view>
 #include <tuple>
@@ -17,13 +17,13 @@ template <typename... Concepts>
 constexpr bool ensure_unique_keys(concept_item<Concepts>... concept_items)
 {
   const auto items = std::make_tuple(concept_items...);
-  return helpers::accumulate(
-           size_t(0), items,
-           [](int count, auto cpt, auto cpt_map) {
-             return count
-                    + helpers::count_if(cpt_map, [](auto cpt_, std::string_view cn) { return cpt_.is(cn); }, cpt.first);
-           },
-           items)
+  return tuple::accumulate(size_t(0), items,
+                           [](int count, auto cpt, auto cpt_map) {
+                             return count
+                                    + tuple::count_if(
+                                        cpt_map, [](auto cpt_, std::string_view cn) { return cpt_.is(cn); }, cpt.first);
+                           },
+                           items)
          == sizeof...(Concepts);
 }
 
@@ -47,19 +47,19 @@ struct concept_map : std::tuple<concept_item<Concepts>...> {
 
   constexpr size_t count_if(std::string_view concept_name) const
   {
-    return helpers::count_if(*this, [](auto cpt, std::string_view cn) { return cpt.is(cn); }, concept_name);
+    return tuple::count_if(*this, [](auto cpt, std::string_view cn) { return cpt.is(cn); }, concept_name);
   }
 
   constexpr bool has(std::string_view concept_name) const
   {
-    return helpers::find_if(*this, [](auto cpt, std::string_view cn) { return cpt.is(cn); }, concept_name)
-           != end(*this);
+    return tuple::find_if(*this, [](auto cpt, std::string_view cn) { return cpt.is(cn); }, concept_name)
+           != tuple::end(*this);
   }
 
   template <typename... Args>
   constexpr void require() const
   {
-    helpers::for_each(*this, [](auto cpt) { cpt.template require<Args...>(); });
+    tuple::for_each(*this, [](auto cpt) { cpt.template require<Args...>(); });
   }
 
   template <typename... Args>
@@ -69,19 +69,19 @@ struct concept_map : std::tuple<concept_item<Concepts>...> {
       throw "This concept key doesn't exists in this concept map!";
     }
 
-    helpers::for_each(*this,
-                      [](auto cpt, std::string_view cn) {
-                        if (cpt.is(cn)) {
-                          cpt.template require<Args...>();
-                        }
-                      },
-                      concept_name);
+    tuple::for_each(*this,
+                    [](auto cpt, std::string_view cn) {
+                      if (cpt.is(cn)) {
+                        cpt.template require<Args...>();
+                      }
+                    },
+                    concept_name);
   }
 
   template <typename... Args>
   constexpr bool check() const
   {
-    return helpers::all_of_tuple(helpers::transform(*this, [](auto cpt) { return cpt.template check<Args...>(); }));
+    return tuple::all_of(tuple::transform(*this, [](auto cpt) { return cpt.template check<Args...>(); }));
   }
 
   template <typename... Args>
@@ -91,14 +91,14 @@ struct concept_map : std::tuple<concept_item<Concepts>...> {
       throw "This concept key doesn't exists in this concept map!";
     }
 
-    return helpers::all_of_tuple(helpers::transform(*this,
-                                                    [](auto cpt, std::string_view cn) {
-                                                      if (cpt.is(cn)) {
-                                                        return cpt.template check<Args...>();
-                                                      }
-                                                      return true;
-                                                    },
-                                                    concept_name));
+    return tuple::all_of(tuple::transform(*this,
+                                          [](auto cpt, std::string_view cn) {
+                                            if (cpt.is(cn)) {
+                                              return cpt.template check<Args...>();
+                                            }
+                                            return true;
+                                          },
+                                          concept_name));
   }
 };
 

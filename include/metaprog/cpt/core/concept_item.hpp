@@ -3,7 +3,7 @@
 #ifndef METAPROG_CPT_CORE_CONCEPT_ITEM_HPP_
 #define METAPROG_CPT_CORE_CONCEPT_ITEM_HPP_
 
-#include "../../ctx/ctx.hpp"
+#include "../../common/common.hpp"
 
 #include "concept_checker.hpp"
 #include "helpers.hpp"
@@ -22,7 +22,7 @@ struct concept_item : std::pair<std::string_view, concept_checker<Concept>> {
 
   constexpr bool is(std::string_view concept_name) const
   {
-    return equals(this->first, concept_name);
+    return common::equals(this->first, concept_name);
   }
 
   template <typename... Args>

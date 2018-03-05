@@ -3,14 +3,14 @@
 #ifndef METAPROG_CPT_CORE_CONCEPT_DIAGNOSTIC_HPP_
 #define METAPROG_CPT_CORE_CONCEPT_DIAGNOSTIC_HPP_
 
-#include "helpers.hpp"
+#include "../../common/common.hpp"
 
 // Diagnostic helpers
 namespace concept_diagnostic_traits {
 template <typename... Args, typename ConceptMap>
 constexpr void diagnostic(ConceptMap)
 {
-  static_assert(cpt::helpers::dependent_false_v<ConceptMap, Args...>,
+  static_assert(common::dependent_false_v<ConceptMap, Args...>,
                 "No diagnostic function helpers made for this concept");
 }
 

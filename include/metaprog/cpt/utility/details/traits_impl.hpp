@@ -4,7 +4,7 @@
 #define METAPROG_CPT_UTILIY_DETAILS_TRAITS_IMPL_HPP_
 
 #ifndef _MSC_VER
-#include "../../core.hpp"
+#include "../../../common/common.hpp"
 #endif
 
 #include <type_traits>
@@ -836,7 +836,7 @@ struct is_invocable_r_impl : std::false_type {
 template <template <typename R, typename F, typename... Args> class Holder, typename Valid, typename R, typename F,
           typename... Args>
 struct is_invocable_r_impl<Holder<R, F, Args...>, Valid,
-                           std::enable_if_t<std::is_convertible_v<R, helpers::invoke_result_t<F, Args...>>>>
+                           std::enable_if_t<std::is_convertible_v<R, common::invoke_result_t<F, Args...>>>>
   : is_invocable_impl<_holder<F, Args...>, Valid> {
 };
 #endif
@@ -856,7 +856,7 @@ struct is_nothrow_invocable_r_impl : std::false_type {
 template <template <typename R, typename F, typename... Args> class Holder, typename Valid, typename R, typename F,
           typename... Args>
 struct is_nothrow_invocable_r_impl<Holder<R, F, Args...>, Valid,
-                                   std::enable_if_t<std::is_convertible_v<R, helpers::invoke_result_t<F, Args...>>>>
+                                   std::enable_if_t<std::is_convertible_v<R, common::invoke_result_t<F, Args...>>>>
   : is_nothrow_invocable_impl<_holder<F, Args...>, Valid> {
 };
 #endif
