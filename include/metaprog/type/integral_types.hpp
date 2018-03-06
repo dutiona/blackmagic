@@ -3,6 +3,7 @@
 #ifndef METAPROG_TYPE_INTEGRAL_TYPE_HPP
 #define METAPROG_TYPE_INTEGRAL_TYPE_HPP
 
+#include <cstddef>
 #include <type_traits>
 
 namespace type {
