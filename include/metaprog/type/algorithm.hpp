@@ -3,6 +3,7 @@
 #ifndef METAPROG_TYPE_ALGORITHM_HPP
 #define METAPROG_TYPE_ALGORITHM_HPP
 
+#include "integral_types.hpp"
 #include "type_list.hpp"
 
 namespace type {

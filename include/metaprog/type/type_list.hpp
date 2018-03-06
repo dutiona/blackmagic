@@ -3,6 +3,8 @@
 #ifndef METAPROG_TYPE_TYPE_LIST_HPP
 #define METAPROG_TYPE_TYPE_LIST_HPP
 
+#include "integral_types.hpp"
+
 #include <utility>
 
 namespace type {
@@ -18,27 +20,27 @@ template <template <size_t, typename> class Lhs, size_t LhsI, typename LhsT, //
 constexpr bool operator==(Lhs<LhsI, LhsT>, Rhs<RhsI, RhsT>)
 {
   return LhsI == RhsI && std::is_same_v<LhsT, RhsT>;
-};
+}
 
 template <size_t I, size_t S, typename T, typename... Ts>
 struct type_list_node {
-  using head                      = type_item<I, T>;
-  using tail                      = type_list_node<I + 1, S, Ts...>;
+  using head                      = type_item<S - I, T>;
+  using tail                      = type_list_node<I - 1, S, Ts...>;
   static constexpr auto list_size = S;
   static constexpr auto tail_size = sizeof...(Ts);
 };
 
 template <size_t S, typename T>
-struct type_list_node<S - 1, S, T> {
+struct type_list_node<1, S, T> {
   using head                      = type_item<S - 1, T>;
-  using tail                      = type_list_node<S, S, void>;
+  using tail                      = type_list_node<S - S, S, void>;
   static constexpr auto list_size = S;
   static constexpr auto tail_size = 1;
 };
 
 template <size_t S>
-struct type_list_node<S, S, void> {
-  using head                      = type_item<S, void>;
+struct type_list_node<0, S, void> {
+  using head                      = type_item<S - 0, void>;
   static constexpr auto list_size = S;
   static constexpr auto tail_size = 0;
 };
@@ -47,7 +49,7 @@ template <typename... Ts>
 struct type_list_factory {
   static constexpr auto list_size      = sizeof...(Ts);
   static constexpr auto index_sequence = std::index_sequence_for<Ts...>{};
-  using list                           = type_list_node<0, sizeof...(Ts), Ts...>;
+  using list                           = type_list_node<sizeof...(Ts), sizeof...(Ts), Ts...>;
 };
 
 template <typename Lhs, typename Rhs, template <typename, typename> class Cmp>

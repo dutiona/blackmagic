@@ -37,6 +37,7 @@ static_assert(type::elem_index<type::list_head<my_list_factory>> == 0, "");
 static_assert(std::is_same_v<type::next_head_t<type::list<my_list_factory>>, bool>, "");
 static_assert(type::next_head_index<type::list<my_list_factory>> == 1, "");
 
+
 int main()
 {
   return 0;
