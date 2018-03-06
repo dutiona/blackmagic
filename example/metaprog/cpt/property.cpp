@@ -27,7 +27,8 @@ using my_tiny_list_factory = type::type_list_factory<char>;
 static_assert(type::list_size<my_tiny_list_factory> == 1, "");
 static_assert(std::is_same_v<type::list_head<my_tiny_list_factory>::type, char>, "");
 static_assert(type::elem_index<type::list_head<my_tiny_list_factory>> == 0, "");
-static_assert(type::next_head<type::list<my_tiny_list_factory>>{} == type::head<type::list_end<my_tiny_list_factory>>{}, "");
+static_assert(type::next_head<type::list<my_tiny_list_factory>>{} == type::head<type::list_end<my_tiny_list_factory>>{},
+              "");
 
 
 using my_empty_list_factory = type::type_list_factory<>;
