@@ -49,45 +49,54 @@ struct if_<false> {
   using type = Else;
 };
 
-
-template <template <typename> class Switch>
-struct case_ {
+namespace details {
+template <typename T>
+struct switch_impl {
+  template <typename Case, typename... Cases>
+  struct type_select_
+    : call_t<if_<check_v<Case, T>>, typename Case::type, typename switch_impl<T>::template type_select_<Cases...>> {
+  };
   template <typename Case>
-  static constexpr bool value = Switch<Case>::value;
+  struct type_select_<Case> : call_t<if_<check_v<Case, T>>, typename Case::type, void> {
+  };
 
-  template <typename Then>
+  template <typename... Cases>
+  using type = type_select_<Cases...>;
+};
+} // namespace details
+
+template <typename Case, typename Then>
+struct case_ {
+  template <typename Switch>
+  static constexpr bool value = Case::template value<Switch>;
+
   using type = Then;
 };
 
-template <template <typename> class>
+template <typename Then>
 struct default_ {
-  template <typename>
+  template <typename Switch>
   static constexpr bool value = true;
 
-  template <typename Then>
   using type = Then;
 };
 
-template <template <typename> class Switch>
-struct switch_ {
-  template <template <typename> class Case, template <typename> class... Cases>
-  struct type
-    : call_t<if_<check_v<case_<Switch>, Case>>, typename case_<Switch>::template type<Case>,
-             typename switch_<Switch>::template type<Cases...>> {
-  };
-};
-
+template <typename T, typename... Cases>
+using switch_ = typename details::switch_impl<T>::template type<Cases...>;
 
 namespace details {
 
 template <typename Node>
 struct at_impl {
   template <typename CurrentIndex, typename TargetIndex>
-  struct type : call_t<at_impl<list::tail<Node>>, literals::size_t_<CurrentIndex{} + 1>, TargetIndex> {
+  struct type_select_ : call_t<at_impl<list::tail<Node>>, literals::size_t_<CurrentIndex{} + 1>, TargetIndex> {
   };
   template <typename TargetIndex>
-  struct type<TargetIndex, TargetIndex> : Node {
+  struct type_select_<TargetIndex, TargetIndex> : Node {
   };
+
+  template <typename CurrentIndex, typename TargetIndex>
+  using type = type_select_<CurrentIndex, TargetIndex>;
 };
 
 } // namespace details

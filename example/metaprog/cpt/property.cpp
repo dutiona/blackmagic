@@ -1,6 +1,7 @@
 #include <metaprog/type/type.hpp>
 
 #include <iostream>
+#include <typeinfo>
 
 namespace list     = type::list;
 namespace algo     = type::algorithm;
@@ -43,6 +44,17 @@ static_assert(std::is_same_v<list::list_head<my_list_factory>::type, int>, "");
 static_assert(list::elem_index<list::list_head<my_list_factory>> == 0, "");
 static_assert(std::is_same_v<list::next_head_t<list::list<my_list_factory>>, bool>, "");
 static_assert(list::next_head_index<list::list<my_list_factory>> == 1, "");
+
+struct case_is_double {
+  template <typename T>
+  static constexpr bool value = std::is_same_v<T, double>;
+};
+
+template <typename T>
+using test_switch = algo::switch_<T, algo::case_<case_is_double, std::true_type>, algo::default_<std::false_type>>;
+
+static_assert(std::is_same_v<std::true_type, algo::call_t<test_switch<double>>>, "");
+static_assert(std::is_same_v<std::false_type, algo::call_t<test_switch<int>>>, "");
 
 int main()
 {
