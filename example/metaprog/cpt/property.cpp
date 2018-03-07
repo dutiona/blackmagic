@@ -42,10 +42,7 @@ static_assert(list::elem_index<list::list_head<my_list_factory>> == 0, "");
 static_assert(std::is_same_v<list::next_head_t<list::list<my_list_factory>>, bool>, "");
 static_assert(list::next_head_index<list::list<my_list_factory>> == 1, "");
 
-struct case_is_double {
-  template <typename T>
-  static constexpr bool value = std::is_same_v<T, double>;
-};
+using case_is_double = algo::make_both_from_trait<std::is_same, double>;
 
 template <typename T>
 using test_switch = algo::switch_<T, algo::case_<case_is_double, std::true_type>, algo::default_<std::false_type>>;
