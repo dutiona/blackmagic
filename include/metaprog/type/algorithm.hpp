@@ -6,7 +6,6 @@
 #include "integral_types.hpp"
 #include "type_list.hpp"
 
-#include <functional>
 
 namespace type::algorithm {
 

@@ -1,8 +1,5 @@
 #include <metaprog/type/type.hpp>
 
-#include <iostream>
-#include <typeinfo>
-
 namespace list     = type::list;
 namespace algo     = type::algorithm;
 namespace literals = type::literals;
