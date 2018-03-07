@@ -2,7 +2,7 @@ add_custom_target(tests ALL
     COMMAND ${CMAKE_CTEST_COMMAND} -C ${CMAKE_CONFIGURATION_TYPES} --output-on-failure
     COMMENT "Build and run all the unit tests.")
 
-    macro(add_unit_test Executable Source)
+macro(add_unit_test Executable Source)
     add_executable(test_${Executable} EXCLUDE_FROM_ALL ${Source})
     add_test(NAME test_${Executable} COMMAND test_${Executable} WORKING_DIRECTORY ${CMAKE_BINARY_DIR}/test)
     

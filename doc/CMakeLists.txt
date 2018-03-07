@@ -10,7 +10,7 @@ if(DOXYGEN_FOUND)
             DEPENDS make-doxygen-result-directory
             COMMAND ${DOXYGEN_EXECUTABLE} ${CMAKE_CURRENT_BINARY_DIR}/Doxyfile
             COMMENT "Generating API documentation with Doxygen"
-    )
+            )
 
     configure_file(${CMAKE_CURRENT_SOURCE_DIR}/source/conf.py.in ${CMAKE_CURRENT_BINARY_DIR}/source/conf.py @ONLY)
 
