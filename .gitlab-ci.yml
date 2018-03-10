@@ -4,6 +4,7 @@ variables:
     BUILD_AND_RUN_BENCHMARKS: "ON"
     BUILD_WITH_CODE_COVERAGE: "OFF"
     FORCE_REBUILD: "OFF"
+    VERBOSE: "ON"
     CMAKE_GENERATOR: "Ninja"
     CMAKE_TOOLCHAIN_ARGS: "" # can be -j4 for unix makefiles
     DEFAULT_TARGET: "check"
@@ -22,8 +23,8 @@ stages:
       - $CXX --version
       - mkdir -p $BUILD_DIR
       - cd $BUILD_DIR
-      - [ "FORCE_REBUILD" != "" ] && rm -rf ./*
-      - [ "$VERBOSE" != "" ] && set -x
+      - [ "$FORCE_REBUILD" == "ON" ] && rm -rf ./*
+      - [ "$VERBOSE" == "ON" ] && set -x
       - cmake -G $CMAKE_GENERATOR
               -DWITH_CODE_COVERAGE=$BUILD_WITH_CODE_COVERAGE
               -DWITH_EXAMPLES=$BUILD_AND_RUN_EXAMPLES
@@ -70,6 +71,7 @@ documentation-builder:
     script:
       - mkdir build
       - cd build
+      - [ "$VERBOSE" == "ON" ] && set -x
       - cmake -G $CMAKE_GENERATOR ..
       - cmake --build . --target $DEFAULT_TARGET
     artifacts:
