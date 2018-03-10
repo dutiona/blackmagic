@@ -776,90 +776,46 @@ struct is_nothrow_ternary_impl<B, T, U, Valid,
   : is_ternary_impl<B, T, U, Valid> {
 };
 
+// paramater pack holder
+template <typename F, typename... Args>
+struct _holder {};
+
 // is_invocable
-template <typename T, typename... Args>
-struct _holder {
-};
-#ifdef _MSC_VER
 template <typename Holder, typename = void>
 struct is_invocable_impl : std::false_type {
 };
-template <template <typename F, typename... Args> class Holder, typename F, typename... Args>
+template <template <typename, typename...> class Holder, typename F, typename... Args>
 struct is_invocable_impl<Holder<F, Args...>> : std::is_invocable<F, Args...> {
 };
-#else
-template <typename Holder, typename = void>
-struct is_invocable_impl : std::false_type {
-};
-template <template <typename F, typename... Args> class Holder, typename F, typename... Args>
-struct is_invocable_impl<Holder<F, Args...>,
-                         std::void_t<decltype(std::invoke(std::declval<F>(), std::declval<Args>()...))>>
-  : std::true_type {
-};
-#endif
 
 // is_nothrow_invocable
-#ifdef _MSC_VER
 template <typename Holder, typename = void>
 struct is_nothrow_invocable_impl : std::false_type {
 };
-template <template <typename F, typename... Args> class Holder, typename F, typename... Args>
+template <template <typename, typename...> class Holder, typename F, typename... Args>
 struct is_nothrow_invocable_impl<Holder<F, Args...>> : std::is_nothrow_invocable<F, Args...> {
 };
-#else
-template <typename Holder, typename Valid = void, typename = void>
-struct is_nothrow_invocable_impl : std::false_type {
-};
-template <template <typename F, typename... Args> class Holder, typename Valid, typename F, typename... Args>
-struct is_nothrow_invocable_impl<Holder<F, Args...>, Valid,
-                                 std::enable_if_t<noexcept(std::invoke(std::declval<F>(), std::declval<Args>()...))>>
-  : is_invocable_impl<_holder<F, Args...>, Valid> {
-};
-#endif
 
+
+// paramater pack holder
+template <typename R, typename F, typename... Args>
+struct _holder_r {};
 
 // is_invocable_r
-template <typename R, typename F, typename... Args>
-struct _holder_r {
-};
-#ifdef _MSC_VER
 template <typename Holder, typename = void>
 struct is_invocable_r_impl : std::false_type {
 };
-template <template <typename R, typename F, typename... Args> class Holder, typename R, typename F, typename... Args>
+template <template <typename, typename, typename...> class Holder, typename R, typename F, typename... Args>
 struct is_invocable_r_impl<Holder<R, F, Args...>> : std::is_invocable_r<R, F, Args...> {
 };
-#else
-template <typename Holder, typename Valid = void, typename = void>
-struct is_invocable_r_impl : std::false_type {
-};
-template <template <typename R, typename F, typename... Args> class Holder, typename Valid, typename R, typename F,
-          typename... Args>
-struct is_invocable_r_impl<Holder<R, F, Args...>, Valid,
-                           std::enable_if_t<std::is_convertible_v<R, common::invoke_result_t<F, Args...>>>>
-  : is_invocable_impl<_holder<F, Args...>, Valid> {
-};
-#endif
 
 // is_nothrow_invocable_r
-#ifdef _MSC_VER
 template <typename Holder, typename = void>
 struct is_nothrow_invocable_r_impl : std::false_type {
 };
-template <template <typename R, typename F, typename... Args> class Holder, typename R, typename F, typename... Args>
+template <template <typename, typename, typename...> class Holder, typename R, typename F, typename... Args>
 struct is_nothrow_invocable_r_impl<Holder<R, F, Args...>> : std::is_nothrow_invocable_r<R, F, Args...> {
 };
-#else
-template <typename Holder, typename Valid = void, typename = void>
-struct is_nothrow_invocable_r_impl : std::false_type {
-};
-template <template <typename R, typename F, typename... Args> class Holder, typename Valid, typename R, typename F,
-          typename... Args>
-struct is_nothrow_invocable_r_impl<Holder<R, F, Args...>, Valid,
-                                   std::enable_if_t<std::is_convertible_v<R, common::invoke_result_t<F, Args...>>>>
-  : is_nothrow_invocable_impl<_holder<F, Args...>, Valid> {
-};
-#endif
 
 } // namespace cpt::traits::utility::details
 
