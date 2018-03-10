@@ -7,8 +7,8 @@ variables:
     BUILD_WITH_CODE_COVERAGE: "OFF"
     FORCE_REBUILD: "OFF"
     VERBOSE: "ON"
-    CMAKE_GENERATOR: '"Unix Makefiles"'
-    CMAKE_TOOLCHAIN_ARGS: "" # can be -j4 for unix makefiles
+    CMAKE_GENERATOR: ""       # include -G if defined
+    CMAKE_TOOLCHAIN_ARGS: ""  # can be -j4 for unix makefiles
     DEFAULT_TARGET: "check"
 
 stages:
@@ -27,7 +27,7 @@ stages:
       - mkdir -p $BUILD_DIR
       - cd $BUILD_DIR
       - if [ "$FORCE_REBUILD" == "ON" ]; then rm -rf ./*; fi
-      - cmake -G $CMAKE_GENERATOR
+      - cmake $CMAKE_GENERATOR
               -DWITH_CODE_COVERAGE=$BUILD_WITH_CODE_COVERAGE
               -DWITH_EXAMPLES=$BUILD_AND_RUN_EXAMPLES
               -DWITH_BENCHMARK=$BUILD_AND_RUN_BENCHMARKS
@@ -79,7 +79,7 @@ documentation-builder:
       - if [ "$VERBOSE" == "ON" ]; then set -x; fi
       - mkdir -p $BUILD_DIR
       - cd $BUILD_DIR
-      - cmake -G $CMAKE_GENERATOR
+      - cmake $CMAKE_GENERATOR
               -DWITH_CODE_COVERAGE=$BUILD_WITH_CODE_COVERAGE
               -DWITH_EXAMPLES=$BUILD_AND_RUN_EXAMPLES
               -DWITH_BENCHMARK=$BUILD_AND_RUN_BENCHMARKS
