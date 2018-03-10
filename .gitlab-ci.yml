@@ -1,5 +1,6 @@
 variables:
     BUILD_DIR: "build-in-docker"
+    SOURCE_DIR: ".."
     BUILD_AND_RUN_EXAMPLES: "ON"
     BUILD_AND_RUN_BENCHMARKS: "ON"
     BUILD_WITH_CODE_COVERAGE: "OFF"
@@ -23,17 +24,17 @@ stages:
       - $CXX --version
       - mkdir -p $BUILD_DIR
       - cd $BUILD_DIR
-      - [ "$FORCE_REBUILD" == "ON" ] && rm -rf ./*
-      - [ "$VERBOSE" == "ON" ] && set -x
+      - if [ "$FORCE_REBUILD" == "ON" ]; then rm -rf ./*; fi
+      - if [ "$VERBOSE" == "ON" ]; then set -x; fi
       - cmake -G $CMAKE_GENERATOR
               -DWITH_CODE_COVERAGE=$BUILD_WITH_CODE_COVERAGE
               -DWITH_EXAMPLES=$BUILD_AND_RUN_EXAMPLES
               -DWITH_BENCHMARK=$BUILD_AND_RUN_BENCHMARKS
-              $SOURCE_DIRECTORY
-              -- $TOOLCHAIN_ARGS
+              $SOURCE_DIR
       - cmake --build .
-              --target DEFAULT_TARGET
+              --target $DEFAULT_TARGET
               --config $RELEASE_TYPE
+              -- $TOOLCHAIN_ARGS
 
 distcheck-linux-gcc-release:
     <<: *distcheck-basic-linux
@@ -71,8 +72,8 @@ documentation-builder:
     script:
       - mkdir build
       - cd build
-      - [ "$VERBOSE" == "ON" ] && set -x
-      - cmake -G $CMAKE_GENERATOR ..
+      - if [ "$VERBOSE" == "ON" ]; then set -x; fi
+      - cmake -G $CMAKE_GENERATOR $SOURCE_DIR
       - cmake --build . --target $DEFAULT_TARGET
     artifacts:
         name: "documentation"

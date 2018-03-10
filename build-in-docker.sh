@@ -122,8 +122,8 @@ docker run --name docker-builder \
 	mroynard/ubuntu-toolset:testing
 docker exec docker-builder sh -c "export CC=$CC && export CXX=$CXX && $CXX --version"
 docker exec docker-builder sh -c "mkdir -p $BUILD_DIR && cd $BUILD_DIR"
-# [ "$FORCE_REBUILD" == "ON" ] && docker exec docker-builder sh -c "rm -rf ./*"
-[ "$VERBOSE" == "ON" ] && docker exec docker-builder sh -c "set -x"
+# if [ "$FORCE_REBUILD" == "ON" ]; then docker exec docker-builder sh -c "rm -rf ./*"; fi
+if [ "$VERBOSE" == "ON" ]; then docker exec docker-builder sh -c "set -x"; fi
 docker exec docker-builder sh -c \
 	"cmake -G $CMAKE_GENERATOR " \
 	"-DWITH_CODE_COVERAGE=$BUILD_WITH_CODE_COVERAGE " \
