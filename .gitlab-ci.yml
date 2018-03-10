@@ -19,13 +19,13 @@ stages:
     image: mroynard/ubuntu-toolset:stable
     script:
       - set -e
+      - if [ "$VERBOSE" == "ON" ]; then set -x; fi
       - export CC=$CC
       - export CXX=$CXX
       - $CXX --version
       - mkdir -p $BUILD_DIR
       - cd $BUILD_DIR
       - if [ "$FORCE_REBUILD" == "ON" ]; then rm -rf ./*; fi
-      - if [ "$VERBOSE" == "ON" ]; then set -x; fi
       - cmake -G $CMAKE_GENERATOR
               -DWITH_CODE_COVERAGE=$BUILD_WITH_CODE_COVERAGE
               -DWITH_EXAMPLES=$BUILD_AND_RUN_EXAMPLES
@@ -70,9 +70,9 @@ documentation-builder:
     variables:
         DEFAULT_TARGET: "docs"
     script:
+      - if [ "$VERBOSE" == "ON" ]; then set -x; fi
       - mkdir build
       - cd build
-      - if [ "$VERBOSE" == "ON" ]; then set -x; fi
       - cmake -G $CMAKE_GENERATOR $SOURCE_DIR
       - cmake --build . --target $DEFAULT_TARGET
     artifacts:
