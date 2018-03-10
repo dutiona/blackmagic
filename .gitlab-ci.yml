@@ -2,7 +2,10 @@ variables:
     BUILD_DIR: "build-in-docker"
     BUILD_AND_RUN_EXAMPLES: "ON"
     BUILD_AND_RUN_BENCHMARKS: "ON"
+    BUILD_WITH_CODE_COVERAGE: "OFF"
+    FORCE_REBUILD: "OFF"
     CMAKE_GENERATOR: "Ninja"
+    CMAKE_TOOLCHAIN_ARGS: "" # can be -j4 for unix makefiles
     DEFAULT_TARGET: "check"
 
 stages:
@@ -13,51 +16,62 @@ stages:
     stage: build
     image: mroynard/ubuntu-toolset:stable
     script:
-        /usr/local/bin/build-dispatch
-          --verbose
-          --coverage
-          --cmake-generator $CMAKE_GENERATOR
-          --build-directory $BUILD_DIR
-          --compiler $COMPILER
-          --target $DEFAULT_TARGET
-          --release-type $RELEASE_TYPE
-          -- -DWITH_EXAMPLES=$BUILD_AND_RUN_EXAMPLES -DWITH_BENCHMARK=$BUILD_AND_RUN_BENCHMARKS
+      - set -e
+      - export CC=$CC
+      - export CXX=$CXX
+      - $CXX --version
+      - mkdir -p $BUILD_DIR
+      - cd $BUILD_DIR
+      - [ "FORCE_REBUILD" != "" ] && rm -rf ./*
+      - [ "$VERBOSE" != "" ] && set -x
+      - cmake -G $CMAKE_GENERATOR
+              -DWITH_CODE_COVERAGE=$BUILD_WITH_CODE_COVERAGE
+              -DWITH_EXAMPLES=$BUILD_AND_RUN_EXAMPLES
+              -DWITH_BENCHMARK=$BUILD_AND_RUN_BENCHMARKS
+              $SOURCE_DIRECTORY
+              -- $TOOLCHAIN_ARGS
+      - cmake --build .
+              --target DEFAULT_TARGET
+              --config $RELEASE_TYPE
 
 distcheck-linux-gcc-release:
     <<: *distcheck-basic-linux
     variables:
         RELEASE_TYPE: "Release"
-        COMPILER: "gcc"
+        CC: "gcc"
+        CXX: "g++"
 
 distcheck-linux-clang-release:
     <<: *distcheck-basic-linux
     variables:
         RELEASE_TYPE: "Release"
-        COMPILER: "clang"
+        CC: "clang"
+        CXX: "clang++"
 
 distcheck-linux-gcc-debug:
     <<: *distcheck-basic-linux
     variables:
         RELEASE_TYPE: "Debug"
-        COMPILER: "gcc"
+        CC: "gcc"
+        CXX: "g++"
 
 distcheck-linux-clang-debug:
     <<: *distcheck-basic-linux
     variables:
         RELEASE_TYPE: "Debug"
-        COMPILER: "clang"
+        CC: "clang"
+        CXX: "clang++"
 
 documentation-builder:
     stage: doc
-    image: mroynard/ubuntu-toolset
+    image: mroynard/ubuntu-doctoolset:stable
     variables:
         DEFAULT_TARGET: "docs"
     script:
-        /usr/local/bin/build-dispatch
-          --verbose
-          --cmake-generator $CMAKE_GENERATOR
-          --target $DEFAULT_TARGET
-          --build-directory $BUILD_DIR
+      - mkdir build
+      - cd build
+      - cmake -G $CMAKE_GENERATOR ..
+      - cmake --build . --target $DEFAULT_TARGET
     artifacts:
         name: "documentation"
         paths:
