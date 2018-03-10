@@ -77,8 +77,8 @@ documentation-builder:
         BUILD_WITH_CODE_COVERAGE: "OFF"
     script:
       - if [ "$VERBOSE" == "ON" ]; then set -x; fi
-      - mkdir build
-      - cd build
+      - mkdir -p $BUILD_DIR
+      - cd $BUILD_DIR
       - cmake -G $CMAKE_GENERATOR
               -DWITH_CODE_COVERAGE=$BUILD_WITH_CODE_COVERAGE
               -DWITH_EXAMPLES=$BUILD_AND_RUN_EXAMPLES
