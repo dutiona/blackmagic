@@ -2,6 +2,7 @@ variables:
     BUILD_DIR: "build-in-docker"
     SOURCE_DIR: ".."
     BUILD_AND_RUN_EXAMPLES: "ON"
+    BUILD_AND_RUN_TESTS: "ON"
     BUILD_AND_RUN_BENCHMARKS: "ON"
     BUILD_WITH_CODE_COVERAGE: "OFF"
     FORCE_REBUILD: "OFF"
@@ -30,6 +31,7 @@ stages:
               -DWITH_CODE_COVERAGE=$BUILD_WITH_CODE_COVERAGE
               -DWITH_EXAMPLES=$BUILD_AND_RUN_EXAMPLES
               -DWITH_BENCHMARK=$BUILD_AND_RUN_BENCHMARKS
+              -DWITH_TESTS=$BUILD_AND_RUN_TESTS
               $SOURCE_DIR
       - cmake --build .
               --target $DEFAULT_TARGET
@@ -69,11 +71,20 @@ documentation-builder:
     image: mroynard/ubuntu-doctoolset:stable
     variables:
         DEFAULT_TARGET: "docs"
+        BUILD_AND_RUN_EXAMPLES: "OFF"
+        BUILD_AND_RUN_TESTS: "OFF"
+        BUILD_AND_RUN_BENCHMARKS: "OFF"
+        BUILD_WITH_CODE_COVERAGE: "OFF"
     script:
       - if [ "$VERBOSE" == "ON" ]; then set -x; fi
       - mkdir build
       - cd build
-      - cmake -G $CMAKE_GENERATOR $SOURCE_DIR
+      - cmake -G $CMAKE_GENERATOR
+              -DWITH_CODE_COVERAGE=$BUILD_WITH_CODE_COVERAGE
+              -DWITH_EXAMPLES=$BUILD_AND_RUN_EXAMPLES
+              -DWITH_BENCHMARK=$BUILD_AND_RUN_BENCHMARKS
+              -DWITH_TESTS=$BUILD_AND_RUN_TESTS
+              $SOURCE_DIR
       - cmake --build . --target $DEFAULT_TARGET
     artifacts:
         name: "documentation"
