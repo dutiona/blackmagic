@@ -17,13 +17,11 @@ template <typename... Concepts>
 constexpr bool ensure_unique_keys(concept_item<Concepts>... concept_items)
 {
   const auto items = std::make_tuple(concept_items...);
-  return tuple::accumulate(size_t(0), items,
-                           [](int count, auto cpt, auto cpt_map) {
-                             return count
-                                    + tuple::count_if(
-                                        cpt_map, [](auto cpt_, std::string_view cn) { return cpt_.is(cn); }, cpt.first);
-                           },
-                           items)
+  return tuple::accumulate(
+           size_t(0), items,
+           [items](int count, auto cpt) {
+             return count + tuple::count_if(items, [cpt_name = cpt.first](auto cpt_) { return cpt_.is(cpt_name); });
+           })
          == sizeof...(Concepts);
 }
 
@@ -47,13 +45,12 @@ struct concept_map : std::tuple<concept_item<Concepts>...> {
 
   constexpr size_t count_if(std::string_view concept_name) const
   {
-    return tuple::count_if(*this, [](auto cpt, std::string_view cn) { return cpt.is(cn); }, concept_name);
+    return tuple::count_if(*this, [concept_name](auto cpt) { return cpt.is(concept_name); });
   }
 
   constexpr bool has(std::string_view concept_name) const
   {
-    return tuple::find_if(*this, [](auto cpt, std::string_view cn) { return cpt.is(cn); }, concept_name)
-           != tuple::end(*this);
+    return tuple::find_if(*this, [concept_name](auto cpt) { return cpt.is(concept_name); }) != tuple::end(*this);
   }
 
   template <typename... Args>
@@ -69,13 +66,11 @@ struct concept_map : std::tuple<concept_item<Concepts>...> {
       throw "This concept key doesn't exists in this concept map!";
     }
 
-    tuple::for_each(*this,
-                    [](auto cpt, std::string_view cn) {
-                      if (cpt.is(cn)) {
-                        cpt.template require<Args...>();
-                      }
-                    },
-                    concept_name);
+    tuple::for_each(*this, [concept_name](auto cpt) {
+      if (cpt.is(concept_name)) {
+        cpt.template require<Args...>();
+      }
+    });
   }
 
   template <typename... Args>
@@ -91,14 +86,12 @@ struct concept_map : std::tuple<concept_item<Concepts>...> {
       throw "This concept key doesn't exists in this concept map!";
     }
 
-    return tuple::all_of(tuple::transform(*this,
-                                          [](auto cpt, std::string_view cn) {
-                                            if (cpt.is(cn)) {
-                                              return cpt.template check<Args...>();
-                                            }
-                                            return true;
-                                          },
-                                          concept_name));
+    return tuple::all_of(tuple::transform(*this, [concept_name](auto cpt) {
+      if (cpt.is(concept_name)) {
+        return cpt.template check<Args...>();
+      }
+      return true;
+    }));
   }
 };
 

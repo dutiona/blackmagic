@@ -5,6 +5,8 @@
 
 #include "details/traits_impl.hpp"
 
+#include "../../type/type.hpp"
+
 namespace cpt::traits::utility {
 
 // member access
