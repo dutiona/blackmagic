@@ -1,15 +1,15 @@
 variables:
-    BUILD_DIR: "build-in-docker"
-    SOURCE_DIR: ".."
-    BUILD_AND_RUN_EXAMPLES: "ON"
-    BUILD_AND_RUN_TESTS: "ON"
-    BUILD_AND_RUN_BENCHMARKS: "ON"
-    BUILD_WITH_CODE_COVERAGE: "OFF"
-    FORCE_REBUILD: "OFF"
-    VERBOSE: "ON"
-    CMAKE_GENERATOR: ""       # include -G if defined
-    CMAKE_TOOLCHAIN_ARGS: ""  # can be -j4 for unix makefiles
-    DEFAULT_TARGET: "check"
+    CC: "gcc"                                   # eg. gcc or clang
+    CXX: "g++"                                  # eg. g++ or clang++
+    CMAKE_GENERATOR: "-G Ninja"                 # include -G if defined
+    BUILD_DIRECTORY: "build-in-docker"          # build directory name
+    SOURCE_DIRECTORY: ".."                      # where cmake search source files from the build directory
+    TARGET: "check"                             # target to invoke
+    CLEAN: "OFF"                                # whether to rm -rf * in build directory before running cmake
+    TESTS: "ON"                                 # build and run unit tests
+    EXAMPLES: "ON"                              # build and run examples
+    BENCHMARKS: "ON"                            # build and run benchmarks
+    COVERAGE: "OFF"                             # build and run with coverage flags
 
 stages:
     - build
@@ -20,23 +20,21 @@ stages:
     image: mroynard/ubuntu-toolset:stable
     script:
       - set -e
-      - if [ "$VERBOSE" == "ON" ]; then set -x; fi
       - export CC=$CC
       - export CXX=$CXX
       - $CXX --version
-      - mkdir -p $BUILD_DIR
-      - cd $BUILD_DIR
-      - if [ "$FORCE_REBUILD" == "ON" ]; then rm -rf ./*; fi
+      - mkdir -p $BUILD_DIRECTORY
+      - cd $BUILD_DIRECTORY
+      - if [ "$CLEAN" == "ON" ]; then rm -rf ./*; fi
       - cmake $CMAKE_GENERATOR
-              -DWITH_CODE_COVERAGE=$BUILD_WITH_CODE_COVERAGE
-              -DWITH_EXAMPLES=$BUILD_AND_RUN_EXAMPLES
-              -DWITH_BENCHMARK=$BUILD_AND_RUN_BENCHMARKS
-              -DWITH_TESTS=$BUILD_AND_RUN_TESTS
-              $SOURCE_DIR
+              -DWITH_TESTS=$TESTS
+              -DWITH_EXAMPLES=$EXAMPLES
+              -DWITH_BENCHMARK=$BENCHMARKS
+              -DWITH_CODE_COVERAGE=$COVERAGE
+              $SOURCE_DIRECTORY
       - cmake --build .
-              --target $DEFAULT_TARGET
+              --target $TARGET
               --config $RELEASE_TYPE
-              -- $TOOLCHAIN_ARGS
 
 distcheck-linux-gcc-release:
     <<: *distcheck-basic-linux
@@ -49,8 +47,8 @@ distcheck-linux-clang-release:
     <<: *distcheck-basic-linux
     variables:
         RELEASE_TYPE: "Release"
-        CC: "clang"
-        CXX: "clang++"
+        CC: "clang-6.0"
+        CXX: "clang++-6.0"
 
 distcheck-linux-gcc-debug:
     <<: *distcheck-basic-linux
@@ -63,32 +61,32 @@ distcheck-linux-clang-debug:
     <<: *distcheck-basic-linux
     variables:
         RELEASE_TYPE: "Debug"
-        CC: "clang"
-        CXX: "clang++"
+        CC: "clang-6.0"
+        CXX: "clang++-6.0"
 
 documentation-builder:
     stage: doc
     image: mroynard/ubuntu-doctoolset:stable
     variables:
-        DEFAULT_TARGET: "docs"
-        BUILD_AND_RUN_EXAMPLES: "OFF"
-        BUILD_AND_RUN_TESTS: "OFF"
-        BUILD_AND_RUN_BENCHMARKS: "OFF"
-        BUILD_WITH_CODE_COVERAGE: "OFF"
+        BUILD_DIRECTORY: "build-in-docker-doc"
+        TARGET: "docs"
+        TESTS: "OFF"
+        EXAMPLES: "OFF"
+        BENCHMARKS: "OFF"
+        COVERAGE: "OFF"
     script:
-      - if [ "$VERBOSE" == "ON" ]; then set -x; fi
-      - mkdir -p $BUILD_DIR
-      - cd $BUILD_DIR
+      - mkdir -p $BUILD_DIRECTORY
+      - cd $BUILD_DIRECTORY
       - cmake $CMAKE_GENERATOR
-              -DWITH_CODE_COVERAGE=$BUILD_WITH_CODE_COVERAGE
-              -DWITH_EXAMPLES=$BUILD_AND_RUN_EXAMPLES
-              -DWITH_BENCHMARK=$BUILD_AND_RUN_BENCHMARKS
-              -DWITH_TESTS=$BUILD_AND_RUN_TESTS
-              $SOURCE_DIR
-      - cmake --build . --target $DEFAULT_TARGET
+              -DWITH_TESTS=$TESTS
+              -DWITH_EXAMPLES=$EXAMPLES
+              -DWITH_BENCHMARK=$BENCHMARKS
+              -DWITH_CODE_COVERAGE=$COVERAGE
+              $SOURCE_DIRECTORY
+      - cmake --build . --target $TARGET
     artifacts:
         name: "documentation"
         paths:
-            - $BUILD_DIR/doc/api
-            - $BUILD_DIR/doc/user
+            - $BUILD_DIRECTORY/doc/api
+            - $BUILD_DIRECTORY/doc/user
         expire_in: 14 days

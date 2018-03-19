@@ -17,17 +17,12 @@ endif()
 
 add_library(Metaprog INTERFACE)
 target_compile_features(Metaprog INTERFACE cxx_std_17)
-#target_link_libraries(Metaprog INTERFACE stdc++) #gcc for mac needs - lstdc++
 target_include_directories(Metaprog INTERFACE ${METAPROG_INCLUDE_DIR})
 
 if(MSVC)
-#MSVC
     add_compile_options(/W4 /WX /permissive- /std:c++17)
-#Clang / C2
-#add_compile_options(-Wall - Werror - pedantic)
 else(MSVC)
     add_compile_options(-Wall -Wextra -Werror -pedantic)
-#add_compile_options(-Wall - Wextra - Werror - pedantic)
 endif(MSVC)
 
 option(WITH_CODE_COVERAGE "Add specific compile flag to enable proper code coverage" OFF)
