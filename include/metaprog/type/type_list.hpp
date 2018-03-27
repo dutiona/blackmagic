@@ -7,7 +7,7 @@
 
 #include <utility>
 
-namespace type::list {
+namespace metaprog::type {
 
 template <size_t I, typename T>
 struct type_item {
@@ -121,6 +121,6 @@ using next_head_t = head_t<tail<Node>>;
 template <typename Node>
 inline constexpr auto next_head_index = head_index<tail<Node>>;
 
-} // namespace type::list
+} // namespace metaprog::type
 
 #endif // METAPROG_TYPE_TYPE_LIST_HPP

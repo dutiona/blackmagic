@@ -1,9 +1,6 @@
 #pragma once
 
-#ifndef METAPROG_COMMON_HELPERS_HPP
-#define METAPROG_COMMON_HELPERS_HPP
-
-#include "../type/type.hpp"
+#include <metaprog/type/type.hpp>
 
 #ifdef __GLIBCXX__
 #include "../ctx/ctx.hpp"
@@ -13,7 +10,7 @@
 #include <string_view>
 #include <type_traits>
 
-namespace common {
+namespace metaprog::common::helpers {
 
 // nonesuch
 
@@ -45,13 +42,13 @@ struct detector<Default, Op, ParametersPack<Args...>, std::void_t<Op<Args...>>> 
 } // namespace details
 
 template <template <typename...> class Op, typename... Args>
-using is_detected = typename details::detector<nonesuch, Op, type::basic_type_holder<Args...>>::value_t;
+using is_detected = typename details::detector<nonesuch, Op, type::basic_list<Args...>>::value_t;
 
 template <template <typename...> class Op, typename... Args>
-using detected_t = typename details::detector<nonesuch, Op, type::basic_type_holder<Args...>>::type;
+using detected_t = typename details::detector<nonesuch, Op, type::basic_list<Args...>>::type;
 
 template <typename Default, template <typename...> class Op, typename... Args>
-using detected_or = details::detector<Default, Op, type::basic_type_holder<Args...>>;
+using detected_or = details::detector<Default, Op, type::basic_list<Args...>>;
 
 template <template <typename...> class Op, typename... Args>
 constexpr bool is_detected_v = is_detected<Op, Args...>::value;
@@ -84,7 +81,7 @@ struct dependent_false : std::false_type {
 template <typename... Args>
 constexpr bool dependent_false_v = static_cast<bool>(dependent_false<Args...>{});
 
-// operator==(string_view, string_view) is not constexpr yet in libstdc++
+// operator==(string_view, string_view) is not cstxpr yet in libstdc++
 constexpr bool equals(std::string_view lhs, std::string_view rhs)
 {
 #ifdef __GLIBCXX__
@@ -95,7 +92,7 @@ constexpr bool equals(std::string_view lhs, std::string_view rhs)
 }
 
 
-// all_of / any_of / none_of / count constexpr
+// all_of / any_of / none_of / count cstxpr
 template <typename... Ts>
 constexpr bool all_of(Ts... bools)
 {
@@ -122,7 +119,4 @@ constexpr size_t count(Ts... nbs)
   return (nbs + ...);
 }
 
-} // namespace common
-
-
-#endif // METAPROG_COMMON_HELPERS_HPP
+} // namespace metaprog::common::helpers

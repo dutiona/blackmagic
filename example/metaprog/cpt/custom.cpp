@@ -1,9 +1,9 @@
-#include <metaprog/cpt/cpt.hpp>
+#include <metaprog/concepts/concepts.hpp>
 
 #include <string_view>
 
 using namespace std::literals;
-namespace concepts = cpt::concepts;
+namespace concepts = metaprog::concepts;
 
 struct default_constructible_test {
 };
@@ -11,7 +11,7 @@ struct not_default_constructible_test {
   not_default_constructible_test() = delete;
 };
 
-constexpr auto cpt_map = cpt::make_concept_map(concepts::DefaultConstructible, concepts::Destructible);
+constexpr auto cpt_map = concepts::make_concept_map(concepts::DefaultConstructible, concepts::Destructible);
 
 constexpr bool f()
 {
