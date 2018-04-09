@@ -23,11 +23,11 @@ struct if_<false> {
   using type = Else;
 };
 
-namespace details {
+inline namespace details {
 template <typename T>
-struct switch_impl {
+struct switch_impl_ {
   template <typename Case, typename... Cases>
-  struct impl : call_t<if_<check_v<Case, T>>, typename Case::type, typename switch_impl<T>::template impl<Cases...>> {
+  struct impl : call_t<if_<check_v<Case, T>>, typename Case::type, typename switch_impl_<T>::template impl<Cases...>> {
   };
   template <typename Case>
   struct impl<Case> : call_t<if_<check_v<Case, T>>, typename Case::type, void> {
@@ -55,6 +55,6 @@ struct default_ {
 };
 
 template <typename T, typename... Cases>
-using switch_ = typename details::switch_impl<T>::template type<Cases...>;
+using switch_ = typename switch_impl_<T>::template type<Cases...>;
 
 } // namespace metaprog::type
