@@ -39,7 +39,7 @@ inline constexpr auto ValueType_IsNot_Reference =
 template <typename PixelType>
 using has_methods_predicate = concepts::make_predicate<
   concepts::make_condition<PixelConstructs.check<PixelType>()>,
-  concepts::make_expressions<
+  concepts::valid_expr<
     decltype(concepts::convertible_to<typename PixelType::reference>(std::declval<PixelType>().val())),
     decltype(concepts::convertible_to<typename PixelType::point_type>(std::declval<PixelType>().point())),
     decltype(concepts::convertible_to<typename PixelType::site_type>(std::declval<PixelType>().site())),

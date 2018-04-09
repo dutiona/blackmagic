@@ -19,6 +19,6 @@ using implicitly_convertible_to_predicate = make_predicate<std::is_convertible<F
 
 template <typename From, typename To>
 using explicitly_convertible_to_predicate =
-  make_predicate<make_expressions<decltype((void) static_cast<To>(std::declval<From>()()), 42)>>;
+  make_predicate<valid_expr<decltype((void) static_cast<To>(std::declval<From(*)()>()()), 42)>>;
 
 }}} // namespace metaprog::concepts::core::details
