@@ -9,6 +9,45 @@ namespace metaprog::concepts { inline namespace core { namespace helpers {
 namespace type = metaprog::type;
 
 // traits helper
+
+struct valid_expr_t
+{
+  template<typename ...T>
+  void operator()(T &&...) const;
+};
+inline constexpr auto valid_expr_v = valid_expr_t{};
+
+struct same_type_t
+{
+  template<typename T, typename U>
+  auto operator()(T &&, U &&) const -> type::call_t<type::if_<std::is_same_v<T,U>>, int>;
+};
+inline constexpr auto same_type_v = same_type_t{};
+
+struct is_true_t
+{
+  template<typename Bool>
+  auto operator()(Bool) const -> type::call_t<type::if_<Bool::value>, int>;
+};
+inline constexpr auto is_true_v = is_true_t {};
+
+ struct is_false_t
+{
+  template<typename Bool>
+  auto operator()(Bool) const -> type::call_t<type::if_<!Bool::value>, int>;
+};
+inline constexpr auto is_false_v = is_false_t{};
+
+namespace details {
+
+template <typename Ret, typename T>
+Ret returns_(T const&);
+
+}
+
+template<typename T, typename U>
+auto convertible_to(U && u) -> decltype(details::returns_<int>(static_cast<T>((U &&) u)));
+
 namespace details {
 
 template <typename Holder, typename = void>

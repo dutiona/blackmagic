@@ -67,4 +67,20 @@ using make_predicate = std::conjunction<Bs...>;
 template <bool B>
 using make_condition = std::bool_constant<B>;
 
+namespace details {
+
+template <typename Expr, typename = void>
+struct make_expressions : std::false_type {
+};
+
+template <template <typename...> class Holder, typename... Expr>
+struct make_expressions<Holder<Expr...>, std::void_t<decltype(helpers::valid_expr_v(std::declval<Expr>()...))>>
+  : std::true_type {
+};
+
+} // namespace details
+
+template <typename... Expr>
+using make_expressions = details::make_expressions<type::basic_list<Expr...>>;
+
 }} // namespace metaprog::concepts::core
