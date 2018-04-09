@@ -23,11 +23,16 @@ struct if_<false> {
   using type = Else;
 };
 
+#ifdef __GNUC__
 inline namespace details {
+#else
+namespace details {
+#endif
+
 template <typename T>
-struct switch_impl_ {
+struct switch_impl {
   template <typename Case, typename... Cases>
-  struct impl : call_t<if_<check_v<Case, T>>, typename Case::type, typename switch_impl_<T>::template impl<Cases...>> {
+  struct impl : call_t<if_<check_v<Case, T>>, typename Case::type, typename switch_impl<T>::template impl<Cases...>> {
   };
   template <typename Case>
   struct impl<Case> : call_t<if_<check_v<Case, T>>, typename Case::type, void> {
@@ -36,6 +41,7 @@ struct switch_impl_ {
   template <typename... Cases>
   using type = impl<Cases...>;
 };
+
 } // namespace details
 
 template <typename Case, typename Then>
@@ -55,6 +61,10 @@ struct default_ {
 };
 
 template <typename T, typename... Cases>
-using switch_ = typename switch_impl_<T>::template type<Cases...>;
+#ifdef __GNUC__
+using switch_ = typename switch_impl<T>::template type<Cases...>;
+#else
+using switch_ = typename details::switch_impl<T>::template type<Cases...>;
+#endif
 
 } // namespace metaprog::type
