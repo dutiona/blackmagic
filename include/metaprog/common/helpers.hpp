@@ -3,7 +3,7 @@
 #include <metaprog/type/type.hpp>
 
 #ifdef __GLIBCXX__
-#include "../ctx/ctx.hpp"
+#include "../cstxpr/cstxpr.hpp"
 #endif // __GLIBCXX__
 
 #include <functional>
@@ -85,7 +85,7 @@ constexpr bool dependent_false_v = static_cast<bool>(dependent_false<Args...>{})
 constexpr bool equals(std::string_view lhs, std::string_view rhs)
 {
 #ifdef __GLIBCXX__
-  return ctx::equal(lhs.cbegin(), lhs.cend(), rhs.cbegin(), rhs.cend());
+  return cstxpr::equal(lhs.cbegin(), lhs.cend(), rhs.cbegin(), rhs.cend());
 #else
   return lhs == rhs;
 #endif // __GLIBCXX__
