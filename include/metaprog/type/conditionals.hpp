@@ -23,7 +23,7 @@ struct if_<false> {
   using type = Else;
 };
 
-#ifdef __GNUC__
+#if (defined __GNUC__ || defined __MINGW32__ ) && !defined __clang__
 inline namespace details {
 #else
 namespace details {
@@ -61,7 +61,7 @@ struct default_ {
 };
 
 template <typename T, typename... Cases>
-#ifdef __GNUC__
+#if (defined __GNUC__ || defined __MINGW32__ ) && !defined __clang__
 using switch_ = typename switch_impl<T>::template type<Cases...>;
 #else
 using switch_ = typename details::switch_impl<T>::template type<Cases...>;
