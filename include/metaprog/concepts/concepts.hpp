@@ -1,9 +1,10 @@
 #pragma once
 
 // Core
-#include "core.hpp"
+#include "engine.hpp"
 
 // Concepts
+#include "core.hpp"
 #include "basic/concepts.hpp"
 #include "iterator/concepts.hpp"
 #include "layout/concepts.hpp"
@@ -16,10 +17,3 @@
 #include "layout/traits.hpp"
 #include "library/traits.hpp"
 #include "utility/traits.hpp"
-
-// Diagnostic
-#include "basic/diagnostic.hpp"
-#include "iterator/diagnostic.hpp"
-#include "layout/diagnostic.hpp"
-#include "library/diagnostic.hpp"
-#include "utility/diagnostic.hpp"

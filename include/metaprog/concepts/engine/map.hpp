@@ -1,20 +1,20 @@
 #pragma once
 
-#include "concept_item.hpp"
+#include "item.hpp"
 
 #include <metaprog/tuple/tuple.hpp>
 
 #include <string_view>
 #include <tuple>
 
-namespace metaprog::concepts { inline namespace core {
+namespace metaprog::concepts { inline namespace engine {
 
 namespace tuple = metaprog::tuple;
 
 namespace details {
 
 template <typename... Concepts>
-constexpr bool ensure_unique_keys(concept_item<Concepts>... concept_items)
+constexpr bool ensure_unique_keys(item<Concepts>... concept_items)
 {
   const auto items = std::make_tuple(concept_items...);
   return tuple::accumulate(
@@ -29,18 +29,18 @@ constexpr bool ensure_unique_keys(concept_item<Concepts>... concept_items)
 
 
 template <typename... Concepts>
-struct concept_map : std::tuple<concept_item<Concepts>...> {
-  constexpr concept_map(concept_item<Concepts>... concept_items)
-    : std::tuple<concept_item<Concepts>...>{concept_items...}
+struct map : std::tuple<item<Concepts>...> {
+  constexpr map(item<Concepts>... items)
+    : std::tuple<item<Concepts>...>{items...}
   {
-    if (!details::ensure_unique_keys(concept_items...)) {
+    if (!details::ensure_unique_keys(items...)) {
       throw "Duplicate keys (concept name) in the concept map : the same concept is here twice ?";
     }
   }
 
   constexpr size_t count() const
   {
-    return std::tuple_size_v<concept_map<Concepts...>>;
+    return std::tuple_size_v<map<Concepts...>>;
   }
 
   constexpr size_t count_if(std::string_view concept_name) const
@@ -96,28 +96,28 @@ struct concept_map : std::tuple<concept_item<Concepts>...> {
 };
 
 template <typename... Concepts>
-constexpr decltype(auto) make_concept_map(concept_item<Concepts>... concept_items)
+constexpr decltype(auto) make_concept_map(item<Concepts>... items)
 {
-  return concept_map<Concepts...>{concept_items...};
+  return map<Concepts...>{items...};
 }
 
 // Merge maps functions
 template <typename... ConceptLhs, typename... ConceptRhs>
-constexpr decltype(auto) merge_maps(concept_map<ConceptLhs...> map_lhs, concept_map<ConceptRhs...> map_rhs)
+constexpr decltype(auto) merge_maps(map<ConceptLhs...> map_lhs, map<ConceptRhs...> map_rhs)
 {
-  return concept_map<ConceptLhs..., ConceptRhs...>{std::tuple_cat(map_lhs, map_rhs)};
+  return map<ConceptLhs..., ConceptRhs...>{std::tuple_cat(map_lhs, map_rhs)};
 }
 
 template <typename ConceptMap>
-constexpr decltype(auto) merge_all_maps(ConceptMap concept_map)
+constexpr decltype(auto) merge_all_maps(ConceptMap map)
 {
-  return concept_map;
+  return map;
 }
 
 template <typename ConceptMap, typename... ConceptMaps>
-constexpr decltype(auto) merge_all_maps(ConceptMap map, ConceptMaps... concept_maps)
+constexpr decltype(auto) merge_all_maps(ConceptMap map, ConceptMaps... maps)
 {
-  return merge_maps(map, merge_all_maps(concept_maps...));
+  return merge_maps(map, merge_all_maps(maps...));
 }
 
-}} // namespace metaprog::concepts::core
+}} // namespace metaprog::concepts::engine

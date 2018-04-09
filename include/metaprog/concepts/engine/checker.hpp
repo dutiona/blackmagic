@@ -1,11 +1,11 @@
 #pragma once
 
-namespace metaprog::concepts { inline namespace core {
+namespace metaprog::concepts { inline namespace engine {
 
 // Helper class storing a concept to perform a check later on
 template <typename Concept>
-struct concept_checker {
-  constexpr concept_checker() = default;
+struct checker {
+  constexpr checker() = default;
 
   // force non failure at compile time when concept isn't verified
   template <typename... Args>
@@ -28,13 +28,13 @@ struct concept_checker {
 template <typename Concept, typename... Args>
 constexpr void require_concept()
 {
-  concept_checker<Concept>{}.template require<Args...>();
+  checker<Concept>{}.template require<Args...>();
 }
 
 template <typename Concept, typename... Args>
 constexpr bool check_concept()
 {
-  return concept_checker<Concept>{}.template check<Args...>();
+  return checker<Concept>{}.template check<Args...>();
 }
 
-}} // namespace metaprog::concepts::core
+}} // namespace metaprog::concepts::engine

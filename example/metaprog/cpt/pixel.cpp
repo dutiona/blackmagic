@@ -23,7 +23,7 @@ inline constexpr auto PixelConstructs =
 template <typename PixelType>
 using point_type_is_site_type_predicate = concepts::make_predicate<
   concepts::make_condition<PixelConstructs.check<PixelType>()>,
-  concepts::make_condition<std::is_same_v<typename PixelType::site_type, typename PixelType::point_type>>>;
+  concepts::make_condition<concepts::Same.check<typename PixelType::site_type, typename PixelType::point_type>()>>;
 inline constexpr auto PointType_Is_SiteType =
   concepts::make_concept_item_from_predicate<point_type_is_site_type_predicate>("PointType_Is_SiteType"sv);
 
@@ -40,11 +40,10 @@ template <typename PixelType>
 using has_methods_predicate = concepts::make_predicate<
   concepts::make_condition<PixelConstructs.check<PixelType>()>,
   concepts::make_expressions<
-    decltype(concepts::helpers::convertible_to<typename PixelType::reference>(std::declval<PixelType>().val())),
-    decltype(concepts::helpers::convertible_to<typename PixelType::point_type>(std::declval<PixelType>().point())),
-    decltype(concepts::helpers::convertible_to<typename PixelType::site_type>(std::declval<PixelType>().site())),
-    decltype(concepts::helpers::convertible_to<typename PixelType::image_type>(std::declval<PixelType>().image()))>>;
-
+    decltype(concepts::convertible_to<typename PixelType::reference>(std::declval<PixelType>().val())),
+    decltype(concepts::convertible_to<typename PixelType::point_type>(std::declval<PixelType>().point())),
+    decltype(concepts::convertible_to<typename PixelType::site_type>(std::declval<PixelType>().site())),
+    decltype(concepts::convertible_to<typename PixelType::image_type>(std::declval<PixelType>().image()))>>;
 inline constexpr auto HasMethods = concepts::make_concept_item_from_predicate<has_methods_predicate>("HasMethods"sv);
 
 } // namespace pixel_concept_traits
