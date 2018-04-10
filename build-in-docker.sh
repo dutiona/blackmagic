@@ -2,22 +2,23 @@
 
 set -e
 
-BUILD_DIR="build-in-docker"
-CMAKE_GENERATOR="Ninja"
 COMPILER="gcc"
-FORCE_REBUILD="OFF"
-RELEASE_TYPE="Debug"
+CMAKE_GENERATOR="Ninja"
+BUILD_DIRECTORY="build-in-docker"
 SOURCE_DIRECTORY=".."
-DEFAULT_TARGET=""
-TOOLCHAIN_ARGS=""
-VERBOSE="ON"
-BUILD_WITH_CODE_COVERAGE="OFF"
-BUILD_AND_RUN_EXAMPLES="ON"
-BUILD_AND_RUN_BENCHMARK="ON"
+TARGET=""
+RELEASE_TYPE="Debug"
+CLEAN="OFF"
+COVERAGE="OFF"
+EXAMPLES="OFF"
+BENCHMARK="OFF"
+DOCUMENTATION="OFF"
+
 USAGE="$(basename "$0") [OPTIONS] -- execute a build toolchain
 
 where:
     -h --help                       show this help text
+
     -c --compiler gcc|clang         select the compiler to use
                                     default = gcc
     -g --cmake-generator Generator  use provided cmake generator
@@ -31,18 +32,15 @@ where:
     -r --release-type ReleaseType   build type. Release|Debug|RelWithDebInfo|MinSizeRel
                                     default = Debug
 
-    -v --verbose                    if passed, enable verbose to underlying commands
-
-    -f --force                      empty build directory to force a full rebuild
+    -f --clean                      empty build directory to force a full rebuild
 
     -o --coverage                   run gcovr coverage tool
 
     -m --benchmark                  build the benchmark suite
 
     -e --examples                   build the examples
-    
-    --                              end of arguments for script, pass the rest to the toolchain via cmake -- ...
-                                    useful for passing -jX to make
+
+    -d --doc                        build the documentation
     "
 
 while [[ $# -gt 0 ]]; do
@@ -52,24 +50,25 @@ while [[ $# -gt 0 ]]; do
 		echo "$USAGE"
 		exit
 		;;
-	-f | --force)
-		FORCE_REBUILD="ON"
-		shift
-		;;
-	-v | --verbose)
-		VERBOSE="ON"
+	-f | --clean)
+		CLEAN="ON"
 		shift
 		;;
 	-o | --coverage)
-		BUILD_WITH_CODE_COVERAGE="OFF"
+	    # FIXME : not working
+		# COVERAGE="ON"
 		shift
 		;;
 	-m | --benchmark)
-		BUILD_AND_RUN_BENCHMARK="OFF"
+		BENCHMARK="ON"
 		shift
 		;;
 	-e | --examples)
-		BUILD_AND_RUN_EXAMPLES="OFF"
+		EXAMPLES="ON"
+		shift
+		;;
+	-d | --doc)
+		DOCUMENTATION="ON"
 		shift
 		;;
 	-c | --compiler)
@@ -81,7 +80,7 @@ while [[ $# -gt 0 ]]; do
 		shift 2
 		;;
 	-b | --build-directory)
-		BUILD_DIR="$2"
+		BUILD_DIRECTORY="$2"
 		shift 2
 		;;
 	-s | --source-directory)
@@ -89,7 +88,7 @@ while [[ $# -gt 0 ]]; do
 		shift 2
 		;;
 	-t | --target)
-		DEFAULT_TARGET="$2"
+		TARGET="$2"
 		shift 2
 		;;
 	-r | --release-type)
@@ -100,7 +99,6 @@ while [[ $# -gt 0 ]]; do
 		shift
 		;;
 	*)
-		TOOLCHAIN_ARGS="$TOOLCHAIN_ARGS $1"
 		shift
 		;;
 	esac
@@ -111,25 +109,64 @@ if [ "$COMPILER" == "gcc" ]; then
 	CC="gcc"
 	CXX="g++"
 else
-	CC="clang"
-	CXX="clang++"
+	CC="clang-6.0"
+	CXX="clang++-6.0"
 fi
 
-# docker call
-docker run --name docker-builder \
-	--interactive --tty --detach --rm \
-	--mount type=bind,source="$(pwd)",target=/workspace \
-	mroynard/ubuntu-toolset:testing
-docker exec docker-builder sh -c "export CC=$CC && export CXX=$CXX && $CXX --version"
-docker exec docker-builder sh -c "mkdir -p $BUILD_DIR && cd $BUILD_DIR"
-# if [ "$FORCE_REBUILD" == "ON" ]; then docker exec docker-builder sh -c "rm -rf ./*"; fi
-if [ "$VERBOSE" == "ON" ]; then docker exec docker-builder sh -c "set -x"; fi
-docker exec docker-builder sh -c \
-	"cmake -G $CMAKE_GENERATOR " \
-	"-DWITH_CODE_COVERAGE=$BUILD_WITH_CODE_COVERAGE " \
-	"-DWITH_EXAMPLES=$BUILD_AND_RUN_EXAMPLES " \
-	"-DWITH_BENCHMARK=$BUILD_AND_RUN_BENCHMARK " \
-	"$SOURCE_DIRECTORY " \
-	"-- $TOOLCHAIN_ARGS"
-docker exec docker-builder sh -c "cmake --build . --target $DEFAULT_TARGET --config $RELEASE_TYPE"
-docker stop docker-builder
+
+echo "*** BUILDING BINARIES ***"
+# cleaning if needed
+if [ "$CLEAN" == "ON" ]; then
+	rm -rf $BUILD_DIRECTORY
+fi
+
+# starting container
+CONTAINER_ID=$(docker run -itd --rm --mount type=bind,source="$(pwd)",target=/workspace mroynard/ubuntu-toolset:local)
+trap "docker exec $CONTAINER_ID true 2> /dev/null && echo 'Aborting...' && docker stop $CONTAINER_ID > /dev/null" EXIT
+echo "Running in container $CONTAINER_ID"
+
+# making build directory
+WORKDIR=$(docker exec $CONTAINER_ID sh -c "mkdir -p $BUILD_DIRECTORY && cd $BUILD_DIRECTORY && pwd")
+echo "Building in $BUILD_DIRECTORY (host) -> $WORKDIR (docker)"
+
+# cleaning if needed
+if [ "$CLEAN" == "ON" ]; then
+	docker exec --workdir $WORKDIR $CONTAINER_ID sh -c "rm -rf ./*"
+fi
+
+# configure & make
+docker exec -w $WORKDIR $CONTAINER_ID sh -c "export CC=$CC && export CXX=$CXX && $CXX --version && cmake -G $CMAKE_GENERATOR -DWITH_CODE_COVERAGE=$COVERAGE -DWITH_EXAMPLES=$EXAMPLES -DWITH_BENCHMARK=$BENCHMARK $SOURCE_DIRECTORY"
+docker exec -w $WORKDIR $CONTAINER_ID sh -c "cmake --build . --target $TARGET --config $RELEASE_TYPE"
+
+# stopping container
+echo "Stopping container $CONTAINER_ID"
+docker stop $CONTAINER_ID > /dev/null
+
+# Building documentation
+if [ "$DOCUMENTATION" == "ON" ]; then
+
+    echo "*** BUILDING DOCUMENTATION ***"
+
+    CONTAINER_ID=$(docker run -itd --rm --mount type=bind,source="$(pwd)",target=/workspace mroynard/ubuntu-doctoolset:local)
+    trap "docker exec $CONTAINER_ID true 2> /dev/null && echo 'Aborting...' && docker stop $CONTAINER_ID > /dev/null" EXIT
+    echo "Running in container $CONTAINER_ID"
+
+    # making build directory
+    DOC_BUILD_DIR="$BUILD_DIRECTORY-doc"
+    WORKDIR=$(docker exec $CONTAINER_ID sh -c "mkdir -p $DOC_BUILD_DIR && cd $DOC_BUILD_DIR && pwd")
+    echo "Building in $DOC_BUILD_DIR (host) -> $WORKDIR (docker)"
+
+    # cleaning if needed
+    if [ "$CLEAN" == "ON" ]; then
+        docker exec --workdir $WORKDIR $CONTAINER_ID sh -c "rm -rf ./*"
+    fi
+
+    # configure & make
+    docker exec -w $WORKDIR $CONTAINER_ID sh -c "cmake -G $CMAKE_GENERATOR -DWITH_CODE_COVERAGE=OFF -DWITH_EXAMPLES=OFF -DWITH_BENCHMARK=OFF -DWITH_TESTS=OFF $SOURCE_DIRECTORY"
+    docker exec -w $WORKDIR $CONTAINER_ID sh -c "cmake --build . --target docs"
+
+    # stopping container
+    echo "Stopping container $CONTAINER_ID"
+    docker stop $CONTAINER_ID > /dev/null
+
+fi

@@ -1,9 +1,9 @@
-#include <metaprog/cpt/cpt.hpp>
+#include <metaprog/concepts/concepts.hpp>
 
 #include <string_view>
 #include <type_traits>
 
-namespace concepts = cpt::concepts;
+namespace concepts = metaprog::concepts;
 
 template <typename>
 struct Image {

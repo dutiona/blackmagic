@@ -5,7 +5,8 @@
             "includePath": [
                 "/usr/include",
                 "/usr/local/include",
-                "${workspaceRoot}"
+                "${workspaceRoot}",
+                "${workspaceRoot}/include"
             ],
             "defines": [],
             "intelliSenseMode": "clang-x64",
@@ -13,7 +14,8 @@
                 "path": [
                     "/usr/include",
                     "/usr/local/include",
-                    "${workspaceRoot}"
+                    "${workspaceRoot}",
+                "${workspaceRoot}/include"
                 ],
                 "limitSymbolsToIncludedHeaders": true,
                 "databaseFilename": ""
@@ -34,7 +36,8 @@
                 "/usr/include/x86_64-linux-gnu/C++/6",
                 "/usr/lib/gcc/x86_64-linux-gnu/6/include",
                 "/usr/lib/gcc/x86_64-linux-gnu/6/include-fixed",
-                "${workspaceRoot}"
+                "${workspaceRoot}",
+                "${workspaceRoot}/include"
             ],
             "defines": [],
             "intelliSenseMode": "clang-x64",
@@ -48,8 +51,9 @@
                     "/usr/include/x86_64-linux-gnu/C++/6",
                     "/usr/lib/gcc/x86_64-linux-gnu/6/include",
                     "/usr/lib/gcc/x86_64-linux-gnu/6/include-fixed",
-                    "${workspaceRoot}"
-                    ],
+                    "${workspaceRoot}",
+                "${workspaceRoot}/include"
+                ],
                 "databaseFilename": "",
                 "limitSymbolsToIncludedHeaders": true
             }
@@ -58,7 +62,8 @@
             "name": "Win32",
             "includePath": [
                 "C:/Program Files (x86)/Microsoft Visual Studio 14.0/VC/include",
-                "${workspaceRoot}"
+                "${workspaceRoot}",
+                "${workspaceRoot}/include"
             ],
             "defines": [
                 "_DEBUG",
@@ -68,11 +73,14 @@
             "browse": {
                 "path": [
                     "C:/Program Files (x86)/Microsoft Visual Studio 14.0/VC/include",
-                    "${workspaceRoot}"
+                    "${workspaceRoot}",
+                    "${workspaceRoot}/include"
                 ],
                 "limitSymbolsToIncludedHeaders": true,
                 "databaseFilename": ""
-            }
+            },
+            "cStandard": "c11",
+            "cppStandard": "c++17"
         }
     ],
     "version": 3

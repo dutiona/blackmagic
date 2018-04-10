@@ -21,5 +21,16 @@
     "cSpell.language": "en,en-GB,en-US,fr-FR,fr",
     "cSpell.enabled": true,
     "cquery.cacheDirectory": "${workspaceFolder}/.vscode/cquery_cached_index/",
-    "cquery.launch.workingDirectory": "/Users/dutiona/Dev/vendor/cquery/build"
+    "cquery.launch.workingDirectory": "/Users/dutiona/Dev/vendor/cquery/build",
+    "C_Cpp.intelliSenseEngineFallback": "Enabled",
+    "files.associations": {
+        "functional": "cpp",
+        "tuple": "cpp",
+        "type_traits": "cpp",
+        "utility": "cpp",
+        "xmemory0": "cpp",
+        "xstddef": "cpp",
+        "xtr1common": "cpp",
+        "xutility": "cpp"
+    }
 }

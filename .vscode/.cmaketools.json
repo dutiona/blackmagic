@@ -1,5 +1,7 @@
 {
   "variant": null,
-  "activeEnvironments": [],
+  "activeEnvironments": [
+    "Visual Studio Community 2017 - amd64"
+  ],
   "codeModel": null
 }

@@ -1,2 +1,2 @@
-add_subdirectory(cpt)
-add_subdirectory(ctx)
+add_subdirectory(concepts)
+add_subdirectory(cstxpr)

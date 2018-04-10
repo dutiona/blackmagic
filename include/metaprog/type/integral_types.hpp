@@ -1,12 +1,9 @@
 #pragma once
 
-#ifndef METAPROG_TYPE_INTEGRAL_TYPE_HPP
-#define METAPROG_TYPE_INTEGRAL_TYPE_HPP
-
 #include <cstddef>
 #include <type_traits>
 
-namespace type::literals {
+namespace metaprog::type {
 
 template <bool b>
 using bool_ = std::integral_constant<bool, b>;
@@ -35,7 +32,4 @@ using unsigned_long_long_ = std::integral_constant<unsigned long long, ull>;
 template <size_t s>
 using size_t_ = std::integral_constant<size_t, s>;
 
-} // namespace type::literals
-
-
-#endif // METAPROG_TYPE_INTEGRAL_TYPE_HPP
+} // namespace metaprog::type

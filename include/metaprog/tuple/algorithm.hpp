@@ -1,14 +1,13 @@
 #pragma once
 
-#ifndef METAPROG_TUPLE_ALGORITHM_HPP_
-#define METAPROG_TUPLE_ALGORITHM_HPP_
-
-#include "../common/common.hpp"
+#include <metaprog/common/common.hpp>
 
 #include <tuple>
 #include <type_traits>
 
-namespace tuple {
+namespace metaprog::tuple { inline namespace algorithm {
+
+namespace helpers = metaprog::common::helpers;
 
 namespace details {
 
@@ -17,19 +16,19 @@ inline constexpr auto identity_func = [](auto&& a) { return std::forward<decltyp
 template <typename Func, typename... Ts, size_t... I>
 constexpr bool all_of(std::tuple<Ts...> tpl, Func&& f, std::index_sequence<I...>)
 {
-  return common::all_of(std::forward<Func>(f)(std::get<I>(tpl))...);
+  return helpers::all_of(std::forward<Func>(f)(std::get<I>(tpl))...);
 }
 
 template <typename Func, typename... Ts, size_t... I>
 constexpr bool any_of(std::tuple<Ts...> tpl, Func&& f, std::index_sequence<I...>)
 {
-  return common::any_of(std::forward<Func>(f)(std::get<I>(tpl))...);
+  return helpers::any_of(std::forward<Func>(f)(std::get<I>(tpl))...);
 }
 
 template <typename Func, typename... Ts, size_t... I>
 constexpr bool count(std::tuple<Ts...> tpl, Func&& f, std::index_sequence<I...>)
 {
-  return common::count(std::forward<Func>(f)(std::get<I>(tpl))...);
+  return helpers::count(std::forward<Func>(f)(std::get<I>(tpl))...);
 }
 
 } // namespace details
@@ -111,8 +110,7 @@ constexpr decltype(auto) transform_impl(const std::tuple<Ts...>& tpl, std::index
 }
 
 template <typename T, typename F, typename... Args, typename... Ts, size_t... I>
-constexpr auto accumulate_impl(T&& init, const std::tuple<Ts...>& tpl, std::index_sequence<I...>, F&& func,
-                               Args&&... args)
+constexpr T accumulate_impl(T&& init, const std::tuple<Ts...>& tpl, std::index_sequence<I...>, F&& func, Args&&... args)
 {
   ((init = std::forward<F>(func)(std::forward<T>(init), std::get<I>(tpl), std::forward<Args>(args)...)), ...);
   return init;
@@ -231,6 +229,4 @@ constexpr decltype(auto) push_back(const std::tuple<Ts...>& tpl, const std::pair
   return std::tuple_cat(tpl, std::make_tuple(e));
 }
 
-} // namespace tuple
-
-#endif // METAPROG_TUPLE_ALGORITHM_HPP_
+}} // namespace metaprog::tuple::algorithm
