@@ -2,182 +2,173 @@
 
 #include "../engine.hpp"
 
-#include "details/concepts_impl.hpp"
+#include "../engine.hpp"
+#include "traits.hpp"
 
 #include <string_view>
 
 namespace metaprog::concepts { inline namespace utility {
 
 using namespace std::literals;
+namespace traits = metaprog::traits;
 
 // member access
 
 // indirection
-inline constexpr auto Indirection = make_concept_item_from_predicate<details::indirection_impl>("Indirection"sv);
+inline constexpr auto Indirection = is_true<traits::is_indirection>("Indirection"sv);
 
 // address_of
-inline constexpr auto AddressOf = make_concept_item_from_predicate<details::address_of_impl>("AddressOf"sv);
+inline constexpr auto AddressOf = is_true<traits::is_address_of>("AddressOf"sv);
 
 // subscript
-inline constexpr auto Subscript = make_concept_item_from_predicate<details::subscript_impl>("Subscript"sv);
+inline constexpr auto Subscript = is_true<traits::is_subscript>("Subscript"sv);
 
 // pointer_to_member_of_object
 inline constexpr auto PointerToMemberOfObject =
-  make_concept_item_from_predicate<details::pointer_to_member_of_object_impl>("PointerToMemberOfObject"sv);
+  is_true<traits::is_pointer_to_member_of_object>("PointerToMemberOfObject"sv);
 
 // pointer_to_member_of_pointer
 inline constexpr auto PointerToMemberOfPointer =
-  make_concept_item_from_predicate<details::pointer_to_member_of_pointer_impl>("PointerToMemberOfPointer"sv);
+  is_true<traits::is_pointer_to_member_of_pointer>("PointerToMemberOfPointer"sv);
 
 
 // assignement
 
 // assignable
-inline constexpr auto Assignable = make_concept_item_from_predicate<details::assignable_impl>("Assignable"sv);
+inline constexpr auto Assignable = is_true<traits::is_assignable>("Assignable"sv);
 
 // plus_assignable
-inline constexpr auto PlusAssignable =
-  make_concept_item_from_predicate<details::plus_assignable_impl>("PlusAssignable"sv);
+inline constexpr auto PlusAssignable = is_true<traits::is_plus_assignable>("PlusAssignable"sv);
 
 // less_assignable
-inline constexpr auto LessAssignable =
-  make_concept_item_from_predicate<details::less_assignable_impl>("LessAssignable"sv);
+inline constexpr auto LessAssignable = is_true<traits::is_less_assignable>("LessAssignable"sv);
 
 // mult_assignable
-inline constexpr auto MultAssignable =
-  make_concept_item_from_predicate<details::mult_assignable_impl>("MultAssignable"sv);
+inline constexpr auto MultAssignable = is_true<traits::is_mult_assignable>("MultAssignable"sv);
 
 // div_assignable
-inline constexpr auto DivAssignable = make_concept_item_from_predicate<details::div_assignable_impl>("DivAssignable"sv);
+inline constexpr auto DivAssignable = is_true<traits::is_div_assignable>("DivAssignable"sv);
 
 // mod_assignable
-inline constexpr auto ModAssignable = make_concept_item_from_predicate<details::mod_assignable_impl>("ModAssignable"sv);
+inline constexpr auto ModAssignable = is_true<traits::is_mod_assignable>("ModAssignable"sv);
 
 // and_assignable
-inline constexpr auto AndAssignable = make_concept_item_from_predicate<details::and_assignable_impl>("AndAssignable"sv);
+inline constexpr auto AndAssignable = is_true<traits::is_and_assignable>("AndAssignable"sv);
 
 // or_assignable
-inline constexpr auto OrAssignable = make_concept_item_from_predicate<details::or_assignable_impl>("OrAssignable"sv);
+inline constexpr auto OrAssignable = is_true<traits::is_or_assignable>("OrAssignable"sv);
 
 // xor_assignable
-inline constexpr auto XorAssignable = make_concept_item_from_predicate<details::xor_assignable_impl>("XorAssignable"sv);
+inline constexpr auto XorAssignable = is_true<traits::is_xor_assignable>("XorAssignable"sv);
 
 // lshift_assignable
-inline constexpr auto LshiftAssignable =
-  make_concept_item_from_predicate<details::lshift_assignable_impl>("LshiftAssignable"sv);
+inline constexpr auto LshiftAssignable = is_true<traits::is_lshift_assignable>("LshiftAssignable"sv);
 
 // rshift_assignable
-inline constexpr auto RshiftAssignable =
-  make_concept_item_from_predicate<details::rshift_assignable_impl>("RshiftAssignable"sv);
+inline constexpr auto RshiftAssignable = is_true<traits::is_rshift_assignable>("RshiftAssignable"sv);
 
 
 // arithmetic
 
 // positive
-inline constexpr auto Positive = make_concept_item_from_predicate<details::positive_impl>("Positive"sv);
+inline constexpr auto Positive = is_true<traits::is_positive>("Positive"sv);
 
 // negative
-inline constexpr auto Negative = make_concept_item_from_predicate<details::negative_impl>("Negative"sv);
+inline constexpr auto Negative = is_true<traits::is_negative>("Negative"sv);
 
 // not
-inline constexpr auto Not = make_concept_item_from_predicate<details::not_impl>("Not"sv);
+inline constexpr auto Not = is_true<traits::is_not>("Not"sv);
 
 // plus
-inline constexpr auto Plus = make_concept_item_from_predicate<details::plus_impl>("Plus"sv);
+inline constexpr auto Plus = is_true<traits::is_plus>("Plus"sv);
 
 // less
-inline constexpr auto Less = make_concept_item_from_predicate<details::less_impl>("Less"sv);
+inline constexpr auto Less = is_true<traits::is_less>("Less"sv);
 
 // mult
-inline constexpr auto Mult = make_concept_item_from_predicate<details::mult_impl>("Mult"sv);
+inline constexpr auto Mult = is_true<traits::is_mult>("Mult"sv);
 
 // div
-inline constexpr auto Div = make_concept_item_from_predicate<details::div_impl>("Div"sv);
+inline constexpr auto Div = is_true<traits::is_div>("Div"sv);
 
 // mod
-inline constexpr auto Mod = make_concept_item_from_predicate<details::mod_impl>("Mod"sv);
+inline constexpr auto Mod = is_true<traits::is_mod>("Mod"sv);
 
 // and
-inline constexpr auto And = make_concept_item_from_predicate<details::and_impl>("And"sv);
+inline constexpr auto And = is_true<traits::is_and>("And"sv);
 
 // or
-inline constexpr auto Or = make_concept_item_from_predicate<details::or_impl>("Or"sv);
+inline constexpr auto Or = is_true<traits::is_or>("Or"sv);
 
 // xor
-inline constexpr auto Xor = make_concept_item_from_predicate<details::xor_impl>("Xor"sv);
+inline constexpr auto Xor = is_true<traits::is_xor>("Xor"sv);
 
 // lshift
-inline constexpr auto Lshift = make_concept_item_from_predicate<details::lshift_impl>("Lshift"sv);
+inline constexpr auto Lshift = is_true<traits::is_lshift>("Lshift"sv);
 
 // rshift
-inline constexpr auto Rshift = make_concept_item_from_predicate<details::rshift_impl>("Rshift"sv);
+inline constexpr auto Rshift = is_true<traits::is_rshift>("Rshift"sv);
 
 
 // increment / decrement
 
 // pre_incrementable
-inline constexpr auto PreIncrementable =
-  make_concept_item_from_predicate<details::pre_incrementable_impl>("PreIncrementable"sv);
+inline constexpr auto PreIncrementable = is_true<traits::is_pre_incrementable>("PreIncrementable"sv);
 
 // post_incrementable
-inline constexpr auto PostIncrementable =
-  make_concept_item_from_predicate<details::post_incrementable_impl>("PostIncrementable"sv);
+inline constexpr auto PostIncrementable = is_true<traits::is_post_incrementable>("PostIncrementable"sv);
 
 // pre_decrementable
-inline constexpr auto PreDecrementable =
-  make_concept_item_from_predicate<details::pre_decrementable_impl>("PreDecrementable"sv);
+inline constexpr auto PreDecrementable = is_true<traits::is_pre_decrementable>("PreDecrementable"sv);
 
 // post_decrementable
-inline constexpr auto PostDecrementable =
-  make_concept_item_from_predicate<details::post_decrementable_impl>("PostDecrementable"sv);
+inline constexpr auto PostDecrementable = is_true<traits::is_post_decrementable>("PostDecrementable"sv);
 
 
 // comparison
 
 // equality
-inline constexpr auto Equality = make_concept_item_from_predicate<details::equality_impl>("Equality"sv);
+inline constexpr auto Equality = is_true<traits::is_equality>("Equality"sv);
 
 // inequality
-inline constexpr auto Inequality = make_concept_item_from_predicate<details::inequality_impl>("Inequality"sv);
+inline constexpr auto Inequality = is_true<traits::is_inequality>("Inequality"sv);
 
 // less_than
-inline constexpr auto LessThan = make_concept_item_from_predicate<details::less_than_impl>("LessThan"sv);
+inline constexpr auto LessThan = is_true<traits::is_less_than>("LessThan"sv);
 
 // less_equal_than
-inline constexpr auto LessEqualThan =
-  make_concept_item_from_predicate<details::less_equal_than_impl>("LessEqualThan"sv);
+inline constexpr auto LessEqualThan = is_true<traits::is_less_equal_than>("LessEqualThan"sv);
 
 // greater_than
-inline constexpr auto GreaterThan = make_concept_item_from_predicate<details::greater_than_impl>("GreaterThan"sv);
+inline constexpr auto GreaterThan = is_true<traits::is_greater_than>("GreaterThan"sv);
 
 // greater_equal_than
-inline constexpr auto GreaterEqualThan =
-  make_concept_item_from_predicate<details::greater_equal_than_impl>("GreaterEqualThan"sv);
+inline constexpr auto GreaterEqualThan = is_true<traits::is_greater_equal_than>("GreaterEqualThan"sv);
 
 
 // logical
 
 // logical_not
-inline constexpr auto LogicalNot = make_concept_item_from_predicate<details::logical_not_impl>("LogicalNot"sv);
+inline constexpr auto LogicalNot = is_true<traits::is_logical_not>("LogicalNot"sv);
 
 // logical_and
-inline constexpr auto LogicalAnd = make_concept_item_from_predicate<details::logical_and_impl>("LogicalAnd"sv);
+inline constexpr auto LogicalAnd = is_true<traits::is_logical_and>("LogicalAnd"sv);
 // logical_or
-inline constexpr auto LogicalOr = make_concept_item_from_predicate<details::logical_or_impl>("LogicalOr"sv);
+inline constexpr auto LogicalOr = is_true<traits::is_logical_or>("LogicalOr"sv);
 
 
 // other
 
 // comma
-inline constexpr auto Comma = make_concept_item_from_predicate<details::comma_impl>("Comma"sv);
+inline constexpr auto Comma = is_true<traits::is_comma>("Comma"sv);
 
 // ternary
-inline constexpr auto Ternary = make_concept_item_from_predicate<details::ternary_impl>("Ternary"sv);
+inline constexpr auto Ternary = is_true<traits::is_ternary>("Ternary"sv);
 
 // invocable
-inline constexpr auto Invocable = make_concept_item_from_predicate<details::invocable_impl>("Invocable"sv);
+inline constexpr auto Invocable = is_true<traits::is_invocable>("Invocable"sv);
 
 // invocable r
-inline constexpr auto InvocableR = make_concept_item_from_predicate<details::invocable_r_impl>("InvocableR"sv);
+inline constexpr auto InvocableR = is_true<traits::is_invocable_r>("InvocableR"sv);
 
 }} // namespace metaprog::concepts::utility

@@ -12,25 +12,23 @@
  *
  */
 
-#include "details/concepts_impl.hpp"
-
 #include "../engine.hpp"
+#include "traits.hpp"
 
 #include <string_view>
 
 namespace metaprog::concepts { inline namespace layout {
 
 using namespace std::literals;
+namespace traits = metaprog::traits;
 
 // trivially copyable
-inline constexpr auto TriviallyCopyable =
-  make_concept_item_from_predicate<details::trivially_copyable_impl>("TriviallyCopyable"sv);
+inline constexpr auto TriviallyCopyable = is_true<traits::is_trivially_copyable>("TriviallyCopyable"sv);
 
 // trivial
-inline constexpr auto Trivial = make_concept_item_from_predicate<details::trivial_impl>("Trivial"sv);
+inline constexpr auto Trivial = is_true<traits::is_trivial>("Trivial"sv);
 
 // standard layout
-inline constexpr auto StandardLayout =
-  make_concept_item_from_predicate<details::standard_layout_impl>("StandardLayout"sv);
+inline constexpr auto StandardLayout = is_true<traits::is_standard_layout>("StandardLayout"sv);
 
 }} // namespace metaprog::concepts::layout

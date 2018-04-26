@@ -9,8 +9,8 @@
 namespace metaprog::concepts { inline namespace core {
 
 using namespace std::literals;
-
-inline constexpr auto Same = make_concept_item_from_predicate<details::same_predicate>("Same"sv);
+/*
+inline constexpr auto Same = same("Same"sv);
 
 inline constexpr auto ImplicitlyConvertibleTo =
   make_concept_item_from_predicate<details::implicitly_convertible_to_predicate>("ImplicitlyConvertibleTo"sv);
@@ -19,7 +19,7 @@ inline constexpr auto ExplicitlyConvertibleTo =
   make_concept_item_from_predicate<details::explicitly_convertible_to_predicate>("ExplicitlyConvertibleTo"sv);
 
 inline constexpr auto ConvertibleTo = make_concept_map(ImplicitlyConvertibleTo, ExplicitlyConvertibleTo);
-
+*/
 /*
 struct DerivedFrom {
   template <typename T, typename U>

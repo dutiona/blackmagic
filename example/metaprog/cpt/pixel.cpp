@@ -16,17 +16,17 @@ struct pixel_constructs {
   using image_type_construct = typename PixelType::image_type;
 };
 
-inline constexpr auto PixelConstructs =
-  concepts::make_concept_item_from_construct<pixel_constructs>("PixelConstructs"sv);
+inline constexpr auto PixelConstructs = concepts::valid_expr<pixel_constructs>("PixelConstructs"sv);
 
 // point_type alias site_type
 template <typename PixelType>
-using point_type_is_site_type_predicate = concepts::make_predicate<
-  concepts::make_condition<PixelConstructs.check<PixelType>()>,
-  concepts::make_condition<concepts::Same.check<typename PixelType::site_type, typename PixelType::point_type>()>>;
-inline constexpr auto PointType_Is_SiteType =
-  concepts::make_concept_item_from_predicate<point_type_is_site_type_predicate>("PointType_Is_SiteType"sv);
+using point_type = typename PixelType::point_type;
+template <typename PixelType>
+using site_type = typename PixelType::site_type;
 
+inline constexpr auto PointType_Is_SiteType =
+  concepts::make_concept_map(PixelConstructs, concepts::same<point_type, site_type>("PointType_Is_SiteType"sv));
+/*
 // value type is not reference
 template <typename PixelType>
 using value_type_is_not_a_reference_predicate = concepts::make_predicate<
@@ -45,12 +45,12 @@ using has_methods_predicate = concepts::make_predicate<
     decltype(concepts::convertible_to<typename PixelType::site_type>(std::declval<PixelType>().site())),
     decltype(concepts::convertible_to<typename PixelType::image_type>(std::declval<PixelType>().image()))>>;
 inline constexpr auto HasMethods = concepts::make_concept_item_from_predicate<has_methods_predicate>("HasMethods"sv);
-
+*/
 } // namespace pixel_concept_traits
 
 inline constexpr auto Pixel =
-  concepts::make_concept_map(pixel_concept_traits::PixelConstructs, pixel_concept_traits::PointType_Is_SiteType,
-                             pixel_concept_traits::ValueType_IsNot_Reference, pixel_concept_traits::HasMethods);
+  concepts::make_concept_map(pixel_concept_traits::PixelConstructs/*, pixel_concept_traits::PointType_Is_SiteType,
+                             pixel_concept_traits::ValueType_IsNot_Reference, pixel_concept_traits::HasMethods*/);
 
 namespace concept_diagnostic_traits {
 
@@ -60,9 +60,9 @@ constexpr void diagnostic(decltype(Pixel))
   static_assert(Pixel.check_at<PixelType>("PixelConstructs"sv), "PixelConstructs attribute missing");
 
   static_assert(Pixel.check_at<PixelType>("PointType_Is_SiteType"sv), "point_type should alias site_type");
-  static_assert(Pixel.check_at<PixelType>("ValueType_IsNot_Reference"sv), "value_type should not be a reference");
+  //static_assert(Pixel.check_at<PixelType>("ValueType_IsNot_Reference"sv), "value_type should not be a reference");
 
-  static_assert(Pixel.check_at<PixelType>("HasMethods"sv), "methods missing or ill-defined");
+  //static_assert(Pixel.check_at<PixelType>("HasMethods"sv), "methods missing or ill-defined");
 }
 
 } // namespace concept_diagnostic_traits

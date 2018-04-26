@@ -11,16 +11,14 @@ struct checker {
   template <typename... Args>
   constexpr bool check() const
   {
-    const auto silent_failure = true; // force no trace (i.e. no static_assert) upon failure
-    return Concept::template value<silent_failure, Args...>;
+    return Concept::template value<Args...>;
   }
 
   // force fail at compile time when concept isn't verified
   template <typename... Args>
   constexpr void require() const
   {
-    const auto silent_failure = false; // force trace (i.e. static_assert) upon failure
-    static_assert(Concept::template value<silent_failure, Args...>, "Concept assertion error");
+    static_assert(Concept::template value<Args...>, "Concept assertion error");
   }
 };
 

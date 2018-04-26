@@ -8,155 +8,232 @@ namespace metaprog::concepts { inline namespace utility {
 
 namespace type = metaprog::type;
 
-struct valid_expr_t {
-  template <typename... T>
-  void operator()(T&&...) const;
-};
-inline constexpr auto valid_expr_v = valid_expr_t{};
-
-struct same_type_t {
-  template <typename T, typename U>
-  auto operator()(T&&, U&&) const -> type::call_t<type::if_<std::is_same_v<T, U>>, int>;
-};
-inline constexpr auto same_type_v = same_type_t{};
-
-struct is_true_t {
-  template <typename Bool>
-  auto operator()(Bool) const -> type::call_t<type::if_<Bool::value>, int>;
-};
-inline constexpr auto is_true_v = is_true_t{};
-
-struct is_false_t {
-  template <typename Bool>
-  auto operator()(Bool) const -> type::call_t<type::if_<!Bool::value>, int>;
-};
-inline constexpr auto is_false_v = is_false_t{};
-
+// Basic verification primitives
 namespace details {
 
-template <typename Ret, typename T>
-Ret returns_(T const&);
-}
-
-template <typename T, typename U>
-auto convertible_to(U&& u) -> decltype(details::returns_<int>(static_cast<T>((U &&) u)));
-
-
-// traits helper
-
-namespace details {
-
-template <typename Holder, typename = void>
-struct make_trait_from_constructs_impl : std::false_type {
-};
-template <template <typename... Constraints> class Holder, typename... Constraints>
-struct make_trait_from_constructs_impl<Holder<Constraints...>, std::void_t<Constraints...>> : std::true_type {
+template <typename T, typename = void>
+struct valid_expr_impl : std::false_type {
 };
 
-template <typename Holder, typename = void>
-struct make_trait_from_predicates_impl : std::false_type {
+template <typename T>
+struct valid_expr_impl<T, std::void_t<T>> : std::true_type {
 };
-template <template <typename... Predicates> class Holder, typename... Predicates>
-struct make_trait_from_predicates_impl<Holder<Predicates...>, std::enable_if_t<std::conjunction_v<Predicates...>>>
-  : std::true_type {
-};
-
-} // namespace details
 
 template <typename... Constraints>
-using make_trait_from_constructs = details::make_trait_from_constructs_impl<type::list<Constraints...>>;
-
-template <typename... Predicates>
-using make_trait_from_predicates = details::make_trait_from_predicates_impl<type::list<Predicates...>>;
-
-// TODO/FIXME investigate this issue.
-// We can't use :
-// template <typename T>
-// struct is_mytrait : helpers::make_trait_from_constructs<decltype(...<T>...)> {};
-// yet because it's not a SFINAE context... :(
-// Maybe in a fully fledge c++17/20 compiler with the extension of SFINAE context...
-// Or maybe it's a compiler bug.
-
-
-// concept helpers
-namespace details {
-
-template <bool SilentFailure, template <typename...> class Constraint, typename ParametersPack, typename = void>
-struct make_concept_from_construct_impl : std::false_type {
-  static_assert(SilentFailure, "Concept checking failed.");
+struct valid_exprs_impl : std::conjunction<valid_expr_impl<Constraints>...> {
 };
 
-template <bool SilentFailure, template <typename...> class Constraint, template <typename...> class ParametersPack,
+template <typename Pred, typename = void>
+struct is_true_impl : std::false_type {
+};
+
+template <typename Pred>
+struct is_true_impl<Pred, std::enable_if_t<Pred::value>> : std::true_type {
+};
+
+template <typename... Preds>
+struct are_true_impl : std::conjunction<is_true_impl<Preds>...> {
+};
+
+template <typename Pred>
+struct is_false_impl : std::negation<is_true_impl<Pred>> {
+};
+
+template <typename... Preds>
+struct are_false_impl : std::negation<are_true_impl<Preds...>> {
+};
+
+template <typename T, typename U = T, typename = void>
+struct same_impl : std::false_type {
+};
+
+template <typename T, typename U>
+struct same_impl<T, U, std::enable_if_t<std::is_same_v<T, U>>> : std::true_type {
+};
+
+template <typename From, typename To, typename = void>
+struct convertible_to_impl : std::false_type {
+};
+
+template <typename From, typename To>
+struct convertible_to_impl<From, To, std::enable_if_t<std::is_convertible_v<From, To>>> : std::true_type {
+};
+
+template <template <typename...> class Constraint, typename... Parameters>
+struct valid_expr_ : valid_expr_impl<Constraint<Parameters...>> {
+};
+
+template <typename ParametersPack, typename = void, template <typename...> class... Constraints>
+struct valid_exprs_ : std::false_type {
+};
+
+template <template <typename...> class ParametersPack, template <typename...> class... Constraints,
           typename... Parameters>
-struct make_concept_from_construct_impl<SilentFailure, Constraint, ParametersPack<Parameters...>,
-                                        std::void_t<Constraint<Parameters...>>> : std::true_type {
-};
-
-template <bool SilentFailure, template <typename...> class Predicate, typename ParametersPack, typename = void>
-struct make_concept_from_predicate_impl : std::false_type {
-  static_assert(SilentFailure, "Concept checking failed.");
-};
-
-template <bool SilentFailure, template <typename...> class Predicate, template <typename...> class ParametersPack,
-          typename... Parameters>
-struct make_concept_from_predicate_impl<SilentFailure, Predicate, ParametersPack<Parameters...>,
-                                        std::enable_if_t<Predicate<Parameters...>::value>> : std::true_type {
-};
-
-} // namespace details
-
-template <template <typename...> class Constraint>
-struct make_concept_from_construct {
-  template <bool SilentFailure, typename... Parameters>
-  using type = details::make_concept_from_construct_impl<SilentFailure, Constraint, type::basic_list<Parameters...>>;
-  template <bool SilentFailure, typename... Parameters>
-  using underlying_type = typename type<SilentFailure, Parameters...>::type;
-  template <bool SilentFailure, typename... Parameters>
-  static constexpr bool value = type<SilentFailure, Parameters...>::value;
-};
-
-template <template <typename...> class Predicate>
-struct make_concept_from_predicate {
-  template <bool SilentFailure, typename... Parameters>
-  using type = details::make_concept_from_predicate_impl<SilentFailure, Predicate, type::basic_list<Parameters...>>;
-  template <bool SilentFailure, typename... Parameters>
-  using underlying_type = typename type<SilentFailure, Parameters...>::type;
-  template <bool SilentFailure, typename... Parameters>
-  static constexpr bool value = type<SilentFailure, Parameters...>::value;
-};
-
-template <template <typename...> class Constraint>
-constexpr decltype(auto) make_concept_item_from_construct(std::string_view concept_name)
-{
-  return make_concept_item<make_concept_from_construct<Constraint>>(concept_name);
-}
-
-template <template <typename...> class Predicate>
-constexpr decltype(auto) make_concept_item_from_predicate(std::string_view concept_name)
-{
-  return make_concept_item<make_concept_from_predicate<Predicate>>(concept_name);
-}
-
-template <typename... Bs>
-using make_predicate = std::conjunction<Bs...>;
-
-template <bool B>
-using make_condition = std::bool_constant<B>;
-
-namespace details {
-
-template <typename Expr, typename = void>
-struct valid_expr : std::false_type {
-};
-
-template <template <typename...> class Holder, typename... Expr>
-struct valid_expr<Holder<Expr...>, std::void_t<decltype(valid_expr_v(std::declval<Expr>()...))>>
+struct valid_exprs_<ParametersPack<Parameters...>,
+                    std::enable_if_t<valid_exprs_impl<Constraints<Parameters...>...>::value>, Constraints...>
   : std::true_type {
 };
 
+template <template <typename...> class Pred, typename... Parameters>
+struct is_true_ : is_true_impl<Pred<Parameters...>> {
+};
+
+template <typename ParametersPack, typename = void, template <typename...> class... Preds>
+struct are_true_ : std::false_type {
+};
+template <template <typename...> class ParametersPack, template <typename...> class... Preds, typename... Parameters>
+struct are_true_<ParametersPack<Parameters...>, std::enable_if<are_true_impl<Preds<Parameters...>...>::value>, Preds...>
+  : std::true_type {
+};
+
+template <template <typename...> class Pred, typename... Parameters>
+struct is_false_ : is_false_impl<Pred<Parameters...>> {
+};
+
+template <typename ParametersPack, typename = void, template <typename...> class... Preds>
+struct are_false_ : std::false_type {
+};
+template <template <typename...> class ParametersPack, template <typename...> class... Preds, typename... Parameters>
+struct are_false_<ParametersPack<Parameters...>, std::enable_if<are_false_impl<Preds<Parameters...>...>::value>, Preds...>
+  : std::true_type {
+};
+
+template <template <typename...> class T, template <typename...> class U = T, typename... Parameters>
+struct same_ : same_impl<T<Parameters...>, U<Parameters...>> {
+};
+
+template <template <typename...> class From, template <typename...> class To, typename... Parameters>
+struct convertible_to_ : convertible_to_impl<From<Parameters...>, To<Parameters...>> {
+};
+
+template <template <typename...> class Constraint>
+struct valid_expr {
+  template <typename... Parameters>
+  using type = valid_expr_<Constraint, Parameters...>;
+  template <typename... Parameters>
+  using underlying_type = typename type<Parameters...>::type;
+  template <typename... Parameters>
+  static constexpr bool value = type<Parameters...>::value;
+};
+
+template <template <typename...> class... Constraints>
+struct valid_exprs {
+  template <typename... Parameters>
+  using type = valid_exprs_<type::basic_list<Parameters...>, void, Constraints...>;
+  template <typename... Parameters>
+  using underlying_type = typename type<Parameters...>::type;
+  template <typename... Parameters>
+  static constexpr bool value = type<Parameters...>::value;
+};
+
+template <template <typename...> class Pred>
+struct is_true {
+  template <typename... Parameters>
+  using type = is_true_<Pred, Parameters...>;
+  template <typename... Parameters>
+  using underlying_type = typename type<Parameters...>::type;
+  template <typename... Parameters>
+  static constexpr bool value = type<Parameters...>::value;
+};
+
+template <template <typename...> class... Preds>
+struct are_true {
+  template <typename... Parameters>
+  using type = are_true_<type::basic_list<Parameters...>, void, Preds...>;
+  template <typename... Parameters>
+  using underlying_type = typename type<Parameters...>::type;
+  template <typename... Parameters>
+  static constexpr bool value = type<Parameters...>::value;
+};
+
+template <template <typename...> class Pred>
+struct is_false {
+  template <typename... Parameters>
+  using type = is_false_<Pred, Parameters...>;
+  template <typename... Parameters>
+  using underlying_type = typename type<Parameters...>::type;
+  template <typename... Parameters>
+  static constexpr bool value = type<Parameters...>::value;
+};
+
+template <template <typename...> class... Preds>
+struct are_false {
+  template <typename... Parameters>
+  using type = are_false_<type::basic_list<Parameters...>, void, Preds...>;
+  template <typename... Parameters>
+  using underlying_type = typename type<Parameters...>::type;
+  template <typename... Parameters>
+  static constexpr bool value = type<Parameters...>::value;
+};
+
+template <template <typename...> class T, template <typename...> class U = T>
+struct same {
+  template <typename... Parameters>
+  using type = same_<T, U, Parameters...>;
+  template <typename... Parameters>
+  using underlying_type = typename type<Parameters...>::type;
+  template <typename... Parameters>
+  static constexpr bool value = type<Parameters...>::value;
+};
+
+template <template <typename...> class From, template <typename...> class To>
+struct convertible_to {
+  template <typename... Parameters>
+  using type = convertible_to_<From, To, Parameters...>;
+  template <typename... Parameters>
+  using underlying_type = typename type<Parameters...>::type;
+  template <typename... Parameters>
+  static constexpr bool value = type<Parameters...>::value;
+};
+
 } // namespace details
 
-template <typename... Expr>
-using valid_expr = details::valid_expr<type::basic_list<Expr...>>;
+template <template <typename...> class Constraint>
+constexpr decltype(auto) valid_expr(std::string_view concept_name)
+{
+  return make_concept_item<details::valid_expr<Constraint>>(concept_name);
+}
+
+template <template <typename...> class... Constraints>
+constexpr decltype(auto) valid_exprs(std::string_view concept_name)
+{
+  return make_concept_item<details::valid_exprs<Constraints...>>(concept_name);
+}
+
+template <template <typename...> class Pred>
+constexpr decltype(auto) is_true(std::string_view concept_name)
+{
+  return make_concept_item<details::is_true<Pred>>(concept_name);
+}
+
+template <template <typename...> class... Preds>
+constexpr decltype(auto) are_true(std::string_view concept_name)
+{
+  return make_concept_item<details::are_true<Preds...>>(concept_name);
+}
+
+template <template <typename...> class Pred>
+constexpr decltype(auto) is_false(std::string_view concept_name)
+{
+  return make_concept_item<details::is_false<Pred>>(concept_name);
+}
+
+template <template <typename...> class... Preds>
+constexpr decltype(auto) are_false(std::string_view concept_name)
+{
+  return make_concept_item<details::are_false<Preds...>>(concept_name);
+}
+
+template <template <typename...> class T, template <typename...> class U = T>
+constexpr decltype(auto) same(std::string_view concept_name)
+{
+  return make_concept_item<details::same<T, U>>(concept_name);
+}
+
+template <template <typename...> class From, template <typename...> class To>
+constexpr decltype(auto) convertible_to(std::string_view concept_name)
+{
+  return make_concept_item<details::convertible_to<From, To>>(concept_name);
+}
 
 }} // namespace metaprog::concepts::utility

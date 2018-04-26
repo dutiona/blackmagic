@@ -1,7 +1,6 @@
 #pragma once
 
-#include "details/concepts_impl.hpp"
-
+#include "traits.hpp"
 #include "../engine.hpp"
 
 #include <string_view>
@@ -9,28 +8,24 @@
 namespace metaprog::concepts { inline namespace basic {
 
 using namespace std::literals;
+namespace traits = metaprog::traits;
 
 // default constructible
-inline constexpr auto DefaultConstructible =
-  make_concept_item_from_predicate<details::default_constructible_impl>("DefaultConstructible"sv);
+inline constexpr auto DefaultConstructible = is_true<traits::is_default_constructible>("DefaultConstructible"sv);
 
 // move constructible
-inline constexpr auto MoveConstructible =
-  make_concept_item_from_predicate<details::move_constructible_impl>("MoveConstructible"sv);
+inline constexpr auto MoveConstructible = is_true<traits::is_move_constructible>("MoveConstructible"sv);
 
 // copy constructible
-inline constexpr auto CopyConstructible =
-  make_concept_item_from_predicate<details::copy_constructible_impl>("CopyConstructible"sv);
+inline constexpr auto CopyConstructible = is_true<traits::is_copy_constructible>("CopyConstructible"sv);
 
 // move assignable
-inline constexpr auto MoveAssignable =
-  make_concept_item_from_predicate<details::move_assignable_impl>("MoveAssignable"sv);
+inline constexpr auto MoveAssignable = is_true<traits::is_move_assignable>("MoveAssignable"sv);
 
 // copy assignable
-inline constexpr auto CopyAssignable =
-  make_concept_item_from_predicate<details::copy_assignable_impl>("CopyAssignable"sv);
+inline constexpr auto CopyAssignable = is_true<traits::is_copy_assignable>("CopyAssignable"sv);
 
 // destructible
-inline constexpr auto Destructible = make_concept_item_from_predicate<details::destructible_impl>("Destructible"sv);
+inline constexpr auto Destructible = is_true<traits::is_destructible>("Destructible"sv);
 
-}} // namespace concepts::concepts::basic
+}} // namespace metaprog::concepts::basic
