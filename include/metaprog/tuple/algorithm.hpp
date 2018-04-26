@@ -229,4 +229,10 @@ constexpr decltype(auto) push_back(const std::tuple<Ts...>& tpl, const std::pair
   return std::tuple_cat(tpl, std::make_tuple(e));
 }
 
+template <typename... Ts>
+constexpr decltype(auto) unique(const std::tuple<Ts...>&)
+{
+  return 0;
+}
+
 }} // namespace metaprog::tuple::algorithm

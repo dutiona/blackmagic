@@ -25,18 +25,35 @@ constexpr bool ensure_unique_keys(item<Concepts>... concept_items)
          == sizeof...(Concepts);
 }
 
+template <typename... Concepts, size_t... I>
+constexpr bool ensure_unique_keys(std::tuple<item<Concepts>...> tuple_items, std::index_sequence<I...>)
+{
+  return ensure_unique_keys(std::get<I>(tuple_items)...);
+}
+
 } // namespace details
 
 
 template <typename... Concepts>
-struct map : std::tuple<item<Concepts>...> {
+struct map {
+  std::tuple<item<Concepts>...> items_;
+
   constexpr map(item<Concepts>... items)
-    : std::tuple<item<Concepts>...>{items...}
+    : items_{items...}
   {
-    if (!details::ensure_unique_keys(items...)) {
-      throw "Duplicate keys (concept name) in the concept map : the same concept is here twice ?";
-    }
+    // if (!details::ensure_unique_keys(items...)) {
+    //  throw "Duplicate keys (concept name) in the concept map : the same concept is here twice ?";
+    //}
   }
+
+  constexpr map(std::tuple<item<Concepts>...> items)
+    : items_{items}
+  {
+    // if (!details::ensure_unique_keys(items_, std::index_sequence_for<item<Concepts>...>{})) {
+    //  throw "Duplicate keys (concept name) in the concept map : the same concept is here twice ?";
+    //}
+  }
+
 
   constexpr size_t count() const
   {
@@ -45,18 +62,18 @@ struct map : std::tuple<item<Concepts>...> {
 
   constexpr size_t count_if(std::string_view concept_name) const
   {
-    return tuple::count_if(*this, [concept_name](auto cpt) { return cpt.is(concept_name); });
+    return tuple::count_if(items_, [concept_name](auto cpt) { return cpt.is(concept_name); });
   }
 
   constexpr bool has(std::string_view concept_name) const
   {
-    return tuple::find_if(*this, [concept_name](auto cpt) { return cpt.is(concept_name); }) != tuple::end(*this);
+    return tuple::find_if(items_, [concept_name](auto cpt) { return cpt.is(concept_name); }) != tuple::end(items_);
   }
 
   template <typename... Args>
   constexpr void require() const
   {
-    tuple::for_each(*this, [](auto cpt) { cpt.template require<Args...>(); });
+    tuple::for_each(items_, [](auto cpt) { cpt.template require<Args...>(); });
   }
 
   template <typename... Args>
@@ -66,7 +83,7 @@ struct map : std::tuple<item<Concepts>...> {
       throw "This concept key doesn't exists in this concept map!";
     }
 
-    tuple::for_each(*this, [concept_name](auto cpt) {
+    tuple::for_each(items_, [concept_name](auto cpt) {
       if (cpt.is(concept_name)) {
         cpt.template require<Args...>();
       }
@@ -76,7 +93,7 @@ struct map : std::tuple<item<Concepts>...> {
   template <typename... Args>
   constexpr bool check() const
   {
-    return tuple::all_of(tuple::transform(*this, [](auto cpt) { return cpt.template check<Args...>(); }));
+    return tuple::all_of(tuple::transform(items_, [](auto cpt) { return cpt.template check<Args...>(); }));
   }
 
   template <typename... Args>
@@ -86,7 +103,7 @@ struct map : std::tuple<item<Concepts>...> {
       throw "This concept key doesn't exists in this concept map!";
     }
 
-    return tuple::all_of(tuple::transform(*this, [concept_name](auto cpt) {
+    return tuple::all_of(tuple::transform(items_, [concept_name](auto cpt) {
       if (cpt.is(concept_name)) {
         return cpt.template check<Args...>();
       }
@@ -95,17 +112,13 @@ struct map : std::tuple<item<Concepts>...> {
   }
 };
 
-template <typename... Concepts>
-constexpr decltype(auto) make_concept_map(item<Concepts>... items)
-{
-  return map<Concepts...>{items...};
-}
-
 // Merge maps functions
 template <typename... ConceptLhs, typename... ConceptRhs>
 constexpr decltype(auto) merge_maps(map<ConceptLhs...> map_lhs, map<ConceptRhs...> map_rhs)
 {
-  return map<ConceptLhs..., ConceptRhs...>{std::tuple_cat(map_lhs, map_rhs)};
+  return map<ConceptLhs..., ConceptRhs...>{
+    std::tuple_cat(static_cast<std::tuple<item<ConceptLhs>...>>(map_lhs.items_),
+                   static_cast<std::tuple<item<ConceptRhs>...>>(map_rhs.items_))};
 }
 
 template <typename ConceptMap>
@@ -118,6 +131,24 @@ template <typename ConceptMap, typename... ConceptMaps>
 constexpr decltype(auto) merge_all_maps(ConceptMap map, ConceptMaps... maps)
 {
   return merge_maps(map, merge_all_maps(maps...));
+}
+
+template <typename... Concepts>
+constexpr decltype(auto) make_concept_map(map<Concepts...> map)
+{
+  return map;
+}
+
+template <typename Concept>
+constexpr decltype(auto) make_concept_map(item<Concept> item)
+{
+  return map<Concept>{item};
+}
+
+template <typename... ItemsOrMaps>
+constexpr decltype(auto) make_concept_map(ItemsOrMaps... items_or_maps)
+{
+  return merge_all_maps(make_concept_map(items_or_maps)...);
 }
 
 }} // namespace metaprog::concepts::engine

@@ -49,7 +49,7 @@ inline constexpr auto HasMethods = concepts::make_concept_item_from_predicate<ha
 } // namespace pixel_concept_traits
 
 inline constexpr auto Pixel =
-  concepts::make_concept_map(pixel_concept_traits::PixelConstructs/*, pixel_concept_traits::PointType_Is_SiteType,
+  concepts::make_concept_map(pixel_concept_traits::PixelConstructs, pixel_concept_traits::PointType_Is_SiteType/*,
                              pixel_concept_traits::ValueType_IsNot_Reference, pixel_concept_traits::HasMethods*/);
 
 namespace concept_diagnostic_traits {
