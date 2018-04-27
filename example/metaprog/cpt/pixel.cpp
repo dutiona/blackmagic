@@ -1,11 +1,69 @@
 #include <metaprog/concepts/concepts.hpp>
 
+#include <iostream>
 #include <string_view>
 
 using namespace std::literals;
 namespace concepts = metaprog::concepts;
 
 namespace pixel_concept_traits {
+
+template <typename T>
+struct S {
+  std::string_view s_;
+  using type = T;
+  constexpr S(std::string_view s)
+    : s_(s)
+  {
+  }
+};
+
+template <typename T, typename U>
+constexpr bool operator==(const S<T>& lhs, const S<U>& rhs)
+{
+  return lhs.s_ == rhs.s_;
+};
+
+static_assert(metaprog::tuple::front(std::make_tuple("lol"sv, 6.0)) == "lol"sv);
+static_assert(metaprog::tuple::back(std::make_tuple("lol"sv, 6.0)) == 6.0, "");
+static_assert(metaprog::tuple::equals(metaprog::tuple::push_front(std::make_tuple("lol"sv), 6.0),
+                                      std::make_tuple(6.0, "lol"sv)));
+static_assert(metaprog::tuple::equals(metaprog::tuple::push_back(std::make_tuple("lol"sv), 6.0),
+                                      std::make_tuple("lol"sv, 6.0)));
+static_assert(metaprog::tuple::equals(metaprog::tuple::pop_front(std::make_tuple("lol"sv, 6.0)), std::make_tuple(6.0)));
+static_assert(metaprog::tuple::equals(metaprog::tuple::pop_back(std::make_tuple("lol"sv, 6.0)),
+                                      std::make_tuple("lol"sv)));
+static_assert(metaprog::tuple::equals(metaprog::tuple::rotate_left(std::make_tuple("lol"sv, 6.0, 4)),
+                                      std::make_tuple(6.0, 4, "lol"sv)));
+static_assert(metaprog::tuple::equals(metaprog::tuple::rotate_right(std::make_tuple("lol"sv, 6.0, 4)),
+                                      std::make_tuple(4, "lol"sv, 6.0)));
+
+
+static_assert(metaprog::tuple::equals(std::make_tuple(0, 1, 4.0, 5.0, "lol"sv),
+                                      metaprog::tuple::reverse(std::make_tuple("lol"sv, 5.0, 4.0, 1, 0))));
+
+/*
+static_assert(metaprog::tuple::equals(metaprog::tuple::filter(std::make_tuple(1, 2.0, 3, 4.0, 5),
+                                                              [](auto a) { return std::is_integral_v<decltype(a)>; }),
+                                      std::make_tuple(1, 3, 5)));
+*/
+/*
+static_assert(metaprog::tuple::equals(metaprog::tuple::filter(std::make_tuple(1, 2.0, 3, 48.0, 55),
+                                                              [](auto a) { return std::is_integral_v<decltype(a)>; }),
+                                      std::make_tuple(0, -1, 2, -1, 4)));
+                                      */
+
+
+inline constexpr auto Test = std::make_tuple(S<int>("int"sv), S<double>("double"sv), S<int>("int"sv));
+
+inline constexpr auto tt = std::tuple_cat(Test, Test);
+
+static_assert(std::get<0>(Test) == S<int>("int"sv), "");
+static_assert(std::get<1>(Test) == S<double>("double"sv), "");
+static_assert(std::get<2>(Test) == S<int>("int"sv), "");
+
+// inline constexpr auto Test_unique = metaprog::tuple::unique(Test);
+
 
 template <typename PixelType>
 struct pixel_constructs {
@@ -60,9 +118,9 @@ constexpr void diagnostic(decltype(Pixel))
   static_assert(Pixel.check_at<PixelType>("PixelConstructs"sv), "PixelConstructs attribute missing");
 
   static_assert(Pixel.check_at<PixelType>("PointType_Is_SiteType"sv), "point_type should alias site_type");
-  //static_assert(Pixel.check_at<PixelType>("ValueType_IsNot_Reference"sv), "value_type should not be a reference");
+  // static_assert(Pixel.check_at<PixelType>("ValueType_IsNot_Reference"sv), "value_type should not be a reference");
 
-  //static_assert(Pixel.check_at<PixelType>("HasMethods"sv), "methods missing or ill-defined");
+  // static_assert(Pixel.check_at<PixelType>("HasMethods"sv), "methods missing or ill-defined");
 }
 
 } // namespace concept_diagnostic_traits
@@ -95,11 +153,37 @@ struct MyBadPixel {
 };
 
 
+namespace details {
+template <typename... Ts, size_t... I>
+void print_tuple(const std::tuple<Ts...>& tpl, std::index_sequence<I...>)
+{
+  ((std::cout << "[" << I << "] : " << std::get<I>(tpl) << '\n'), ...);
+}
+} // namespace details
+template <typename... Ts>
+void print_tuple(const std::tuple<Ts...>& tpl)
+{
+  details::print_tuple(tpl, std::index_sequence_for<Ts...>{});
+}
+
 // Vérification
 static_assert(Pixel.check<MyPixel>(), "MyPixel doesn't model the Pixel concept!");
 
+inline constexpr auto tpl = std::make_tuple(1, 2.0, 3, 48.0, 55);
+inline constexpr auto ret = metaprog::tuple::filter(tpl, [](auto a) { return std::is_integral_v<decltype(a)>; });
+
+
 int main()
 {
+  /*
+  print_tuple(metaprog::tuple::filter(std::make_tuple(1, 2.0, 3, 48.0, 55),
+                                      [](auto a) { return std::is_integral_v<decltype(a)>; }));
+                                      */
+
+  for(const auto& e : ret) {
+    std::cout << "[" << e << "] : " << metaprog::tuple::at(tpl, e) << '\n';
+  }
+
   /*
   if constexpr (!Pixel.check<MyPixel>()) {
     DIAGNOSTIC(Pixel, MyPixel);

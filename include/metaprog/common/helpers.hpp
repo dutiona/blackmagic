@@ -91,6 +91,21 @@ constexpr bool equals(std::string_view lhs, std::string_view rhs)
 #endif // __GLIBCXX__
 }
 
+template <bool... Bs>
+struct all : std::conjunction<std::bool_constant<Bs>...> {
+};
+
+template <bool... Bs>
+struct any : std::disjunction<std::bool_constant<Bs>...> {
+};
+
+template <bool... Bs>
+struct none : std::conjunction<std::bool_constant<!Bs>...> {
+};
+
+template <bool... Bs>
+struct count_true : std::integral_constant<size_t, (Bs + ...)> {
+};
 
 // all_of / any_of / none_of / count cstxpr
 template <typename... Ts>
