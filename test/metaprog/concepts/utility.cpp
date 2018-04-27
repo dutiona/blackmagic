@@ -1333,7 +1333,7 @@ TEST(Cpt_Utility, Ternary)
   ASSERT_TRUE((concepts::Ternary.check<bool, int, const double>()));
   ASSERT_TRUE((concepts::Ternary.check<bool, const volatile int, float>()));
   ASSERT_TRUE((concepts::Ternary.check<bool_convertible_test, int_convertible_test, double>()));
-  ASSERT_FALSE((concepts::Ternary.check<bool, no_operator_test, no_operator_test>()));
+  ASSERT_TRUE((concepts::Ternary.check<bool, no_operator_test, no_operator_test>()));
   ASSERT_FALSE((concepts::Ternary.check<bool, no_operator_test, bool>()));
   ASSERT_FALSE((concepts::Ternary.check<bool, std::map<int, double>, std::vector<int>>()));
   ASSERT_FALSE((concepts::Ternary.check<bool_convertible_test, std::vector<float>, const float>()));
