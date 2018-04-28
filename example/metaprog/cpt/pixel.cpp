@@ -179,11 +179,11 @@ int main()
   print_tuple(metaprog::tuple::filter(std::make_tuple(1, 2.0, 3, 48.0, 55),
                                       [](auto a) { return std::is_integral_v<decltype(a)>; }));
                                       */
-
+  /*
   for(const auto& e : ret) {
     std::cout << "[" << e << "] : " << metaprog::tuple::at(tpl, e) << '\n';
   }
-
+  */
   /*
   if constexpr (!Pixel.check<MyPixel>()) {
     DIAGNOSTIC(Pixel, MyPixel);

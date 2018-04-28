@@ -1,7 +1,6 @@
 #pragma once
 
 #include <metaprog/common/common.hpp>
-#include <metaprog/cstxpr/cstxpr.hpp>
 
 #include <tuple>
 #include <type_traits>
@@ -12,23 +11,20 @@ namespace helpers = metaprog::common::helpers;
 
 inline constexpr auto identity_func = [](auto&& a) { return std::forward<decltype(a)>(a); };
 
+
 // at
-namespace details {
-template <typename... Ts, size_t... I>
-constexpr decltype(auto) at_impl(const std::tuple<Ts...>& tpl, size_t index, std::index_sequence<I...>){
-  if(index >= sizeof...(Ts)) {
-    throw "Index out of range";
+template <typename... Ts, typename N>
+constexpr decltype(auto) at(const std::tuple<Ts...>& tpl, N)
+{
+  if constexpr(!std::is_base_of_v<std::integral_constant, helpers::remove_cvref_t<N>>) {
+    throw "Index must be an integral constant!";
+  } else if constexpr(N::value > sizeof...(Ts)){
+    throw "Index out of range!";
+  } else {
+    return std::get<N::value>(tpl);
   }
-
-  constexpr size_t tbl[] = {I...};
-  constexpr size_t idx = index;
-}
 }
 
-template <typename... Ts>
-constexpr decltype(auto) at(const std::tuple<Ts...>& tpl, size_t index){
-  return details::at_impl(tpl, index, std::index_sequence_for<Ts...>{});
-}
 
 // equals
 namespace details {
@@ -371,13 +367,15 @@ constexpr size_t find_if_impl(const std::tuple<Ts...>& tpl, std::index_sequence<
 
 namespace details {
 template <typename... Ts, size_t... I>
-constexpr auto make_indexes_to_keep(const std::tuple<Ts...>& elems_to_keep,
-                                    std::index_sequence<I...>)
+constexpr auto make_indexes_to_keep(const std::tuple<Ts...>& elems_to_keep, std::index_sequence<I...>)
 {
+  (void) elems_to_keep;
+  /*
   cstxpr::vector<size_t, sizeof...(Ts)> indexes{};
   size_t index = 0;
   ((bool(std::get<I>(elems_to_keep)) ? void(indexes.push_back(index++)) : void(index++)), ...);
-  return indexes;
+   */
+  return 0;
 }
 
 template <typename Func, typename... Args, typename... Ts, size_t... I>
@@ -387,9 +385,8 @@ constexpr decltype(auto) filter_impl(const std::tuple<Ts...>& tpl, std::index_se
   (void) f;
   ((void) args, ...);
 
-  const auto elems_to_keep = transform(tpl, std::forward<Func>(f), std::forward<Args>(args)...);
-  const auto indexes_to_keep =
-    make_indexes_to_keep(elems_to_keep, std::index_sequence_for<Ts...>{});
+  const auto elems_to_keep   = transform(tpl, std::forward<Func>(f), std::forward<Args>(args)...);
+  const auto indexes_to_keep = make_indexes_to_keep(elems_to_keep, std::index_sequence_for<Ts...>{});
   return indexes_to_keep;
   // constexpr auto indices = filter_indices;
 }
