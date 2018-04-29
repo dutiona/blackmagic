@@ -1,6 +1,7 @@
 #include <metaprog/concepts/concepts.hpp>
 
 #include <iostream>
+#include <string>
 #include <string_view>
 
 using namespace std::literals;
@@ -42,6 +43,19 @@ static_assert(metaprog::tuple::equals(metaprog::tuple::rotate_right(std::make_tu
 static_assert(metaprog::tuple::equals(std::make_tuple(0, 1, 4.0, 5.0, "lol"sv),
                                       metaprog::tuple::reverse(std::make_tuple("lol"sv, 5.0, 4.0, 1, 0))));
 
+static_assert(metaprog::tuple::fold_left(std::make_tuple(10, 2), [](auto lhs, auto rhs) { return lhs / rhs; }) == 5);
+
+static_assert(metaprog::tuple::fold_left(std::make_tuple(2, 2, 1), [](auto lhs, auto rhs) { return lhs / rhs; }, 20)
+              == 5);
+
+static_assert(metaprog::tuple::fold_right(std::make_tuple(2, 10), [](auto lhs, auto rhs) { return lhs / rhs; }) == 5);
+
+static_assert(metaprog::tuple::fold_right(std::make_tuple(2, 2), [](auto lhs, auto rhs) { return lhs / rhs; }, 1, 20)
+              == 5);
+
+static_assert(metaprog::tuple::unpack(std::make_tuple(1, 2, 3, 4, 5), [](auto... x) { return (x + ...); }) == 15);
+
+
 /*
 static_assert(metaprog::tuple::equals(metaprog::tuple::filter(std::make_tuple(1, 2.0, 3, 4.0, 5),
                                                               [](auto a) { return std::is_integral_v<decltype(a)>; }),
@@ -52,7 +66,6 @@ static_assert(metaprog::tuple::equals(metaprog::tuple::filter(std::make_tuple(1,
                                                               [](auto a) { return std::is_integral_v<decltype(a)>; }),
                                       std::make_tuple(0, -1, 2, -1, 4)));
                                       */
-
 
 inline constexpr auto Test = std::make_tuple(S<int>("int"sv), S<double>("double"sv), S<int>("int"sv));
 

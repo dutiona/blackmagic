@@ -9,20 +9,58 @@ namespace metaprog::tuple { inline namespace algorithm {
 
 namespace helpers = metaprog::common::helpers;
 
-inline constexpr auto identity_func = [](auto&& a) { return std::forward<decltype(a)>(a); };
+
+struct identity_func_t {
+  template <typename T>
+  constexpr decltype(auto) operator()(T&& t) const
+  {
+    return std::forward<T>(t);
+  }
+};
+inline constexpr const identity_func_t identity_func{};
 
 
 // at
 template <typename... Ts, typename N>
 constexpr decltype(auto) at(const std::tuple<Ts...>& tpl, N)
 {
-  if constexpr(!std::is_base_of_v<std::integral_constant, helpers::remove_cvref_t<N>>) {
-    throw "Index must be an integral constant!";
-  } else if constexpr(N::value > sizeof...(Ts)){
-    throw "Index out of range!";
-  } else {
-    return std::get<N::value>(tpl);
-  }
+  static_assert(std::is_base_of_v<std::integral_constant, helpers::remove_cvref_t<N>>,
+                "Index must be an integral constant!");
+  static_assert(N::value < sizeof...(Ts) && N::value >= 0, "Index out of range!");
+
+  return std::get<N::value>(tpl);
+}
+
+
+// unpack
+namespace details {
+template <typename Func, typename... Ts, size_t... I>
+constexpr decltype(auto) unpack_impl(const std::tuple<Ts...>& tpl, Func&& f, std::index_sequence<I...>)
+{
+  return f(std::get<I>(tpl)...);
+}
+} // namespace details
+
+template <typename Func, typename... Ts>
+constexpr decltype(auto) unpack(const std::tuple<Ts...>& tpl, Func&& f)
+{
+  return details::unpack_impl(tpl, std::forward<Func>(f), std::index_sequence_for<Ts...>{});
+}
+
+
+// transform
+namespace details {
+template <typename Func, typename... Ts, size_t... I>
+constexpr auto transform_impl(const std::tuple<Ts...>& tpl, std::index_sequence<I...>, Func&& f)
+{
+  return std::make_tuple(f(std::get<I>(tpl))...);
+}
+} // namespace details
+
+template <typename Func, typename... Ts>
+constexpr auto transform(const std::tuple<Ts...>& tpl, Func&& f)
+{
+  return details::transform_impl(tpl, std::index_sequence_for<Ts...>{}, std::forward<Func>(f));
 }
 
 
@@ -67,18 +105,10 @@ constexpr bool not_equals(const std::tuple<Ts...>& lhs, const std::tuple<Us...>&
 
 
 // all_of
-namespace details {
-template <typename Func, typename... Ts, size_t... I>
-constexpr bool all_of_impl(std::tuple<Ts...> tpl, Func&& f, std::index_sequence<I...>)
-{
-  return helpers::all_of(f(std::get<I>(tpl))...);
-}
-} // namespace details
-
 template <typename Func, typename... Ts>
 constexpr bool all_of(std::tuple<Ts...> tpl, Func&& f)
 {
-  return details::all_of_impl(tpl, std::forward<Func>(f), std::index_sequence_for<Ts...>{});
+  return unpack(transform(tpl, std::forward<Func>(f)), [](auto... e){ return helpers::all_of(e...); });
 }
 
 template <typename... Ts>
@@ -89,18 +119,10 @@ constexpr bool all_of(std::tuple<Ts...> tpl)
 
 
 // any_of
-namespace details {
-template <typename Func, typename... Ts, size_t... I>
-constexpr bool any_of_impl(std::tuple<Ts...> tpl, Func&& f, std::index_sequence<I...>)
-{
-  return helpers::any_of(f(std::get<I>(tpl))...);
-}
-} // namespace details
-
 template <typename Func, typename... Ts>
 constexpr bool any_of(std::tuple<Ts...> tpl, Func&& f)
 {
-  return details::any_of_impl(tpl, std::forward<Func>(f), std::index_sequence_for<Ts...>{});
+  return unpack(transform(tpl, std::forward<Func>(f)), [](auto... e){ return helpers::any_of(e...); });
 }
 
 template <typename... Ts>
@@ -125,18 +147,10 @@ constexpr bool none_of(std::tuple<Ts...> tpl)
 
 
 // count
-namespace details {
-template <typename Func, typename... Ts, size_t... I>
-constexpr size_t count_impl(std::tuple<Ts...> tpl, Func&& f, std::index_sequence<I...>)
-{
-  return helpers::count(f(std::get<I>(tpl))...);
-}
-} // namespace details
-
 template <typename Func, typename... Ts>
 constexpr size_t count(std::tuple<Ts...> tpl, Func&& f)
 {
-  return details::count_impl(tpl, std::forward<Func>(f), std::index_sequence_for<Ts...>{});
+  return unpack(transform(tpl, std::forward<Func>(f)), [](auto... e){ return helpers::count(e...); });
 }
 
 template <typename... Ts>
@@ -158,12 +172,9 @@ constexpr size_t end(std::tuple<Ts...>)
 template <typename... Ts>
 constexpr decltype(auto) front(const std::tuple<Ts...>& tpl)
 {
-  if constexpr (sizeof...(Ts) == 0) {
-    throw "Tuple is empty!";
-  }
-  else {
-    return std::get<0>(tpl);
-  }
+  static_assert(sizeof...(Ts) > 0, "Tuple is empty!");
+
+  return std::get<0>(tpl);
 }
 
 
@@ -171,12 +182,9 @@ constexpr decltype(auto) front(const std::tuple<Ts...>& tpl)
 template <typename... Ts>
 constexpr decltype(auto) back(const std::tuple<Ts...>& tpl)
 {
-  if constexpr (sizeof...(Ts) == 0) {
-    throw "Tuple is empty!";
-  }
-  else {
-    return std::get<sizeof...(Ts) - 1>(tpl);
-  }
+  static_assert(sizeof...(Ts) > 0, "Tuple is empty!");
+
+  return std::get<sizeof...(Ts) - 1>(tpl);
 }
 
 
@@ -208,12 +216,9 @@ constexpr auto pop_front_impl(const std::tuple<T, Ts...>& tpl, std::index_sequen
 template <typename... Ts>
 constexpr auto pop_front(const std::tuple<Ts...>& tpl)
 {
-  if constexpr (sizeof...(Ts) == 0) {
-    throw "Tuple is empty!";
-  }
-  else {
-    return details::pop_front_impl(tpl, std::index_sequence_for<Ts...>{});
-  }
+  static_assert(sizeof...(Ts) > 0, "Tuple is empty!");
+
+  return details::pop_front_impl(tpl, std::index_sequence_for<Ts...>{});
 }
 
 
@@ -229,12 +234,9 @@ constexpr auto pop_back_impl(const std::tuple<Ts...>& tpl, std::index_sequence<I
 template <typename... Ts>
 constexpr auto pop_back(const std::tuple<Ts...>& tpl)
 {
-  if constexpr (sizeof...(Ts) == 0) {
-    throw "Tuple is empty!";
-  }
-  else {
-    return details::pop_back_impl(tpl, std::make_index_sequence<sizeof...(Ts) - 1>{});
-  }
+  static_assert(sizeof...(Ts) > 0, "Tuple is empty!");
+
+  return details::pop_back_impl(tpl, std::make_index_sequence<sizeof...(Ts) - 1>{});
 }
 
 
@@ -276,198 +278,206 @@ constexpr auto reverse(const std::tuple<Ts...>& tpl)
 }
 
 
+// fold_left
+namespace details {
+template <typename Func, typename T, size_t I>
+constexpr auto fold_left_impl(const std::tuple<T>& tpl, Func&&, std::index_sequence<I>)
+{
+  return std::get<I>(tpl);
+}
+
+template <typename Func, typename T, typename U, typename... Vs, size_t I, size_t J, size_t... K>
+constexpr decltype(auto) fold_left_impl(const std::tuple<T, U, Vs...>& tpl, Func&& f, std::index_sequence<I, J, K...>)
+{
+  return fold_left_impl(push_front(std::make_tuple(std::get<K>(tpl)...), f(std::get<I>(tpl), std::get<J>(tpl))),
+                        std::forward<Func>(f), std::make_index_sequence<sizeof...(Vs) + 1>{});
+}
+} // namespace details
+
+template <typename Func, typename... Ts, typename... Args>
+constexpr decltype(auto) fold_left(const std::tuple<Ts...>& tpl, Func&& f, Args&&... args)
+{
+  return details::fold_left_impl(std::tuple_cat(std::make_tuple(std::forward<Args>(args)...), tpl),
+                                 std::forward<Func>(f), std::index_sequence_for<Args..., Ts...>{});
+}
+
+
+// fold_right
+template <typename Func, typename... Ts, typename... Args>
+constexpr decltype(auto) fold_right(const std::tuple<Ts...>& tpl, Func&& f, Args&&... args)
+{
+  return fold_left(std::tuple_cat(reverse(std::make_tuple(std::forward<Args>(args)...)), reverse(tpl)),
+                   std::forward<Func>(f));
+}
+
+
 // for_each
 namespace details {
-template <typename Func, typename... Args, typename... Ts, size_t... I>
-constexpr void for_each_impl(std::tuple<Ts...>& tpl, std::index_sequence<I...>, Func&& f, Args&&... args)
+template <typename Func, typename... Ts, size_t... I>
+constexpr void for_each_impl(std::tuple<Ts...>& tpl, std::index_sequence<I...>, Func&& f)
 {
-  (f(std::get<I>(tpl), std::forward<Args>(args)...), ...);
+  (f(std::get<I>(tpl)), ...);
 }
 
-template <typename Func, typename... Args, typename... Ts, size_t... I>
-constexpr void for_each_impl(const std::tuple<Ts...>& tpl, std::index_sequence<I...>, Func&& f, Args&&... args)
+template <typename Func, typename... Ts, size_t... I>
+constexpr void for_each_impl(const std::tuple<Ts...>& tpl, std::index_sequence<I...>, Func&& f)
 {
-  (f(std::get<I>(tpl), std::forward<Args>(args)...), ...);
-}
-} // namespace details
-
-template <typename Func, typename... Args, typename... Ts>
-constexpr void for_each(std::tuple<Ts...>& tpl, Func&& f, Args&&... args)
-{
-  details::for_each_impl(tpl, std::index_sequence_for<Ts...>{}, std::forward<Func>(f), std::forward<Args>(args)...);
-}
-
-template <typename Func, typename... Args, typename... Ts>
-constexpr void for_each(const std::tuple<Ts...>& tpl, Func&& f, Args&&... args)
-{
-  details::for_each_impl(tpl, std::index_sequence_for<Ts...>{}, std::forward<Func>(f), std::forward<Args>(args)...);
-}
-
-
-// transform
-namespace details {
-template <typename Func, typename... Args, typename... Ts, size_t... I>
-constexpr decltype(auto) transform_impl(const std::tuple<Ts...>& tpl, std::index_sequence<I...>, Func&& f,
-                                        Args&&... args)
-{
-  return std::make_tuple(f(std::get<I>(tpl), std::forward<Args>(args)...)...);
+  (f(std::get<I>(tpl)), ...);
 }
 } // namespace details
 
-template <typename Func, typename... Args, typename... Ts>
-constexpr auto transform(const std::tuple<Ts...>& tpl, Func&& f, Args&&... args)
+template <typename Func, typename... Ts>
+constexpr void for_each(std::tuple<Ts...>& tpl, Func&& f)
 {
-  return details::transform_impl(tpl, std::index_sequence_for<Ts...>{}, std::forward<Func>(f),
-                                 std::forward<Args>(args)...);
+  details::for_each_impl(tpl, std::index_sequence_for<Ts...>{}, std::forward<Func>(f));
+}
+
+template <typename Func, typename... Ts>
+constexpr void for_each(const std::tuple<Ts...>& tpl, Func&& f)
+{
+  details::for_each_impl(tpl, std::index_sequence_for<Ts...>{}, std::forward<Func>(f));
 }
 
 
 // accumulate
 namespace details {
-template <typename T, typename Func, typename... Args, typename... Ts, size_t... I>
-constexpr T accumulate_impl(T&& init, const std::tuple<Ts...>& tpl, std::index_sequence<I...>, Func&& f, Args&&... args)
+template <typename T, typename Func, typename... Ts, size_t... I>
+constexpr T accumulate_impl(T&& init, const std::tuple<Ts...>& tpl, std::index_sequence<I...>, Func&& f)
 {
-  ((init = f(std::forward<T>(init), std::get<I>(tpl), std::forward<Args>(args)...)), ...);
+  ((init = f(std::forward<T>(init), std::get<I>(tpl))), ...);
   return init;
 }
 } // namespace details
 
-template <typename T, typename Func, typename... Args, typename... Ts>
-constexpr auto accumulate(T&& init, std::tuple<Ts...> tpl, Func&& f, Args&&... args)
+template <typename T, typename Func, typename... Ts>
+constexpr auto accumulate(T&& init, std::tuple<Ts...> tpl, Func&& f)
 {
-  return details::accumulate_impl(std::forward<T>(init), tpl, std::index_sequence_for<Ts...>{}, std::forward<Func>(f),
-                                  std::forward<Args>(args)...);
+  return details::accumulate_impl(std::forward<T>(init), tpl, std::index_sequence_for<Ts...>{}, std::forward<Func>(f));
 }
 
 namespace details {
-template <typename Func, typename... Args, typename... Ts, size_t... I>
-constexpr size_t count_if_impl(const std::tuple<Ts...>& tpl, std::index_sequence<I...>, Func&& f, Args&&... args)
+template <typename Func, typename... Ts, size_t... I>
+constexpr size_t count_if_impl(const std::tuple<Ts...>& tpl, std::index_sequence<I...>, Func&& f)
 {
   size_t ret = 0;
-  ((ret += f(std::get<I>(tpl), std::forward<Args>(args)...) ? 1 : 0), ...);
+  ((ret += f(std::get<I>(tpl)) ? 1 : 0), ...);
   return ret;
 }
 } // namespace details
 
 namespace details {
-template <typename Func, typename... Args, typename... Ts>
-constexpr size_t find_if_impl(const std::tuple<Ts...>& tpl, std::index_sequence<>, Func&&, Args&&...)
+template <typename Func, typename... Ts>
+constexpr size_t find_if_impl(const std::tuple<Ts...>& tpl, std::index_sequence<>, Func&&)
 {
   return end(tpl);
 }
 
-template <typename Func, typename... Args, typename... Ts, size_t I, size_t... J>
-constexpr size_t find_if_impl(const std::tuple<Ts...>& tpl, std::index_sequence<I, J...>, Func&& f, Args&&... args)
+template <typename Func, typename... Ts, size_t I, size_t... J>
+constexpr size_t find_if_impl(const std::tuple<Ts...>& tpl, std::index_sequence<I, J...>, Func&& f)
 {
-  return !f(std::get<I>(tpl), std::forward<Args>(args)...)
-           ? find_if_impl(tpl, std::index_sequence<J...>{}, std::forward<Func>(f), std::forward<Args>(args)...)
-           : I;
+  return !f(std::get<I>(tpl)) ? find_if_impl(tpl, std::index_sequence<J...>{}, std::forward<Func>(f)) : I;
 }
 } // namespace details
 
 namespace details {
-template <typename... Ts, size_t... I>
-constexpr auto make_indexes_to_keep(const std::tuple<Ts...>& elems_to_keep, std::index_sequence<I...>)
-{
-  (void) elems_to_keep;
-  /*
-  cstxpr::vector<size_t, sizeof...(Ts)> indexes{};
-  size_t index = 0;
-  ((bool(std::get<I>(elems_to_keep)) ? void(indexes.push_back(index++)) : void(index++)), ...);
-   */
-  return 0;
-}
 
-template <typename Func, typename... Args, typename... Ts, size_t... I>
-constexpr decltype(auto) filter_impl(const std::tuple<Ts...>& tpl, std::index_sequence<I...>, Func&& f, Args&&... args)
+
+template <typename Pred>
+struct make_filter_indexes {
+  const Pred& pred;
+
+  template <typename... Ts>
+  constexpr auto operator()(Ts&&...)
+    -> int // filter_indexes<bool(std::decay_t<decltype(pred(std::forward<Ts>(t)))>)...>
+  {
+    return {};
+  }
+};
+
+
+template <typename Func, typename... Ts, size_t... I>
+constexpr decltype(auto) filter_impl(const std::tuple<Ts...>& tpl, std::index_sequence<I...>, Func&& f)
 {
   (void) tpl;
   (void) f;
-  ((void) args, ...);
 
-  const auto elems_to_keep   = transform(tpl, std::forward<Func>(f), std::forward<Args>(args)...);
-  const auto indexes_to_keep = make_indexes_to_keep(elems_to_keep, std::index_sequence_for<Ts...>{});
+  // const auto elems_to_keep   = transform(tpl, std::forward<Func>(f), std::forward<Args>(args)...);
+  const auto indexes_to_keep = 6; // make_indexes_to_keep(elems_to_keep, std::index_sequence_for<Ts...>{});
   return indexes_to_keep;
   // constexpr auto indices = filter_indices;
 }
 } // namespace details
 
 /*
-template <typename Func, typename K, typename V, typename... Args, typename... Ts, size_t... I>
+template <typename Func, typename K, typename V, typename... Ts, size_t... I>
 constexpr decltype(auto) replace_if_impl(const std::tuple<Ts...>& tpl, std::index_sequence<I...>, Func&& f,
-                                    const std::pair<K, V>& e, Args&&... args)
+                                    const std::pair<K, V>& e)
 {
-  return std::make_tuple((f(std::get<I>(tpl), std::forward<Args>(args)...) ? e : std::get<I>(tpl))...);
+  return std::make_tuple((f(std::get<I>(tpl)) ? e : std::get<I>(tpl))...);
 }
 
-template <typename Func, typename... Args, typename... Ts, size_t... I>
-constexpr decltype(auto) copy_if_impl(const std::tuple<Ts...>& tpl, std::index_sequence<I...>, Func&& f, Args&&... args)
+template <typename Func, typename... Ts, size_t... I>
+constexpr decltype(auto) copy_if_impl(const std::tuple<Ts...>& tpl, std::index_sequence<I...>, Func&& f)
 {
   return std::tuple_cat(
-    (f(std::get<I>(tpl), std::forward<Args>(args)...) ? std::make_tuple(std::get<I>(tpl)) : std::make_tuple())...);
+    (f(std::get<I>(tpl)) ? std::make_tuple(std::get<I>(tpl)) : std::make_tuple())...);
 }
 
-template <typename Func, typename... Args, typename... Us>
+template <typename Func, typename... Us>
 constexpr decltype(auto) remove_if_impl(const std::tuple<>&, const std::tuple<Us...>& ret, std::index_sequence<>,
-Func&&, Args&&...)
+Func&&)
 {
   return ret;
 }
 
-template <typename Func, typename... Args, typename T, typename... Ts, size_t I, size_t... J, typename... Us>
+template <typename Func, typename T, typename... Ts, size_t I, size_t... J, typename... Us>
 constexpr decltype(auto) remove_if_impl(const std::tuple<T, Ts...>& tpl, const std::tuple<Us...>& ret,
-std::index_sequence<I, J...>, Func&& f, Args&&... args)
+std::index_sequence<I, J...>, Func&& f)
 {
   return remove_if_impl(std::make_tuple(std::get<J>(tpl)...),
-                   push_back_if(ret, std::get<I>(tpl), std::forward<Func>(f), std::forward<Args>(args)...),
+                   push_back_if(ret, std::get<I>(tpl), std::forward<Func>(f)),
                    std::index_sequence_for<Ts...>{},
-                   std::forward<Func>(f), std::forward<Args>(args)...
+                   std::forward<Func>(f)
   );
 }
 */
 
 
-template <typename Func, typename... Args, typename... Ts>
-constexpr decltype(auto) count_if(const std::tuple<Ts...>& tpl, Func&& f, Args&&... args)
+template <typename Func, typename... Ts>
+constexpr decltype(auto) count_if(const std::tuple<Ts...>& tpl, Func&& f)
 {
-  return details::count_if_impl(tpl, std::index_sequence_for<Ts...>{}, std::forward<Func>(f),
-                                std::forward<Args>(args)...);
+  return details::count_if_impl(tpl, std::index_sequence_for<Ts...>{}, std::forward<Func>(f));
 }
 
-template <typename Func, typename... Args, typename... Ts>
-constexpr decltype(auto) find_if(const std::tuple<Ts...>& tpl, Func&& f, Args&&... args)
+template <typename Func, typename... Ts>
+constexpr decltype(auto) find_if(const std::tuple<Ts...>& tpl, Func&& f)
 {
-  return details::find_if_impl(tpl, std::index_sequence_for<Ts...>{}, std::forward<Func>(f),
-                               std::forward<Args>(args)...);
+  return details::find_if_impl(tpl, std::index_sequence_for<Ts...>{}, std::forward<Func>(f));
 }
 
-template <typename Func, typename... Args, typename... Ts>
-constexpr decltype(auto) filter(const std::tuple<Ts...>& tpl, Func&& f, Args&&... args)
+template <typename Func, typename... Ts>
+constexpr decltype(auto) filter(const std::tuple<Ts...>& tpl, Func&& f)
 {
-  return details::filter_impl(tpl, std::index_sequence_for<Ts...>{}, std::forward<Func>(f),
-                              std::forward<Args>(args)...);
+  return details::filter_impl(tpl, std::index_sequence_for<Ts...>{}, std::forward<Func>(f));
 }
 
 /*
-template <typename Func, typename K, typename V, typename... Args, typename... Ts>
-constexpr decltype(auto) replace_if(const std::tuple<Ts...>& tpl, Func&& f, const std::pair<K, V>& e, Args&&... args)
+template <typename Func, typename K, typename V, typename... Ts>
+constexpr decltype(auto) replace_if(const std::tuple<Ts...>& tpl, Func&& f, const std::pair<K, V>& e)
 {
-  return details::replace_if_impl(tpl, std::index_sequence_for<Ts...>{}, std::forward<Func>(f), e,
-                             std::forward<Args>(args)...);
+  return details::replace_if_impl(tpl, std::index_sequence_for<Ts...>{}, std::forward<Func>(f), e);
 }
 
-template <typename Func, typename... Args, typename... Ts>
-constexpr decltype(auto) remove_if(const std::tuple<Ts...>& tpl, Func&& f, Args&&... args)
+template <typename Func, typename... Ts>
+constexpr decltype(auto) remove_if(const std::tuple<Ts...>& tpl, Func&& f)
 {
-  return details::remove_if_impl(tpl, std::tuple<>(), std::index_sequence_for<Ts...>{}, std::forward<Func>(f),
-std::forward<Args>(args)...);
+  return details::remove_if_impl(tpl, std::tuple<>(), std::index_sequence_for<Ts...>{}, std::forward<Func>(f));
 }
 
-template <typename Func, typename... Args, typename... Ts>
-constexpr decltype(auto) copy_if(const std::tuple<Ts...>& tpl, Func&& f, Args&&... args)
+template <typename Func, typename... Ts>
+constexpr decltype(auto) copy_if(const std::tuple<Ts...>& tpl, Func&& f)
 {
-  return details::copy_if_impl(tpl, std::index_sequence_for<Ts...>{}, std::forward<Func>(f),
-std::forward<Args>(args)...);
+  return details::copy_if_impl(tpl, std::index_sequence_for<Ts...>{}, std::forward<Func>(f));
 }
 
 template <typename T>
