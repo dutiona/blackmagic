@@ -15,7 +15,7 @@
                     "/usr/include",
                     "/usr/local/include",
                     "${workspaceRoot}",
-                "${workspaceRoot}/include"
+                    "${workspaceRoot}/include"
                 ],
                 "limitSymbolsToIncludedHeaders": true,
                 "databaseFilename": ""
@@ -23,7 +23,10 @@
             "macFrameworkPath": [
                 "/System/Library/Frameworks",
                 "/Library/Frameworks"
-            ]
+            ],
+            "compilerPath": "/usr/bin/clang",
+            "cStandard": "c11",
+            "cppStandard": "c++17"
         },
         {
             "name": "Linux",
@@ -52,7 +55,7 @@
                     "/usr/lib/gcc/x86_64-linux-gnu/6/include",
                     "/usr/lib/gcc/x86_64-linux-gnu/6/include-fixed",
                     "${workspaceRoot}",
-                "${workspaceRoot}/include"
+                    "${workspaceRoot}/include"
                 ],
                 "databaseFilename": "",
                 "limitSymbolsToIncludedHeaders": true

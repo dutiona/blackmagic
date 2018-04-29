@@ -9,6 +9,7 @@ namespace concepts = metaprog::concepts;
 
 namespace pixel_concept_traits {
 
+
 template <typename T>
 struct S {
   std::string_view s_;
@@ -23,7 +24,7 @@ template <typename T, typename U>
 constexpr bool operator==(const S<T>& lhs, const S<U>& rhs)
 {
   return lhs.s_ == rhs.s_;
-};
+}
 
 static_assert(metaprog::tuple::front(std::make_tuple("lol"sv, 6.0)) == "lol"sv);
 static_assert(metaprog::tuple::back(std::make_tuple("lol"sv, 6.0)) == 6.0, "");
