@@ -56,17 +56,19 @@ static_assert(metaprog::tuple::fold_right(std::make_tuple(2, 2), [](auto lhs, au
 
 static_assert(metaprog::tuple::unpack(std::make_tuple(1, 2, 3, 4, 5), [](auto... x) { return (x + ...); }) == 15);
 
+inline constexpr int t[] = {1, 2, 3, 4, 5};
+static_assert(metaprog::tuple::unpack(t, [](auto... x) { return (x + ...); }) == 15);
 
-/*
-static_assert(metaprog::tuple::equals(metaprog::tuple::filter(std::make_tuple(1, 2.0, 3, 4.0, 5),
-                                                              [](auto a) { return std::is_integral_v<decltype(a)>; }),
+
+static_assert(metaprog::tuple::equals(metaprog::tuple::filter<std::is_integral>(std::make_tuple(1, 2.0, 3, 4.0, 5)),
                                       std::make_tuple(1, 3, 5)));
-*/
+
 /*
 static_assert(metaprog::tuple::equals(metaprog::tuple::filter(std::make_tuple(1, 2.0, 3, 48.0, 55),
                                                               [](auto a) { return std::is_integral_v<decltype(a)>; }),
                                       std::make_tuple(0, -1, 2, -1, 4)));
-                                      */
+
+*/
 
 inline constexpr auto Test = std::make_tuple(S<int>("int"sv), S<double>("double"sv), S<int>("int"sv));
 
@@ -184,20 +186,15 @@ void print_tuple(const std::tuple<Ts...>& tpl)
 static_assert(Pixel.check<MyPixel>(), "MyPixel doesn't model the Pixel concept!");
 
 inline constexpr auto tpl = std::make_tuple(1, 2.0, 3, 48.0, 55);
-inline constexpr auto ret = metaprog::tuple::filter(tpl, [](auto a) { return std::is_integral_v<decltype(a)>; });
+inline constexpr auto ret = metaprog::tuple::filter<std::is_integral>(tpl);
+
 
 
 int main()
 {
-  /*
-  print_tuple(metaprog::tuple::filter(std::make_tuple(1, 2.0, 3, 48.0, 55),
-                                      [](auto a) { return std::is_integral_v<decltype(a)>; }));
-                                      */
-  /*
-  for(const auto& e : ret) {
-    std::cout << "[" << e << "] : " << metaprog::tuple::at(tpl, e) << '\n';
-  }
-  */
+
+  print_tuple(metaprog::tuple::filter<std::is_integral>(std::make_tuple(1, 2.0, 3, 48.0, 55)));
+
   /*
   if constexpr (!Pixel.check<MyPixel>()) {
     DIAGNOSTIC(Pixel, MyPixel);

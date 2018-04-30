@@ -2,6 +2,7 @@
 
 #include <metaprog/common/common.hpp>
 
+#include <array>
 #include <tuple>
 #include <type_traits>
 
@@ -39,12 +40,24 @@ constexpr decltype(auto) unpack_impl(const std::tuple<Ts...>& tpl, Func&& f, std
 {
   return f(std::get<I>(tpl)...);
 }
+
+template <typename Func, typename T, size_t N, size_t... I>
+constexpr decltype(auto) unpack_impl(T (&arr)[N], Func&& f, std::index_sequence<I...>)
+{
+  return f(arr[I]...);
+}
 } // namespace details
 
 template <typename Func, typename... Ts>
 constexpr decltype(auto) unpack(const std::tuple<Ts...>& tpl, Func&& f)
 {
   return details::unpack_impl(tpl, std::forward<Func>(f), std::index_sequence_for<Ts...>{});
+}
+
+template <typename Func, typename T, size_t N>
+constexpr decltype(auto) unpack(T (&arr)[N], Func&& f)
+{
+  return details::unpack_impl(arr, std::forward<Func>(f), std::make_index_sequence<N>{});
 }
 
 
@@ -355,6 +368,8 @@ constexpr auto accumulate(T&& init, std::tuple<Ts...> tpl, Func&& f)
   return details::accumulate_impl(std::forward<T>(init), tpl, std::index_sequence_for<Ts...>{}, std::forward<Func>(f));
 }
 
+
+// count_if
 namespace details {
 template <typename Func, typename... Ts, size_t... I>
 constexpr size_t count_if_impl(const std::tuple<Ts...>& tpl, std::index_sequence<I...>, Func&& f)
@@ -365,6 +380,14 @@ constexpr size_t count_if_impl(const std::tuple<Ts...>& tpl, std::index_sequence
 }
 } // namespace details
 
+template <typename Func, typename... Ts>
+constexpr decltype(auto) count_if(const std::tuple<Ts...>& tpl, Func&& f)
+{
+  return details::count_if_impl(tpl, std::index_sequence_for<Ts...>{}, std::forward<Func>(f));
+}
+
+
+// find_if
 namespace details {
 template <typename Func, typename... Ts>
 constexpr size_t find_if_impl(const std::tuple<Ts...>& tpl, std::index_sequence<>, Func&&)
@@ -379,34 +402,58 @@ constexpr size_t find_if_impl(const std::tuple<Ts...>& tpl, std::index_sequence<
 }
 } // namespace details
 
+template <typename Func, typename... Ts>
+constexpr decltype(auto) find_if(const std::tuple<Ts...>& tpl, Func&& f)
+{
+  return details::find_if_impl(tpl, std::index_sequence_for<Ts...>{}, std::forward<Func>(f));
+}
+
+
+// filter
 namespace details {
-
-
-template <typename Pred>
+template <bool... bools>
+struct filter_indexes {
+  static constexpr auto make_indexes() {
+    constexpr bool b[] = {bools..., false};
+    constexpr std::size_t N = helpers::count(bools..., false);
+    std::array<std::size_t, N> indexes{};
+    auto keep = indexes.begin();
+    for (std::size_t i = 0; i < sizeof...(bools); ++i)
+      if (b[i])
+        *keep++ = i;
+    static_assert(indexes.size() > 0);
+    return indexes;
+  }
+  static constexpr auto indexes = make_indexes();
+};
+template <template <typename...> class Pred>
 struct make_filter_indexes {
-  const Pred& pred;
 
   template <typename... Ts>
-  constexpr auto operator()(Ts&&...)
-    -> int // filter_indexes<bool(std::decay_t<decltype(pred(std::forward<Ts>(t)))>)...>
+  auto operator()(Ts&&...) const
+    -> filter_indexes<static_cast<bool>(Pred<std::decay_t<Ts>>::value)...>
   {
     return {};
   }
 };
-
-
-template <typename Func, typename... Ts, size_t... I>
-constexpr decltype(auto) filter_impl(const std::tuple<Ts...>& tpl, std::index_sequence<I...>, Func&& f)
+template <typename Indexes, typename... Ts, size_t... I>
+constexpr auto build_filtered_tuple(const std::tuple<Ts...>& tpl, std::index_sequence<I...>) {
+  return std::make_tuple(std::get<Indexes::indexes[I]>(tpl)...);
+}
+template <template <typename...> class Func, typename... Ts, size_t... I>
+constexpr decltype(auto) filter_impl(const std::tuple<Ts...>& tpl, std::index_sequence<I...>)
 {
-  (void) tpl;
-  (void) f;
-
-  // const auto elems_to_keep   = transform(tpl, std::forward<Func>(f), std::forward<Args>(args)...);
-  const auto indexes_to_keep = 6; // make_indexes_to_keep(elems_to_keep, std::index_sequence_for<Ts...>{});
-  return indexes_to_keep;
-  // constexpr auto indices = filter_indices;
+  using indexes_t = decltype(unpack(tpl, make_filter_indexes<Func>{}));
+  return build_filtered_tuple<indexes_t>(tpl, std::make_index_sequence<indexes_t::indexes.size()>{});
 }
 } // namespace details
+
+template <template <typename...> class Func, typename... Ts>
+constexpr auto filter(const std::tuple<Ts...>& tpl)
+{
+  return details::filter_impl<Func>(tpl, std::index_sequence_for<Ts...>{});
+}
+
 
 /*
 template <typename Func, typename K, typename V, typename... Ts, size_t... I>
@@ -440,28 +487,7 @@ std::index_sequence<I, J...>, Func&& f)
                    std::forward<Func>(f)
   );
 }
-*/
 
-
-template <typename Func, typename... Ts>
-constexpr decltype(auto) count_if(const std::tuple<Ts...>& tpl, Func&& f)
-{
-  return details::count_if_impl(tpl, std::index_sequence_for<Ts...>{}, std::forward<Func>(f));
-}
-
-template <typename Func, typename... Ts>
-constexpr decltype(auto) find_if(const std::tuple<Ts...>& tpl, Func&& f)
-{
-  return details::find_if_impl(tpl, std::index_sequence_for<Ts...>{}, std::forward<Func>(f));
-}
-
-template <typename Func, typename... Ts>
-constexpr decltype(auto) filter(const std::tuple<Ts...>& tpl, Func&& f)
-{
-  return details::filter_impl(tpl, std::index_sequence_for<Ts...>{}, std::forward<Func>(f));
-}
-
-/*
 template <typename Func, typename K, typename V, typename... Ts>
 constexpr decltype(auto) replace_if(const std::tuple<Ts...>& tpl, Func&& f, const std::pair<K, V>& e)
 {
