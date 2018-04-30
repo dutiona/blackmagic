@@ -38,7 +38,7 @@ template <typename... Concepts>
 struct map {
   std::tuple<item<Concepts>...> items_;
 
-  constexpr map(item<Concepts>... items)
+  constexpr map(const item<Concepts>&... items)
     : items_{items...}
   {
     // if (!details::ensure_unique_keys(items...)) {
@@ -46,10 +46,10 @@ struct map {
     //}
   }
 
-  constexpr map(std::tuple<item<Concepts>...> items)
+  constexpr map(const std::tuple<item<Concepts>...>& items)
     : items_{items}
   {
-    // if (!details::ensure_unique_keys(items_, std::index_sequence_for<item<Concepts>...>{})) {
+    // if (!details::ensure_unique_keys(items, std::index_sequence_for<item<Concepts>...>{})) {
     //  throw "Duplicate keys (concept name) in the concept map : the same concept is here twice ?";
     //}
   }
@@ -112,25 +112,41 @@ struct map {
   }
 };
 
+
+namespace details {
+/*
+  template <typename... Concepts>
+  constexpr auto make_map(const std::tuple<item<Concepts>...>& items) {
+    return map<Concepts...>{items};
+  }
+
+  template <typename... Concepts>
+  constexpr auto make_unique_map(const std::tuple<item<Concepts>...>& items) {
+    return make_map(tuple::unique(items));
+  }
+};
+ */
+
 // Merge maps functions
 template <typename... ConceptLhs, typename... ConceptRhs>
-constexpr decltype(auto) merge_maps(map<ConceptLhs...> map_lhs, map<ConceptRhs...> map_rhs)
+constexpr auto merge_maps(const map<ConceptLhs...>& map_lhs, const map<ConceptRhs...>& map_rhs)
 {
+  // return details::make_unique_map(std::tuple_cat(map_lhs.items_, map_rhs.items_));
   return map<ConceptLhs..., ConceptRhs...>{
     std::tuple_cat(static_cast<std::tuple<item<ConceptLhs>...>>(map_lhs.items_),
                    static_cast<std::tuple<item<ConceptRhs>...>>(map_rhs.items_))};
 }
 
 template <typename ConceptMap>
-constexpr decltype(auto) merge_all_maps(ConceptMap map)
+constexpr auto merge_all_maps(ConceptMap&& map)
 {
-  return map;
+  return std::forward<ConceptMap>(map);
 }
 
 template <typename ConceptMap, typename... ConceptMaps>
-constexpr decltype(auto) merge_all_maps(ConceptMap map, ConceptMaps... maps)
+constexpr auto merge_all_maps(ConceptMap&& map, ConceptMaps&&... maps)
 {
-  return merge_maps(map, merge_all_maps(maps...));
+  return merge_maps(std::forward<ConceptMap>(map), merge_all_maps(std::forward<ConceptMaps>(maps)...));
 }
 
 template <typename... Concepts>
@@ -144,11 +160,12 @@ constexpr decltype(auto) make_concept_map(item<Concept> item)
 {
   return map<Concept>{item};
 }
+} // namespace details
 
 template <typename... ItemsOrMaps>
-constexpr decltype(auto) make_concept_map(ItemsOrMaps... items_or_maps)
+constexpr auto make_concept_map(ItemsOrMaps&&... items_or_maps)
 {
-  return merge_all_maps(make_concept_map(items_or_maps)...);
+  return details::merge_all_maps(details::make_concept_map(std::forward<ItemsOrMaps>(items_or_maps))...);
 }
 
 }} // namespace metaprog::concepts::engine

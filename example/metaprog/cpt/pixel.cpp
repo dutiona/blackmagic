@@ -185,16 +185,20 @@ void print_tuple(const std::tuple<Ts...>& tpl)
 // Vérification
 static_assert(Pixel.check<MyPixel>(), "MyPixel doesn't model the Pixel concept!");
 
+/*
 inline constexpr auto tpl = std::make_tuple(1, 2.0, 3, 48.0, 55);
 inline constexpr auto ret = metaprog::tuple::filter<std::is_integral>(tpl);
-
+*/
 
 
 int main()
 {
-
+  /*
   print_tuple(metaprog::tuple::filter<std::is_integral>(std::make_tuple(1, 2.0, 3, 48.0, 55)));
-
+  print_tuple(metaprog::tuple::remove_if<std::is_integral>(std::make_tuple(1, 2.0, 3, 48.0, 55)));
+  print_tuple(metaprog::tuple::remove_if<std::is_same, int>(std::make_tuple(1, 2.0, 3, 48.0, 55)));
+  print_tuple(metaprog::tuple::unique(std::make_tuple(1, 2.0, 3, 48.0, 55)));
+  */
   /*
   if constexpr (!Pixel.check<MyPixel>()) {
     DIAGNOSTIC(Pixel, MyPixel);

@@ -10,7 +10,6 @@ namespace metaprog::tuple { inline namespace algorithm {
 
 namespace helpers = metaprog::common::helpers;
 
-
 struct identity_func_t {
   template <typename T>
   constexpr decltype(auto) operator()(T&& t) const
@@ -19,6 +18,26 @@ struct identity_func_t {
   }
 };
 inline constexpr const identity_func_t identity_func{};
+
+
+// tuple_remove_const
+template <typename... Ts>
+using tuple_remove_const = std::tuple<std::remove_const_t<Ts>...>;
+// tuple_remove_volatile
+template <typename... Ts>
+using tuple_remove_volatile = std::tuple<std::remove_volatile_t<Ts>...>;
+// tuple_remove_cv
+template <typename... Ts>
+using tuple_remove_cv = std::tuple<std::remove_cv_t<Ts>...>;
+// tuple_remove_reference
+template <typename... Ts>
+using tuple_remove_reference = std::tuple<std::remove_reference_t<Ts>...>;
+// tuple_remove_cvref
+template <typename... Ts>
+using tuple_remove_cvref = std::tuple<helpers::remove_cvref_t<Ts>...>;
+// tuple_decay
+template <typename... Ts>
+using tuple_decay = std::tuple<std::decay_t<Ts>...>;
 
 
 // at
@@ -121,7 +140,7 @@ constexpr bool not_equals(const std::tuple<Ts...>& lhs, const std::tuple<Us...>&
 template <typename Func, typename... Ts>
 constexpr bool all_of(std::tuple<Ts...> tpl, Func&& f)
 {
-  return unpack(transform(tpl, std::forward<Func>(f)), [](auto... e){ return helpers::all_of(e...); });
+  return unpack(transform(tpl, std::forward<Func>(f)), [](auto... e) { return helpers::all_of(e...); });
 }
 
 template <typename... Ts>
@@ -135,7 +154,7 @@ constexpr bool all_of(std::tuple<Ts...> tpl)
 template <typename Func, typename... Ts>
 constexpr bool any_of(std::tuple<Ts...> tpl, Func&& f)
 {
-  return unpack(transform(tpl, std::forward<Func>(f)), [](auto... e){ return helpers::any_of(e...); });
+  return unpack(transform(tpl, std::forward<Func>(f)), [](auto... e) { return helpers::any_of(e...); });
 }
 
 template <typename... Ts>
@@ -163,7 +182,7 @@ constexpr bool none_of(std::tuple<Ts...> tpl)
 template <typename Func, typename... Ts>
 constexpr size_t count(std::tuple<Ts...> tpl, Func&& f)
 {
-  return unpack(transform(tpl, std::forward<Func>(f)), [](auto... e){ return helpers::count(e...); });
+  return unpack(transform(tpl, std::forward<Func>(f)), [](auto... e) { return helpers::count(e...); });
 }
 
 template <typename... Ts>
@@ -413,47 +432,99 @@ constexpr decltype(auto) find_if(const std::tuple<Ts...>& tpl, Func&& f)
 namespace details {
 template <bool... bools>
 struct filter_indexes {
-  static constexpr auto make_indexes() {
-    constexpr bool b[] = {bools..., false};
-    constexpr std::size_t N = helpers::count(bools..., false);
+  static constexpr auto make_indexes()
+  {
+    constexpr bool             b[] = {bools..., false};
+    constexpr std::size_t      N   = helpers::count(bools..., false);
     std::array<std::size_t, N> indexes{};
-    auto keep = indexes.begin();
+    auto                       keep = indexes.begin();
     for (std::size_t i = 0; i < sizeof...(bools); ++i)
       if (b[i])
         *keep++ = i;
-    static_assert(indexes.size() > 0);
     return indexes;
   }
   static constexpr auto indexes = make_indexes();
 };
-template <template <typename...> class Pred>
+template <template <typename...> class Pred, typename... Us>
 struct make_filter_indexes {
-
   template <typename... Ts>
-  auto operator()(Ts&&...) const
-    -> filter_indexes<static_cast<bool>(Pred<std::decay_t<Ts>>::value)...>
+  auto operator()(Ts&&...) const -> filter_indexes<static_cast<bool>(Pred<Us..., std::decay_t<Ts>>::value)...>
   {
     return {};
   }
 };
 template <typename Indexes, typename... Ts, size_t... I>
-constexpr auto build_filtered_tuple(const std::tuple<Ts...>& tpl, std::index_sequence<I...>) {
+constexpr auto build_filtered_tuple(const std::tuple<Ts...>& tpl, std::index_sequence<I...>)
+{
   return std::make_tuple(std::get<Indexes::indexes[I]>(tpl)...);
 }
-template <template <typename...> class Func, typename... Ts, size_t... I>
+template <template <typename...> class Pred, typename... Us, typename... Ts, size_t... I>
 constexpr decltype(auto) filter_impl(const std::tuple<Ts...>& tpl, std::index_sequence<I...>)
 {
-  using indexes_t = decltype(unpack(tpl, make_filter_indexes<Func>{}));
+  using indexes_t = decltype(unpack(tpl, make_filter_indexes<Pred, Us...>{}));
   return build_filtered_tuple<indexes_t>(tpl, std::make_index_sequence<indexes_t::indexes.size()>{});
 }
 } // namespace details
 
-template <template <typename...> class Func, typename... Ts>
+template <template <typename...> class Pred, typename... Us, typename... Ts>
 constexpr auto filter(const std::tuple<Ts...>& tpl)
 {
-  return details::filter_impl<Func>(tpl, std::index_sequence_for<Ts...>{});
+  return details::filter_impl<Pred, Us...>(tpl, std::index_sequence_for<Ts...>{});
 }
 
+
+// remove_if
+namespace details {
+template <template <typename...> class Pred, typename... Us>
+struct make_remove_if_indexes {
+  template <typename... Ts>
+  auto operator()(Ts&&...) const -> filter_indexes<static_cast<bool>(std::negation_v<Pred<Us..., std::decay_t<Ts>>>)...>
+  {
+    return {};
+  }
+};
+template <typename Indexes, typename... Ts, size_t... I>
+constexpr auto build_removed_tuple(const std::tuple<Ts...>& tpl, std::index_sequence<I...>)
+{
+  return std::make_tuple(std::get<Indexes::indexes[I]>(tpl)...);
+}
+template <template <typename...> class Pred, typename... Us, typename... Ts, size_t... I>
+constexpr decltype(auto) remove_if_impl(const std::tuple<Ts...>& tpl, std::index_sequence<I...>)
+{
+  using indexes_t = decltype(unpack(tpl, make_remove_if_indexes<Pred, Us...>{}));
+  return build_removed_tuple<indexes_t>(tpl, std::make_index_sequence<indexes_t::indexes.size()>{});
+}
+} // namespace details
+
+template <template <typename...> class Pred, typename... Us, typename... Ts>
+constexpr auto remove_if(const std::tuple<Ts...>& tpl)
+{
+  return details::remove_if_impl<Pred, Us...>(tpl, std::index_sequence_for<Ts...>{});
+}
+
+
+// unique
+template <typename... Ts>
+constexpr auto unique(const std::tuple<Ts...>& tpl);
+
+namespace details {
+template <typename... Ts, size_t... I>
+constexpr auto unique_impl(const std::tuple<Ts...>& tpl, std::index_sequence<I...>)
+{
+  if constexpr (sizeof...(Ts) == 0) {
+    return tpl;
+  }
+  else {
+    return push_front(unique(remove_if<std::is_same, std::decay_t<decltype(front(tpl))>>(pop_front(tpl))), front(tpl));
+  }
+}
+} // namespace details
+
+template <typename... Ts>
+constexpr auto unique(const std::tuple<Ts...>& tpl)
+{
+  return details::unique_impl(tpl, std::index_sequence_for<Ts...>{});
+}
 
 /*
 template <typename Func, typename K, typename V, typename... Ts, size_t... I>
@@ -463,60 +534,11 @@ constexpr decltype(auto) replace_if_impl(const std::tuple<Ts...>& tpl, std::inde
   return std::make_tuple((f(std::get<I>(tpl)) ? e : std::get<I>(tpl))...);
 }
 
-template <typename Func, typename... Ts, size_t... I>
-constexpr decltype(auto) copy_if_impl(const std::tuple<Ts...>& tpl, std::index_sequence<I...>, Func&& f)
-{
-  return std::tuple_cat(
-    (f(std::get<I>(tpl)) ? std::make_tuple(std::get<I>(tpl)) : std::make_tuple())...);
-}
-
-template <typename Func, typename... Us>
-constexpr decltype(auto) remove_if_impl(const std::tuple<>&, const std::tuple<Us...>& ret, std::index_sequence<>,
-Func&&)
-{
-  return ret;
-}
-
-template <typename Func, typename T, typename... Ts, size_t I, size_t... J, typename... Us>
-constexpr decltype(auto) remove_if_impl(const std::tuple<T, Ts...>& tpl, const std::tuple<Us...>& ret,
-std::index_sequence<I, J...>, Func&& f)
-{
-  return remove_if_impl(std::make_tuple(std::get<J>(tpl)...),
-                   push_back_if(ret, std::get<I>(tpl), std::forward<Func>(f)),
-                   std::index_sequence_for<Ts...>{},
-                   std::forward<Func>(f)
-  );
-}
 
 template <typename Func, typename K, typename V, typename... Ts>
 constexpr decltype(auto) replace_if(const std::tuple<Ts...>& tpl, Func&& f, const std::pair<K, V>& e)
 {
   return details::replace_if_impl(tpl, std::index_sequence_for<Ts...>{}, std::forward<Func>(f), e);
-}
-
-template <typename Func, typename... Ts>
-constexpr decltype(auto) remove_if(const std::tuple<Ts...>& tpl, Func&& f)
-{
-  return details::remove_if_impl(tpl, std::tuple<>(), std::index_sequence_for<Ts...>{}, std::forward<Func>(f));
-}
-
-template <typename Func, typename... Ts>
-constexpr decltype(auto) copy_if(const std::tuple<Ts...>& tpl, Func&& f)
-{
-  return details::copy_if_impl(tpl, std::index_sequence_for<Ts...>{}, std::forward<Func>(f));
-}
-
-template <typename T>
-constexpr decltype(auto) unique(const std::tuple<T>& tpl)
-{
-  return tpl;
-}
-
-template <typename T, typename... Ts>
-constexpr decltype(auto) unique(const std::tuple<T, Ts...>& tpl)
-{
-  return std::tuple_cat(std::get<0>(tpl),
-                        unique(remove_if(tpl, [cur = std::get<0>(tpl)](auto e) { return e == cur; })));
 }
 */
 
