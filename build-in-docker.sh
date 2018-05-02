@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 set -e
 
@@ -123,10 +123,6 @@ fi
 
 
 echo "*** BUILDING BINARIES ***"
-# cleaning if needed
-if [ "$CLEAN" == "ON" ]; then
-	rm -rf $BUILD_DIRECTORY
-fi
 
 # Handle toolchain file
 if [ !  -z "${TOOLCHAIN_FILE// }" ]; then
@@ -144,6 +140,7 @@ echo "Building in $BUILD_DIRECTORY (host) -> $WORKDIR (docker)"
 
 # cleaning if needed
 if [ "$CLEAN" == "ON" ]; then
+	echo "Cleaning directory $WORKDIR ..."
 	docker exec --workdir $WORKDIR $CONTAINER_ID sh -c "rm -rf ./*"
 fi
 

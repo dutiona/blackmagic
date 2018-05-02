@@ -20,8 +20,6 @@
     ],
     "cSpell.language": "en,en-GB,en-US,fr-FR,fr",
     "cSpell.enabled": true,
-    "cquery.cacheDirectory": "${workspaceFolder}/.vscode/cquery_cached_index/",
-    "cquery.launch.workingDirectory": "/Users/dutiona/Dev/vendor/cquery/build",
     "C_Cpp.intelliSenseEngineFallback": "Enabled",
     "files.associations": {
         "functional": "cpp",
