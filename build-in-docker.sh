@@ -10,6 +10,7 @@ SOURCE_DIRECTORY=".."
 TARGET=""
 RELEASE_TYPE="Debug"
 CLEAN="OFF"
+CLEAN_ONLY="OFF"
 COVERAGE="OFF"
 EXAMPLES="OFF"
 BENCHMARK="OFF"
@@ -38,6 +39,8 @@ where:
 
     -f --clean                      empty build directory to force a full rebuild
 
+	--clean-only					only empty build directory and stop
+
     -o --coverage                   run gcovr coverage tool
 
     -m --benchmark                  build the benchmark suite
@@ -56,6 +59,11 @@ while [[ $# -gt 0 ]]; do
 		;;
 	-f | --clean)
 		CLEAN="ON"
+		shift
+		;;
+	--clean-only)
+		CLEAN="ON"
+		CLEAN_ONLY="ON"
 		shift
 		;;
 	-o | --coverage)
@@ -142,6 +150,9 @@ echo "Building in $BUILD_DIRECTORY (host) -> $WORKDIR (docker)"
 if [ "$CLEAN" == "ON" ]; then
 	echo "Cleaning directory $WORKDIR ..."
 	docker exec --workdir $WORKDIR $CONTAINER_ID sh -c "rm -rf ./*"
+	if [ "$CLEAN_ONLY" == "ON" ]; then
+		exit 0
+	fi
 fi
 
 # configure & make
