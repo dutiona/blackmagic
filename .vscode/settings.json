@@ -20,7 +20,7 @@
     ],
     "cSpell.language": "en,en-GB,en-US,fr-FR,fr",
     "cSpell.enabled": true,
-    "C_Cpp.intelliSenseEngineFallback": "Enabled",
+    "C_Cpp.intelliSenseEngineFallback": "Disabled",
     "files.associations": {
         "functional": "cpp",
         "tuple": "cpp",
@@ -29,6 +29,8 @@
         "xmemory0": "cpp",
         "xstddef": "cpp",
         "xtr1common": "cpp",
-        "xutility": "cpp"
+        "xutility": "cpp",
+        "string_view": "cpp",
+        "chrono": "cpp"
     }
 }
