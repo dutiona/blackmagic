@@ -1,5 +1,6 @@
 #pragma once
 
+#include "diagnostic.hpp"
 #include "item.hpp"
 
 #include <metaprog/tuple/tuple.hpp>
@@ -109,6 +110,20 @@ struct map {
       }
       return true;
     }));
+  }
+
+  template <typename This, typename... Args>
+  using can_call_diagnose_t = decltype(metaprog::concepts::diagnostic::traits<This>::template diagnose<Args...>());
+
+  template <typename... Args>
+  constexpr void diagnostic() const
+  {
+    if constexpr (common_helpers::is_detected_v<can_call_diagnose_t, std::decay_t<decltype(*this)>, Args...>) {
+      metaprog::concepts::diagnostic::traits<std::decay_t<decltype(*this)>>::template diagnose<Args...>();
+    }
+    else {
+      throw "No diagnostic trait provided for this concept type.";
+    }
   }
 };
 

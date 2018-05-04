@@ -20,7 +20,6 @@ template <typename T>
 using remove_cvref_t = typename remove_cvref<T>::type;
 
 // nonesuch
-
 struct nonesuch {
   nonesuch()                = delete;
   ~nonesuch()               = delete;
@@ -30,7 +29,6 @@ struct nonesuch {
 
 
 // is_detected
-
 namespace details {
 
 template <typename Default, template <typename...> class Op, typename ParametersPack, typename = void>
