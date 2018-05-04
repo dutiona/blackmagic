@@ -42,17 +42,17 @@ struct map {
   constexpr map(Items&&... items)
     : items_{std::forward<Items>(items)...}
   {
-    if (!details::ensure_unique_keys(items...)) {
-      throw "Duplicate keys (concept name) in the concept map : the same concept is here twice ?";
-    }
+    // if (!details::ensure_unique_keys(items...)) {
+    //  throw "Duplicate keys (concept name) in the concept map : the same concept is here twice ?";
+    //}
   }
 
   constexpr map(const std::tuple<Items...>& items)
     : items_{items}
   {
-    if (!details::ensure_unique_keys(items, std::index_sequence_for<Items...>{})) {
-      throw "Duplicate keys (concept name) in the concept map : the same concept is here twice ?";
-    }
+    // if (!details::ensure_unique_keys(items, std::index_sequence_for<Items...>{})) {
+    //  throw "Duplicate keys (concept name) in the concept map : the same concept is here twice ?";
+    //}
   }
 
 
@@ -118,12 +118,10 @@ struct map {
   template <typename... Args>
   constexpr void diagnostic() const
   {
-    if constexpr (common_helpers::is_detected_v<can_call_diagnose_t, std::decay_t<decltype(*this)>, Args...>) {
-      metaprog::concepts::diagnostic::traits<std::decay_t<decltype(*this)>>::template diagnose<Args...>();
-    }
-    else {
-      throw "No diagnostic trait provided for this concept type.";
-    }
+    static_assert(common_helpers::is_detected_v<can_call_diagnose_t, std::decay_t<decltype(*this)>, Args...>,
+                  "No diagnostic trait provided for this concept type.");
+
+    metaprog::concepts::diagnostic::traits<std::decay_t<decltype(*this)>>::template diagnose<Args...>();
   }
 };
 
@@ -139,7 +137,8 @@ constexpr auto make_map(const std::tuple<Items...>& items)
 template <typename... Items>
 constexpr auto make_unique_map(const std::tuple<Items...>& items)
 {
-  return make_map(tuple::unique(items));
+  // return make_map(tuple::unique(items));
+  return make_map(items);
 }
 
 // Merge maps functions
@@ -147,7 +146,6 @@ template <typename... ItemsLhs, typename... ItemsRhs>
 constexpr auto merge_maps(const map<ItemsLhs...>& map_lhs, const map<ItemsRhs...>& map_rhs)
 {
   return details::make_unique_map(std::tuple_cat(map_lhs.items_, map_rhs.items_));
-  // return map<item<ConceptLhs>..., item<ConceptRhs>...>{std::tuple_cat(map_lhs.items_, map_rhs.items_)};
 }
 
 template <typename ConceptMap>

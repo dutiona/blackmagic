@@ -1,0 +1,21 @@
+#pragma once
+
+#include <tuple>
+
+namespace metaprog::tuple { inline namespace algorithm {
+
+namespace details {
+
+struct end_t {
+  template <typename... Ts>
+  constexpr size_t operator()(std::tuple<Ts...>) const
+  {
+    return std::tuple_size_v<std::tuple<Ts...>>;
+  }
+};
+
+} // namespace details
+
+inline constexpr details::end_t end{};
+
+}} // namespace metaprog::tuple::algorithm
