@@ -8,14 +8,10 @@ using npos = size_t_<size_t(-1)>;
 
 template <typename... Ts>
 struct basic_list {
-  using type = basic_list;
   static constexpr size_t size() noexcept
   {
     return sizeof...(Ts);
   }
 };
-
-template <typename List>
-using size__ = size_t_<List::size()>;
 
 } // namespace metaprog::type

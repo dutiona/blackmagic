@@ -23,7 +23,8 @@ struct if_<false> {
   using type = Else;
 };
 
-#if (defined __GNUC__ || defined __MINGW32__ ) && !defined __clang__
+// gcc bug : ambiguity between inline namespace and namespace
+#if (defined __GNUC__ || defined __MINGW32__) && !defined __clang__
 inline namespace details {
 #else
 namespace details {
@@ -61,7 +62,8 @@ struct default_ {
 };
 
 template <typename T, typename... Cases>
-#if (defined __GNUC__ || defined __MINGW32__ ) && !defined __clang__
+// gcc bug : ambiguity between inline namespace and namespace
+#if (defined __GNUC__ || defined __MINGW32__) && !defined __clang__
 using switch_ = typename switch_impl<T>::template type<Cases...>;
 #else
 using switch_ = typename details::switch_impl<T>::template type<Cases...>;
