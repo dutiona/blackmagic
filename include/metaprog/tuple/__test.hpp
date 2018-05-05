@@ -53,4 +53,24 @@ static_assert(metaprog::tuple::unpack(std::make_tuple(1, 2, 3, 4, 5), [](auto...
 inline constexpr int t[] = {1, 2, 3, 4, 5};
 static_assert(metaprog::tuple::unpack(t, [](auto... x) { return (x + ...); }) == 15);
 
+namespace common_helpers = metaprog::common::helpers;
+
+static_assert(metaprog::tuple::equals(std::make_tuple(2.0, 48.0),
+                                      metaprog::tuple::remove_if(std::make_tuple(1, 2.0, 3, 48.0, 55),
+                                                                 common_helpers::trait<std::is_integral>)));
+static_assert(metaprog::tuple::equals(std::make_tuple(2.0, 48.0),
+                                      metaprog::tuple::remove_if(std::make_tuple(1, 2.0, 3, 48.0, 55),
+                                                                 common_helpers::trait<std::is_same, int>)));
+
+static_assert(metaprog::tuple::equals(std::make_tuple(1, 3, 55),
+                                      metaprog::tuple::copy_if(std::make_tuple(1, 2.0, 3, 48.0, 55),
+                                                               common_helpers::trait<std::is_integral>)));
+
+static_assert(metaprog::tuple::equals(std::make_tuple(1, 3, 55),
+                                      metaprog::tuple::copy_if(std::make_tuple(1, 2.0, 3, 48.0, 55),
+                                                               common_helpers::trait<std::is_same, int>)));
+
+static_assert(metaprog::tuple::equals(std::make_tuple(1, 2.0),
+                                      metaprog::tuple::unique(std::make_tuple(1, 2.0, 3, 48.0, 55))));
+
 #endif
