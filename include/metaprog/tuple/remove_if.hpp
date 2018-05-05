@@ -17,8 +17,16 @@ namespace details {
 
 template <template <typename...> class Pred, typename... Us>
 struct make_remove_if_indexes {
+  const common_helpers::trait_t<Pred, Us...>& trait;
+
+  constexpr make_remove_if_indexes(const common_helpers::trait_t<Pred, Us...>& t)
+    : trait(t)
+  {
+  }
+
   template <typename... Ts>
-  auto operator()(Ts&&...) const -> filter_indexes<static_cast<bool>(std::negation_v<Pred<Us..., std::decay_t<Ts>>>)...>
+  constexpr auto operator()(Ts&&... t) const
+    -> filter_indexes<static_cast<bool>(!std::decay_t<decltype(trait(std::forward<Ts>(t)))>::value)...>
   {
     return {};
   }
@@ -31,18 +39,18 @@ constexpr auto build_removed_tuple(const std::tuple<Ts...>& tpl, std::index_sequ
 }
 
 template <template <typename...> class Pred, typename... Us, typename... Ts, size_t... I>
-constexpr decltype(auto) remove_if_impl(const std::tuple<Ts...>& tpl, const common_helpers::trait_t<Pred, Us...>&,
+constexpr decltype(auto) remove_if_impl(const std::tuple<Ts...>& tpl, const common_helpers::trait_t<Pred, Us...>& trait,
                                         std::index_sequence<I...>)
 {
-  using indexes_t = decltype(unpack(tpl, make_remove_if_indexes<Pred, Us...>{}));
+  using indexes_t = decltype(unpack(tpl, make_remove_if_indexes{trait}));
   return build_removed_tuple<indexes_t>(tpl, std::make_index_sequence<indexes_t::indexes.size()>{});
 }
 
 struct remove_if_t {
   template <template <typename...> class Pred, typename... Us, typename... Ts>
-  constexpr auto operator()(const std::tuple<Ts...>& tpl, const common_helpers::trait_t<Pred, Us...>& pred_trait) const
+  constexpr auto operator()(const std::tuple<Ts...>& tpl, const common_helpers::trait_t<Pred, Us...>& trait) const
   {
-    return remove_if_impl<Pred, Us...>(tpl, pred_trait, std::index_sequence_for<Ts...>{});
+    return remove_if_impl(tpl, trait, std::index_sequence_for<Ts...>{});
   }
 };
 

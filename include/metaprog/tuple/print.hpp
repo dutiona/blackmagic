@@ -11,7 +11,7 @@ namespace details {
 template <typename... Ts, size_t... I>
 void print_tuple(const std::tuple<Ts...>& tpl, std::ostream& os, std::index_sequence<I...>)
 {
-  ((os << "[" << I << "] <" << typeid(decltype(std::get<I>(tpl))).name() << "> : " << std::get<I>(tpl) << '\n'), ...);
+  ((os << "[" << I << "] <" << typeid(std::get<I>(tpl)).name() << "> : " << std::get<I>(tpl) << '\n'), ...);
 }
 
 struct print_t {

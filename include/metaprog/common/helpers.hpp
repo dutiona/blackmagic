@@ -185,14 +185,12 @@ inline constexpr details::count_v_t count_v{};
 template <template <typename...> class Pred, typename... Us>
 struct trait_t {
   template <typename... Args>
-  using type = typename Pred<Us..., Args...>::type;
-  template <typename... Args>
-  static constexpr auto value = Pred<Us..., Args...>::value;
+  using type = Pred<Us..., Args...>;
 
   template <typename... Args>
-  constexpr auto operator()(Us&&..., Args&&...) const
+  constexpr auto operator()(Args...) const
   {
-    return value<Us..., Args...>;
+    return type<Args...>{};
   }
 };
 
