@@ -17,6 +17,7 @@
 #include "for_each.hpp"
 #include "front.hpp"
 #include "length.hpp"
+#include "merge.hpp"
 #include "none_of.hpp"
 #include "not_equals.hpp"
 #include "pop_back.hpp"
