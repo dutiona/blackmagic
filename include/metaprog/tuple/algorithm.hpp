@@ -30,6 +30,7 @@
 #include "rotate.hpp"
 #include "rotate_left.hpp"
 #include "rotate_right.hpp"
+#include "sort.hpp"
 #include "transform.hpp"
 #include "unique.hpp"
 #include "unpack.hpp"
