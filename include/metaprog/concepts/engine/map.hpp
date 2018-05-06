@@ -14,23 +14,21 @@ namespace tuple = metaprog::tuple;
 
 namespace details {
 
-template <typename... Items>
-constexpr bool ensure_unique_keys(Items&&... concept_items)
-{
-  const auto items = std::make_tuple(concept_items...);
-  return tuple::accumulate(
-           size_t(0), items,
-           [items](int count, auto cpt) {
-             return count + tuple::count_if(items, [cpt_name = cpt.first](auto cpt_) { return cpt_.is(cpt_name); });
-           })
-         == sizeof...(Items);
-}
+struct ensure_unique_keys_t {
+  template <typename... Items>
+  constexpr bool operator()(Items&&... concept_items) const
+  {
+    const auto items = std::make_tuple(concept_items...);
+    return tuple::accumulate(
+             size_t(0), items,
+             [items](int count, auto cpt) {
+               return count + tuple::count_if(items, [cpt_name = cpt.first](auto cpt_) { return cpt_.is(cpt_name); });
+             })
+           == sizeof...(Items);
+  }
+};
 
-template <typename... Items, size_t... I>
-constexpr bool ensure_unique_keys(std::tuple<Items...> tuple_items, std::index_sequence<I...>)
-{
-  return ensure_unique_keys(std::get<I>(tuple_items)...);
-}
+inline constexpr ensure_unique_keys_t ensure_unique_keys{};
 
 } // namespace details
 
@@ -42,17 +40,17 @@ struct map {
   constexpr map(Items&&... items)
     : items_{std::forward<Items>(items)...}
   {
-    // if (!details::ensure_unique_keys(items...)) {
-    //  throw "Duplicate keys (concept name) in the concept map : the same concept is here twice ?";
-    //}
+    if (!details::ensure_unique_keys(std::forward<Items>(items)...)) {
+      throw "Duplicate keys (concept name) in the concept map : the same concept is here twice ?";
+    }
   }
 
   constexpr map(const std::tuple<Items...>& items)
     : items_{items}
   {
-    // if (!details::ensure_unique_keys(items, std::index_sequence_for<Items...>{})) {
-    //  throw "Duplicate keys (concept name) in the concept map : the same concept is here twice ?";
-    //}
+    if (!tuple::unpack(items, details::ensure_unique_keys)) {
+      throw "Duplicate keys (concept name) in the concept map : the same concept is here twice ?";
+    }
   }
 
 
@@ -137,8 +135,8 @@ constexpr auto make_map(const std::tuple<Items...>& items)
 template <typename... Items>
 constexpr auto make_unique_map(const std::tuple<Items...>& items)
 {
-  // return make_map(tuple::unique(items));
-  return make_map(items);
+  return make_map(tuple::unique(items));
+  // return make_map(items);
 }
 
 // Merge maps functions
