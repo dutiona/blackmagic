@@ -22,7 +22,8 @@ namespace details {
 template <typename C, typename T, typename U>
 constexpr auto merge_two(C&& comp, T&& lhs, U&& rhs)
 {
-  if constexpr (std::tuple_size_v<std::remove_reference_t<T>> == 0 && std::tuple_size_v<std::remove_reference_t<U>> == 0) {
+  if constexpr (std::tuple_size_v<std::remove_reference_t<T>> == 0
+                && std::tuple_size_v<std::remove_reference_t<U>> == 0) {
     return std::tuple<>();
   }
   else if constexpr (std::tuple_size_v<std::remove_reference_t<T>> == 0) {

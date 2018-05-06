@@ -24,14 +24,14 @@ template <size_t N, size_t... I>
 constexpr auto translate_index_sequence(std::index_sequence<I...>)
 {
   return std::index_sequence<(I + N)...>{};
-};
+}
 
 template <typename C, typename... Ts, size_t... I, size_t... J>
 constexpr auto sort_impl(C&& comp, const std::tuple<Ts...>& tpl, std::index_sequence<I...>, std::index_sequence<J...>)
 {
   return merge(std::forward<C>(comp), sort(std::forward<C>(comp), std::make_tuple(std::get<I>(tpl)...)),
                sort(std::forward<C>(comp), std::make_tuple(std::get<J>(tpl)...)));
-};
+}
 
 } // namespace details
 
