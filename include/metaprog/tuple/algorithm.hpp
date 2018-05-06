@@ -16,6 +16,7 @@
 #include "fold_right.hpp"
 #include "for_each.hpp"
 #include "front.hpp"
+#include "length.hpp"
 #include "none_of.hpp"
 #include "not_equals.hpp"
 #include "pop_back.hpp"
@@ -23,6 +24,7 @@
 #include "push_back.hpp"
 #include "push_front.hpp"
 #include "remove_if.hpp"
+#include "repeat.hpp"
 #include "reverse.hpp"
 #include "rotate.hpp"
 #include "rotate_left.hpp"
@@ -30,6 +32,7 @@
 #include "transform.hpp"
 #include "unique.hpp"
 #include "unpack.hpp"
+#include "zip.hpp"
 
 // TODO/FIXME
 /*
