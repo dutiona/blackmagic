@@ -58,7 +58,7 @@ struct map {
 
   constexpr size_t count() const
   {
-    return std::tuple_size_v<decltype(items_)>;
+    return std::tuple_size_v<std::remove_reference_t<decltype(items_)>>;
   }
 
   constexpr size_t count_if(std::string_view concept_name) const
