@@ -50,6 +50,15 @@ template <typename T, typename U>
 using less_equal = bool_<(T::type::value <= U::type::value)>;
 
 template <typename T, typename U>
+using logical_and = bool_<(T::type::value && U::type::value)>;
+
+template <typename T, typename U>
+using logical_or = bool_<(T::type::value || U::type::value)>;
+
+template <typename T>
+using logical_not = bool_<(!T::type::value)>;
+
+template <typename T, typename U>
 using bit_and = std::integral_constant<decltype(T::type::value & U::type::value), T::type::value & U::type::value>;
 
 template <typename T, typename U>
