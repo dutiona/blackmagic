@@ -37,6 +37,39 @@
 #include "zip.hpp"
 
 // TODO/FIXME
+// all / any / none
+// contains
+// mismatch
+// find/find_if_not/find_end/find_first_of
+// adjacent_find
+// copy
+// remove
+// replace/replace_if
+// search / search_n
+// take_front / take_back
+// max / min / minmax
+// max_el / min_el / minmax_el
+// take_while
+// fill / expand_with
+// zip_shortest / zip_longest
+// ap / lift
+// cartesian_product
+// permutation / partition
+// empty / is_empty
+// adjust / adjust_if
+// yield / yield_n
+// iota
+// swap_at / swap_ranges_at
+// shuffle (with compile_time rng from cpp-weakly's Jason Turner)
+// lower_bound / upper_bound
+// is_sorted / is_sorted_until
+// sort_range / sort_until / nth_element
+// includes
+// set_difference / set_symmetric_difference
+// set_intersection / set_union
+// is_permutation / next_permutation / prev_permutation
+
+
 /*
 template <typename Func, typename K, typename V, typename... Ts, size_t... I>
 constexpr decltype(auto) replace_if_impl(const std::tuple<Ts...>& tpl, std::index_sequence<I...>, Func&& f,
