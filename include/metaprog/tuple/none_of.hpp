@@ -15,7 +15,7 @@ struct none_of_t {
   }
 
   template <typename... Ts>
-  constexpr bool operator()(std::tuple<Ts...> tpl) const
+  constexpr bool operator()(const std::tuple<Ts...>& tpl) const
   {
     return !all_of(tpl);
   }

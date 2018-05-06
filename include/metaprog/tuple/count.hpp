@@ -1,10 +1,6 @@
 #pragma once
 
-#include "helpers.hpp"
-#include "transform.hpp"
-#include "unpack.hpp"
-
-#include "../common/common.hpp"
+#include "count_if.hpp"
 
 #include <tuple>
 #include <type_traits>
@@ -12,19 +8,11 @@
 
 namespace metaprog::tuple { inline namespace algorithm {
 
-namespace common_helpers = metaprog::common::helpers;
-
 struct count_t {
-  template <typename Func, typename... Ts>
-  constexpr size_t operator()(std::tuple<Ts...> tpl, Func&& f) const
+  template <typename... Ts, typename U>
+  constexpr size_t operator()(const std::tuple<Ts...>& tpl, const U& value) const
   {
-    return unpack(transform(tpl, std::forward<Func>(f)), common_helpers::count_v);
-  }
-
-  template <typename... Ts>
-  constexpr size_t operator()(std::tuple<Ts...> tpl) const
-  {
-    return operator()(tpl, helpers::identity_func);
+    return count_if(tpl, [v = value](auto&& e) { return e == v; });
   }
 };
 

@@ -12,12 +12,26 @@
 
 namespace metaprog::common::helpers {
 
+
+// identify_func
+struct identity_func_t {
+  template <typename T>
+  constexpr decltype(auto) operator()(T&& t) const
+  {
+    return std::forward<T>(t);
+  }
+};
+
+inline constexpr const identity_func_t identity_func{};
+
+
 // remove_cvref
 template <typename T>
 using remove_cvref = std::remove_cv<std::remove_reference_t<T>>;
 
 template <typename T>
 using remove_cvref_t = typename remove_cvref<T>::type;
+
 
 // nonesuch
 struct nonesuch {
@@ -173,6 +187,28 @@ struct count_v_t {
 inline constexpr count_v_t count_v{};
 
 
+// are_equal
+struct are_equal_t {
+  template <typename T, typename... Ts>
+  constexpr bool operator()(T&& lhs, Ts&&... rhs) const {
+    return ((lhs == rhs) && ...);
+  }
+};
+
+inline constexpr are_equal_t are_equal{};
+
+
+// are_not_equal
+struct are_not_equal_t {
+  template <typename T, typename... Ts>
+  constexpr bool operator()(T&& lhs, Ts&&... rhs) const {
+    return ((lhs != rhs) && ...);
+  }
+};
+
+inline constexpr are_not_equal_t are_not_equal{};
+
+
 // trait
 template <template <typename...> class Pred, typename... Us>
 struct trait_t {
@@ -188,5 +224,15 @@ struct trait_t {
 
 template <template <typename...> class Pred, typename... Us>
 inline constexpr trait_t<Pred, Us...> trait{};
+
+
+// is_instantiation_of
+template <template <typename...> class Template, typename T>
+struct is_instantiation_of : std::false_type {
+};
+
+template <template <typename...> class Template, typename... Args>
+struct is_instantiation_of<Template, Template<Args...>> : std::true_type {
+};
 
 } // namespace metaprog::common::helpers

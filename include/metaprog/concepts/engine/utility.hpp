@@ -1,6 +1,6 @@
 #pragma once
 
-#include <metaprog/type/type.hpp>
+#include "../../type/type.hpp"
 
 #include <type_traits>
 

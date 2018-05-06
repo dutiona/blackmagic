@@ -18,7 +18,7 @@ constexpr T accumulate_impl(T&& init, const std::tuple<Ts...>& tpl, std::index_s
 
 struct accumulate_t {
   template <typename T, typename Func, typename... Ts>
-  constexpr auto operator()(T&& init, std::tuple<Ts...> tpl, Func&& f) const
+  constexpr auto operator()(T&& init, const std::tuple<Ts...>& tpl, Func&& f) const
   {
     return details::accumulate_impl(std::forward<T>(init), tpl, std::index_sequence_for<Ts...>{},
                                     std::forward<Func>(f));

@@ -3,7 +3,7 @@
 #include "diagnostic.hpp"
 #include "item.hpp"
 
-#include <metaprog/tuple/tuple.hpp>
+#include "../../tuple/tuple.hpp"
 
 #include <string_view>
 #include <tuple>

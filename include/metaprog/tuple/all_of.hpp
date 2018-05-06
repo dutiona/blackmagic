@@ -21,9 +21,9 @@ struct all_of_t {
   }
 
   template <typename... Ts>
-  constexpr bool operator()(std::tuple<Ts...> tpl) const
+  constexpr bool operator()(const std::tuple<Ts...>& tpl) const
   {
-    return operator()(tpl, helpers::identity_func);
+    return operator()(tpl, common_helpers::identity_func);
   }
 };
 

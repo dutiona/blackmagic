@@ -6,7 +6,7 @@ namespace metaprog::tuple { inline namespace algorithm {
 
 struct end_t {
   template <typename... Ts>
-  constexpr size_t operator()(std::tuple<Ts...>) const
+  constexpr size_t operator()(const std::tuple<Ts...>&) const
   {
     return std::tuple_size_v<std::tuple<Ts...>>;
   }
