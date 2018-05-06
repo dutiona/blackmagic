@@ -4,8 +4,6 @@
 
 namespace metaprog::tuple { inline namespace algorithm {
 
-namespace details {
-
 struct end_t {
   template <typename... Ts>
   constexpr size_t operator()(std::tuple<Ts...>) const
@@ -14,8 +12,6 @@ struct end_t {
   }
 };
 
-} // namespace details
-
-inline constexpr details::end_t end{};
+inline constexpr end_t end{};
 
 }} // namespace metaprog::tuple::algorithm

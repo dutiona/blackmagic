@@ -1,2 +1,5 @@
+add_subdirectory(common)
 add_subdirectory(cpt)
-add_subdirectory(ctx)
+add_subdirectory(cstxpr)
+add_subdirectory(type)
+add_subdirectory(tuple)

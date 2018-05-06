@@ -8,8 +8,6 @@
 
 namespace metaprog::tuple { inline namespace algorithm {
 
-namespace details {
-
 struct rotate_left_t {
   template <typename... Ts>
   constexpr auto operator()(const std::tuple<Ts...>& tpl) const
@@ -18,8 +16,6 @@ struct rotate_left_t {
   }
 };
 
-} // namespace details
-
-inline constexpr details::rotate_left_t rotate_left{};
+inline constexpr rotate_left_t rotate_left{};
 
 }} // namespace metaprog::tuple::algorithm

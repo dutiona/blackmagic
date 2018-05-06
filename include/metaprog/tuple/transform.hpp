@@ -13,16 +13,16 @@ constexpr auto transform_impl(const std::tuple<Ts...>& tpl, std::index_sequence<
   return std::make_tuple(f(std::get<I>(tpl))...);
 }
 
+} // namespace details
+
 struct transform_t {
   template <typename Func, typename... Ts>
   constexpr auto operator()(const std::tuple<Ts...>& tpl, Func&& f) const
   {
-    return transform_impl(tpl, std::index_sequence_for<Ts...>{}, std::forward<Func>(f));
+    return details::transform_impl(tpl, std::index_sequence_for<Ts...>{}, std::forward<Func>(f));
   }
 };
 
-} // namespace details
-
-inline constexpr details::transform_t transform{};
+inline constexpr transform_t transform{};
 
 }} // namespace metaprog::tuple::algorithm

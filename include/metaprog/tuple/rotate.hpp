@@ -6,10 +6,10 @@ namespace metaprog::tuple { inline namespace algorithm {
 
 namespace details {
 
-using rorate_t = rotate_left_t;
+using rotate_t = rotate_left_t;
 
 } // namespace details
 
-inline constexpr details::rorate_t rorate{};
+inline constexpr details::rotate_t rotate{};
 
 }} // namespace metaprog::tuple::algorithm

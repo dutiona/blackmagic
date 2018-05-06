@@ -1,0 +1,1 @@
+add_example(cstxpr_empty "empty.cpp")

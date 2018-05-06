@@ -8,8 +8,6 @@
 
 namespace metaprog::tuple { inline namespace algorithm {
 
-namespace details {
-
 struct fold_right_t {
   template <typename Func, typename... Ts, typename... Args>
   constexpr decltype(auto) operator()(const std::tuple<Ts...>& tpl, Func&& f, Args&&... args) const
@@ -19,8 +17,6 @@ struct fold_right_t {
   }
 };
 
-} // namespace details
-
-inline constexpr details::fold_right_t fold_right{};
+inline constexpr fold_right_t fold_right{};
 
 }} // namespace metaprog::tuple::algorithm

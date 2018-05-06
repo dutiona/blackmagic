@@ -31,6 +31,6 @@ struct reverse_t {
 
 } // namespace details
 
-inline constexpr details::reverse_t reverse_t{};
+inline constexpr details::reverse_t reverse{};
 
 }} // namespace metaprog::tuple::algorithm

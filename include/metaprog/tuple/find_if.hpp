@@ -21,16 +21,16 @@ constexpr size_t find_if_impl(const std::tuple<Ts...>& tpl, std::index_sequence<
   return !f(std::get<I>(tpl)) ? find_if_impl(tpl, std::index_sequence<J...>{}, std::forward<Func>(f)) : I;
 }
 
+} // namespace details
+
 struct find_if_t {
   template <typename Func, typename... Ts>
   constexpr decltype(auto) operator()(const std::tuple<Ts...>& tpl, Func&& f) const
   {
-    return find_if_impl(tpl, std::index_sequence_for<Ts...>{}, std::forward<Func>(f));
+    return details::find_if_impl(tpl, std::index_sequence_for<Ts...>{}, std::forward<Func>(f));
   }
 };
 
-} // namespace details
-
-inline constexpr details::find_if_t find_if{};
+inline constexpr find_if_t find_if{};
 
 }} // namespace metaprog::tuple::algorithm

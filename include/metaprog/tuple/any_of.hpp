@@ -14,8 +14,6 @@ namespace metaprog::tuple { inline namespace algorithm {
 
 namespace common_helpers = metaprog::common::helpers;
 
-namespace details {
-
 struct any_of_t {
   template <typename Func, typename... Ts>
   constexpr bool operator()(std::tuple<Ts...> tpl, Func&& f) const
@@ -30,8 +28,6 @@ struct any_of_t {
   }
 };
 
-} // namespace details
-
-inline constexpr details::any_of_t any_of{};
+inline constexpr any_of_t any_of{};
 
 }} // namespace metaprog::tuple::algorithm

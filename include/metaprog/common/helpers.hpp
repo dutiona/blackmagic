@@ -122,7 +122,6 @@ struct count : std::integral_constant<size_t, (Bs + ...)> {
 };
 
 // all_of_v
-namespace details {
 struct all_of_v_t {
   template <typename... Ts>
   constexpr bool operator()(Ts... bools) const
@@ -131,13 +130,11 @@ struct all_of_v_t {
     return (bools && ...);
   }
 };
-} // namespace details
 
-inline constexpr details::all_of_v_t all_of_v{};
+inline constexpr all_of_v_t all_of_v{};
 
 
 // any_of_v
-namespace details {
 struct any_of_v_t {
   template <typename... Ts>
   constexpr bool operator()(Ts... bools) const
@@ -146,13 +143,11 @@ struct any_of_v_t {
     return (bools || ...);
   }
 };
-} // namespace details
 
-inline constexpr details::any_of_v_t any_of_v{};
+inline constexpr any_of_v_t any_of_v{};
 
 
 // none_of_v
-namespace details {
 struct none_of_v_t {
   template <typename... Ts>
   constexpr bool operator()(Ts... bools) const
@@ -161,13 +156,11 @@ struct none_of_v_t {
     return !all_of_v(bools...);
   }
 };
-} // namespace details
 
-inline constexpr details::none_of_v_t none_of_v{};
+inline constexpr none_of_v_t none_of_v{};
 
 
 // count_v
-namespace details {
 struct count_v_t {
   template <typename... Ts>
   constexpr bool operator()(Ts... nbs) const
@@ -176,9 +169,8 @@ struct count_v_t {
     return (nbs + ...);
   }
 };
-} // namespace details
 
-inline constexpr details::count_v_t count_v{};
+inline constexpr count_v_t count_v{};
 
 
 // trait

@@ -26,28 +26,28 @@ constexpr decltype(auto) unpack_impl(T (&arr)[N], Func&& f, std::index_sequence<
   return f(arr[I]...);
 }
 
+} // namespace details
+
 struct unpack_t {
   template <typename Func, typename... Ts>
   constexpr decltype(auto) operator()(const std::tuple<Ts...>& tpl, Func&& f) const
   {
-    return unpack_impl(tpl, std::forward<Func>(f), std::index_sequence_for<Ts...>{});
+    return details::unpack_impl(tpl, std::forward<Func>(f), std::index_sequence_for<Ts...>{});
   }
 
   template <typename Func, typename T, size_t N>
   constexpr decltype(auto) operator()(const std::array<T, N>& arr, Func&& f) const
   {
-    return unpack_impl(arr, std::forward<Func>(f), std::make_index_sequence<N>{});
+    return details::unpack_impl(arr, std::forward<Func>(f), std::make_index_sequence<N>{});
   }
 
   template <typename Func, typename T, size_t N>
   constexpr decltype(auto) operator()(T (&arr)[N], Func&& f) const
   {
-    return unpack_impl(arr, std::forward<Func>(f), std::make_index_sequence<N>{});
+    return details::unpack_impl(arr, std::forward<Func>(f), std::make_index_sequence<N>{});
   }
 };
 
-} // namespace details
-
-inline constexpr details::unpack_t unpack{};
+inline constexpr unpack_t unpack{};
 
 }} // namespace metaprog::tuple::algorithm

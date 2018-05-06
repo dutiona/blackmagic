@@ -8,8 +8,6 @@ namespace metaprog::tuple { inline namespace algorithm {
 
 namespace type = metaprog::type;
 
-namespace details {
-
 struct back_t {
   template <typename... Ts>
   constexpr decltype(auto) operator()(const std::tuple<Ts...>& tpl) const
@@ -20,8 +18,6 @@ struct back_t {
   }
 };
 
-} // namespace details
-
-inline constexpr details::back_t back{};
+inline constexpr back_t back{};
 
 }} // namespace metaprog::tuple::algorithm

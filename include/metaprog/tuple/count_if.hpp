@@ -15,16 +15,16 @@ constexpr size_t count_if_impl(const std::tuple<Ts...>& tpl, std::index_sequence
   return ret;
 }
 
+} // namespace details
+
 struct count_if_t {
   template <typename Func, typename... Ts>
   constexpr decltype(auto) operator()(const std::tuple<Ts...>& tpl, Func&& f) const
   {
-    return count_if_impl(tpl, std::index_sequence_for<Ts...>{}, std::forward<Func>(f));
+    return details::count_if_impl(tpl, std::index_sequence_for<Ts...>{}, std::forward<Func>(f));
   }
 };
 
-} // namespace details
-
-inline constexpr details::count_if_t count_if{};
+inline constexpr count_if_t count_if{};
 
 }} // namespace metaprog::tuple::algorithm

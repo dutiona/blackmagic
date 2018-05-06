@@ -14,8 +14,6 @@ namespace metaprog::tuple { inline namespace algorithm {
 
 namespace common_helpers = metaprog::common::helpers;
 
-namespace details {
-
 struct count_t {
   template <typename Func, typename... Ts>
   constexpr size_t operator()(std::tuple<Ts...> tpl, Func&& f) const
@@ -30,8 +28,6 @@ struct count_t {
   }
 };
 
-} // namespace details
-
-inline constexpr details::count_t count{};
+inline constexpr count_t count{};
 
 }} // namespace metaprog::tuple::algorithm

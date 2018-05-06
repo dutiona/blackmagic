@@ -46,16 +46,16 @@ constexpr decltype(auto) remove_if_impl(const std::tuple<Ts...>& tpl, const comm
   return build_removed_tuple<indexes_t>(tpl, std::make_index_sequence<indexes_t::indexes.size()>{});
 }
 
+} // namespace details
+
 struct remove_if_t {
   template <template <typename...> class Pred, typename... Us, typename... Ts>
   constexpr auto operator()(const std::tuple<Ts...>& tpl, const common_helpers::trait_t<Pred, Us...>& trait) const
   {
-    return remove_if_impl(tpl, trait, std::index_sequence_for<Ts...>{});
+    return details::remove_if_impl(tpl, trait, std::index_sequence_for<Ts...>{});
   }
 };
 
-} // namespace details
-
-inline constexpr details::remove_if_t remove_if{};
+inline constexpr remove_if_t remove_if{};
 
 }} // namespace metaprog::tuple::algorithm

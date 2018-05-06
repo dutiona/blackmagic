@@ -5,8 +5,6 @@
 
 namespace metaprog::tuple { inline namespace algorithm {
 
-namespace details {
-
 struct push_back_t {
   template <typename T, typename... Ts>
   constexpr auto operator()(const std::tuple<Ts...>& tpl, T&& e) const
@@ -15,8 +13,6 @@ struct push_back_t {
   }
 };
 
-} // namespace details
-
-inline constexpr details::push_back_t push_back{};
+inline constexpr push_back_t push_back{};
 
 }} // namespace metaprog::tuple::algorithm

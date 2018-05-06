@@ -1,1 +1,0 @@
-add_example(ctx_empty "empty.cpp")

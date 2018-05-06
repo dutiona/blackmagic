@@ -12,6 +12,8 @@ constexpr auto pop_front_impl(const std::tuple<T, Ts...>& tpl, std::index_sequen
   return std::make_tuple(std::get<J>(tpl)...);
 }
 
+} // namespace details
+
 struct pop_front_t {
   template <typename... Ts>
   constexpr auto operator()(const std::tuple<Ts...>& tpl) const
@@ -22,8 +24,6 @@ struct pop_front_t {
   }
 };
 
-} // namespace details
-
-inline constexpr details::pop_front_t pop_front{};
+inline constexpr pop_front_t pop_front{};
 
 }} // namespace metaprog::tuple::algorithm

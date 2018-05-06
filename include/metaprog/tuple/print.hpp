@@ -9,21 +9,21 @@ namespace metaprog::tuple { inline namespace algorithm {
 namespace details {
 
 template <typename... Ts, size_t... I>
-void print_tuple(const std::tuple<Ts...>& tpl, std::ostream& os, std::index_sequence<I...>)
+void print_impl(const std::tuple<Ts...>& tpl, std::ostream& os, std::index_sequence<I...>)
 {
   ((os << "[" << I << "] <" << typeid(std::get<I>(tpl)).name() << "> : " << std::get<I>(tpl) << '\n'), ...);
 }
+
+} // namespace details
 
 struct print_t {
   template <typename... Ts>
   void operator()(const std::tuple<Ts...>& tpl, std::ostream& os) const
   {
-    print_tuple(tpl, os, std::index_sequence_for<Ts...>{});
+    details::print_impl(tpl, os, std::index_sequence_for<Ts...>{});
   }
 };
 
-} // namespace details
-
-inline constexpr details::print_t print{};
+inline constexpr print_t print{};
 
 }} // namespace metaprog::tuple::algorithm

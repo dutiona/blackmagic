@@ -14,16 +14,12 @@ namespace metaprog::tuple { inline namespace algorithm {
 namespace common_helpers = metaprog::common::helpers;
 
 // fwd decl
-namespace details {
-
 struct unique_t {
   template <typename... Ts>
   constexpr auto operator()(const std::tuple<Ts...>& tpl) const;
 };
 
-} // namespace details
-
-inline constexpr details::unique_t unique{};
+inline constexpr unique_t unique{};
 
 namespace details {
 
@@ -40,12 +36,12 @@ constexpr auto unique_impl(const std::tuple<Ts...>& tpl, std::index_sequence<I..
   }
 }
 
+} // namespace details
+
 template <typename... Ts>
 constexpr auto unique_t::operator()(const std::tuple<Ts...>& tpl) const
 {
-  return unique_impl(tpl, std::index_sequence_for<Ts...>{});
+  return details::unique_impl(tpl, std::index_sequence_for<Ts...>{});
 }
-
-} // namespace details
 
 }} // namespace metaprog::tuple::algorithm

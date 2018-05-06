@@ -9,8 +9,6 @@ namespace metaprog::tuple { inline namespace algorithm {
 
 namespace common_helpers = metaprog::common::helpers;
 
-namespace details {
-
 struct at_t {
   template <typename... Ts, typename N>
   constexpr decltype(auto) operator()(const std::tuple<Ts...>& tpl, N) const
@@ -23,8 +21,6 @@ struct at_t {
   }
 };
 
-} // namespace details
-
-inline constexpr details::at_t at{};
+inline constexpr at_t at{};
 
 }} // namespace metaprog::tuple::algorithm

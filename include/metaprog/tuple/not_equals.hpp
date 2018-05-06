@@ -16,6 +16,8 @@ constexpr bool not_equal_impl(const std::tuple<Ts...>& lhs, const std::tuple<Us.
   return common_helpers::any_of_v((std::get<I>(lhs) != std::get<I>(rhs))...);
 }
 
+} // namespace details
+
 struct not_equals_t {
   template <typename... Ts, typename... Us>
   constexpr bool operator()(const std::tuple<Ts...>& lhs, const std::tuple<Us...>& rhs) const
@@ -29,8 +31,6 @@ struct not_equals_t {
   }
 };
 
-} // namespace details
-
-inline constexpr details::not_equals_t not_equals{};
+inline constexpr not_equals_t not_equals{};
 
 }} // namespace metaprog::tuple::algorithm

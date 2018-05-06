@@ -14,16 +14,17 @@ constexpr T accumulate_impl(T&& init, const std::tuple<Ts...>& tpl, std::index_s
   return init;
 }
 
+} // namespace details
+
 struct accumulate_t {
   template <typename T, typename Func, typename... Ts>
   constexpr auto operator()(T&& init, std::tuple<Ts...> tpl, Func&& f) const
   {
-    return accumulate_impl(std::forward<T>(init), tpl, std::index_sequence_for<Ts...>{}, std::forward<Func>(f));
+    return details::accumulate_impl(std::forward<T>(init), tpl, std::index_sequence_for<Ts...>{},
+                                    std::forward<Func>(f));
   }
 };
 
-} // namespace details
-
-inline constexpr details::accumulate_t accumulate{};
+inline constexpr accumulate_t accumulate{};
 
 }} // namespace metaprog::tuple::algorithm

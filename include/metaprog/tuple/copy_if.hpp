@@ -46,16 +46,16 @@ constexpr decltype(auto) copy_if_impl(const std::tuple<Ts...>& tpl, const common
   return build_filtered_tuple<indexes_t>(tpl, std::make_index_sequence<indexes_t::indexes.size()>{});
 }
 
+} // namespace details
+
 struct copy_if_t {
   template <template <typename...> class Pred, typename... Us, typename... Ts>
   constexpr auto operator()(const std::tuple<Ts...>& tpl, const common_helpers::trait_t<Pred, Us...>& trait) const
   {
-    return copy_if_impl(tpl, trait, std::index_sequence_for<Ts...>{});
+    return details::copy_if_impl(tpl, trait, std::index_sequence_for<Ts...>{});
   }
 };
 
-} // namespace details
-
-inline constexpr details::copy_if_t copy_if{};
+inline constexpr copy_if_t copy_if{};
 
 }} // namespace metaprog::tuple::algorithm

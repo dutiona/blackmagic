@@ -19,21 +19,21 @@ constexpr void for_each_impl(const std::tuple<Ts...>& tpl, std::index_sequence<I
   (f(std::get<I>(tpl)), ...);
 }
 
+} // namespace details
+
 struct for_each_t {
   template <typename Func, typename... Ts>
   constexpr void operator()(std::tuple<Ts...>& tpl, Func&& f) const
   {
-    for_each_impl(tpl, std::index_sequence_for<Ts...>{}, std::forward<Func>(f));
+    details::for_each_impl(tpl, std::index_sequence_for<Ts...>{}, std::forward<Func>(f));
   }
   template <typename Func, typename... Ts>
   constexpr void operator()(const std::tuple<Ts...>& tpl, Func&& f) const
   {
-    for_each_impl(tpl, std::index_sequence_for<Ts...>{}, std::forward<Func>(f));
+    details::for_each_impl(tpl, std::index_sequence_for<Ts...>{}, std::forward<Func>(f));
   }
 };
 
-} // namespace details
-
-inline constexpr details::for_each_t for_each{};
+inline constexpr for_each_t for_each{};
 
 }} // namespace metaprog::tuple::algorithm
