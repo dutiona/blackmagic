@@ -2,6 +2,8 @@
 
 #include "merge.hpp"
 
+#include "../type/type.hpp"
+
 #include <tuple>
 #include <utility>
 
@@ -21,9 +23,9 @@ inline constexpr sort_t sort{};
 namespace details {
 
 template <size_t N, size_t... I>
-constexpr auto translate_index_sequence(std::index_sequence<I...>)
+constexpr auto translate_index_sequence(std::index_sequence<I...>, type::size_t_<N>)
 {
-  return std::index_sequence<(I + N)...>{};
+  return std::index_sequence<type::plus<type::size_t_<I>, type::size_t_<N>>::value...>{};
 }
 
 template <typename C, typename... Ts, size_t... I, size_t... J>
@@ -42,10 +44,11 @@ constexpr auto sort_t::operator()(C&& comp, const std::tuple<Ts...>& tpl) const
     return tpl;
   }
   else {
-    constexpr size_t pivot = sizeof...(Ts) / 2;
+    using Pivot = type::size_t_<type::divides<type::size_t_<sizeof...(Ts)>, type::size_t_<2>>::value>;
     return details::sort_impl(
-      std::forward<C>(comp), tpl, std::make_index_sequence<pivot>{},
-      details::translate_index_sequence<pivot>(std::make_index_sequence<sizeof...(Ts) - pivot>{}));
+      std::forward<C>(comp), tpl, std::make_index_sequence<Pivot::value>{},
+      details::translate_index_sequence(
+        std::make_index_sequence<type::minus<type::size_t_<sizeof...(Ts)>, Pivot>::value>{}, Pivot{}));
   }
 }
 

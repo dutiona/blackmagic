@@ -11,19 +11,19 @@ namespace details {
 template <typename Func, typename... Ts, size_t... I>
 constexpr decltype(auto) unpack_impl(const std::tuple<Ts...>& tpl, Func&& f, std::index_sequence<I...>)
 {
-  return f(std::get<I>(tpl)...);
+  return std::forward<Func>(f)(std::get<I>(tpl)...);
 }
 
 template <typename Func, typename T, size_t N, size_t... I>
 constexpr decltype(auto) unpack_impl(const std::array<T, N>& arr, Func&& f, std::index_sequence<I...>)
 {
-  return f(arr[I]...);
+  return std::forward<Func>(f)(arr[I]...);
 }
 
 template <typename Func, typename T, size_t N, size_t... I>
 constexpr decltype(auto) unpack_impl(T (&arr)[N], Func&& f, std::index_sequence<I...>)
 {
-  return f(arr[I]...);
+  return std::forward<Func>(f)(arr[I]...);
 }
 
 } // namespace details

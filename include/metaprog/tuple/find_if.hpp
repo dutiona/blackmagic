@@ -18,7 +18,9 @@ constexpr size_t find_if_impl(const std::tuple<Ts...>& tpl, std::index_sequence<
 template <typename Func, typename... Ts, size_t I, size_t... J>
 constexpr size_t find_if_impl(const std::tuple<Ts...>& tpl, std::index_sequence<I, J...>, Func&& f)
 {
-  return !f(std::get<I>(tpl)) ? find_if_impl(tpl, std::index_sequence<J...>{}, std::forward<Func>(f)) : I;
+  return !std::forward<Func>(f)(std::get<I>(tpl))
+           ? find_if_impl(tpl, std::index_sequence<J...>{}, std::forward<Func>(f))
+           : I;
 }
 
 } // namespace details

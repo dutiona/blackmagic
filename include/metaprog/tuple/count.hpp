@@ -3,8 +3,6 @@
 #include "count_if.hpp"
 
 #include <tuple>
-#include <type_traits>
-#include <utility>
 
 namespace metaprog::tuple { inline namespace algorithm {
 

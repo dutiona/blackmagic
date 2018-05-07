@@ -3,7 +3,6 @@
 #include "find_if.hpp"
 
 #include <tuple>
-#include <utility>
 
 namespace metaprog::tuple { inline namespace algorithm {
 

@@ -10,6 +10,7 @@
 #include "../type/type.hpp"
 
 #include <tuple>
+#include <type_traits>
 #include <utility>
 
 namespace metaprog::tuple { inline namespace algorithm {
@@ -44,7 +45,8 @@ constexpr auto zip_impl(std::index_sequence<I...>, Ts&&... tpls)
 template <typename T, typename... Ts>
 constexpr auto zip_impl(T&& tpl, Ts&&... tpls)
 {
-  return zip_impl(std::make_index_sequence<std::tuple_size_v<std::remove_reference_t<T>>>{}, std::forward<T>(tpl), std::forward<Ts>(tpls)...);
+  return zip_impl(std::make_index_sequence<std::tuple_size_v<std::remove_reference_t<T>>>{}, std::forward<T>(tpl),
+                  std::forward<Ts>(tpls)...);
 }
 
 } // namespace details
@@ -56,8 +58,10 @@ constexpr auto zip_t::operator()(Ts&&... tpls) const
     return std::tuple<>();
   }
   else {
-    static_assert((helpers::is_tuple_v<std::remove_reference_t<Ts>> && ...), "Cannot zip tuple and no-tuple data-type!");
-    static_assert(common_helpers::are_equal(std::tuple_size_v<std::remove_reference_t<Ts>>...), "Given tuples' size are different!");
+    static_assert((helpers::is_tuple_v<std::remove_reference_t<Ts>> && ...),
+                  "Cannot zip tuple and no-tuple data-type!");
+    static_assert(common_helpers::are_equal(std::tuple_size_v<std::remove_reference_t<Ts>>...),
+                  "Given tuples' size are different!");
 
     return details::zip_impl(std::forward<Ts>(tpls)...);
   }

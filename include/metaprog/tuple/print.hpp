@@ -1,10 +1,11 @@
 #pragma once
 
-#include <iostream>
+#include <ostream>
 #include <tuple>
 #include <typeinfo>
+#include <utility>
 
-namespace metaprog::tuple { inline namespace algorithm {
+namespace metaprog::tuple {
 
 namespace details {
 
@@ -26,4 +27,4 @@ struct print_t {
 
 inline constexpr print_t print{};
 
-}} // namespace metaprog::tuple::algorithm
+} // namespace metaprog::tuple

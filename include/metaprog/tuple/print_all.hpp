@@ -6,8 +6,9 @@
 #include <string>
 #include <tuple>
 #include <typeinfo>
+#include <utility>
 
-namespace metaprog::tuple { inline namespace algorithm {
+namespace metaprog::tuple {
 
 struct print_all_t {
   template <typename... Ts>
@@ -52,11 +53,10 @@ void print_all_impl(const std::tuple<Ts...>& tpl, std::ostream& os, size_t idx, 
 
 } // namespace details
 
-
 template <typename... Ts>
 void print_all_t::operator()(const std::tuple<Ts...>& tpl, std::ostream& os, size_t idx, size_t padding) const
 {
   details::print_all_impl(tpl, os, idx, padding, std::index_sequence_for<Ts...>{});
 }
 
-}} // namespace metaprog::tuple::algorithm
+} // namespace metaprog::tuple

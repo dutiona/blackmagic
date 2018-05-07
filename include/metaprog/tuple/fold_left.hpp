@@ -24,7 +24,7 @@ constexpr decltype(auto) fold_left_impl(const std::tuple<T, U, Vs...>& tpl, Func
 {
   return fold_left_impl(push_front(std::make_tuple(std::get<K>(tpl)...), f(std::get<I>(tpl), std::get<J>(tpl))),
                         std::forward<Func>(f),
-                        std::make_index_sequence<type::plus<type::size_t_<sizeof...(Vs)>, type::int_<1>>::value>{});
+                        std::make_index_sequence<type::increment<type::size_t_<sizeof...(Vs)>>::value>{});
 }
 
 } // namespace details

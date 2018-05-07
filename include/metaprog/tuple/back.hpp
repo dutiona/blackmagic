@@ -14,7 +14,7 @@ struct back_t {
   {
     static_assert(sizeof...(Ts) > 0, "Tuple is empty!");
 
-    return std::get<type::minus<type::size_t_<sizeof...(Ts)>, type::int_<1>>::value>(tpl);
+    return std::get<type::decrement<type::size_t_<sizeof...(Ts)>>::value>(tpl);
   }
 };
 

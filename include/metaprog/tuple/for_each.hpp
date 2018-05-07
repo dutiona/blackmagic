@@ -10,13 +10,13 @@ namespace details {
 template <typename Func, typename... Ts, size_t... I>
 constexpr void for_each_impl(std::tuple<Ts...>& tpl, std::index_sequence<I...>, Func&& f)
 {
-  (f(std::get<I>(tpl)), ...);
+  (std::forward<Func>(f)(std::get<I>(tpl)), ...);
 }
 
 template <typename Func, typename... Ts, size_t... I>
 constexpr void for_each_impl(const std::tuple<Ts...>& tpl, std::index_sequence<I...>, Func&& f)
 {
-  (f(std::get<I>(tpl)), ...);
+  (std::forward<Func>(f)(std::get<I>(tpl)), ...);
 }
 
 } // namespace details

@@ -10,7 +10,7 @@ namespace details {
 template <typename T, typename Func, typename... Ts, size_t... I>
 constexpr T accumulate_impl(T&& init, const std::tuple<Ts...>& tpl, std::index_sequence<I...>, Func&& f)
 {
-  ((init = f(std::forward<T>(init), std::get<I>(tpl))), ...);
+  ((init = std::forward<Func>(f)(std::forward<T>(init), std::get<I>(tpl))), ...);
   return init;
 }
 

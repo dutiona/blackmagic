@@ -3,6 +3,7 @@
 #include "../type/type.hpp"
 
 #include <tuple>
+#include <utility>
 
 namespace metaprog::tuple { inline namespace algorithm {
 
@@ -25,7 +26,7 @@ struct pop_back_t {
     static_assert(sizeof...(Ts) > 0, "Tuple is empty!");
 
     return details::pop_back_impl(
-      tpl, std::make_index_sequence<type::minus<type::size_t_<sizeof...(Ts)>, type::int_<1>>::value>{});
+      tpl, std::make_index_sequence<type::decrement<type::size_t_<sizeof...(Ts)>>::value>{});
   }
 };
 

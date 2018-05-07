@@ -11,7 +11,7 @@ template <typename Func, typename... Ts, size_t... I>
 constexpr size_t count_if_impl(const std::tuple<Ts...>& tpl, std::index_sequence<I...>, Func&& f)
 {
   size_t ret = 0;
-  ((ret += f(std::get<I>(tpl)) ? 1 : 0), ...);
+  ((ret += std::forward<Func>(f)(std::get<I>(tpl)) ? 1 : 0), ...);
   return ret;
 }
 

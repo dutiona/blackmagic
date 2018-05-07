@@ -1,5 +1,7 @@
 #pragma once
 
+#include "push_front.hpp"
+
 #include "../type/type.hpp"
 
 #include <tuple>
@@ -23,7 +25,7 @@ constexpr auto repeat_t::operator()(T&& e, type::size_t_<N>) const
     return std::make_tuple();
   }
   else {
-    return push_front(repeat(std::forward<T>(e), type::size_t_<N-1>{}), std::forward<T>(e));
+    return push_front(repeat(std::forward<T>(e), type::decrement<type::size_t_<N>>{}), std::forward<T>(e));
   }
 }
 
