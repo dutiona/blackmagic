@@ -8,6 +8,7 @@
 #include "at.hpp"
 #include "back.hpp"
 #include "contains.hpp"
+#include "copy.hpp"
 #include "copy_if.hpp"
 #include "count.hpp"
 #include "count_if.hpp"
