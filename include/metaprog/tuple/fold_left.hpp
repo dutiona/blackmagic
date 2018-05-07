@@ -2,8 +2,6 @@
 
 #include "push_front.hpp"
 
-#include "../type/type.hpp"
-
 #include <tuple>
 #include <utility>
 
@@ -23,8 +21,7 @@ template <typename Func, typename T, typename U, typename... Vs, size_t I, size_
 constexpr decltype(auto) fold_left_impl(const std::tuple<T, U, Vs...>& tpl, Func&& f, std::index_sequence<I, J, K...>)
 {
   return fold_left_impl(push_front(std::make_tuple(std::get<K>(tpl)...), f(std::get<I>(tpl), std::get<J>(tpl))),
-                        std::forward<Func>(f),
-                        std::make_index_sequence<type::increment<type::size_t_<sizeof...(Vs)>>::value>{});
+                        std::forward<Func>(f), std::make_index_sequence<(sizeof...(Vs) + 1)>{});
 }
 
 } // namespace details

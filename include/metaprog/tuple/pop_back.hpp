@@ -1,7 +1,5 @@
 #pragma once
 
-#include "../type/type.hpp"
-
 #include <tuple>
 #include <utility>
 
@@ -25,8 +23,7 @@ struct pop_back_t {
   {
     static_assert(sizeof...(Ts) > 0, "Tuple is empty!");
 
-    return details::pop_back_impl(
-      tpl, std::make_index_sequence<type::decrement<type::size_t_<sizeof...(Ts)>>::value>{});
+    return details::pop_back_impl(tpl, std::make_index_sequence<(sizeof...(Ts) - 1)>{});
   }
 };
 

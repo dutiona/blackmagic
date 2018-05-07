@@ -25,7 +25,7 @@ namespace details {
 template <size_t N, size_t... I>
 constexpr auto translate_index_sequence(std::index_sequence<I...>, type::size_t_<N>)
 {
-  return std::index_sequence<type::plus<type::size_t_<I>, type::size_t_<N>>::value...>{};
+  return std::index_sequence<(I + N)...>{};
 }
 
 template <typename C, typename... Ts, size_t... I, size_t... J>
@@ -44,12 +44,12 @@ constexpr auto sort_t::operator()(C&& comp, const std::tuple<Ts...>& tpl) const
     return tpl;
   }
   else {
-    using Pivot = type::size_t_<type::divides<type::size_t_<sizeof...(Ts)>, type::size_t_<2>>::value>;
+    using Pivot = type::size_t_<(sizeof...(Ts) / 2)>;
     return details::sort_impl(
       std::forward<C>(comp), tpl, std::make_index_sequence<Pivot::value>{},
-      details::translate_index_sequence(
-        std::make_index_sequence<type::minus<type::size_t_<sizeof...(Ts)>, Pivot>::value>{}, Pivot{}));
+      details::translate_index_sequence(std::make_index_sequence<(sizeof...(Ts) - Pivot::value)>{}, Pivot{}));
   }
 }
+
 
 }} // namespace metaprog::tuple::algorithm

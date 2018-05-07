@@ -92,7 +92,7 @@ struct map {
   template <typename... Args>
   constexpr bool check() const
   {
-    return tuple::all_of(tuple::transform(items_, [](auto cpt) { return cpt.template check<Args...>(); }));
+    return tuple::all(tuple::transform(items_, [](auto cpt) { return cpt.template check<Args...>(); }));
   }
 
   template <typename... Args>
@@ -102,7 +102,7 @@ struct map {
       throw "This concept key doesn't exists in this concept map!";
     }
 
-    return tuple::all_of(tuple::transform(items_, [concept_name](auto cpt) {
+    return tuple::all(tuple::transform(items_, [concept_name](auto cpt) {
       if (cpt.is(concept_name)) {
         return cpt.template check<Args...>();
       }

@@ -1,7 +1,7 @@
 #pragma once
 
 #ifndef _MSC_VER
-#include <metaprog/common/common.hpp>
+#include "../../../common/common.hpp"
 #endif
 
 #include <type_traits>

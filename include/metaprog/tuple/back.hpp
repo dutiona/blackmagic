@@ -1,7 +1,5 @@
 #pragma once
 
-#include "../type/type.hpp"
-
 #include <tuple>
 
 namespace metaprog::tuple { inline namespace algorithm {
@@ -14,7 +12,7 @@ struct back_t {
   {
     static_assert(sizeof...(Ts) > 0, "Tuple is empty!");
 
-    return std::get<type::decrement<type::size_t_<sizeof...(Ts)>>::value>(tpl);
+    return std::get<(sizeof...(Ts) - 1)>(tpl);
   }
 };
 

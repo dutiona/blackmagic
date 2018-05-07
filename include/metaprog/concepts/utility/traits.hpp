@@ -2,7 +2,7 @@
 
 #include "details/traits_impl.hpp"
 
-#include <metaprog/type/type.hpp>
+#include "../../type/type.hpp"
 
 namespace metaprog::traits { inline namespace utility {
 
