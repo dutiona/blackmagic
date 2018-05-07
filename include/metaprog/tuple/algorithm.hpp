@@ -33,6 +33,7 @@
 #include "remove.hpp"
 #include "remove_if.hpp"
 #include "repeat.hpp"
+#include "replace.hpp"
 #include "replace_if.hpp"
 #include "reverse.hpp"
 #include "rotate.hpp"
@@ -51,9 +52,7 @@
 // mismatch
 // find_if_not/find_end/find_first_of
 // adjacent_find
-// replace
 // search / search_n
-// take_back
 // max / min / minmax
 // max_el / min_el / minmax_el
 // take_while
@@ -75,20 +74,3 @@
 // set_difference / set_symmetric_difference
 // set_intersection / set_union
 // is_permutation / next_permutation / prev_permutation
-
-
-/*
-template <typename Func, typename K, typename V, typename... Ts, size_t... I>
-constexpr decltype(auto) replace_if_impl(const std::tuple<Ts...>& tpl, std::index_sequence<I...>, Func&& f,
-                                    const std::pair<K, V>& e)
-{
-  return std::make_tuple((f(std::get<I>(tpl)) ? e : std::get<I>(tpl))...);
-}
-
-
-template <typename Func, typename K, typename V, typename... Ts>
-constexpr decltype(auto) replace_if(const std::tuple<Ts...>& tpl, Func&& f, const std::pair<K, V>& e)
-{
-  return details::replace_if_impl(tpl, std::index_sequence_for<Ts...>{}, std::forward<Func>(f), e);
-}
-*/
