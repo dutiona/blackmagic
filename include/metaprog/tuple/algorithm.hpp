@@ -30,13 +30,17 @@
 #include "pop_front.hpp"
 #include "push_back.hpp"
 #include "push_front.hpp"
+#include "remove.hpp"
 #include "remove_if.hpp"
 #include "repeat.hpp"
+#include "replace_if.hpp"
 #include "reverse.hpp"
 #include "rotate.hpp"
 #include "rotate_left.hpp"
 #include "rotate_right.hpp"
 #include "sort.hpp"
+#include "take.hpp"
+#include "take_front.hpp"
 #include "transform.hpp"
 #include "unique.hpp"
 #include "unpack.hpp"
@@ -46,11 +50,9 @@
 // mismatch
 // find_if_not/find_end/find_first_of
 // adjacent_find
-// copy
-// remove
-// replace/replace_if
+// replace
 // search / search_n
-// take_front / take_back
+// take_back
 // max / min / minmax
 // max_el / min_el / minmax_el
 // take_while
