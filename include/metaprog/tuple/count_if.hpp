@@ -19,7 +19,7 @@ constexpr size_t count_if_impl(const std::tuple<Ts...>& tpl, std::index_sequence
 
 struct count_if_t {
   template <typename Func, typename... Ts>
-  constexpr decltype(auto) operator()(const std::tuple<Ts...>& tpl, Func&& f) const
+  constexpr auto operator()(const std::tuple<Ts...>& tpl, Func&& f) const
   {
     return details::count_if_impl(tpl, std::index_sequence_for<Ts...>{}, std::forward<Func>(f));
   }

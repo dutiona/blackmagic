@@ -25,7 +25,7 @@ constexpr size_t find_if_impl(const std::tuple<Ts...>& tpl, std::index_sequence<
 
 struct find_if_t {
   template <typename Func, typename... Ts>
-  constexpr decltype(auto) operator()(const std::tuple<Ts...>& tpl, Func&& f) const
+  constexpr auto operator()(const std::tuple<Ts...>& tpl, Func&& f) const
   {
     return details::find_if_impl(tpl, std::index_sequence_for<Ts...>{}, std::forward<Func>(f));
   }
