@@ -7,11 +7,13 @@
 #include "any_of.hpp"
 #include "at.hpp"
 #include "back.hpp"
+#include "contains.hpp"
 #include "copy_if.hpp"
 #include "count.hpp"
 #include "count_if.hpp"
 #include "end.hpp"
 #include "equals.hpp"
+#include "find.hpp"
 #include "find_if.hpp"
 #include "fold.hpp"
 #include "fold_left.hpp"
@@ -40,10 +42,8 @@
 #include "zip.hpp"
 
 // TODO/FIXME
-// all / any / none
-// contains
 // mismatch
-// find/find_if_not/find_end/find_first_of
+// find_if_not/find_end/find_first_of
 // adjacent_find
 // copy
 // remove
