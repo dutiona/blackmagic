@@ -40,6 +40,7 @@
 #include "rotate_right.hpp"
 #include "sort.hpp"
 #include "take.hpp"
+#include "take_back.hpp"
 #include "take_front.hpp"
 #include "transform.hpp"
 #include "unique.hpp"
