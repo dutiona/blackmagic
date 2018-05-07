@@ -13,13 +13,8 @@ struct none_of_t {
   {
     return !all_of(tpl, std::forward<Func>(f));
   }
-
-  template <typename... Ts>
-  constexpr bool operator()(const std::tuple<Ts...>& tpl) const
-  {
-    return !all_of(tpl);
-  }
 };
+
 inline constexpr none_of_t none_of{};
 
 }} // namespace metaprog::tuple::algorithm

@@ -19,12 +19,6 @@ struct all_of_t {
   {
     return unpack(transform(tpl, std::forward<Func>(f)), common_helpers::all_of_v);
   }
-
-  template <typename... Ts>
-  constexpr bool operator()(const std::tuple<Ts...>& tpl) const
-  {
-    return operator()(tpl, common_helpers::identity_func);
-  }
 };
 
 inline constexpr all_of_t all_of{};

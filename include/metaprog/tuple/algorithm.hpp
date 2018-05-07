@@ -1,7 +1,9 @@
 #pragma once
 
 #include "accumulate.hpp"
+#include "all.hpp"
 #include "all_of.hpp"
+#include "any.hpp"
 #include "any_of.hpp"
 #include "at.hpp"
 #include "back.hpp"
@@ -18,6 +20,7 @@
 #include "front.hpp"
 #include "length.hpp"
 #include "merge.hpp"
+#include "none.hpp"
 #include "none_of.hpp"
 #include "not_equals.hpp"
 #include "pop_back.hpp"

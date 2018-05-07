@@ -20,12 +20,6 @@ struct any_of_t {
   {
     return unpack(transform(tpl, std::forward<Func>(f)), common_helpers::any_of_v);
   }
-
-  template <typename... Ts>
-  constexpr bool operator()(const std::tuple<Ts...>& tpl) const
-  {
-    return operator()(tpl, common_helpers::identity_func);
-  }
 };
 
 inline constexpr any_of_t any_of{};
