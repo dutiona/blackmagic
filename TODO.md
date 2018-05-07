@@ -78,6 +78,10 @@ logical eval_if (lazy) / if_ / and_ / or_ / not_ / while_
 
 TODO
 pure type :
+integral list
+sizeof wrapper
+see https://github.com/edouarda/brigand/wiki/reference
+see https://brunocodutra.github.io/metal/
 all / all_of
 any / any_of
 none / none_of
@@ -125,3 +129,8 @@ lockstep
 on
 overload
 overload_linearly
+
+TODO concepts
+http://en.cppreference.com/w/cpp/language/constraints
+http://en.cppreference.com/w/cpp/concept
+http://en.cppreference.com/w/cpp/experimental/ranges

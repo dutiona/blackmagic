@@ -8,6 +8,12 @@ namespace metaprog::type {
 template <bool b>
 using bool_ = std::integral_constant<bool, b>;
 
+template <bool b>
+using true_ = bool_<true>;
+
+template <bool b>
+using false_ = bool_<false>;
+
 template <bool c>
 using char_ = std::integral_constant<char, c>;
 
