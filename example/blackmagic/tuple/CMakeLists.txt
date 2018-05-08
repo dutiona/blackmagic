@@ -1,0 +1,1 @@
+add_example(tuple_empty "empty.cpp")

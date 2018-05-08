@@ -4,6 +4,7 @@ Param(
     [String]$BuildDirectory = "build-in-docker",
     [String]$SourceDirectory = "..",
     [String]$Target = "",
+    [String]$ToolchainFile = "",
     [String]$ReleaseType = "Debug",
     [String]$Coverage = "OFF",
     [String]$Clean = "OFF",
@@ -12,11 +13,15 @@ Param(
     [String]$Documentation = "OFF"
 )
 
+$DockerImageToolset = "mroynard/ubuntu-toolset:local"
+$DockerImageDoctoolset = "mroynard/ubuntu-doctoolset:local"
+
 Write-Host "Compiler: $Compiler"
 Write-Host "CmakeGenerator: $CmakeGenerator"
 Write-Host "BuildDirectory: $BuildDirectory"
 Write-Host "SourceDirectory: $SourceDirectory"
 Write-Host "Target: $Target"
+Write-Host "ToolchainFile: $ToolchainFile"
 Write-Host "ReleaseType: $ReleaseType"
 Write-Host "Coverage: $Coverage"
 Write-Host "Clean: $Clean"
@@ -30,15 +35,15 @@ If($Compiler -eq "gcc") {
     $CXX = "g++"
 }
 Else {
-    $CC = "clang-6.0"
-    $CXX = "clang++-6.0"
+    $CC = "clang"
+    $CXX = "clang++"
 }
 
 # starting container
 $PwdPath = (Get-Location).Path
 
 Write-Host "*** BUILDING BINARIES ***"
-$ContainerID = docker run -itd --rm --mount type=bind,source="$PwdPath",target=/workspace mroynard/ubuntu-toolset:local
+$ContainerID = docker run -itd --rm --mount type=bind,source="$PwdPath",target=/workspace $DockerImageToolset
 Write-Host "Running in container $ContainerID"
 Trap {
     docker exec $ContainerID true
@@ -55,8 +60,12 @@ If ($Clean -eq "ON") {
     docker exec --workdir $Workdir $ContainerID sh -c "rm -rf ./*"
 }
 
+If (!$ToolchainFile.Remove(" ").Equals("")) {
+    $ToolchainFile = "-T $ToolchainFile"
+}
+
 # configure & make
-docker exec -w $Workdir $ContainerID sh -c "export CC=$CC && export CXX=$CXX && $CXX --version && cmake -G $CmakeGenerator -DWITH_CODE_COVERAGE=$Coverage -DWITH_EXAMPLES=$Examples -DWITH_BENCHMARK=$Benchmark $SourceDirectory"
+docker exec -w $Workdir $ContainerID sh -c "export CC=$CC && export CXX=$CXX && $CXX --version && cmake $ToolchainFile -G $CmakeGenerator -DWITH_CODE_COVERAGE=$Coverage -DWITH_EXAMPLES=$Examples -DWITH_BENCHMARK=$Benchmark $SourceDirectory"
 docker exec -w $Workdir $ContainerID sh -c "cmake --build . --target $Target --config $ReleaseType"
 
 # stopping container
@@ -67,7 +76,7 @@ docker stop $ContainerID
 if ($Documentation -eq "ON") {
     Write-Host "*** BUILDING DOCUMENTATION ***"
 
-    $ContainerID = docker run -itd --rm --mount type=bind,source="$PwdPath",target=/workspace mroynard/ubuntu-doctoolset:local
+    $ContainerID = docker run -itd --rm --mount type=bind,source="$PwdPath",target=/workspace $DockerImageDoctoolset
     Write-Host "Running in container $ContainerID"
     Trap {
         docker exec $ContainerID true

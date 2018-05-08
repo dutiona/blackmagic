@@ -47,8 +47,8 @@ distcheck-linux-clang-release:
     <<: *distcheck-basic-linux
     variables:
         RELEASE_TYPE: "Release"
-        CC: "clang-6.0"
-        CXX: "clang++-6.0"
+        CC: "clang"
+        CXX: "clang++"
 
 distcheck-linux-gcc-debug:
     <<: *distcheck-basic-linux
@@ -61,8 +61,8 @@ distcheck-linux-clang-debug:
     <<: *distcheck-basic-linux
     variables:
         RELEASE_TYPE: "Debug"
-        CC: "clang-6.0"
-        CXX: "clang++-6.0"
+        CC: "clang"
+        CXX: "clang++"
 
 documentation-builder:
     stage: doc

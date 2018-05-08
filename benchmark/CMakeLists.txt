@@ -4,7 +4,7 @@ add_custom_target(benchmarks
 macro(add_benchmark Executable Source)
     add_executable(benchmark_${Executable}.exe EXCLUDE_FROM_ALL ${Source})
 
-    target_link_libraries(benchmark_${Executable}.exe PRIVATE Metaprog)
+    target_link_libraries(benchmark_${Executable}.exe PRIVATE Blackmagic)
     target_link_libraries(benchmark_${Executable}.exe PRIVATE benchmark::benchmark)
 	if(MSVC)
 		#only with 15.6 preview as of now
@@ -29,7 +29,7 @@ if(WITH_BENCHMARK)
 
     find_package(benchmark REQUIRED)
     
-    add_subdirectory(metaprog)
+    add_subdirectory(blackmagic)
 
 endif(WITH_BENCHMARK)
 

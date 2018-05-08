@@ -29,7 +29,7 @@ BraceWrapping:
     AfterNamespace: false
     AfterStruct: false
     AfterUnion: false
-    AfterExternBlock: false
+#    AfterExternBlock: false
     BeforeCatch: true
     BeforeElse: true
     IndentBraces: false
@@ -50,7 +50,7 @@ Cpp11BracedListStyle: true
 FixNamespaceComments: true
 # IncludeBlocks: Preserve
 IndentCaseLabels: true
-IndentPPDirectives: None
+# IndentPPDirectives: None
 IndentWidth: 2
 IndentWrappedFunctionNames: true
 KeepEmptyLinesAtTheStartOfBlocks: false

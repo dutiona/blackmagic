@@ -1,5 +1,0 @@
-add_unit_test(cpt_basic "basic.cpp")
-add_unit_test(cpt_iterator "iterator.cpp")
-add_unit_test(cpt_layout "layout.cpp")
-add_unit_test(cpt_library "library.cpp")
-add_unit_test(cpt_utility "utility.cpp")

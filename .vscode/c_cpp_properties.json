@@ -15,7 +15,7 @@
                     "/usr/include",
                     "/usr/local/include",
                     "${workspaceRoot}",
-                "${workspaceRoot}/include"
+                    "${workspaceRoot}/include"
                 ],
                 "limitSymbolsToIncludedHeaders": true,
                 "databaseFilename": ""
@@ -23,15 +23,21 @@
             "macFrameworkPath": [
                 "/System/Library/Frameworks",
                 "/Library/Frameworks"
-            ]
+            ],
+            "compilerPath": "/usr/bin/clang",
+            "cStandard": "c11",
+            "cppStandard": "c++17"
         },
         {
             "name": "Linux",
             "includePath": [
+                "/usr/include/clang/6.0.0/include",
                 "/usr/include",
                 "/usr/local/include",
-                "/usr/include/c++/6",
-                "/usr/include/c++/6/backward",
+                "/usr/local/include/c++/v1",
+                "/usr/include/c++/6.3.0",
+                "/usr/include/c++/6.3.0/backward",
+                "/usr/include/x86_64-linux-gnu/c++/6.3.0",
                 "/usr/include/x86_64-linux-gnu",
                 "/usr/include/x86_64-linux-gnu/C++/6",
                 "/usr/lib/gcc/x86_64-linux-gnu/6/include",
@@ -43,20 +49,26 @@
             "intelliSenseMode": "clang-x64",
             "browse": {
                 "path": [
+                    "/usr/include/clang/6.0.0/include",
                     "/usr/include",
                     "/usr/local/include",
-                    "/usr/include/c++/6",
-                    "/usr/include/c++/6/backward",
+                    "/usr/local/include/c++/v1",
+                    "/usr/include/c++/6.3.0",
+                    "/usr/include/c++/6.3.0/backward",
+                    "/usr/include/x86_64-linux-gnu/c++/6.3.0",
                     "/usr/include/x86_64-linux-gnu",
                     "/usr/include/x86_64-linux-gnu/C++/6",
                     "/usr/lib/gcc/x86_64-linux-gnu/6/include",
                     "/usr/lib/gcc/x86_64-linux-gnu/6/include-fixed",
                     "${workspaceRoot}",
-                "${workspaceRoot}/include"
+                    "${workspaceRoot}/include"
                 ],
                 "databaseFilename": "",
                 "limitSymbolsToIncludedHeaders": true
-            }
+            },
+            "compilerPath": "/usr/bin/clang++-6.0",
+            "cStandard": "c11",
+            "cppStandard": "c++17"
         },
         {
             "name": "Win32",

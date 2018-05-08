@@ -1,18 +1,22 @@
-#!/bin/sh
+#!/bin/bash
 
 set -e
 
 COMPILER="gcc"
 CMAKE_GENERATOR="Ninja"
 BUILD_DIRECTORY="build-in-docker"
+TOOLCHAIN_FILE=""
 SOURCE_DIRECTORY=".."
 TARGET=""
 RELEASE_TYPE="Debug"
 CLEAN="OFF"
+CLEAN_ONLY="OFF"
 COVERAGE="OFF"
 EXAMPLES="OFF"
 BENCHMARK="OFF"
 DOCUMENTATION="OFF"
+DOCKER_IMAGE_TOOLSET="mroynard/ubuntu-toolset:local"
+DOCKER_IMAGE_DOCTOOLSET="mroynard/ubuntu-doctoolset:local"
 
 USAGE="$(basename "$0") [OPTIONS] -- execute a build toolchain
 
@@ -31,8 +35,11 @@ where:
                                     default = all
     -r --release-type ReleaseType   build type. Release|Debug|RelWithDebInfo|MinSizeRel
                                     default = Debug
+    -n --toolchain ToolchainFile    path to the toolchain file (passed with -T to cmake).
 
     -f --clean                      empty build directory to force a full rebuild
+
+	--clean-only					only empty build directory and stop
 
     -o --coverage                   run gcovr coverage tool
 
@@ -52,6 +59,11 @@ while [[ $# -gt 0 ]]; do
 		;;
 	-f | --clean)
 		CLEAN="ON"
+		shift
+		;;
+	--clean-only)
+		CLEAN="ON"
+		CLEAN_ONLY="ON"
 		shift
 		;;
 	-o | --coverage)
@@ -91,6 +103,10 @@ while [[ $# -gt 0 ]]; do
 		TARGET="$2"
 		shift 2
 		;;
+    -n | --toolchain)
+        TOOLCHAIN_FILE="$2"
+        shift 2
+        ;;
 	-r | --release-type)
 		RELEASE_TYPE="$2"
 		shift 2
@@ -109,19 +125,20 @@ if [ "$COMPILER" == "gcc" ]; then
 	CC="gcc"
 	CXX="g++"
 else
-	CC="clang-6.0"
-	CXX="clang++-6.0"
+	CC="clang"
+	CXX="clang++"
 fi
 
 
 echo "*** BUILDING BINARIES ***"
-# cleaning if needed
-if [ "$CLEAN" == "ON" ]; then
-	rm -rf $BUILD_DIRECTORY
+
+# Handle toolchain file
+if [ !  -z "${TOOLCHAIN_FILE// }" ]; then
+    TOOLCHAIN_FILE="-T $TOOLCHAIN_FILE"
 fi
 
 # starting container
-CONTAINER_ID=$(docker run -itd --rm --mount type=bind,source="$(pwd)",target=/workspace mroynard/ubuntu-toolset:local)
+CONTAINER_ID=$(docker run -itd --rm --mount type=bind,source="$(pwd)",target=/workspace $DOCKER_IMAGE_TOOLSET)
 trap "docker exec $CONTAINER_ID true 2> /dev/null && echo 'Aborting...' && docker stop $CONTAINER_ID > /dev/null" EXIT
 echo "Running in container $CONTAINER_ID"
 
@@ -131,11 +148,15 @@ echo "Building in $BUILD_DIRECTORY (host) -> $WORKDIR (docker)"
 
 # cleaning if needed
 if [ "$CLEAN" == "ON" ]; then
+	echo "Cleaning directory $WORKDIR ..."
 	docker exec --workdir $WORKDIR $CONTAINER_ID sh -c "rm -rf ./*"
+	if [ "$CLEAN_ONLY" == "ON" ]; then
+		exit 0
+	fi
 fi
 
 # configure & make
-docker exec -w $WORKDIR $CONTAINER_ID sh -c "export CC=$CC && export CXX=$CXX && $CXX --version && cmake -G $CMAKE_GENERATOR -DWITH_CODE_COVERAGE=$COVERAGE -DWITH_EXAMPLES=$EXAMPLES -DWITH_BENCHMARK=$BENCHMARK $SOURCE_DIRECTORY"
+docker exec -w $WORKDIR $CONTAINER_ID sh -c "export CC=$CC && export CXX=$CXX && $CXX --version && cmake $TOOLCHAIN_FILE -G $CMAKE_GENERATOR -DWITH_CODE_COVERAGE=$COVERAGE -DWITH_EXAMPLES=$EXAMPLES -DWITH_BENCHMARK=$BENCHMARK $SOURCE_DIRECTORY"
 docker exec -w $WORKDIR $CONTAINER_ID sh -c "cmake --build . --target $TARGET --config $RELEASE_TYPE"
 
 # stopping container
@@ -147,7 +168,7 @@ if [ "$DOCUMENTATION" == "ON" ]; then
 
     echo "*** BUILDING DOCUMENTATION ***"
 
-    CONTAINER_ID=$(docker run -itd --rm --mount type=bind,source="$(pwd)",target=/workspace mroynard/ubuntu-doctoolset:local)
+    CONTAINER_ID=$(docker run -itd --rm --mount type=bind,source="$(pwd)",target=/workspace $DOCKER_IMAGE_DOCTOOLSET)
     trap "docker exec $CONTAINER_ID true 2> /dev/null && echo 'Aborting...' && docker stop $CONTAINER_ID > /dev/null" EXIT
     echo "Running in container $CONTAINER_ID"
 

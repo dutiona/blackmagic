@@ -1,0 +1,1 @@
+add_example(common_empty "empty.cpp")

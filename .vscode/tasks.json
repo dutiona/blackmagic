@@ -192,7 +192,7 @@
                 "-style=file",
                 "${relativeFile}"
             ],
-            "command": "/Users/dutiona/Dev/vendor/llvm-project-master/build/bin/clang-format",
+            "command": "/usr/bin/clang-format-6.0",
             "group": "none"
         },
         {
@@ -209,7 +209,7 @@
                 "${file}"
             ],
             "dependsOn": "configure-with-cdb",
-            "command": "clang-tidy",
+            "command": "/usr/bin/clang-tidy-6.0",
             "problemMatcher": {
                 "owner": "cpp",
                 "fileLocation": "absolute",

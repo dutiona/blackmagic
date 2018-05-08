@@ -1,0 +1,6 @@
+add_unit_test(cstxpr_algorithm "algorithm.cpp")
+add_unit_test(cstxpr_map "map.cpp")
+add_unit_test(cstxpr_optional "optional.cpp")
+add_unit_test(cstxpr_pair "pair.cpp")
+add_unit_test(cstxpr_string "string.cpp")
+add_unit_test(cstxpr_vector "vector.cpp")
