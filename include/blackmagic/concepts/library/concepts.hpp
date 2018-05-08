@@ -28,7 +28,7 @@
  *
  */
 
-namespace metaprog::concepts { inline namespace library {
+namespace blackmagic::concepts { inline namespace library {
 
 
 }} // namespace blackmagic::concepts::library

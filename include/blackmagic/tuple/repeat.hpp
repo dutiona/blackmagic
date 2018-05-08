@@ -7,9 +7,9 @@
 #include <tuple>
 #include <utility>
 
-namespace metaprog::tuple { inline namespace algorithm {
+namespace blackmagic::tuple { inline namespace algorithm {
 
-namespace type = metaprog::type;
+namespace type = blackmagic::type;
 
 struct repeat_t {
   template <typename T, size_t N>

@@ -4,7 +4,7 @@
 
 #include <iterator>
 
-namespace metaprog::cstxpr { inline namespace algorithm {
+namespace blackmagic::cstxpr { inline namespace algorithm {
 
 template <class InputIt, class OutputIt>
 constexpr OutputIt copy(InputIt first, InputIt last, OutputIt d_first)

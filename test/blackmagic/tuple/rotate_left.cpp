@@ -4,11 +4,11 @@
 
 #include <gtest/gtest.h>
 
-namespace tuple = metaprog::tuple;
+namespace tuple = blackmagic::tuple;
 using namespace std::literals;
 
 TEST(Tuple_Rotate_left, Simple)
 {
   ASSERT_TRUE(
-    tuple::equals(metaprog::tuple::rotate_left(std::make_tuple("str"sv, 6.0, 4)), std::make_tuple(6.0, 4, "str"sv)));
+    tuple::equals(tuple::rotate_left(std::make_tuple("str"sv, 6.0, 4)), std::make_tuple(6.0, 4, "str"sv)));
 }

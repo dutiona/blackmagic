@@ -1,7 +1,4 @@
 #pragma once
-
-#ifndef CONCEPTS_LIBRARY_HPP_
-#define CONCEPTS_LIBRARY_HPP_
 /**
  *
  * EqualityComparable : operator== is an equivalence relation
@@ -100,5 +97,3 @@ constexpr bool Compare =
                                                                 details::compare_equiv_t<T, Arg1, Arg2>>::value>::value;
 
 } // namespace concepts
-
-#endif // CONCEPTS_LIBRARY_HPP_

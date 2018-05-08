@@ -4,7 +4,7 @@
 
 #include <type_traits>
 
-namespace metaprog::concepts { inline namespace core { namespace details {
+namespace blackmagic::concepts { inline namespace core { namespace details {
 
 
 }}} // namespace blackmagic::concepts::core::details

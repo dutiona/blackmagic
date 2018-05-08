@@ -8,7 +8,7 @@
 #include <functional>
 #include <stdexcept>
 
-namespace metaprog::cstxpr {
+namespace blackmagic::cstxpr {
 
 template <typename Key, typename Value, size_t Size = 5, typename Compare = std::equal_to<Key>>
 class map {

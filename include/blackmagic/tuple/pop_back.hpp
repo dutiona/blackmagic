@@ -3,9 +3,7 @@
 #include <tuple>
 #include <utility>
 
-namespace metaprog::tuple { inline namespace algorithm {
-
-namespace type = metaprog::type;
+namespace blackmagic::tuple { inline namespace algorithm {
 
 namespace details {
 

@@ -1,6 +1,6 @@
 #pragma once
 
-namespace metaprog::concepts { inline namespace engine {
+namespace blackmagic::concepts { inline namespace engine {
 
 // Helper class storing a concept to perform a check later on
 template <typename Concept>

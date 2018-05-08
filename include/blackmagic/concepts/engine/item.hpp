@@ -7,9 +7,9 @@
 #include <string_view>
 #include <utility>
 
-namespace metaprog::concepts { inline namespace engine {
+namespace blackmagic::concepts { inline namespace engine {
 
-namespace common_helpers = metaprog::common::helpers;
+namespace common_helpers = blackmagic::common::helpers;
 
 template <typename Concept>
 struct item : std::pair<std::string_view, checker<Concept>> {

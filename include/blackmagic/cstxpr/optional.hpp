@@ -14,7 +14,7 @@ using std::experimental::optional;
 } // namespace details
 #endif
 
-namespace metaprog::cstxpr {
+namespace blackmagic::cstxpr {
 
 template <typename T>
 struct optional {

@@ -1,8 +1,5 @@
 #pragma once
 
-#ifndef CONCEPTS_ITERATOR_HPP_
-#define CONCEPTS_ITERATOR_HPP_
-
 /**
  *
  * Iterator : general concept to access data within some data structure
@@ -65,5 +62,3 @@ constexpr bool OutputIterator =
 // ContiguousIterator
 
 } // namespace concepts
-
-#endif // CONCEPTS_LIBRARY_HPP_

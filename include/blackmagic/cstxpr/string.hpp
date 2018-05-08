@@ -6,7 +6,7 @@
 #include <cstddef>
 #include <string_view>
 
-namespace metaprog::cstxpr {
+namespace blackmagic::cstxpr {
 
 struct static_string {
   template <size_t N>

@@ -7,10 +7,10 @@
 
 #include <string_view>
 
-namespace metaprog::concepts { inline namespace utility {
+namespace blackmagic::concepts { inline namespace utility {
 
 using namespace std::literals;
-namespace traits = metaprog::traits;
+namespace traits = blackmagic::traits;
 
 // member access
 

@@ -10,9 +10,9 @@
 #include <type_traits>
 #include <utility>
 
-namespace metaprog::tuple { inline namespace algorithm {
+namespace blackmagic::tuple { inline namespace algorithm {
 
-namespace common_helpers = metaprog::common::helpers;
+namespace common_helpers = blackmagic::common::helpers;
 
 // fwd decl
 struct unique_t {

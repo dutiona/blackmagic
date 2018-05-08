@@ -1,6 +1,6 @@
 #pragma once
 
-namespace metaprog::concepts { inline namespace engine { namespace diagnostic {
+namespace blackmagic::concepts { inline namespace engine { namespace diagnostic {
 
 template <typename Concept>
 struct traits {

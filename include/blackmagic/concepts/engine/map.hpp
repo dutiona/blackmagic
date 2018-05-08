@@ -8,9 +8,9 @@
 #include <string_view>
 #include <tuple>
 
-namespace metaprog::concepts { inline namespace engine {
+namespace blackmagic::concepts { inline namespace engine {
 
-namespace tuple = metaprog::tuple;
+namespace tuple = blackmagic::tuple;
 
 namespace details {
 
@@ -111,7 +111,7 @@ struct map {
   }
 
   template <typename This, typename... Args>
-  using can_call_diagnose_t = decltype(metaprog::concepts::diagnostic::traits<This>::template diagnose<Args...>());
+  using can_call_diagnose_t = decltype(diagnostic::traits<This>::template diagnose<Args...>());
 
   template <typename... Args>
   constexpr void diagnostic() const
@@ -119,7 +119,7 @@ struct map {
     static_assert(common_helpers::is_detected_v<can_call_diagnose_t, std::decay_t<decltype(*this)>, Args...>,
                   "No diagnostic trait provided for this concept type.");
 
-    metaprog::concepts::diagnostic::traits<std::decay_t<decltype(*this)>>::template diagnose<Args...>();
+    diagnostic::traits<std::decay_t<decltype(*this)>>::template diagnose<Args...>();
   }
 };
 

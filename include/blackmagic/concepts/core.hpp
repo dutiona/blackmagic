@@ -6,7 +6,7 @@
 
 #include <string_view>
 
-namespace metaprog::concepts { inline namespace core {
+namespace blackmagic::concepts { inline namespace core {
 
 using namespace std::literals;
 /*

@@ -5,7 +5,7 @@
 #include <tuple>
 #include <utility>
 
-namespace metaprog::tuple { inline namespace algorithm {
+namespace blackmagic::tuple { inline namespace algorithm {
 
 struct replace_t {
   template <typename S, typename T, typename... Ts>

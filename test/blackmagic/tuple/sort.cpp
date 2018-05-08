@@ -4,7 +4,7 @@
 
 #include <gtest/gtest.h>
 
-namespace tuple = metaprog::tuple;
+namespace tuple = blackmagic::tuple;
 
 TEST(Tuple_Sort, Simple)
 {

@@ -6,9 +6,9 @@
 #include <type_traits>
 #include <utility>
 
-namespace metaprog::tuple::helpers {
+namespace blackmagic::tuple::helpers {
 
-namespace common_helpers = metaprog::common::helpers;
+namespace common_helpers = blackmagic::common::helpers;
 
 // tuple_remove_const
 template <typename... Ts>

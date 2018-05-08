@@ -6,9 +6,9 @@
 
 #include <tuple>
 
-namespace metaprog::tuple { inline namespace algorithm {
+namespace blackmagic::tuple { inline namespace algorithm {
 
-namespace common_helpers = metaprog::common::helpers;
+namespace common_helpers = blackmagic::common::helpers;
 
 struct all_t {
   template <typename... Ts>

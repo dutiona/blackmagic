@@ -1,6 +1,6 @@
 #include <blackmagic/type/type.hpp>
 
-namespace type = metaprog::type;
+namespace type = blackmagic::type;
 
 using case_is_double = type::helpers::make_both_from_trait<std::is_same, double>;
 

@@ -4,7 +4,7 @@
 
 #include "../../type/type.hpp"
 
-namespace metaprog::traits { inline namespace utility {
+namespace blackmagic::traits { inline namespace utility {
 
 // member access
 

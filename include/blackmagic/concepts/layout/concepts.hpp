@@ -17,10 +17,10 @@
 
 #include <string_view>
 
-namespace metaprog::concepts { inline namespace layout {
+namespace blackmagic::concepts { inline namespace layout {
 
 using namespace std::literals;
-namespace traits = metaprog::traits;
+namespace traits = blackmagic::traits;
 
 // trivially copyable
 inline constexpr auto TriviallyCopyable = is_true<traits::is_trivially_copyable>("TriviallyCopyable"sv);

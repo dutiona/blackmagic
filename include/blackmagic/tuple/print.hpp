@@ -5,7 +5,7 @@
 #include <typeinfo>
 #include <utility>
 
-namespace metaprog::tuple {
+namespace blackmagic::tuple {
 
 namespace details {
 

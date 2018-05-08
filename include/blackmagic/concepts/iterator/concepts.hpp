@@ -18,6 +18,6 @@
  *
  */
 
-namespace metaprog::concepts { inline namespace iterator {
+namespace blackmagic::concepts { inline namespace iterator {
 
 }} // namespace blackmagic::concepts::iterator

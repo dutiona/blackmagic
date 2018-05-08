@@ -3,7 +3,7 @@
 #include <cstddef>
 #include <type_traits>
 
-namespace metaprog::type {
+namespace blackmagic::type {
 
 template <bool b>
 using bool_ = std::integral_constant<bool, b>;

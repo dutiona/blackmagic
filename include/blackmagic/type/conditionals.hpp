@@ -3,7 +3,7 @@
 #include "helpers.hpp"
 #include "integral_types.hpp"
 
-namespace metaprog::type {
+namespace blackmagic::type {
 
 using helpers::call_t;
 using helpers::check_v;

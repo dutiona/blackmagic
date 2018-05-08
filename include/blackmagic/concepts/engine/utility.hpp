@@ -4,9 +4,9 @@
 
 #include <type_traits>
 
-namespace metaprog::concepts { inline namespace utility {
+namespace blackmagic::concepts { inline namespace utility {
 
-namespace type = metaprog::type;
+namespace type = blackmagic::type;
 
 // Basic verification primitives
 namespace details {

@@ -1,6 +1,6 @@
 #pragma once
 
-namespace metaprog::cstxpr {
+namespace blackmagic::cstxpr {
 
 template <typename First, typename Second>
 struct pair {

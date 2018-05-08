@@ -4,7 +4,7 @@
 #include "integral_types.hpp"
 #include "list.hpp"
 
-namespace metaprog::type { inline namespace algorithm {
+namespace blackmagic::type { inline namespace algorithm {
 
 using helpers::call_t;
 

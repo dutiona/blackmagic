@@ -2,9 +2,7 @@
 
 #include <tuple>
 
-namespace metaprog::tuple { inline namespace algorithm {
-
-namespace type = metaprog::type;
+namespace blackmagic::tuple { inline namespace algorithm {
 
 struct back_t {
   template <typename... Ts>

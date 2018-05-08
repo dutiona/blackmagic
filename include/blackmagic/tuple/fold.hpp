@@ -2,7 +2,7 @@
 
 #include "fold_left.hpp"
 
-namespace metaprog::tuple { inline namespace algorithm {
+namespace blackmagic::tuple { inline namespace algorithm {
 
 using fold_t = fold_left_t;
 

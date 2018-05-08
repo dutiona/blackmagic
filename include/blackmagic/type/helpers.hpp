@@ -1,6 +1,6 @@
 #pragma once
 
-namespace metaprog::type::helpers {
+namespace blackmagic::type::helpers {
 
 // Call metafunc
 

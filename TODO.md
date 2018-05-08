@@ -134,3 +134,5 @@ TODO concepts
 http://en.cppreference.com/w/cpp/language/constraints
 http://en.cppreference.com/w/cpp/concept
 http://en.cppreference.com/w/cpp/experimental/ranges
+
+TODO add contracts to the lib (based on scope_enter scope_exit and scope_error of Adrei Alexandrescu)

@@ -6,7 +6,7 @@
 #include <tuple>
 #include <utility>
 
-namespace metaprog::tuple { inline namespace algorithm {
+namespace blackmagic::tuple { inline namespace algorithm {
 
 namespace details {
 

@@ -4,7 +4,7 @@
 
 #include <gtest/gtest.h>
 
-namespace tuple = metaprog::tuple;
+namespace tuple = blackmagic::tuple;
 using namespace std::literals;
 
 TEST(Tuple_Push_front, Simple)

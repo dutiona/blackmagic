@@ -2,7 +2,7 @@
 
 #include <type_traits>
 
-namespace metaprog::traits { inline namespace layout {
+namespace blackmagic::traits { inline namespace layout {
 
 // trivially copyable
 template <typename T>

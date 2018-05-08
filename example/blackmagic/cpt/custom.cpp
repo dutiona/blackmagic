@@ -3,7 +3,7 @@
 #include <string_view>
 
 using namespace std::literals;
-namespace concepts = metaprog::concepts;
+namespace concepts = blackmagic::concepts;
 
 struct default_constructible_test {
 };

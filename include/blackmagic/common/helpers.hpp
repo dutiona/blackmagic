@@ -10,7 +10,7 @@
 #include <string_view>
 #include <type_traits>
 
-namespace metaprog::common::helpers {
+namespace blackmagic::common::helpers {
 
 
 // identify_func
@@ -190,7 +190,8 @@ inline constexpr count_v_t count_v{};
 // are_equal
 struct are_equal_t {
   template <typename T, typename... Ts>
-  constexpr bool operator()(T&& lhs, Ts&&... rhs) const {
+  constexpr bool operator()(T&& lhs, Ts&&... rhs) const
+  {
     return ((lhs == rhs) && ...);
   }
 };
@@ -201,7 +202,8 @@ inline constexpr are_equal_t are_equal{};
 // are_not_equal
 struct are_not_equal_t {
   template <typename T, typename... Ts>
-  constexpr bool operator()(T&& lhs, Ts&&... rhs) const {
+  constexpr bool operator()(T&& lhs, Ts&&... rhs) const
+  {
     return ((lhs != rhs) && ...);
   }
 };

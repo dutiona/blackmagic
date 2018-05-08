@@ -1,8 +1,5 @@
 #pragma once
 
-#ifndef CONCEPTS_TRAITS_LIBRARY_HPP_
-#define CONCEPTS_TRAITS_LIBRARY_HPP_
-
 #include "utility.hpp"
 
 #include <type_traits>
@@ -84,5 +81,3 @@ constexpr bool is_value_swappable_v = is_value_swappable_impl<T>::value;
 
 
 }} // namespace concepts::details
-
-#endif // CONCEPTS_TRAITS_LIBRARY_HPP_

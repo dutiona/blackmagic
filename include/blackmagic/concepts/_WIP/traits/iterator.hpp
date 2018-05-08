@@ -1,8 +1,5 @@
 #pragma once
 
-#ifndef CONCEPTS_TRAITS_ITERATOR_HPP_
-#define CONCEPTS_TRAITS_ITERATOR_HPP_
-
 #include <iterator>
 #include <type_traits>
 
@@ -51,6 +48,3 @@ template <typename T, typename U = T>
 using dereferenceable_assignable_pre_decrementable_t = decltype(*--std::declval<T>() = std::declval<U>()); // *--a = b
 
 }} // namespace concepts::traits
-
-
-#endif // CONCEPTS_TRAITS_ITERATOR_HPP_

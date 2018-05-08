@@ -2,7 +2,7 @@
 
 #include "take_front.hpp"
 
-namespace metaprog::tuple { inline namespace algorithm {
+namespace blackmagic::tuple { inline namespace algorithm {
 
 using take_t = take_front_t;
 

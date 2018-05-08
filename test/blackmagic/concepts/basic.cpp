@@ -2,7 +2,7 @@
 
 #include <gtest/gtest.h>
 
-namespace concepts = metaprog::concepts;
+namespace concepts = blackmagic::concepts;
 
 struct default_constructible_test {
 };

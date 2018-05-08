@@ -8,7 +8,7 @@
 
 #include <gtest/gtest.h>
 
-namespace concepts = metaprog::concepts;
+namespace concepts = blackmagic::concepts;
 
 // member access
 

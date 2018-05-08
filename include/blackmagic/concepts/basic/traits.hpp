@@ -2,7 +2,7 @@
 
 #include <type_traits>
 
-namespace metaprog::traits { inline namespace basic {
+namespace blackmagic::traits { inline namespace basic {
 
 // default constructible
 using std::is_default_constructible;

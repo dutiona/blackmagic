@@ -7,7 +7,7 @@
 #include <stdexcept>
 #include <utility>
 
-namespace metaprog::cstxpr {
+namespace blackmagic::cstxpr {
 
 template <typename Value, size_t Size = 5>
 class vector {

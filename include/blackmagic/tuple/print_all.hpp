@@ -8,7 +8,7 @@
 #include <typeinfo>
 #include <utility>
 
-namespace metaprog::tuple {
+namespace blackmagic::tuple {
 
 struct print_all_t {
   template <typename... Ts>

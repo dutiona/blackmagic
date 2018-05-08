@@ -7,10 +7,9 @@
 #include <tuple>
 #include <utility>
 
-namespace metaprog::tuple { inline namespace algorithm {
+namespace blackmagic::tuple { inline namespace algorithm {
 
-namespace common_helpers = metaprog::common::helpers;
-namespace type           = metaprog::type;
+namespace type           = blackmagic::type;
 
 // fwd dcl
 struct sort_t {

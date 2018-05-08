@@ -4,7 +4,7 @@
 
 #include <type_traits>
 
-namespace metaprog::type {
+namespace blackmagic::type {
 
 
 template <typename T>

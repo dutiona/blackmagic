@@ -2,8 +2,8 @@
 
 #include <gtest/gtest.h>
 
-namespace tuple          = metaprog::tuple;
-namespace common_helpers = metaprog::common::helpers;
+namespace tuple          = blackmagic::tuple;
+namespace common_helpers = blackmagic::common::helpers;
 
 TEST(Tuple_Copy_if, SimplePredicate)
 {

@@ -2,7 +2,7 @@
 
 #include "integral_types.hpp"
 
-namespace metaprog::type {
+namespace blackmagic::type {
 
 using npos = size_t_<size_t(-1)>;
 

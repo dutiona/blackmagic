@@ -6,7 +6,7 @@
 
 #include <type_traits>
 
-namespace metaprog::traits { inline namespace utility { namespace details {
+namespace blackmagic::traits { inline namespace utility { namespace details {
 
 // member access
 

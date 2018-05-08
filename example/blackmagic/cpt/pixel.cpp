@@ -4,7 +4,7 @@
 
 using namespace std::literals;
 
-namespace concepts = metaprog::concepts;
+namespace concepts = blackmagic::concepts;
 
 namespace pixel_concept_traits {
 
@@ -62,7 +62,7 @@ inline constexpr auto Pixel =
 
 
 template <>
-struct metaprog::concepts::diagnostic::traits<std::decay_t<decltype(Pixel)>> {
+struct blackmagic::concepts::diagnostic::traits<std::decay_t<decltype(Pixel)>> {
   template <typename PixelType>
   static constexpr void diagnose()
   {

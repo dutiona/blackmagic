@@ -7,7 +7,7 @@
 
 #include <tuple>
 
-namespace metaprog::tuple { inline namespace algorithm {
+namespace blackmagic::tuple { inline namespace algorithm {
 
 struct take_back_t {
   template <size_t N, typename... Ts>

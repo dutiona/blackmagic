@@ -2,7 +2,7 @@
 
 #include <gtest/gtest.h>
 
-namespace concepts = metaprog::concepts;
+namespace concepts = blackmagic::concepts;
 
 TEST(Cpt_Library, always_true)
 {
