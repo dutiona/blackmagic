@@ -13,7 +13,7 @@ template <typename... Ts, size_t... I>
 constexpr auto take_front_impl(const std::tuple<Ts...>& tpl, std::index_sequence<I...>)
 {
   return std::make_tuple(std::get<I>(tpl)...);
-};
+}
 
 } // namespace details
 
