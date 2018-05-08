@@ -4,7 +4,7 @@ add_custom_target(examples
 macro(add_example Executable Source)
     add_executable(example_${Executable}.exe EXCLUDE_FROM_ALL ${Source})
 
-    target_link_libraries(example_${Executable}.exe PRIVATE Metaprog)
+    target_link_libraries(example_${Executable}.exe PRIVATE Blackmagic)
     target_include_directories(example_${Executable}.exe PRIVATE ${CMAKE_CURRENT_SOURCE_DIR})
 
     add_custom_target(example_${Executable}
@@ -20,6 +20,6 @@ option(WITH_EXAMPLES "Compile and run examples" OFF)
 
 if(WITH_EXAMPLES)
     
-    add_subdirectory(metaprog)
+    add_subdirectory(blackmagic)
     
 endif(WITH_EXAMPLES)
