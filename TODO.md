@@ -75,6 +75,7 @@ operators :
    https://github.com/boostorg/hana/blob/master/include/boost/hana/detail/operators/orderable.hpp
    https://github.com/boostorg/hana/blob/master/include/boost/hana/detail/operators/searchable.hpp
 logical eval_if (lazy) / if_ / and_ / or_ / not_ / while_
+placeholder
 
 TODO
 pure type :
