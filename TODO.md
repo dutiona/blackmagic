@@ -27,14 +27,6 @@ test for transform
 test for unpack
 
 TODO
-pair utilities
-first
-second
-to_tuple
-from_tuple
-rotate
-
-TODO
 at_key
 insert
 transpose
@@ -113,7 +105,6 @@ defer (lazy)
 
 
 TODO functional
-create a functional directory for functional helpers + tests
 partial / reverse_partial
 curry
 always

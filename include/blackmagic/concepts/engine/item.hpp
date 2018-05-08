@@ -9,7 +9,7 @@
 
 namespace blackmagic::concepts { inline namespace engine {
 
-namespace common_helpers = blackmagic::common::helpers;
+namespace common = blackmagic::common;
 
 template <typename Concept>
 struct item : std::pair<std::string_view, checker<Concept>> {
@@ -20,7 +20,7 @@ struct item : std::pair<std::string_view, checker<Concept>> {
 
   constexpr bool is(std::string_view concept_name) const
   {
-    return common_helpers::equals(this->first, concept_name);
+    return common::equals(this->first, concept_name);
   }
 
   template <typename... Args>

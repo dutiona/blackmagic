@@ -1,12 +1,12 @@
 #pragma once
 
 #include "algorithm.hpp"
-#include "pair.hpp"
 
 #include <array>
 #include <cstddef>
 #include <functional>
 #include <stdexcept>
+#include <utility>
 
 namespace blackmagic::cstxpr {
 
@@ -89,8 +89,8 @@ private:
     return cstxpr::find_if(t.begin(), t.end(), [&k](const auto& d) { return Compare{}(d.first, k); });
   }
 
-  std::array<pair<Key, Value>, Size> m_data{}; // for cstxpr use, the std::array must be initialized
-  size_t                             m_size{0};
+  std::array<std::pair<Key, Value>, Size> m_data{}; // for cstxpr use, the std::array must be initialized
+  size_t                                  m_size{0};
 };
 
 } // namespace blackmagic::cstxpr
