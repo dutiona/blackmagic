@@ -1,5 +1,6 @@
 #pragma once
 
+#include <algorithm>
 #include <utility>
 
 namespace blackmagic::pair { inline namespace algorithm {
@@ -10,9 +11,8 @@ struct flip_inplace_t {
   template <typename T>
   constexpr void operator()(const std::pair<T, T>& p) const
   {
-    const auto tmp = p.first;
-    p.first        = p.second;
-    p.second       = tmp;
+    using std::swap;
+    swap(p.first, p.second);
   }
 };
 
