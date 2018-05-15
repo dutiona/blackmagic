@@ -12,27 +12,31 @@ struct partial_t {
   constexpr decltype(auto) operator()(Func&& f, Args&&... args) const;
 };
 
+inline constexpr const partial_t partial{};
+
 namespace details {
 
 template <typename Indexes, typename Func, typename... Args>
-class storage_t;
+class partial_impl;
 
 template <size_t... I, typename Func, typename... Args>
-class storage_t<std::index_sequence<I...>, Func, Args...> {
+class partial_impl<std::index_sequence<I...>, Func, Args...> {
 public:
-  constexpr storage_t(Func&& f, Args&&... args)
-    : storage_(std::forward<Func>(f), std::make_tuple(std::forward<Args>(args)...))
+  constexpr partial_impl(Func&& f, Args&&... args)
+    : f_(std::forward<Func>(f))
+    , args_(std::forward<Args>(args)...)
   {
   }
 
   template <typename... Y>
   constexpr decltype(auto) operator()(Y&&... ys) const
   {
-    return storage_.first(std::get<I>(storage_.second)..., std::forward<Y>(ys)...);
+    return f_(std::get<I>(args_)..., std::forward<Y>(ys)...);
   }
 
 private:
-  const std::pair<Func, std::tuple<Args...>> storage_;
+  const Func                f_;
+  const std::tuple<Args...> args_;
 };
 
 } // namespace details
@@ -40,10 +44,8 @@ private:
 template <typename Func, typename... Args>
 constexpr decltype(auto) partial_t::operator()(Func&& f, Args&&... args) const
 {
-  return details::storage_t<std::index_sequence_for<Args...>, Func, Args...>(std::forward<Func>(f),
-                                                                             std::forward<Args>(args)...);
+  return details::partial_impl<std::index_sequence_for<Args...>, Func, Args...>(std::forward<Func>(f),
+                                                                                std::forward<Args>(args)...);
 }
-
-inline constexpr const partial_t partial{};
 
 } // namespace blackmagic::functional

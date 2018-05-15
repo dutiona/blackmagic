@@ -105,8 +105,7 @@ defer (lazy)
 
 
 TODO functional
-partial / reverse_partial
-curry
+reverse_partial
 always
 arg
 capture
@@ -114,8 +113,6 @@ compose
 demux
 fix_point
 flip
-flip
-identity
 iterate
 lockstep
 on

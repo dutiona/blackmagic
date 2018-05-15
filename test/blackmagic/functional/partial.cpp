@@ -4,7 +4,8 @@
 
 namespace functional = blackmagic::functional;
 
-constexpr auto func_test(int a, int b, int c, int d) {
+constexpr auto func_test(int a, int b, int c, int d)
+{
   return a + b + c + d;
 }
 
@@ -21,7 +22,8 @@ TEST(Functional_Partial, Lambda)
 }
 
 struct functor {
-  constexpr auto operator()(int a, int b, int c, int d) const {
+  constexpr auto operator()(int a, int b, int c, int d) const
+  {
     return func_test(a, b, c, d);
   }
 };
