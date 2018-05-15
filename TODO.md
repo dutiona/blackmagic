@@ -105,7 +105,6 @@ defer (lazy)
 
 
 TODO functional
-reverse_partial
 always
 arg
 capture
