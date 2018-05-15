@@ -35,7 +35,7 @@ endif(UNIX)
 
 set(BLACKMAGIC_INCLUDE_DIR "${PROJECT_SOURCE_DIR}/include")
 
-if(PLATFORM_WIN32 OR PLATFORM_APPLE)
+# if(PLATFORM_WIN32 OR PLATFORM_APPLE)
 # dummy static project not linked anywere needed so that a vcxproj is generated with the sources in the solution
     set_property(GLOBAL PROPERTY USE_FOLDERS ON)
     file(GLOB_RECURSE BLACKMAGIC_SOURCES  "${BLACKMAGIC_INCLUDE_DIR}/*.hpp")
@@ -44,7 +44,7 @@ if(PLATFORM_WIN32 OR PLATFORM_APPLE)
     target_compile_features(Blackmagic_srcs PUBLIC cxx_std_17)
     target_include_directories(Blackmagic_srcs PUBLIC ${BLACKMAGIC_INCLUDE_DIR})
     source_group(TREE ${BLACKMAGIC_INCLUDE_DIR} FILES ${BLACKMAGIC_SOURCES})
-endif()
+# endif()
 
 add_library(Blackmagic INTERFACE)
 target_compile_features(Blackmagic INTERFACE cxx_std_17)
