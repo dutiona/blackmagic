@@ -17,17 +17,17 @@ namespace common = blackmagic::common;
 namespace details {
 
 template <template <typename...> class Pred, typename... Us>
-struct make_filter_indexes {
-  const common::trait_t<Pred, Us...>& trait;
-
+class make_filter_indexes {
+  const common::trait_t<Pred, Us...>& trait_;
+public:
   constexpr make_filter_indexes(const common::trait_t<Pred, Us...>& t)
-    : trait(t)
+    : trait_(t)
   {
   }
 
   template <typename... Ts>
   constexpr auto operator()(Ts&&... t) const
-    -> filter_indexes<static_cast<bool>(std::decay_t<decltype(trait(std::forward<Ts>(t)))>::value)...>
+    -> filter_indexes<static_cast<bool>(std::decay_t<decltype(trait_(std::forward<Ts>(t)))>::value)...>
   {
     return {};
   }

@@ -31,7 +31,7 @@ public:
   template <typename... Args>
   constexpr decltype(auto) operator()(Args&&... args) const
   {
-    static_assert(sizeof...(Args) <= N, "Passing more arguments than the invokable needs.");
+    static_assert(sizeof...(Args) <= N, "Passing more arguments than the invocable needs.");
 
     if constexpr (sizeof...(Args) == N) {
       return f_(std::forward<Args>(args)...);
@@ -42,7 +42,7 @@ public:
   }
 
 private:
-  Func f_;
+  const Func f_;
 };
 
 } // namespace details
