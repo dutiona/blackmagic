@@ -12,5 +12,6 @@
 #include "identity.hpp"
 #include "iterate.hpp"
 #include "lockstep.hpp"
+#include "on.hpp"
 #include "partial.hpp"
 #include "reverse_partial.hpp"
