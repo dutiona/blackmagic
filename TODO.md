@@ -1,5 +1,5 @@
 FIXME
-tests for common/helpers + split common helpers
+tests for common
 test for accumulate
 test for all
 test for all_of
@@ -105,7 +105,6 @@ defer (lazy)
 
 
 TODO functional
-lockstep
 on
 overload
 overload_linearly

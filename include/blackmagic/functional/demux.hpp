@@ -10,8 +10,8 @@ namespace details {
 template <typename F, typename... Funcs>
 class demux_impl_caller {
 public:
-  constexpr demux_impl_caller(F&& f, Funcs&&... fs)
-    : f_(std::forward<F>(f))
+  constexpr demux_impl_caller(const F& f, Funcs&&... fs)
+    : f_(f)
     , funcs_(std::forward<Funcs>(fs)...)
   {
   }
