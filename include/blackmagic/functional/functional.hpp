@@ -10,5 +10,6 @@
 #include "fix_point.hpp"
 #include "flip.hpp"
 #include "identity.hpp"
+#include "iterate.hpp"
 #include "partial.hpp"
 #include "reverse_partial.hpp"

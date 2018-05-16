@@ -18,7 +18,7 @@ public:
   constexpr decltype(auto) operator()(Arg0&& arg0, Arg1&& arg1, Args&&... args) const
   {
     return f_(std::forward<Arg1>(arg1), std::forward<Arg0>(arg0), std::forward<Args>(args)...);
-  };
+  }
 
 private:
   const F f_;

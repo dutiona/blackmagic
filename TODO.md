@@ -105,8 +105,6 @@ defer (lazy)
 
 
 TODO functional
-flip
-iterate
 lockstep
 on
 overload
