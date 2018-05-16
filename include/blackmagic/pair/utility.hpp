@@ -9,50 +9,39 @@ namespace blackmagic::pair { inline namespace utility {
 
 // first
 struct first_t {
-  template <typename T, typename U>
-  constexpr decltype(auto) first(const std::pair<T, U>& p) const
+  template <typename Pair>
+  constexpr decltype(auto) operator()(Pair&& p) const
   {
-    return p.first;
+    return std::forward<Pair>(p).first;
   }
 };
 
-inline constexpr first_t first{};
+inline constexpr const first_t first{};
 
 
 // second
 struct second_t {
-  template <typename T, typename U>
-  constexpr decltype(auto) operator()(const std::pair<T, U>& p) const
+  template <typename Pair>
+  constexpr decltype(auto) operator()(Pair&& p) const
   {
-    return p.second;
+    return std::forward<Pair>(p).second;
   }
 };
 
-inline constexpr second_t second{};
+inline constexpr const second_t second{};
 
 
 // to_tuple
 struct to_tuple_t {
-  template <typename T, typename U>
-  constexpr decltype(auto) operator()(const std::pair<T, U>& p) const
+  template <typename Pair>
+  constexpr decltype(auto) operator()(Pair&& p) const
   {
-    return std::make_tuple(p.first, p.second);
+    return std::make_tuple(std::forward<Pair>(p).first, std::forward<Pair>(p).second);
   }
 };
 
-inline constexpr to_tuple_t to_tuple{};
+inline constexpr const to_tuple_t to_tuple{};
 
-
-// to_tuple
-struct to_tuple_t {
-  template <typename T, typename U>
-  constexpr decltype(auto) operator()(const std::pair<T, U>& p) const
-  {
-    return std::make_tuple(p.first, p.second);
-  }
-};
-
-inline constexpr to_tuple_t to_tuple{};
 
 // from_tuple
 struct from_tuple_t {
@@ -68,12 +57,12 @@ struct from_tuple_t {
       return std::make_pair(std::get<0>(tpl), std::nullopt);
     }
     else {
-      return std::make_pair(std::get<0>(tpl), std::get<1>);
+      return std::make_pair(std::get<0>(tpl), std::get<1>(tpl));
     }
   }
 };
 
-inline constexpr from_tuple_t from_tuple{};
+inline constexpr const from_tuple_t from_tuple{};
 
 
 }} // namespace blackmagic::pair::utility
