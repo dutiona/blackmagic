@@ -50,7 +50,7 @@ private:
 template <typename Func, size_t N>
 constexpr decltype(auto) curry_t::operator()(Func&& f, integral::size_t_<N>) const
 {
-  return details::curry_impl<Func, N>(std::forward<Func>(f));
+  return details::curry_impl<Func, N>{std::forward<Func>(f)};
 }
 
 } // namespace blackmagic::functional

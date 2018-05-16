@@ -37,7 +37,7 @@ struct capture_t {
   template <typename... Args>
   constexpr decltype(auto) operator()(Args&&... args) const
   {
-    return details::capture_impl(std::forward<Args>(args)...);
+    return details::capture_impl{std::forward<Args>(args)...};
   }
 };
 

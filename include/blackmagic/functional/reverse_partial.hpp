@@ -43,8 +43,8 @@ private:
 template <typename Func, typename... Args>
 constexpr decltype(auto) reverse_partial_t::operator()(Func&& f, Args&&... args) const
 {
-  return details::reverse_partial_impl<std::index_sequence_for<Args...>, Func, Args...>(std::forward<Func>(f),
-                                                                                        std::forward<Args>(args)...);
+  return details::reverse_partial_impl<std::index_sequence_for<Args...>, Func, Args...>{std::forward<Func>(f),
+                                                                                        std::forward<Args>(args)...};
 }
 
 } // namespace blackmagic::functional

@@ -105,7 +105,6 @@ defer (lazy)
 
 
 TODO functional
-demux
 fix_point
 flip
 iterate

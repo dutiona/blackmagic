@@ -43,14 +43,13 @@ private:
 template <typename F, typename G>
 constexpr decltype(auto) compose_impl(F&& f, G&& g)
 {
-  return compose_caller<F, G>(std::forward<F>(f), std::forward<G>(g));
+  return compose_caller<F, G>{std::forward<F>(f), std::forward<G>(g)};
 }
 
 template <typename F, typename G, typename... Hs>
 constexpr decltype(auto) compose_impl(F&& f, G&& g, Hs&&... hs)
 {
-  using ComposeRecur = std::decay_t<decltype(compose(std::forward<G>(g), std::forward<Hs>(hs)...))>;
-  return compose_caller<F, ComposeRecur>(std::forward<F>(f), compose(std::forward<G>(g), std::forward<Hs>(hs)...));
+  return compose(std::forward<F>(f), compose(std::forward<G>(g), std::forward<Hs>(hs)...));
 }
 
 } // namespace details
