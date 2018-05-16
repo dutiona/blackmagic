@@ -14,7 +14,7 @@ struct any_t {
   template <typename... Ts>
   constexpr bool operator()(const std::tuple<Ts...>& tpl) const
   {
-    return any_of(tpl, functional::identity_func);
+    return any_of(tpl, functional::identity);
   }
 };
 

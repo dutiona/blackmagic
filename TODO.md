@@ -105,10 +105,6 @@ defer (lazy)
 
 
 TODO functional
-always
-arg
-capture
-compose
 demux
 fix_point
 flip

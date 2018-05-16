@@ -1,2 +1,4 @@
-add_unit_test(functional_partial "partial.cpp")
 add_unit_test(functional_curry "curry.cpp")
+add_unit_test(functional_compose "compose.cpp")
+add_unit_test(functional_partial "partial.cpp")
+add_unit_test(functional_reverse_partial "reverse_partial.cpp")

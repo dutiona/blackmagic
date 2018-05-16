@@ -4,7 +4,7 @@
 
 namespace blackmagic::functional {
 
-struct identity_func_t {
+struct identity_t {
   template <typename T>
   constexpr decltype(auto) operator()(T&& t) const
   {
@@ -12,6 +12,6 @@ struct identity_func_t {
   }
 };
 
-inline constexpr const identity_func_t identity_func{};
+inline constexpr const identity_t identity{};
 
 } // namespace blackmagic::functional
