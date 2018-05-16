@@ -30,7 +30,8 @@ struct flip_t {
   template <typename Func, typename Arg0, typename Arg1, typename... Args>
   constexpr decltype(auto) operator()(Func&& f, Arg0&& arg0, Arg1&& arg1, Args&&... args) const
   {
-    return details::fix_point_impl<Func>{std::forward<Func>(f)};
+    return details::flip_impl<Func>{std::forward<Func>(f), std::forward<Arg0>(arg0), std::forward<Arg1>(arg1),
+                                    std::forward<Args>(args)...};
   }
 };
 
