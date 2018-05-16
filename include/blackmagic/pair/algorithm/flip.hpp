@@ -7,10 +7,10 @@ namespace blackmagic::pair { inline namespace algorithm {
 
 // from_tuple
 struct flip_t {
-  template <typename Pair>
-  constexpr auto operator()(Pair&& p) const
+  template <typename T, typename U>
+  constexpr auto operator()(const std::pair<T, U>& p) const
   {
-    return std::make_pair(std::forward<Pair>(p).second, std::forward<Pair>(p).first);
+    return std::make_pair(p.second, p.first);
   }
 };
 

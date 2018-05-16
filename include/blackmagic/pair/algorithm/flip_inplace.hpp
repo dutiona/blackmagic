@@ -25,19 +25,16 @@ inline constexpr auto swappable_v = swappable<T, U>::value;
 
 // from_tuple
 struct flip_inplace_t {
-  template <typename Pair>
-  constexpr void operator()(Pair&& p) const
+  template <typename T, typename U>
+  constexpr void operator()(std::pair<T, U>& p) const
   {
-    static_assert(details::swappable_v<std::decay_t<decltype(std::forward<Pair>(p).first)>,
-                                       std::decay_t<decltype(std::forward<Pair>(p).second)>>,
-                  "First and Second are not swappable!");
+    static_assert(details::swappable_v<T, U>, "<First> and <Second> are not swappable!");
 
     using std::swap;
-    swap(std::move(std::forward<Pair>(p).first)), std::move(std::forward<Pair>(p).second);
+    swap(std::move(p.first), std::move(p.second));
   }
 };
 
 inline constexpr const flip_inplace_t flip_inplace{};
-
 
 }} // namespace blackmagic::pair::algorithm

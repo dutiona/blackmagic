@@ -9,10 +9,10 @@ namespace blackmagic::pair { inline namespace utility {
 
 // first
 struct first_t {
-  template <typename Pair>
-  constexpr decltype(auto) operator()(Pair&& p) const
+  template <typename T, typename U>
+  constexpr decltype(auto) operator()(const std::pair<T, U>& p) const
   {
-    return std::forward<Pair>(p).first;
+    return p.first;
   }
 };
 
@@ -21,10 +21,10 @@ inline constexpr const first_t first{};
 
 // second
 struct second_t {
-  template <typename Pair>
-  constexpr decltype(auto) operator()(Pair&& p) const
+  template <typename T, typename U>
+  constexpr decltype(auto) operator()(const std::pair<T, U>& p) const
   {
-    return std::forward<Pair>(p).second;
+    return p.second;
   }
 };
 
@@ -33,10 +33,10 @@ inline constexpr const second_t second{};
 
 // to_tuple
 struct to_tuple_t {
-  template <typename Pair>
-  constexpr decltype(auto) operator()(Pair&& p) const
+  template <typename T, typename U>
+  constexpr decltype(auto) operator()(const std::pair<T, U>& p) const
   {
-    return std::make_tuple(std::forward<Pair>(p).first, std::forward<Pair>(p).second);
+    return std::make_tuple(p.first, p.second);
   }
 };
 
