@@ -105,7 +105,6 @@ defer (lazy)
 
 
 TODO functional
-fix_point
 flip
 iterate
 lockstep

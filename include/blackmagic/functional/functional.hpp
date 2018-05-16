@@ -7,6 +7,8 @@
 #include "compose.hpp"
 #include "curry.hpp"
 #include "demux.hpp"
+#include "fix_point.hpp"
+#include "flip.hpp"
 #include "identity.hpp"
 #include "partial.hpp"
 #include "reverse_partial.hpp"
