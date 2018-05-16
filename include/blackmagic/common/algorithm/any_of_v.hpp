@@ -14,6 +14,6 @@ struct any_of_v_t {
   }
 };
 
-inline constexpr any_of_v_t any_of_v{};
+inline constexpr const any_of_v_t any_of_v{};
 
 }} // namespace blackmagic::common::algorithm

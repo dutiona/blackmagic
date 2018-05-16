@@ -46,6 +46,6 @@ struct is_tuple : common::is_instantiation_of<std::tuple, T> {
 };
 
 template <typename T>
-inline constexpr auto is_tuple_v = is_tuple<T>::value;
+inline constexpr const auto is_tuple_v = is_tuple<T>::value;
 
 }} // namespace blackmagic::tuple::utility

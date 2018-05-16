@@ -11,6 +11,6 @@ struct are_equal_t {
   }
 };
 
-inline constexpr are_equal_t are_equal{};
+inline constexpr const are_equal_t are_equal{};
 
 }} // namespace blackmagic::common::algorithm

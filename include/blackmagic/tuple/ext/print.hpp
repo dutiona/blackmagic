@@ -25,6 +25,6 @@ struct print_t {
   }
 };
 
-inline constexpr print_t print{};
+inline constexpr const print_t print{};
 
 }} // namespace blackmagic::tuple::ext

@@ -15,6 +15,6 @@ struct count_v_t {
   }
 };
 
-inline constexpr count_v_t count_v{};
+inline constexpr const count_v_t count_v{};
 
 }} // namespace blackmagic::common::algorithm

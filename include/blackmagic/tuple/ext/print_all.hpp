@@ -15,7 +15,7 @@ struct print_all_t {
   void operator()(const std::tuple<Ts...>& tpl, std::ostream& os, size_t idx = 0, size_t padding = 0) const;
 };
 
-inline constexpr print_all_t print_all{};
+inline constexpr const print_all_t print_all{};
 
 namespace details {
 

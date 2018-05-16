@@ -16,6 +16,6 @@ struct none_of_v_t {
   }
 };
 
-inline constexpr none_of_v_t none_of_v{};
+inline constexpr const none_of_v_t none_of_v{};
 
 }} // namespace blackmagic::common::algorithm
