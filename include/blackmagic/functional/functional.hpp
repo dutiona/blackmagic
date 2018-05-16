@@ -13,5 +13,6 @@
 #include "iterate.hpp"
 #include "lockstep.hpp"
 #include "on.hpp"
+#include "overload.hpp"
 #include "partial.hpp"
 #include "reverse_partial.hpp"

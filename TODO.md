@@ -103,11 +103,6 @@ zip / zip_with / zip_shortest / zip_longest
 accumulate
 defer (lazy)
 
-
-TODO functional
-overload
-overload_linearly
-
 TODO concepts
 http://en.cppreference.com/w/cpp/language/constraints
 http://en.cppreference.com/w/cpp/concept
