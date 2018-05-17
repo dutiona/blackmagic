@@ -33,23 +33,6 @@ if(UNIX)
     SET(PLATFORM_UNIX ON)
 endif(UNIX)
 
-set(BLACKMAGIC_INCLUDE_DIR "${PROJECT_SOURCE_DIR}/include")
-
-# if(PLATFORM_WIN32 OR PLATFORM_APPLE)
-# dummy static project not linked anywere needed so that a vcxproj is generated with the sources in the solution
-    set_property(GLOBAL PROPERTY USE_FOLDERS ON)
-    file(GLOB_RECURSE BLACKMAGIC_SOURCES  "${BLACKMAGIC_INCLUDE_DIR}/*.hpp")
-    add_library(Blackmagic_srcs EXCLUDE_FROM_ALL STATIC ${BLACKMAGIC_SOURCES})
-    set_target_properties(Blackmagic_srcs PROPERTIES LINKER_LANGUAGE CXX)
-    target_compile_features(Blackmagic_srcs PUBLIC cxx_std_17)
-    target_include_directories(Blackmagic_srcs PUBLIC ${BLACKMAGIC_INCLUDE_DIR})
-    source_group(TREE ${BLACKMAGIC_INCLUDE_DIR} FILES ${BLACKMAGIC_SOURCES})
-# endif()
-
-add_library(Blackmagic INTERFACE)
-target_compile_features(Blackmagic INTERFACE cxx_std_17)
-target_include_directories(Blackmagic INTERFACE ${BLACKMAGIC_INCLUDE_DIR})
-
 if(COMPILER_MSVC)
     add_compile_options(/W4 /WX /permissive- /std:c++17)
 else(COMPILER_MSVC)
@@ -81,6 +64,8 @@ if(WITH_CODE_COVERAGE)
 endif(WITH_CODE_COVERAGE)
 
 install(DIRECTORY include DESTINATION include FILES_MATCHING PATTERN "*.hpp")
+
+add_subdirectory(include)
 
 add_subdirectory(doc)
 

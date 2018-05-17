@@ -4,7 +4,6 @@
 #include "engine.hpp"
 
 // Concepts
-#include "core.hpp"
 #include "basic/concepts.hpp"
 #include "iterator/concepts.hpp"
 #include "layout/concepts.hpp"
