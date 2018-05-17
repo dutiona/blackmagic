@@ -1,6 +1,6 @@
 #pragma once
 
-#include "../type/type.hpp"
+#include "../type/list.hpp"
 
 #ifdef __GLIBCXX__
 #include "../cstxpr/cstxpr.hpp"
@@ -133,6 +133,10 @@ using _t = typename T::type;
 // _v
 template <typename T>
 inline constexpr auto _v = T::value;
+
+// _v_t
+template <typename T>
+inline constexpr auto _v_t = _v<_t<T>>;
 
 
 // all_of

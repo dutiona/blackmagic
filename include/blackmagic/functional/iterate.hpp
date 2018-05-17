@@ -31,9 +31,6 @@ public:
     if constexpr (N == 0) {
       return std::forward<T>(v);
     }
-    else if constexpr (N == 1) {
-      return f_(std::forward<T>(v));
-    }
     else {
       return f_(iterate(f_, integral::size_t_<(N - 1)>{})(std::forward<T>(v)));
     }

@@ -1,12 +1,11 @@
 #pragma once
 
-#include "../integral/integral.hpp"
+#include <cstddef>
+#include <type_traits>
 
 namespace blackmagic::type {
 
-namespace integral = blackmagic::integral;
-
-using npos = integral::size_t_<size_t(-1)>;
+using npos = std::integral_constant<int, -1>;
 
 template <typename... Ts>
 struct basic_list {

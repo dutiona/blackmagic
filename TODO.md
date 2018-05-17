@@ -26,7 +26,7 @@ test for take_front
 test for transform
 test for unpack
 
-TODO
+TODO tuple
 at_key
 insert
 transpose
@@ -67,10 +67,8 @@ operators :
    https://github.com/boostorg/hana/blob/master/include/boost/hana/detail/operators/orderable.hpp
    https://github.com/boostorg/hana/blob/master/include/boost/hana/detail/operators/searchable.hpp
 logical eval_if (lazy) / if_ / and_ / or_ / not_ / while_
-placeholder
 
-TODO
-pure type :
+TODO pure type :
 integral list
 sizeof wrapper
 see https://github.com/edouarda/brigand/wiki/reference
@@ -108,4 +106,4 @@ http://en.cppreference.com/w/cpp/language/constraints
 http://en.cppreference.com/w/cpp/concept
 http://en.cppreference.com/w/cpp/experimental/ranges
 
-TODO add contracts to the lib (based on scope_enter scope_exit and scope_error of Adrei Alexandrescu)
+TODO add contracts to the lib (based on scope_enter scope_exit and scope_error of Adrei Alexandrescu ?)
