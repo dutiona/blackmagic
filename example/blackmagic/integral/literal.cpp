@@ -1,6 +1,6 @@
 #include <blackmagic/integral/integral.hpp>
 
-int maint() {
+int main() {
 
   return 0;
 
