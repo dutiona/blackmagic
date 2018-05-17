@@ -6,6 +6,6 @@ namespace blackmagic::tuple { inline namespace algorithm {
 
 using take_t = take_front_t;
 
-inline constexpr take_t take{};
+inline constexpr const take_t take{};
 
 }} // namespace blackmagic::tuple::algorithm

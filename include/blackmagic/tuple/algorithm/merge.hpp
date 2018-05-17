@@ -16,7 +16,7 @@ struct merge_t {
   constexpr auto operator()(C&& comp, T&& tpl, Ts&&... tpls) const;
 };
 
-inline constexpr merge_t merge{};
+inline constexpr const merge_t merge{};
 
 namespace details {
 

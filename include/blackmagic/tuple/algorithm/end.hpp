@@ -12,6 +12,6 @@ struct end_t {
   }
 };
 
-inline constexpr end_t end{};
+inline constexpr const end_t end{};
 
 }} // namespace blackmagic::tuple::algorithm

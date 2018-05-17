@@ -13,6 +13,6 @@ struct push_front_t {
   }
 };
 
-inline constexpr push_front_t push_front{};
+inline constexpr const push_front_t push_front{};
 
 }} // namespace blackmagic::tuple::algorithm

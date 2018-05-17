@@ -33,6 +33,6 @@ struct fold_left_t {
   }
 };
 
-inline constexpr fold_left_t fold_left{};
+inline constexpr const fold_left_t fold_left{};
 
 }} // namespace blackmagic::tuple::algorithm

@@ -25,6 +25,6 @@ struct count_if_t {
   }
 };
 
-inline constexpr count_if_t count_if{};
+inline constexpr const count_if_t count_if{};
 
 }} // namespace blackmagic::tuple::algorithm

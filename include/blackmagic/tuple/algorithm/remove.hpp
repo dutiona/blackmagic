@@ -20,6 +20,6 @@ struct remove_t {
   }
 };
 
-inline constexpr remove_t remove{};
+inline constexpr const remove_t remove{};
 
 }} // namespace blackmagic::tuple::algorithm

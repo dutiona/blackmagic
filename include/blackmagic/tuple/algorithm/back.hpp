@@ -14,6 +14,6 @@ struct back_t {
   }
 };
 
-inline constexpr back_t back{};
+inline constexpr const back_t back{};
 
 }} // namespace blackmagic::tuple::algorithm

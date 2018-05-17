@@ -17,7 +17,7 @@ struct sort_t {
   constexpr auto operator()(C&& comp, const std::tuple<Ts...>& tpl) const;
 };
 
-inline constexpr sort_t sort{};
+inline constexpr const sort_t sort{};
 
 namespace details {
 

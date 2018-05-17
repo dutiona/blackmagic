@@ -21,7 +21,7 @@ struct unique_t {
   constexpr auto operator()(const std::tuple<Ts...>& tpl) const;
 };
 
-inline constexpr unique_t unique{};
+inline constexpr const unique_t unique{};
 
 namespace details {
 

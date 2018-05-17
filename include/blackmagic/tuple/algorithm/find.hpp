@@ -18,6 +18,6 @@ struct find_t {
   }
 };
 
-inline constexpr find_t find{};
+inline constexpr const find_t find{};
 
 }} // namespace blackmagic::tuple::algorithm

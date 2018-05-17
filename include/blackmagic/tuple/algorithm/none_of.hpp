@@ -15,6 +15,6 @@ struct none_of_t {
   }
 };
 
-inline constexpr none_of_t none_of{};
+inline constexpr const none_of_t none_of{};
 
 }} // namespace blackmagic::tuple::algorithm

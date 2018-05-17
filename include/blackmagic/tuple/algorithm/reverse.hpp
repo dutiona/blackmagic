@@ -21,6 +21,8 @@ constexpr auto reverse_impl(const std::tuple<Ts...>& tpl, const std::tuple<Us...
   }
 }
 
+} // namespace details
+
 struct reverse_t {
   template <typename... Ts>
   constexpr auto operator()(const std::tuple<Ts...>& tpl) const
@@ -29,8 +31,6 @@ struct reverse_t {
   }
 };
 
-} // namespace details
-
-inline constexpr details::reverse_t reverse{};
+inline constexpr const reverse_t reverse{};
 
 }} // namespace blackmagic::tuple::algorithm

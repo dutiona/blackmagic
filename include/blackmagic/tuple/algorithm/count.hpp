@@ -14,6 +14,6 @@ struct count_t {
   }
 };
 
-inline constexpr count_t count{};
+inline constexpr const count_t count{};
 
 }} // namespace blackmagic::tuple::algorithm

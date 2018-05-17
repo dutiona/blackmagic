@@ -19,6 +19,6 @@ struct take_back_t {
   }
 };
 
-inline constexpr take_back_t take_back{};
+inline constexpr const take_back_t take_back{};
 
 }} // namespace blackmagic::tuple::algorithm

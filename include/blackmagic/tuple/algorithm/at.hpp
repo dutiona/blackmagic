@@ -21,6 +21,6 @@ struct at_t {
   }
 };
 
-inline constexpr at_t at{};
+inline constexpr const at_t at{};
 
 }} // namespace blackmagic::tuple::algorithm

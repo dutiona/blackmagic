@@ -25,6 +25,6 @@ struct pop_front_t {
   }
 };
 
-inline constexpr pop_front_t pop_front{};
+inline constexpr const pop_front_t pop_front{};
 
 }} // namespace blackmagic::tuple::algorithm

@@ -57,6 +57,6 @@ struct remove_if_t {
   }
 };
 
-inline constexpr remove_if_t remove_if{};
+inline constexpr const remove_if_t remove_if{};
 
 }} // namespace blackmagic::tuple::algorithm

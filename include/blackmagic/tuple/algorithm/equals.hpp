@@ -32,6 +32,6 @@ struct equals_t {
   }
 };
 
-inline constexpr equals_t equals{};
+inline constexpr const equals_t equals{};
 
 }} // namespace blackmagic::tuple::algorithm

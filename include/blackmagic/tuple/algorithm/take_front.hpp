@@ -35,6 +35,6 @@ struct take_front_t {
   }
 };
 
-inline constexpr take_front_t take_front{};
+inline constexpr const take_front_t take_front{};
 
 }} // namespace blackmagic::tuple::algorithm

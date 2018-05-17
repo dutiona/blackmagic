@@ -57,6 +57,6 @@ struct copy_if_t {
   }
 };
 
-inline constexpr copy_if_t copy_if{};
+inline constexpr const copy_if_t copy_if{};
 
 }} // namespace blackmagic::tuple::algorithm

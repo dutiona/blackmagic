@@ -33,6 +33,6 @@ struct find_if_t {
   }
 };
 
-inline constexpr find_if_t find_if{};
+inline constexpr const find_if_t find_if{};
 
 }} // namespace blackmagic::tuple::algorithm

@@ -34,6 +34,6 @@ struct for_each_t {
   }
 };
 
-inline constexpr for_each_t for_each{};
+inline constexpr const for_each_t for_each{};
 
 }} // namespace blackmagic::tuple::algorithm

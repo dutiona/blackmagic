@@ -16,6 +16,6 @@ struct rotate_left_t {
   }
 };
 
-inline constexpr rotate_left_t rotate_left{};
+inline constexpr const rotate_left_t rotate_left{};
 
 }} // namespace blackmagic::tuple::algorithm

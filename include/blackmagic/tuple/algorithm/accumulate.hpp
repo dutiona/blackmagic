@@ -25,6 +25,6 @@ struct accumulate_t {
   }
 };
 
-inline constexpr accumulate_t accumulate{};
+inline constexpr const accumulate_t accumulate{};
 
 }} // namespace blackmagic::tuple::algorithm

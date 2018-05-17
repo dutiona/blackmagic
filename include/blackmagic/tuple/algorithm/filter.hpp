@@ -1,11 +1,11 @@
 #pragma once
 
-#include "fold_left.hpp"
+#include "copy_if.hpp"
 
 namespace blackmagic::tuple { inline namespace algorithm {
 
-using fold_t = fold_left_t;
+using filter_t = copy_if_t;
 
-inline constexpr const fold_t fold{};
+inline constexpr const filter_t filter{};
 
 }} // namespace blackmagic::tuple::algorithm

@@ -17,6 +17,6 @@ struct fold_right_t {
   }
 };
 
-inline constexpr fold_right_t fold_right{};
+inline constexpr const fold_right_t fold_right{};
 
 }} // namespace blackmagic::tuple::algorithm

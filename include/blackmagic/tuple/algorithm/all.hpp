@@ -18,6 +18,6 @@ struct all_t {
   }
 };
 
-inline constexpr all_t all{};
+inline constexpr const all_t all{};
 
 }} // namespace blackmagic::tuple::algorithm

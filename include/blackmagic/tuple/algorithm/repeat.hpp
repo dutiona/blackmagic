@@ -16,7 +16,7 @@ struct repeat_t {
   constexpr auto operator()(T&& e, integral::size_t_<N>) const;
 };
 
-inline constexpr repeat_t repeat{};
+inline constexpr const repeat_t repeat{};
 
 template <typename T, size_t N>
 constexpr auto repeat_t::operator()(T&& e, integral::size_t_<N>) const

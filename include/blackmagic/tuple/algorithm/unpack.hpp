@@ -48,6 +48,6 @@ struct unpack_t {
   }
 };
 
-inline constexpr unpack_t unpack{};
+inline constexpr const unpack_t unpack{};
 
 }} // namespace blackmagic::tuple::algorithm

@@ -18,6 +18,6 @@ struct any_t {
   }
 };
 
-inline constexpr any_t any{};
+inline constexpr const any_t any{};
 
 }} // namespace blackmagic::tuple::algorithm

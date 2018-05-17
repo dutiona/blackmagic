@@ -24,7 +24,7 @@ struct zip_t {
   constexpr auto operator()(Ts&&... tpls) const;
 };
 
-inline constexpr zip_t zip{};
+inline constexpr const zip_t zip{};
 
 namespace details {
 

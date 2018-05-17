@@ -20,6 +20,6 @@ struct copy_t {
   }
 };
 
-inline constexpr copy_t copy{};
+inline constexpr const copy_t copy{};
 
 }} // namespace blackmagic::tuple::algorithm

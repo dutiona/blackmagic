@@ -21,6 +21,6 @@ struct any_of_t {
   }
 };
 
-inline constexpr any_of_t any_of{};
+inline constexpr const any_of_t any_of{};
 
 }} // namespace blackmagic::tuple::algorithm

@@ -20,6 +20,6 @@ struct contains_t {
   }
 };
 
-inline constexpr contains_t contains{};
+inline constexpr const contains_t contains{};
 
 }} // namespace blackmagic::tuple::algorithm

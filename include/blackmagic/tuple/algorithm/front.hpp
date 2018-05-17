@@ -14,6 +14,6 @@ struct front_t {
   }
 };
 
-inline constexpr front_t front{};
+inline constexpr const front_t front{};
 
 }} // namespace blackmagic::tuple::algorithm

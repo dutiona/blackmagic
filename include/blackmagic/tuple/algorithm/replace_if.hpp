@@ -27,6 +27,6 @@ struct replace_if_t {
   }
 };
 
-inline constexpr replace_if_t replace_if{};
+inline constexpr const replace_if_t replace_if{};
 
 }} // namespace blackmagic::tuple::algorithm

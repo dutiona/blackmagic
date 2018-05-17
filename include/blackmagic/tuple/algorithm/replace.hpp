@@ -15,6 +15,6 @@ struct replace_t {
   }
 };
 
-inline constexpr replace_t replace{};
+inline constexpr const replace_t replace{};
 
 }} // namespace blackmagic::tuple::algorithm

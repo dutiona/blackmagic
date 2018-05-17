@@ -32,6 +32,6 @@ struct not_equals_t {
   }
 };
 
-inline constexpr not_equals_t not_equals{};
+inline constexpr const not_equals_t not_equals{};
 
 }} // namespace blackmagic::tuple::algorithm

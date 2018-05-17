@@ -23,6 +23,6 @@ struct transform_t {
   }
 };
 
-inline constexpr transform_t transform{};
+inline constexpr const transform_t transform{};
 
 }} // namespace blackmagic::tuple::algorithm
