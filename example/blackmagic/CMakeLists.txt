@@ -1,5 +1,6 @@
 add_subdirectory(common)
-add_subdirectory(cpt)
+add_subdirectory(concepts)
 add_subdirectory(cstxpr)
+add_subdirectory(integral)
 add_subdirectory(type)
 add_subdirectory(tuple)
