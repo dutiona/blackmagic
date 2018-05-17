@@ -1,6 +1,6 @@
 #pragma once
 
-namespace blackmagic::type { inline namespace algorithm {
-
-
-}} // namespace blackmagic::type::algorithm
+#include "algorithm/all_of.hpp"
+#include "algorithm/any_of.hpp"
+#include "algorithm/count.hpp"
+#include "algorithm/none_of.hpp"

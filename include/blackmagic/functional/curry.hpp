@@ -2,7 +2,7 @@
 
 #include "partial.hpp"
 
-#include "../integral/integral.hpp"
+#include "../integral/types.hpp"
 
 #include <utility>
 

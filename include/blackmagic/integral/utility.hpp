@@ -2,128 +2,125 @@
 
 #include "types.hpp"
 
-#include "../common/common.hpp"
+#include "../common/traits_ext.hpp"
 
 #include <type_traits>
 
 namespace blackmagic::integral { inline namespace utility {
 
 namespace common = blackmagic::common;
+using common::_v;
+using common::_v_t;
 
 template <typename T>
-using increment_t = std::integral_constant<decltype(common::_v_t<T> + 1), (common::_v_t<T> + 1)>;
+using increment_t = std::integral_constant<decltype(_v_t<T> + 1), (_v_t<T> + 1)>;
 template <typename T>
-inline constexpr const auto increment_v = common::_v<increment_t<T>>;
-
-template <typename T>
-using decrement_t = std::integral_constant<decltype(common::_v_t<T> - 1), (common::_v_t<T> - 1)>;
-template <typename T>
-inline constexpr const auto decrement_v = common::_v<decrement_t<T>>;
-
-template <typename T, typename U>
-using binary_plus_t =
-  std::integral_constant<decltype(common::_v_t<T> + common::_v_t<U>), (common::_v_t<T> + common::_v_t<U>)>;
-template <typename T, typename U>
-inline constexpr const auto binary_plus_v = common::_v<binary_plus_t<T, U>>;
-
-template <typename T, typename U>
-using binary_minus_t =
-  std::integral_constant<decltype(common::_v_t<T> - common::_v_t<U>), (common::_v_t<T> - common::_v_t<U>)>;
-template <typename T, typename U>
-inline constexpr const auto binary_minus_v = common::_v<binary_minus_t<T, U>>;
-
-template <typename T, typename U>
-using mult_t = std::integral_constant<decltype(common::_v_t<T> * common::_v_t<U>), (common::_v_t<T> * common::_v_t<U>)>;
-template <typename T, typename U>
-inline constexpr const auto mult_v = common::_v<mult_t<T, U>>;
-
-template <typename T, typename U>
-using div_t = std::integral_constant<decltype(common::_v_t<T> / common::_v_t<U>), (common::_v_t<T> / common::_v_t<U>)>;
-template <typename T, typename U>
-inline constexpr const auto div_v = common::_v<div_t<T, U>>;
-
-template <typename T, typename U>
-using mod_t = std::integral_constant<decltype(common::_v_t<T> % common::_v_t<U>), common::_v_t<T> % common::_v_t<U>>;
-template <typename T, typename U>
-inline constexpr const auto mod_v = common::_v<mod_t<T, U>>;
+inline constexpr const auto increment_v = _v<increment_t<T>>;
 
 template <typename T>
-using unary_plus_t = std::integral_constant<decltype(+common::_v_t<T>), (+common::_v_t<T>)>;
+using decrement_t = std::integral_constant<decltype(_v_t<T> - 1), (_v_t<T> - 1)>;
 template <typename T>
-inline constexpr const auto unary_plus_v = common::_v<unary_plus_t<T>>;
+inline constexpr const auto decrement_v = _v<decrement_t<T>>;
+
+template <typename T, typename U>
+using binary_plus_t = std::integral_constant<decltype(_v_t<T> + _v_t<U>), (_v_t<T> + _v_t<U>)>;
+template <typename T, typename U>
+inline constexpr const auto binary_plus_v = _v<binary_plus_t<T, U>>;
+
+template <typename T, typename U>
+using binary_minus_t = std::integral_constant<decltype(_v_t<T> - _v_t<U>), (_v_t<T> - _v_t<U>)>;
+template <typename T, typename U>
+inline constexpr const auto binary_minus_v = _v<binary_minus_t<T, U>>;
+
+template <typename T, typename U>
+using mult_t = std::integral_constant<decltype(_v_t<T> * _v_t<U>), (_v_t<T> * _v_t<U>)>;
+template <typename T, typename U>
+inline constexpr const auto mult_v = _v<mult_t<T, U>>;
+
+template <typename T, typename U>
+using div_t = std::integral_constant<decltype(_v_t<T> / _v_t<U>), (_v_t<T> / _v_t<U>)>;
+template <typename T, typename U>
+inline constexpr const auto div_v = _v<div_t<T, U>>;
+
+template <typename T, typename U>
+using mod_t = std::integral_constant<decltype(_v_t<T> % _v_t<U>), _v_t<T> % _v_t<U>>;
+template <typename T, typename U>
+inline constexpr const auto mod_v = _v<mod_t<T, U>>;
 
 template <typename T>
-using unary_minus_t = std::integral_constant<decltype(-common::_v_t<T>), (-common::_v_t<T>)>;
+using unary_plus_t = std::integral_constant<decltype(+_v_t<T>), (+_v_t<T>)>;
+template <typename T>
+inline constexpr const auto unary_plus_v = _v<unary_plus_t<T>>;
+
+template <typename T>
+using unary_minus_t = std::integral_constant<decltype(-_v_t<T>), (-_v_t<T>)>;
 template <typename T>
 inline constexpr const common::trait_t<unary_minus_t, T> unary_minus{};
 
 template <typename T, typename U>
-using equal_to_t = bool_t<(common::_v_t<T> == common::_v_t<U>)>;
+using equal_to_t = bool_t<(_v_t<T> == _v_t<U>)>;
 template <typename T, typename U>
-inline constexpr const auto equal_to_v = common::_v<equal_to_t<T, U>>;
+inline constexpr const auto equal_to_v = _v<equal_to_t<T, U>>;
 
 template <typename T, typename U>
-using not_equal_to_t = bool_t<(common::_v_t<T> != common::_v_t<U>)>;
+using not_equal_to_t = bool_t<(_v_t<T> != _v_t<U>)>;
 template <typename T, typename U>
-inline constexpr const auto not_equal_to_v = common::_v<not_equal_to_t<T, U>>;
+inline constexpr const auto not_equal_to_v = _v<not_equal_to_t<T, U>>;
 
 template <typename T, typename U>
-using greater_t = bool_t<(common::_v_t<T>> common::_v_t<U>)>;
+using greater_t = bool_t<(_v_t<T>> _v_t<U>)>;
 template <typename T, typename U>
-inline constexpr const auto greater_v = common::_v<greater_t<T, U>>;
+inline constexpr const auto greater_v = _v<greater_t<T, U>>;
 
 template <typename T, typename U>
-using less_t = bool_t<(common::_v_t<T> < common::_v_t<U>)>;
+using less_t = bool_t<(_v_t<T> < _v_t<U>)>;
 template <typename T, typename U>
-inline constexpr const auto less_v = common::_v<less_t<T, U>>;
+inline constexpr const auto less_v = _v<less_t<T, U>>;
 
 template <typename T, typename U>
-using greater_equal_t = bool_t<(common::_v_t<T> >= common::_v_t<U>)>;
+using greater_equal_t = bool_t<(_v_t<T> >= _v_t<U>)>;
 template <typename T, typename U>
-inline constexpr const auto greater_equal_v = common::_v<greater_equal_t<T, U>>;
+inline constexpr const auto greater_equal_v = _v<greater_equal_t<T, U>>;
 
 template <typename T, typename U>
-using less_equal_t = bool_t<(common::_v_t<T> <= common::_v_t<U>)>;
+using less_equal_t = bool_t<(_v_t<T> <= _v_t<U>)>;
 template <typename T, typename U>
-inline constexpr const auto less_equal_v = common::_v<less_equal_t<T, U>>;
+inline constexpr const auto less_equal_v = _v<less_equal_t<T, U>>;
 
 template <typename T, typename U>
-using logical_and_t = bool_t<(common::_v_t<T> && common::_v_t<U>)>;
+using logical_and_t = bool_t<(_v_t<T> && _v_t<U>)>;
 template <typename T, typename U>
-inline constexpr const auto logical_and_v = common::_v<logical_and_t<T, U>>;
+inline constexpr const auto logical_and_v = _v<logical_and_t<T, U>>;
 
 template <typename T, typename U>
-using logical_or_t = bool_t<(common::_v_t<T> || common::_v_t<U>)>;
+using logical_or_t = bool_t<(_v_t<T> || _v_t<U>)>;
 template <typename T, typename U>
-inline constexpr const auto logical_or_v = common::_v<logical_or_t<T, U>>;
-
-template <typename T>
-using logical_not_t = bool_t<(!common::_v_t<T>)>;
-template <typename T>
-inline constexpr const auto logical_not_v = common::_v<logical_not_t<T>>;
-
-template <typename T, typename U>
-using bit_and_t =
-  std::integral_constant<decltype(common::_v_t<T> & common::_v_t<U>), (common::_v_t<T> & common::_v_t<U>)>;
-template <typename T, typename U>
-inline constexpr const auto bit_and_v = common::_v<bit_and_t<T, U>>;
-
-template <typename T, typename U>
-using bit_or_t =
-  std::integral_constant<decltype(common::_v_t<T> | common::_v_t<U>), (common::_v_t<T> | common::_v_t<U>)>;
-template <typename T, typename U>
-inline constexpr const auto bit_or_v = common::_v<bit_or_t<T, U>>;
-
-template <typename T, typename U>
-using bit_xor_t =
-  std::integral_constant<decltype(common::_v_t<T> ^ common::_v_t<U>), (common::_v_t<T> ^ common::_v_t<U>)>;
-template <typename T, typename U>
-inline constexpr const auto bit_xor_v = common::_v<bit_xor_t<T, U>>;
+inline constexpr const auto logical_or_v = _v<logical_or_t<T, U>>;
 
 template <typename T>
-using bit_not_t = std::integral_constant<decltype(~common::_v_t<T>), (~common::_v_t<T>)>;
+using logical_not_t = bool_t<(!_v_t<T>)>;
 template <typename T>
-inline constexpr const auto bit_not_v = common::_v<bit_not_t<T>>;
+inline constexpr const auto logical_not_v = _v<logical_not_t<T>>;
+
+template <typename T, typename U>
+using bit_and_t = std::integral_constant<decltype(_v_t<T> & _v_t<U>), (_v_t<T> & _v_t<U>)>;
+template <typename T, typename U>
+inline constexpr const auto bit_and_v = _v<bit_and_t<T, U>>;
+
+template <typename T, typename U>
+using bit_or_t = std::integral_constant<decltype(_v_t<T> | _v_t<U>), (_v_t<T> | _v_t<U>)>;
+template <typename T, typename U>
+inline constexpr const auto bit_or_v = _v<bit_or_t<T, U>>;
+
+template <typename T, typename U>
+using bit_xor_t = std::integral_constant<decltype(_v_t<T> ^ _v_t<U>), (_v_t<T> ^ _v_t<U>)>;
+template <typename T, typename U>
+inline constexpr const auto bit_xor_v = _v<bit_xor_t<T, U>>;
+
+template <typename T>
+using bit_not_t = std::integral_constant<decltype(~_v_t<T>), (~_v_t<T>)>;
+template <typename T>
+inline constexpr const auto bit_not_v = _v<bit_not_t<T>>;
 
 
 inline namespace traits {

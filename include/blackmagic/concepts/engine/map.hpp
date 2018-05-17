@@ -3,8 +3,15 @@
 #include "diagnostic.hpp"
 #include "item.hpp"
 
-#include "../../common/common.hpp"
-#include "../../tuple/tuple.hpp"
+#include "../../common/detector.hpp"
+#include "../../tuple/algorithm/accumulate.hpp"
+#include "../../tuple/algorithm/all.hpp"
+#include "../../tuple/algorithm/count_if.hpp"
+#include "../../tuple/algorithm/find_if.hpp"
+#include "../../tuple/algorithm/for_each.hpp"
+#include "../../tuple/algorithm/transform.hpp"
+#include "../../tuple/algorithm/unique.hpp"
+#include "../../tuple/algorithm/unpack.hpp"
 
 #include <string_view>
 #include <tuple>

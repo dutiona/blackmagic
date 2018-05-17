@@ -6,8 +6,8 @@
 #include "push_front.hpp"
 #include "repeat.hpp"
 
-#include "../../common/common.hpp"
-#include "../../integral/integral.hpp"
+#include "../../common/algorithm/are_equal.hpp"
+#include "../../integral/types.hpp"
 
 #include <tuple>
 #include <type_traits>

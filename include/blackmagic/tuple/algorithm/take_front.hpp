@@ -1,6 +1,6 @@
 #pragma once
 
-#include "../../integral/integral.hpp"
+#include "../../integral/types.hpp"
 
 #include <tuple>
 #include <utility>

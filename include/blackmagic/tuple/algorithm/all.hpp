@@ -2,7 +2,7 @@
 
 #include "all_of.hpp"
 
-#include "../../functional/functional.hpp"
+#include "../../functional/identity.hpp"
 
 #include <tuple>
 

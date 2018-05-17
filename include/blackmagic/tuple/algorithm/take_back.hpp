@@ -3,7 +3,7 @@
 #include "reverse.hpp"
 #include "take_front.hpp"
 
-#include "../../integral/integral.hpp"
+#include "../../integral/types.hpp"
 
 #include <tuple>
 

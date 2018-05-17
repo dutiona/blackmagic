@@ -2,8 +2,6 @@
 
 #include "details/traits_impl.hpp"
 
-#include "../../type/type.hpp"
-
 namespace blackmagic::traits { inline namespace utility {
 
 // member access

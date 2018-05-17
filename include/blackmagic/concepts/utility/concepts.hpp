@@ -1,8 +1,6 @@
 #pragma once
 
 #include "../engine.hpp"
-
-#include "../engine.hpp"
 #include "traits.hpp"
 
 #include <string_view>

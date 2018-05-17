@@ -2,13 +2,9 @@
 
 #include "partial.hpp"
 
-#include "../integral/integral.hpp"
-
 #include <utility>
 
 namespace blackmagic::functional {
-
-namespace integral = blackmagic::integral;
 
 // fwd dcl
 struct compose_t {

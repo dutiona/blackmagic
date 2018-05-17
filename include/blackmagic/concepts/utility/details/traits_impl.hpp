@@ -1,9 +1,5 @@
 #pragma once
 
-#ifndef _MSC_VER
-#include "../../../common/common.hpp"
-#endif
-
 #include <type_traits>
 
 namespace blackmagic::traits { inline namespace utility { namespace details {

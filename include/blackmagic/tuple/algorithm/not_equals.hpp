@@ -1,6 +1,6 @@
 #pragma once
 
-#include "../../common/common.hpp"
+#include "../../common/algorithm/any_of_v.hpp"
 
 #include <tuple>
 #include <utility>

@@ -2,7 +2,7 @@
 
 #include "merge.hpp"
 
-#include "../../integral/integral.hpp"
+#include "../../integral/types.hpp"
 
 #include <tuple>
 #include <utility>

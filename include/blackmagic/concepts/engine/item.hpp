@@ -2,14 +2,10 @@
 
 #include "checker.hpp"
 
-#include "../../common/common.hpp"
-
 #include <string_view>
 #include <utility>
 
 namespace blackmagic::concepts { inline namespace engine {
-
-namespace common = blackmagic::common;
 
 template <typename Concept>
 struct item : std::pair<std::string_view, checker<Concept>> {
@@ -20,7 +16,7 @@ struct item : std::pair<std::string_view, checker<Concept>> {
 
   constexpr bool is(std::string_view concept_name) const
   {
-    return common::equals(this->first, concept_name);
+    return this->first == concept_name;
   }
 
   template <typename... Args>
