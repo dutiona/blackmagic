@@ -13,14 +13,14 @@ constexpr auto func_test(int a, int b, int c, int d)
 
 TEST(Functional_Curry, Function)
 {
-  ASSERT_TRUE(functional::curry(func_test, integral::size_t_<4>{})(1, 2)(4)(5) == 12);
+  ASSERT_TRUE(functional::curry(func_test, integral::size_t_t<4>{})(1, 2)(4)(5) == 12);
 }
 
 TEST(Functional_Curry, Lambda)
 {
   constexpr auto lmbd = [](int a, int b, long c, int d) { return a + b + c + d; };
 
-  ASSERT_TRUE(functional::curry(lmbd, integral::size_t_<4>{})(1, 2)(4)(5) == 12);
+  ASSERT_TRUE(functional::curry(lmbd, integral::size_t_t<4>{})(1, 2)(4)(5) == 12);
 }
 
 struct functor {
@@ -32,5 +32,5 @@ struct functor {
 
 TEST(Functional_Curry, FunctionObject)
 {
-  ASSERT_TRUE(functional::curry(functor{}, integral::size_t_<4>{})(1, 2)(4)(5) == 12);
+  ASSERT_TRUE(functional::curry(functor{}, integral::size_t_t<4>{})(1, 2)(4)(5) == 12);
 }

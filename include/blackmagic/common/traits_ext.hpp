@@ -13,6 +13,20 @@ template <typename T>
 using remove_cvref_t = typename remove_cvref<T>::type;
 
 
+// basic_trait
+template <typename Pred>
+struct basic_trait_t {
+  using type = Pred;
+
+  constexpr auto operator()() const
+  {
+    return type{};
+  }
+};
+template <typename Pred>
+inline constexpr basic_trait_t<Pred> basic_trait{};
+
+
 // trait
 template <template <typename...> class Pred, typename... Us>
 struct trait_t {
@@ -27,6 +41,36 @@ struct trait_t {
 };
 template <template <typename...> class Pred, typename... Us>
 inline constexpr trait_t<Pred, Us...> trait{};
+
+
+// basic_value
+template <typename Pred>
+struct basic_value_t {
+  using type = Pred;
+
+  constexpr auto operator()() const
+  {
+    return type{};
+  }
+};
+template <typename Pred>
+inline constexpr basic_value_t<Pred> basic_value{};
+
+
+// value
+template <template <auto...> class Pred, auto... Us>
+struct value_t {
+  template <auto... Args>
+  using type = Pred<Us..., Args...>;
+
+  template <auto... Args>
+  constexpr auto operator()(...) const
+  {
+    return type<Args...>{};
+  }
+};
+template <template <auto...> class Pred, auto... Us>
+inline constexpr value_t<Pred, Us...> value{};
 
 
 // is_instantiation_of

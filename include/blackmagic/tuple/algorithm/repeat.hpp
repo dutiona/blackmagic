@@ -13,19 +13,19 @@ namespace integral = blackmagic::integral;
 
 struct repeat_t {
   template <typename T, size_t N>
-  constexpr auto operator()(T&& e, integral::size_t_<N>) const;
+  constexpr auto operator()(T&& e, integral::size_t_t<N>) const;
 };
 
 inline constexpr const repeat_t repeat{};
 
 template <typename T, size_t N>
-constexpr auto repeat_t::operator()(T&& e, integral::size_t_<N>) const
+constexpr auto repeat_t::operator()(T&& e, integral::size_t_t<N>) const
 {
   if constexpr (N == 0) {
     return std::make_tuple();
   }
   else {
-    return push_front(repeat(std::forward<T>(e), integral::size_t_<(N - 1)>{}), std::forward<T>(e));
+    return push_front(repeat(std::forward<T>(e), integral::size_t_t<(N - 1)>{}), std::forward<T>(e));
   }
 }
 

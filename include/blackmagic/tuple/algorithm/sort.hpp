@@ -2,6 +2,7 @@
 
 #include "merge.hpp"
 
+#include "../../common/traits_ext.hpp"
 #include "../../integral/types.hpp"
 
 #include <tuple>
@@ -10,6 +11,8 @@
 namespace blackmagic::tuple { inline namespace algorithm {
 
 namespace integral = blackmagic::integral;
+namespace common   = blackmagic::common;
+using common::_v;
 
 // fwd dcl
 struct sort_t {
@@ -22,7 +25,7 @@ inline constexpr const sort_t sort{};
 namespace details {
 
 template <size_t N, size_t... I>
-constexpr auto translate_index_sequence(std::index_sequence<I...>, integral::size_t_<N>)
+constexpr auto translate_index_sequence(std::index_sequence<I...>, integral::size_t_t<N>)
 {
   return std::index_sequence<(I + N)...>{};
 }
@@ -43,10 +46,10 @@ constexpr auto sort_t::operator()(C&& comp, const std::tuple<Ts...>& tpl) const
     return tpl;
   }
   else {
-    using Pivot = integral::size_t_<(sizeof...(Ts) / 2)>;
+    using Pivot = integral::size_t_t<(sizeof...(Ts) / 2)>;
     return details::sort_impl(
-      std::forward<C>(comp), tpl, std::make_index_sequence<Pivot::value>{},
-      details::translate_index_sequence(std::make_index_sequence<(sizeof...(Ts) - Pivot::value)>{}, Pivot{}));
+      std::forward<C>(comp), tpl, std::make_index_sequence<_v<Pivot>>{},
+      details::translate_index_sequence(std::make_index_sequence<(sizeof...(Ts) - _v<Pivot>)>{}, Pivot{}));
   }
 }
 

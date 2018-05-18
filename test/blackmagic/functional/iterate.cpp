@@ -8,5 +8,5 @@ namespace integral   = blackmagic::integral;
 
 TEST(Functional_Iterate, Five)
 {
-  ASSERT_TRUE(functional::iterate([](auto n) { return n + 1; }, integral::size_t_<5>{})(1) == 6);
+  ASSERT_TRUE(functional::iterate([](auto n) { return n + 1; }, integral::size_t_t<5>{})(1) == 6);
 }

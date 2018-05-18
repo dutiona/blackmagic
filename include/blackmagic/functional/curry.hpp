@@ -13,7 +13,7 @@ namespace integral = blackmagic::integral;
 // fwd dcl
 struct curry_t {
   template <typename Func, size_t N>
-  constexpr decltype(auto) operator()(Func&& f, integral::size_t_<N>) const;
+  constexpr decltype(auto) operator()(Func&& f, integral::size_t_t<N>) const;
 };
 
 inline constexpr const curry_t curry{};
@@ -37,7 +37,7 @@ public:
       return f_(std::forward<Args>(args)...);
     }
     else {
-      return curry(partial(f_, std::forward<Args>(args)...), integral::size_t_<(N - sizeof...(Args))>{});
+      return curry(partial(f_, std::forward<Args>(args)...), integral::size_t_t<(N - sizeof...(Args))>{});
     }
   }
 
@@ -48,7 +48,7 @@ private:
 } // namespace details
 
 template <typename Func, size_t N>
-constexpr decltype(auto) curry_t::operator()(Func&& f, integral::size_t_<N>) const
+constexpr decltype(auto) curry_t::operator()(Func&& f, integral::size_t_t<N>) const
 {
   return details::curry_impl<Func, N>{std::forward<Func>(f)};
 }

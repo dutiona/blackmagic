@@ -21,7 +21,7 @@ constexpr auto take_front_impl(const std::tuple<Ts...>& tpl, std::index_sequence
 
 struct take_front_t {
   template <size_t N, typename... Ts>
-  constexpr auto operator()(const std::tuple<Ts...>& tpl, integral::size_t_<N>) const
+  constexpr auto operator()(const std::tuple<Ts...>& tpl, integral::size_t_t<N>) const
   {
     if constexpr (N == 0) {
       return std::tuple<>();

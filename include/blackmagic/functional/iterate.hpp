@@ -10,7 +10,7 @@ namespace integral = blackmagic::integral;
 
 struct iterate_t {
   template <typename Func, size_t N>
-  constexpr decltype(auto) operator()(Func&& f, integral::size_t_<N>) const;
+  constexpr decltype(auto) operator()(Func&& f, integral::size_t_t<N>) const;
 };
 
 inline constexpr const iterate_t iterate{};
@@ -32,7 +32,7 @@ public:
       return std::forward<T>(v);
     }
     else {
-      return f_(iterate(f_, integral::size_t_<(N - 1)>{})(std::forward<T>(v)));
+      return f_(iterate(f_, integral::size_t_t<(N - 1)>{})(std::forward<T>(v)));
     }
   }
 
@@ -43,7 +43,7 @@ private:
 } // namespace details
 
 template <typename Func, size_t N>
-constexpr decltype(auto) iterate_t::operator()(Func&& f, integral::size_t_<N>) const
+constexpr decltype(auto) iterate_t::operator()(Func&& f, integral::size_t_t<N>) const
 {
   return details::iterate_impl<Func, N>{std::forward<Func>(f)};
 }

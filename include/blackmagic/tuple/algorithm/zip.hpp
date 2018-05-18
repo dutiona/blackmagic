@@ -32,7 +32,7 @@ template <typename... Ts, size_t... I>
 constexpr auto zip_impl(std::index_sequence<I...>, Ts&&... tpls)
 {
   if constexpr (sizeof...(I) == 0) {
-    return repeat(std::tuple<>(), integral::size_t_<sizeof...(Ts)>{});
+    return repeat(std::tuple<>(), integral::size_t_t<sizeof...(Ts)>{});
   }
   else if constexpr (sizeof...(I) == 1) {
     return std::make_tuple(std::make_tuple(front(std::forward<Ts>(tpls))...));
