@@ -9,6 +9,7 @@
 namespace blackmagic::tuple { inline namespace utility {
 
 namespace common = blackmagic::common;
+using common::_v;
 
 // tuple_remove_const
 template <typename... Ts>
@@ -46,6 +47,6 @@ struct is_tuple : common::is_instantiation_of<std::tuple, T> {
 };
 
 template <typename T>
-inline constexpr const auto is_tuple_v = is_tuple<T>::value;
+inline constexpr const auto is_tuple_v = _v<is_tuple<T>>;
 
 }} // namespace blackmagic::tuple::utility

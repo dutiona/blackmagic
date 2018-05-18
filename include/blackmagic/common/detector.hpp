@@ -1,10 +1,12 @@
 #pragma once
 
+#include "traits_ext.hpp"
+
 #include "../type/list.hpp"
 
 #include <type_traits>
 
-namespace blackmagic::common {
+namespace blackmagic::common { inline namespace detector {
 
 // nonesuch
 struct nonesuch {
@@ -37,27 +39,27 @@ template <template <typename...> class Op, typename... Args>
 using is_detected = typename details::detector<nonesuch, Op, type::basic_list<Args...>>::value_t;
 
 template <template <typename...> class Op, typename... Args>
-using detected_t = typename details::detector<nonesuch, Op, type::basic_list<Args...>>::type;
+using detected_t = _t<details::detector<nonesuch, Op, type::basic_list<Args...>>>;
 
 template <typename Default, template <typename...> class Op, typename... Args>
 using detected_or = details::detector<Default, Op, type::basic_list<Args...>>;
 
 template <template <typename...> class Op, typename... Args>
-constexpr bool is_detected_v = is_detected<Op, Args...>::value;
+constexpr bool is_detected_v = _v<is_detected<Op, Args...>>;
 
 template <typename Default, template <typename...> class Op, typename... Args>
-using detected_or_t = typename detected_or<Default, Op, Args...>::type;
+using detected_or_t = _t<detected_or<Default, Op, Args...>>;
 
 template <typename Expected, template <typename...> class Op, typename... Args>
 using is_detected_exact = std::is_same<Expected, detected_t<Op, Args...>>;
 
 template <typename Expected, template <typename...> class Op, typename... Args>
-constexpr bool is_detected_exact_v = is_detected_exact<Expected, Op, Args...>::value;
+constexpr bool is_detected_exact_v = _v<is_detected_exact<Expected, Op, Args...>>;
 
 template <typename To, template <typename...> class Op, typename... Args>
 using is_detected_convertible = std::is_convertible<detected_t<Op, Args...>, To>;
 
 template <typename To, template <typename...> class Op, typename... Args>
-constexpr bool is_detected_convertible_v = is_detected_convertible<To, Op, Args...>::value;
+constexpr bool is_detected_convertible_v = _v<is_detected_convertible<To, Op, Args...>>;
 
-} // namespace blackmagic::common
+}} // namespace blackmagic::common::test

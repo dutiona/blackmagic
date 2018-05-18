@@ -1,12 +1,17 @@
 #pragma once
 
+#include "../../common/traits_ext.hpp"
 #include "../../type/list.hpp"
 
 #include <type_traits>
 
 namespace blackmagic::concepts { inline namespace utility {
 
-namespace type = blackmagic::type;
+namespace type   = blackmagic::type;
+namespace common = blackmagic::common;
+using common::_t;
+using common::_v;
+using common::_v_t;
 
 // Basic verification primitives
 namespace details {
@@ -28,7 +33,7 @@ struct is_true_impl : std::false_type {
 };
 
 template <typename Pred>
-struct is_true_impl<Pred, std::enable_if_t<Pred::value>> : std::true_type {
+struct is_true_impl<Pred, std::enable_if_t<_v<Pred>>> : std::true_type {
 };
 
 template <typename... Preds>
@@ -70,7 +75,7 @@ struct valid_exprs_ : std::false_type {
 template <template <typename...> class ParametersPack, template <typename...> class... Constraints,
           typename... Parameters>
 struct valid_exprs_<ParametersPack<Parameters...>,
-                    std::enable_if_t<valid_exprs_impl<Constraints<Parameters...>...>::value>, Constraints...>
+                    std::enable_if_t<_v<valid_exprs_impl<Constraints<Parameters...>...>>>, Constraints...>
   : std::true_type {
 };
 
@@ -82,7 +87,7 @@ template <typename ParametersPack, typename = void, template <typename...> class
 struct are_true_ : std::false_type {
 };
 template <template <typename...> class ParametersPack, template <typename...> class... Preds, typename... Parameters>
-struct are_true_<ParametersPack<Parameters...>, std::enable_if<are_true_impl<Preds<Parameters...>...>::value>, Preds...>
+struct are_true_<ParametersPack<Parameters...>, std::enable_if<_v<are_true_impl<Preds<Parameters...>...>>>, Preds...>
   : std::true_type {
 };
 
@@ -94,7 +99,7 @@ template <typename ParametersPack, typename = void, template <typename...> class
 struct are_false_ : std::false_type {
 };
 template <template <typename...> class ParametersPack, template <typename...> class... Preds, typename... Parameters>
-struct are_false_<ParametersPack<Parameters...>, std::enable_if<are_false_impl<Preds<Parameters...>...>::value>, Preds...>
+struct are_false_<ParametersPack<Parameters...>, std::enable_if<_v<are_false_impl<Preds<Parameters...>...>>>, Preds...>
   : std::true_type {
 };
 
@@ -111,9 +116,9 @@ struct valid_expr {
   template <typename... Parameters>
   using type = valid_expr_<Constraint, Parameters...>;
   template <typename... Parameters>
-  using underlying_type = typename type<Parameters...>::type;
+  using underlying_type = _t<type<Parameters...>>;
   template <typename... Parameters>
-  static constexpr bool value = type<Parameters...>::value;
+  static constexpr bool value = _v<type<Parameters...>>;
 };
 
 template <template <typename...> class... Constraints>
@@ -121,9 +126,9 @@ struct valid_exprs {
   template <typename... Parameters>
   using type = valid_exprs_<type::basic_list<Parameters...>, void, Constraints...>;
   template <typename... Parameters>
-  using underlying_type = typename type<Parameters...>::type;
+  using underlying_type = _t<type<Parameters...>>;
   template <typename... Parameters>
-  static constexpr bool value = type<Parameters...>::value;
+  static constexpr bool value = _v<type<Parameters...>>;
 };
 
 template <template <typename...> class Pred>
@@ -131,9 +136,9 @@ struct is_true {
   template <typename... Parameters>
   using type = is_true_<Pred, Parameters...>;
   template <typename... Parameters>
-  using underlying_type = typename type<Parameters...>::type;
+  using underlying_type = _t<type<Parameters...>>;
   template <typename... Parameters>
-  static constexpr bool value = type<Parameters...>::value;
+  static constexpr bool value = _v<type<Parameters...>>;
 };
 
 template <template <typename...> class... Preds>
@@ -141,9 +146,9 @@ struct are_true {
   template <typename... Parameters>
   using type = are_true_<type::basic_list<Parameters...>, void, Preds...>;
   template <typename... Parameters>
-  using underlying_type = typename type<Parameters...>::type;
+  using underlying_type = _t<type<Parameters...>>;
   template <typename... Parameters>
-  static constexpr bool value = type<Parameters...>::value;
+  static constexpr bool value = _v<type<Parameters...>>;
 };
 
 template <template <typename...> class Pred>
@@ -151,9 +156,9 @@ struct is_false {
   template <typename... Parameters>
   using type = is_false_<Pred, Parameters...>;
   template <typename... Parameters>
-  using underlying_type = typename type<Parameters...>::type;
+  using underlying_type = _t<type<Parameters...>>;
   template <typename... Parameters>
-  static constexpr bool value = type<Parameters...>::value;
+  static constexpr bool value = _v<type<Parameters...>>;
 };
 
 template <template <typename...> class... Preds>
@@ -161,9 +166,9 @@ struct are_false {
   template <typename... Parameters>
   using type = are_false_<type::basic_list<Parameters...>, void, Preds...>;
   template <typename... Parameters>
-  using underlying_type = typename type<Parameters...>::type;
+  using underlying_type = _t<type<Parameters...>>;
   template <typename... Parameters>
-  static constexpr bool value = type<Parameters...>::value;
+  static constexpr bool value = _v<type<Parameters...>>;
 };
 
 template <template <typename...> class T, template <typename...> class U = T>
@@ -171,9 +176,9 @@ struct same {
   template <typename... Parameters>
   using type = same_<T, U, Parameters...>;
   template <typename... Parameters>
-  using underlying_type = typename type<Parameters...>::type;
+  using underlying_type = _t<type<Parameters...>>;
   template <typename... Parameters>
-  static constexpr bool value = type<Parameters...>::value;
+  static constexpr bool value = _v<type<Parameters...>>;
 };
 
 template <template <typename...> class From, template <typename...> class To>
@@ -181,9 +186,9 @@ struct convertible_to {
   template <typename... Parameters>
   using type = convertible_to_<From, To, Parameters...>;
   template <typename... Parameters>
-  using underlying_type = typename type<Parameters...>::type;
+  using underlying_type = _t<type<Parameters...>>;
   template <typename... Parameters>
-  static constexpr bool value = type<Parameters...>::value;
+  static constexpr bool value = _v<type<Parameters...>>;
 };
 
 } // namespace details

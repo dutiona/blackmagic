@@ -151,6 +151,7 @@ inline constexpr auto LogicalNot = is_true<traits::is_logical_not>("LogicalNot"s
 
 // logical_and
 inline constexpr auto LogicalAnd = is_true<traits::is_logical_and>("LogicalAnd"sv);
+
 // logical_or
 inline constexpr auto LogicalOr = is_true<traits::is_logical_or>("LogicalOr"sv);
 

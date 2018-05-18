@@ -4,7 +4,6 @@
 #include "reverse_partial.hpp"
 #include "utility.hpp"
 
-#include <type_traits>
 #include <utility>
 
 namespace blackmagic::functional::placeholder {

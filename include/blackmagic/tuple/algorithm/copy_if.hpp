@@ -13,6 +13,7 @@
 namespace blackmagic::tuple { inline namespace algorithm {
 
 namespace common = blackmagic::common;
+using common::_v;
 
 namespace details {
 
@@ -27,7 +28,7 @@ public:
 
   template <typename... Ts>
   constexpr auto operator()(Ts&&... t) const
-    -> filter_indexes<static_cast<bool>(std::decay_t<decltype(trait_(std::forward<Ts>(t)))>::value)...>
+    -> filter_indexes<static_cast<bool>(_v<std::decay_t<decltype(trait_(std::forward<Ts>(t)))>>)...>
   {
     return {};
   }

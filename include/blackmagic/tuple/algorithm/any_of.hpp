@@ -6,7 +6,6 @@
 #include "../../common/algorithm/any_of_v.hpp"
 
 #include <tuple>
-#include <type_traits>
 #include <utility>
 
 namespace blackmagic::tuple { inline namespace algorithm {
