@@ -4,6 +4,8 @@
 
 namespace blackmagic::integral::literals {
 
+// code taken from boost::hana
+
 namespace details {
 constexpr int to_int(char c)
 {

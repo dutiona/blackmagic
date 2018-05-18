@@ -1,5 +1,8 @@
-add_custom_target(tests ALL
-    COMMAND ${CMAKE_CTEST_COMMAND} -C ${CMAKE_CONFIGURATION_TYPES} --output-on-failure
+add_custom_target(tests-compile ALL COMMENT "Build all the unit tests.")
+
+add_custom_target(tests EXCLUDE_FROM_ALL
+    DEPENDS tests-compile
+    COMMAND ${CMAKE_CTEST_COMMAND} -C ${CMAKE_CONFIGURATION_TYPES} --output-on-failure --schedule-random --verbose
     COMMENT "Build and run all the unit tests.")
 
 macro(add_unit_test Executable Source)
@@ -20,7 +23,7 @@ macro(add_unit_test Executable Source)
         target_link_libraries(test_${Executable} PRIVATE ${GTEST_BOTH_LIBRARIES} pthread)
     endif (PLATFORM_WIN32)
     
-    add_dependencies(tests test_${Executable})
+    add_dependencies(tests-compile test_${Executable})
 endmacro(add_unit_test)
 
 option(WITH_TESTS "Compile and run tests" ON)

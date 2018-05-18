@@ -8,7 +8,7 @@ BUILD_DIRECTORY="build-in-docker"
 TOOLCHAIN_FILE=""
 SOURCE_DIRECTORY=".."
 TARGET=""
-RELEASE_TYPE="Debug"
+CONFIG_TYPE="Debug"
 CLEAN="OFF"
 CLEAN_ONLY="OFF"
 COVERAGE="OFF"
@@ -33,7 +33,7 @@ where:
                                     default = ..
     -t --target Target              build target passed to the generated toolchain (make target)
                                     default = all
-    -r --release-type ReleaseType   build type. Release|Debug|RelWithDebInfo|MinSizeRel
+    -r --config-type ConfigType     build type. Release|Debug|RelWithDebInfo|MinSizeRel
                                     default = Debug
     -n --toolchain ToolchainFile    path to the toolchain file (passed with -T to cmake).
 
@@ -107,8 +107,8 @@ while [[ $# -gt 0 ]]; do
         TOOLCHAIN_FILE="$2"
         shift 2
         ;;
-	-r | --release-type)
-		RELEASE_TYPE="$2"
+	-r | --config-type)
+		CONFIG_TYPE="$2"
 		shift 2
 		;;
 	--)
@@ -157,7 +157,8 @@ fi
 
 # configure & make
 docker exec -w $WORKDIR $CONTAINER_ID sh -c "export CC=$CC && export CXX=$CXX && $CXX --version && cmake $TOOLCHAIN_FILE -G $CMAKE_GENERATOR -DWITH_CODE_COVERAGE=$COVERAGE -DWITH_EXAMPLES=$EXAMPLES -DWITH_BENCHMARK=$BENCHMARK $SOURCE_DIRECTORY"
-docker exec -w $WORKDIR $CONTAINER_ID sh -c "cmake --build . --target $TARGET --config $RELEASE_TYPE"
+docker exec -w $WORKDIR $CONTAINER_ID sh -c "cmake --build . --target $TARGET --config $CONFIG_TYPE"
+docker exec -w $WORKDIR $CONTAINER_ID sh -c "cd .. && ./launch-tests.sh"
 
 # stopping container
 echo "Stopping container $CONTAINER_ID"

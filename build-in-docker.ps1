@@ -5,7 +5,7 @@ Param(
     [String]$SourceDirectory = "..",
     [String]$Target = "",
     [String]$ToolchainFile = "",
-    [String]$ReleaseType = "Debug",
+    [String]$ConfigType = "Debug",
     [String]$Coverage = "OFF",
     [String]$Clean = "OFF",
     [String]$Benchmark = "OFF",
@@ -22,7 +22,7 @@ Write-Host "BuildDirectory: $BuildDirectory"
 Write-Host "SourceDirectory: $SourceDirectory"
 Write-Host "Target: $Target"
 Write-Host "ToolchainFile: $ToolchainFile"
-Write-Host "ReleaseType: $ReleaseType"
+Write-Host "ConfigType: $ConfigType"
 Write-Host "Coverage: $Coverage"
 Write-Host "Clean: $Clean"
 Write-Host "Benchmark: $Benchmark"
@@ -66,7 +66,8 @@ If (!$ToolchainFile.Remove(" ").Equals("")) {
 
 # configure & make
 docker exec -w $Workdir $ContainerID sh -c "export CC=$CC && export CXX=$CXX && $CXX --version && cmake $ToolchainFile -G $CmakeGenerator -DWITH_CODE_COVERAGE=$Coverage -DWITH_EXAMPLES=$Examples -DWITH_BENCHMARK=$Benchmark $SourceDirectory"
-docker exec -w $Workdir $ContainerID sh -c "cmake --build . --target $Target --config $ReleaseType"
+docker exec -w $Workdir $ContainerID sh -c "cmake --build . --target $Target --config $ConfigType"
+docker exec -w $Workdir $ContainerID sh -c "cd .. && ./launch-tests.sh"
 
 # stopping container
 Write-Host "Stopping container $ContainerID"
