@@ -55,9 +55,6 @@ includes
 set_difference / set_symmetric_difference
 set_intersection / set_union
 is_permutation / next_permutation / prev_permutation
-literals :
-   https://github.com/boostorg/hana/blob/master/include/boost/hana/bool.hpp
-   https://github.com/boostorg/hana/blob/master/include/boost/hana/fwd/integral_constant.hpp
 operators :
    https://github.com/boostorg/hana/blob/master/include/boost/hana/detail/operators/arithmetic.hpp
    https://github.com/boostorg/hana/blob/master/include/boost/hana/detail/operators/comparable.hpp

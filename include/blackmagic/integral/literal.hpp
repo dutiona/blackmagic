@@ -2,11 +2,14 @@
 
 #include "types.hpp"
 
+#include <string_view>
+
 namespace blackmagic::integral::literals {
 
-// code taken from boost::hana
-
 namespace details {
+
+// part of this code is taken from boost::hana
+
 constexpr int to_int(char c)
 {
   int result = 0;
@@ -25,7 +28,7 @@ constexpr int to_int(char c)
 }
 
 template <std::size_t N>
-constexpr long long parse(const char (&arr)[N])
+constexpr long long parse_signed_number(const char (&arr)[N])
 {
   long long   base   = 10;
   std::size_t offset = 0;
@@ -65,12 +68,112 @@ constexpr long long parse(const char (&arr)[N])
 
   return number;
 }
+
+template <std::size_t N>
+constexpr unsigned long long parse_unsigned_number(const char (&arr)[N])
+{
+  const auto number = parse_signed_number(arr);
+
+  if (number < 0) {
+    throw "Number must be positive!";
+  }
+  else {
+    return static_cast<unsigned long long>(number);
+  }
+}
+
+template <std::size_t N>
+constexpr bool parse_bool(const char (&arr)[N])
+{
+  static_assert(N == 4, "Only 'true' and 'false' value are tolerated!");
+
+  using namespace std::literals;
+
+  if (std::string_view(arr) == "true"sv) {
+    return true;
+  }
+  else if (std::string_view(arr) == "false"sv) {
+    return false;
+  }
+  else {
+    throw "Invalid value passed! Only 'true' and 'false' are tolerated!";
+  }
+}
+
+template <std::size_t N>
+constexpr char parse_char(const char (&arr)[N])
+{
+  static_assert(N == 1, "Only a single char is tolerated!");
+
+  return arr[0];
+}
+
 } // namespace details
 
 template <char... C>
-constexpr auto operator""_c()
+constexpr decltype(auto) operator""_c()
 {
-  return long_long_t<details::parse<sizeof...(C)>({C...})>{};
+  return long_long_v<details::parse_signed_number({C...})>;
+}
+
+template <char... C>
+constexpr decltype(auto) operator""_bc()
+{
+  return bool_v<details::parse_bool({C...})>;
+}
+
+template <char... C>
+constexpr decltype(auto) operator""_cc()
+{
+  return char_v<details::parse_char({C...})>;
+}
+
+template <char... C>
+constexpr decltype(auto) operator""_ic()
+{
+  return int_v<static_cast<int>(details::parse_signed_number({C...}))>;
+}
+
+template <char... C>
+constexpr decltype(auto) operator""_lc()
+{
+  return long_v<static_cast<long>(details::parse_signed_number({C...}))>;
+}
+
+template <char... C>
+constexpr decltype(auto) operator""_llc()
+{
+  return long_long_v<details::parse_signed_number({C...})>;
+}
+
+template <char... C>
+constexpr decltype(auto) operator""_uc()
+{
+  return unsigned_long_long_v<details::parse_unsigned_number({C...})>;
+}
+
+template <char... C>
+constexpr decltype(auto) operator""_uic()
+{
+  return unsigned_v<static_cast<unsigned>(details::parse_unsigned_number({C...}))>;
+}
+
+template <char... C>
+constexpr decltype(auto) operator""_ulc()
+{
+  return unsigned_long_v<static_cast<unsigned long>(details::parse_unsigned_number({C...}))>;
+}
+
+template <char... C>
+constexpr decltype(auto) operator""_ullc()
+{
+  return unsigned_long_long_v<static_cast<unsigned long long>(details::parse_unsigned_number({C...}))>;
+}
+
+template <char... C>
+constexpr decltype(auto) operator""_sc()
+{
+  return size_t_v<static_cast<size_t>(details::parse_unsigned_number({C...}))>;
 }
 
 } // namespace blackmagic::integral::literals

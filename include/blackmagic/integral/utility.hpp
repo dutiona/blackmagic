@@ -68,7 +68,9 @@ template <typename T, typename U>
 inline constexpr const auto not_equal_to_v = _v<not_equal_to_t<T, U>>;
 
 template <typename T, typename U>
-using greater_t = bool_t<(_v_t<T>> _v_t<U>)>;
+// clang-format off
+using greater_t = bool_t<(_v_t<T> > _v_t<U>)>;
+// clang-format on
 template <typename T, typename U>
 inline constexpr const auto greater_v = _v<greater_t<T, U>>;
 
