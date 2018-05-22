@@ -86,19 +86,7 @@ constexpr unsigned long long parse_unsigned_number(const char (&arr)[N])
 template <std::size_t N>
 constexpr bool parse_bool(const char (&arr)[N])
 {
-  static_assert(N == 4, "Only 'true' and 'false' value are tolerated!");
-
-  using namespace std::literals;
-
-  if (std::string_view(arr) == "true"sv) {
-    return true;
-  }
-  else if (std::string_view(arr) == "false"sv) {
-    return false;
-  }
-  else {
-    throw "Invalid value passed! Only 'true' and 'false' are tolerated!";
-  }
+  return static_cast<bool>(parse_signed_number(arr));
 }
 
 template <std::size_t N>

@@ -24,14 +24,12 @@ void print_all_impl_(const std::tuple<Ts...>& tpl, std::ostream& os, size_t idx,
                      std::index_sequence<I, J...>)
 {
   if constexpr (helpers::is_tuple_v<std::decay_t<decltype(std::get<I>(tpl))>>) {
-    (os << std::string(padding, '\t') << "[" << idx << "] <"
-        << "nested tuple"
-        << "> : \n");
+    os << std::string(padding, '\t') << "[" << idx << "] <nested tuple> : \n";
     print_all(std::get<I>(tpl), os, 0, padding + 1);
   }
   else {
-    (os << std::string(padding, '\t') << "[" << idx << "] <" << typeid(std::get<I>(tpl)).name()
-        << "> : " << std::get<I>(tpl) << '\n');
+    os << std::string(padding, '\t') << "[" << idx << "] <" << typeid(std::get<I>(tpl)).name()
+       << "> : " << std::get<I>(tpl) << '\n';
   }
 
   if constexpr (sizeof...(J) > 0) {
@@ -47,7 +45,7 @@ void print_all_impl(const std::tuple<Ts...>& tpl, std::ostream& os, size_t idx, 
     print_all_impl_(tpl, os, idx, padding, std::index_sequence<I...>{});
   }
   else {
-    os << std::string(padding, '\t') << "!empty!\n";
+    os << std::string(padding, '\t') << "<empty!>n";
   }
 }
 

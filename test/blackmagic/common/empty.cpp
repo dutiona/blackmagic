@@ -1,8 +1,8 @@
-#include <gtest/gtest.h>
-
 #include <blackmagic/cstxpr/cstxpr.hpp>
 
-TEST(Ctx_Pair, always_true)
+#include <gtest/gtest.h>
+
+TEST(Common_Empty, always_true)
 {
   ASSERT_TRUE(true);
 }
