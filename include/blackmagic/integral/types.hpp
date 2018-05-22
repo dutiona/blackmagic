@@ -26,6 +26,11 @@ using char_t = std::integral_constant<char, C>;
 template <char C>
 inline constexpr const auto char_v = _v<char_t<C>>;
 
+template <short S>
+using short_t = std::integral_constant<short, S>;
+template <short S>
+inline constexpr const auto short_v = _v<short_t<S>>;
+
 template <int I>
 using int_t = std::integral_constant<int, I>;
 template <int I>
@@ -40,6 +45,16 @@ template <long long LL>
 using long_long_t = std::integral_constant<long long, LL>;
 template <long long LL>
 inline constexpr const auto long_long_v = _v<long_long_t<LL>>;
+
+template <unsigned char UC>
+using unsigned_char_t = std::integral_constant<unsigned, UC>;
+template <unsigned char UC>
+inline constexpr const auto unsigned_char_v = _v<unsigned_char_t<UC>>;
+
+template <unsigned short US>
+using unsigned_short_t = std::integral_constant<unsigned, US>;
+template <unsigned short US>
+inline constexpr const auto unsigned_short_v = _v<unsigned_short_t<US>>;
 
 template <unsigned U>
 using unsigned_t = std::integral_constant<unsigned, U>;
@@ -73,6 +88,9 @@ inline constexpr const common::basic_value_t<false_t> false_c{};
 template <char C>
 inline constexpr const common::value_t<char_t, C> char_c{};
 
+template <char S>
+inline constexpr const common::value_t<short_t, S> short_c{};
+
 template <int I>
 inline constexpr const common::value_t<int_t, I> int_c{};
 
@@ -81,6 +99,12 @@ inline constexpr const common::value_t<long_t, L> long_c{};
 
 template <long long LL>
 inline constexpr const common::value_t<long_long_t, LL> long_long_c{};
+
+template <unsigned char UC>
+inline constexpr const common::value_t<unsigned_char_t, UC> unsigned_char_c{};
+
+template <unsigned short US>
+inline constexpr const common::value_t<unsigned_short_t, US> unsigned_short_c{};
 
 template <unsigned U>
 inline constexpr const common::value_t<unsigned_t, U> unsigned_c{};

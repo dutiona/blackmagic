@@ -120,7 +120,7 @@ struct assignable_plus_t {
   constexpr decltype(auto) operator()(T&& a, U&& b) const
   {
     std::forward<T>(a) += std::forward<U>(b);
-    return a;
+    return std::forward<T>(a);
   }
 };
 inline constexpr const assignable_plus_t assignable_plus{};
@@ -130,7 +130,7 @@ struct assignable_minus_t {
   constexpr decltype(auto) operator()(T&& a, U&& b) const
   {
     std::forward<T>(a) -= std::forward<U>(b);
-    return a;
+    return std::forward<T>(a);
   }
 };
 inline constexpr const assignable_minus_t assignable_minus{};
@@ -140,7 +140,7 @@ struct assignable_mult_t {
   constexpr decltype(auto) operator()(T&& a, U&& b) const
   {
     std::forward<T>(a) *= std::forward<U>(b);
-    return a;
+    return std::forward<T>(a);
   }
 };
 inline constexpr const assignable_mult_t assignable_mult{};
@@ -150,7 +150,7 @@ struct assignable_div_t {
   constexpr decltype(auto) operator()(T&& a, U&& b) const
   {
     std::forward<T>(a) /= std::forward<U>(b);
-    return a;
+    return std::forward<T>(a);
   }
 };
 inline constexpr const assignable_div_t assignable_div{};
@@ -160,7 +160,7 @@ struct assignable_mod_t {
   constexpr decltype(auto) operator()(T&& a, U&& b) const
   {
     std::forward<T>(a) %= std::forward<U>(b);
-    return a;
+    return std::forward<T>(a);
   }
 };
 inline constexpr const assignable_mod_t assignable_mod{};

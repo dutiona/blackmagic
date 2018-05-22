@@ -13,6 +13,14 @@ template <typename T>
 using remove_cvref_t = typename remove_cvref<T>::type;
 
 
+// disable_if
+template <bool b, typename T = void>
+using disable_if = std::enable_if<!b, T>;
+
+template <bool b, typename T = void>
+using disable_if_t = std::enable_if_t<!b, T>;
+
+
 // basic_trait
 template <typename Pred>
 struct basic_trait_t {

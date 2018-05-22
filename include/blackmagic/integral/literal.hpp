@@ -2,6 +2,7 @@
 
 #include "types.hpp"
 
+#include <cstddef>
 #include <string_view>
 
 namespace blackmagic::integral::literals {
@@ -129,6 +130,12 @@ constexpr decltype(auto) operator""_cc()
 }
 
 template <char... C>
+constexpr decltype(auto) operator""_sc()
+{
+  return short_v<static_cast<short>(details::parse_signed_number({C...}))>;
+}
+
+template <char... C>
 constexpr decltype(auto) operator""_ic()
 {
   return int_v<static_cast<int>(details::parse_signed_number({C...}))>;
@@ -144,6 +151,18 @@ template <char... C>
 constexpr decltype(auto) operator""_llc()
 {
   return long_long_v<details::parse_signed_number({C...})>;
+}
+
+template <char... C>
+constexpr decltype(auto) operator""_ucc()
+{
+  return unsigned_char_v<static_cast<unsigned char>(details::parse_unsigned_number({C...}))>;
+}
+
+template <char... C>
+constexpr decltype(auto) operator""_usc()
+{
+  return unsigned_short_v<static_cast<unsigned short>(details::parse_unsigned_number({C...}))>;
 }
 
 template <char... C>
@@ -171,7 +190,7 @@ constexpr decltype(auto) operator""_ullc()
 }
 
 template <char... C>
-constexpr decltype(auto) operator""_sc()
+constexpr decltype(auto) operator""_stc()
 {
   return size_t_v<static_cast<size_t>(details::parse_unsigned_number({C...}))>;
 }

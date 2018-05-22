@@ -55,14 +55,6 @@ includes
 set_difference / set_symmetric_difference
 set_intersection / set_union
 is_permutation / next_permutation / prev_permutation
-operators :
-   https://github.com/boostorg/hana/blob/master/include/boost/hana/detail/operators/arithmetic.hpp
-   https://github.com/boostorg/hana/blob/master/include/boost/hana/detail/operators/comparable.hpp
-   https://github.com/boostorg/hana/blob/master/include/boost/hana/detail/operators/iterable.hpp
-   https://github.com/boostorg/hana/blob/master/include/boost/hana/detail/operators/logical.hpp
-   https://github.com/boostorg/hana/blob/master/include/boost/hana/detail/operators/monad.hpp
-   https://github.com/boostorg/hana/blob/master/include/boost/hana/detail/operators/orderable.hpp
-   https://github.com/boostorg/hana/blob/master/include/boost/hana/detail/operators/searchable.hpp
 logical eval_if (lazy) / if_ / and_ / or_ / not_ / while_
 
 TODO pure type :

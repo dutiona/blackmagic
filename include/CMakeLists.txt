@@ -22,7 +22,8 @@ set(BLACKMAGIC_COMMON_SOURCES
         blackmagic/common/algorithm/are_equal.hpp
         blackmagic/common/algorithm/are_not_equal.hpp
         blackmagic/common/algorithm/count_v.hpp
-        blackmagic/common/algorithm/none_of_v.hpp)
+        blackmagic/common/algorithm/none_of_v.hpp
+        )
 
 set(BLACKMAGIC_CONCEPTS_SOURCES
         blackmagic/concepts/concepts.hpp
@@ -73,7 +74,12 @@ set(BLACKMAGIC_INTEGRAL_SOURCES
         blackmagic/integral/literal.hpp
         blackmagic/integral/operators.hpp
         blackmagic/integral/types.hpp
-        blackmagic/integral/utility.hpp)
+        blackmagic/integral/utility.hpp
+        blackmagic/integral/operators/traits.hpp
+        blackmagic/integral/operators/arithmetic.hpp
+        blackmagic/integral/operators/logical.hpp
+        blackmagic/integral/operators/comparison.hpp
+        blackmagic/integral/operators/tag_of.hpp)
 
 set(BLACKMAGIC_PAIR_SOURCES
         blackmagic/pair/algorithm.hpp
