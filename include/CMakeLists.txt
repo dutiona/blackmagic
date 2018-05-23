@@ -71,7 +71,15 @@ set(BLACKMAGIC_FUNCTIONAL_SOURCES
         blackmagic/functional/partial.hpp
         blackmagic/functional/placeholder.hpp
         blackmagic/functional/reverse_partial.hpp
-        blackmagic/functional/utility.hpp)
+        blackmagic/functional/utility.hpp
+        blackmagic/functional/lazy/eval.hpp
+        blackmagic/functional/lazy/eval_if.hpp
+        blackmagic/functional/lazy/if.hpp
+        blackmagic/functional/lazy/while.hpp
+        blackmagic/functional/lazy/and.hpp
+        blackmagic/functional/lazy/or.hpp
+        blackmagic/functional/lazy/not.hpp
+        blackmagic/functional/lazy.hpp)
 
 set(BLACKMAGIC_INTEGRAL_SOURCES
         blackmagic/integral/integral.hpp
@@ -168,7 +176,7 @@ set(BLACKMAGIC_SOURCES
         ${BLACKMAGIC_INTEGRAL_SOURCES}
         ${BLACKMAGIC_PAIR_SOURCES}
         ${BLACKMAGIC_TUPLE_SOURCES}
-        ${BLACKMAGIC_TYPE_SOURCES})
+        ${BLACKMAGIC_TYPE_SOURCES} blackmagic/functional/lazy/lazy.hpp)
 
 add_library(Blackmagic_srcs EXCLUDE_FROM_ALL STATIC ${BLACKMAGIC_SOURCES})
 set_target_properties(Blackmagic_srcs PROPERTIES LINKER_LANGUAGE CXX)

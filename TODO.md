@@ -26,6 +26,15 @@ test for take_front
 test for transform
 test for unpack
 
+TODO cstxpr
+set
+map
+enhanced map
+enhanced vector
+add algorithms
+
+TODO tuple map
+
 TODO tuple
 at_key
 insert
@@ -55,7 +64,6 @@ includes
 set_difference / set_symmetric_difference
 set_intersection / set_union
 is_permutation / next_permutation / prev_permutation
-logical eval_if (lazy) / if_ / and_ / or_ / not_ / while_
 
 TODO pure type :
 integral list

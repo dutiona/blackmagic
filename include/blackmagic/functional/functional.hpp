@@ -11,6 +11,7 @@
 #include "flip.hpp"
 #include "identity.hpp"
 #include "iterate.hpp"
+#include "lazy.hpp"
 #include "lockstep.hpp"
 #include "on.hpp"
 #include "overload.hpp"
