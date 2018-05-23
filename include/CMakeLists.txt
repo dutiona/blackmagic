@@ -3,6 +3,10 @@ add_library(Blackmagic INTERFACE)
 target_compile_features(Blackmagic INTERFACE cxx_std_17)
 target_include_directories(Blackmagic INTERFACE ${BLACKMAGIC_INCLUDE_DIR})
 
+if(COMPILER_CLANG)
+    target_compile_options(Blackmagic INTERFACE -Wno-gnu-string-literal-operator-template)
+endif(COMPILER_CLANG)
+
 # dummy static project not linked anywere needed so that a vcxproj is generated with the sources in the solution
 set_property(GLOBAL PROPERTY USE_FOLDERS ON)
 
