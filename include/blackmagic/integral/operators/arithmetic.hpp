@@ -18,14 +18,6 @@ using trait::enable_trait;
 namespace details {
 
 template <template <auto...> class T>
-inline constexpr const auto enabled_incr_v =
-  arithmetic_trait<enable_trait<_t<tag_of<T>>>::arithmetic, _t<tag_of<T>>>::increment;
-
-template <template <auto...> class T>
-inline constexpr const auto enabled_decr_v =
-  arithmetic_trait<enable_trait<_t<tag_of<T>>>::arithmetic, _t<tag_of<T>>>::decrement;
-
-template <template <auto...> class T>
 inline constexpr const auto enabled_unary_plus_v =
   arithmetic_trait<enable_trait<_t<tag_of<T>>>::arithmetic, _t<tag_of<T>>>::positive;
 
@@ -89,23 +81,6 @@ inline constexpr const auto enabled_rshift_v =
 
 } // namespace details
 
-
-// ==
-
-
-// ++
-template <template <auto...> class T, auto... Args, typename = std::enable_if_t<details::enabled_incr_v<T>>>
-constexpr decltype(auto) operator++(T<Args...>&& t)
-{
-  return increment<T>(std::forward<T>(t));
-}
-
-// --
-template <template <auto...> class T, auto... Args, typename = std::enable_if_t<details::enabled_decr_v<T>>>
-constexpr decltype(auto) operator--(T<Args...>&& t)
-{
-  return decrement<T>(std::forward<T>(t));
-}
 
 // unary +
 template <template <auto...> class T, auto... Args, typename = std::enable_if_t<details::enabled_unary_plus_v<T>>>

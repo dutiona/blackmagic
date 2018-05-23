@@ -29,8 +29,6 @@ struct comparison_trait {
 
 template <bool Status, typename T, typename U = T>
 struct arithmetic_trait {
-  static constexpr auto increment  = Status; // ++
-  static constexpr auto decrement  = Status; // --
   static constexpr auto positive   = Status; // unary +
   static constexpr auto negative   = Status; // unary -
   static constexpr auto plus       = Status; // binary +
