@@ -3,7 +3,6 @@
 #include "types.hpp"
 
 #include <cstddef>
-#include <string_view>
 
 namespace blackmagic::integral::literals {
 
@@ -86,13 +85,23 @@ constexpr unsigned long long parse_unsigned_number(const char (&arr)[N])
 template <std::size_t N>
 constexpr bool parse_bool(const char (&arr)[N])
 {
-  return static_cast<bool>(parse_signed_number(arr));
+  static_assert(N == 4 || N == 5, "Allowed values are 'true' and 'false'!");
+
+  if (N == 4 && arr[0] == 't' && arr[1] == 'r' && arr[2] == 'u' && arr[3] == 'e') {
+    return true;
+  }
+  else if (N == 5 && arr[0] == 'f' && arr[1] == 'a' && arr[2] == 'l' && arr[3] == 's' && arr[4] == 'e') {
+    return false;
+  }
+  else {
+    throw "Allowed values are 'true' and 'false'!";
+  }
 }
 
 template <std::size_t N>
 constexpr char parse_char(const char (&arr)[N])
 {
-  static_assert(N == 1, "Only a single char is tolerated!");
+  static_assert(N == 1, "Only a single char is allowed!");
 
   return arr[0];
 }
@@ -102,85 +111,85 @@ constexpr char parse_char(const char (&arr)[N])
 template <char... C>
 constexpr decltype(auto) operator""_c()
 {
-  return long_long_v<details::parse_signed_number({C...})>;
+  return long_long_t<details::parse_signed_number({C...})>{};
 }
 
-template <char... C>
+template <typename CharT, CharT... C>
 constexpr decltype(auto) operator""_bc()
 {
-  return bool_v<details::parse_bool({C...})>;
+  return bool_t<details::parse_bool({C...})>{};
 }
 
-template <char... C>
+template <typename CharT, CharT... C>
 constexpr decltype(auto) operator""_cc()
 {
-  return char_v<details::parse_char({C...})>;
+  return char_t<details::parse_char({C...})>{};
 }
 
 template <char... C>
 constexpr decltype(auto) operator""_sc()
 {
-  return short_v<static_cast<short>(details::parse_signed_number({C...}))>;
+  return short_t<static_cast<short>(details::parse_signed_number({C...}))>{};
 }
 
 template <char... C>
 constexpr decltype(auto) operator""_ic()
 {
-  return int_v<static_cast<int>(details::parse_signed_number({C...}))>;
+  return int_t<static_cast<int>(details::parse_signed_number({C...}))>{};
 }
 
 template <char... C>
 constexpr decltype(auto) operator""_lc()
 {
-  return long_v<static_cast<long>(details::parse_signed_number({C...}))>;
+  return long_t<static_cast<long>(details::parse_signed_number({C...}))>{};
 }
 
 template <char... C>
 constexpr decltype(auto) operator""_llc()
 {
-  return long_long_v<details::parse_signed_number({C...})>;
+  return long_long_t<details::parse_signed_number({C...})>{};
 }
 
-template <char... C>
+template <typename CharT, CharT... C>
 constexpr decltype(auto) operator""_ucc()
 {
-  return unsigned_char_v<static_cast<unsigned char>(details::parse_unsigned_number({C...}))>;
+  return unsigned_char_t<static_cast<unsigned char>(details::parse_char({C...}))>{};
 }
 
 template <char... C>
 constexpr decltype(auto) operator""_usc()
 {
-  return unsigned_short_v<static_cast<unsigned short>(details::parse_unsigned_number({C...}))>;
+  return unsigned_short_t<static_cast<unsigned short>(details::parse_unsigned_number({C...}))>{};
 }
 
 template <char... C>
 constexpr decltype(auto) operator""_uc()
 {
-  return unsigned_long_long_v<details::parse_unsigned_number({C...})>;
+  return unsigned_long_long_t<details::parse_unsigned_number({C...})>{};
 }
 
 template <char... C>
 constexpr decltype(auto) operator""_uic()
 {
-  return unsigned_v<static_cast<unsigned>(details::parse_unsigned_number({C...}))>;
+  return unsigned_int_t<static_cast<unsigned int>(details::parse_unsigned_number({C...}))>{};
 }
 
 template <char... C>
 constexpr decltype(auto) operator""_ulc()
 {
-  return unsigned_long_v<static_cast<unsigned long>(details::parse_unsigned_number({C...}))>;
+  return unsigned_long_t<static_cast<unsigned long>(details::parse_unsigned_number({C...}))>{};
 }
 
 template <char... C>
 constexpr decltype(auto) operator""_ullc()
 {
-  return unsigned_long_long_v<static_cast<unsigned long long>(details::parse_unsigned_number({C...}))>;
+  return unsigned_long_long_t<static_cast<unsigned long long>(details::parse_unsigned_number({C...}))>{};
 }
 
 template <char... C>
 constexpr decltype(auto) operator""_stc()
 {
-  return size_t_v<static_cast<size_t>(details::parse_unsigned_number({C...}))>;
+  return size_t_t<static_cast<size_t>(details::parse_unsigned_number({C...}))>{};
 }
 
 } // namespace blackmagic::integral::literals

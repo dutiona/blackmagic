@@ -51,6 +51,11 @@ struct tag_of<integral::unsigned_t> {
 };
 
 template <>
+struct tag_of<integral::unsigned_int_t> {
+  using type = struct UnsignedIntTag;
+};
+
+template <>
 struct tag_of<integral::unsigned_long_t> {
   using type = struct UnsignedLong;
 };
