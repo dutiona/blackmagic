@@ -10,8 +10,7 @@ namespace common = blackmagic::common;
 using common::_t;
 using common::_v;
 
-// member access
-
+inline namespace member_access {
 // is_indirection : *a
 template <typename T>
 using is_indirection = details::is_indirection_impl<T>;
@@ -87,375 +86,9 @@ using is_nothrow_pointer_to_member_of_pointer_t = _t<is_nothrow_pointer_to_membe
 template <typename T, typename I>
 constexpr bool is_nothrow_pointer_to_member_of_pointer_v = _v<is_nothrow_pointer_to_member_of_pointer<T, I>>;
 
+} // namespace member_access
 
-// assignement
-
-// is_assignable : a = b
-template <typename T, typename U = T>
-using is_assignable = details::is_assignable_impl<T, U>;
-template <typename T, typename U = T>
-using is_assignable_t = _t<is_assignable<T, U>>;
-template <typename T, typename U = T>
-constexpr bool is_assignable_v = _v<is_assignable<T, U>>;
-// is_nothrow_assignable
-template <typename T, typename U = T>
-using is_nothrow_assignable = details::is_nothrow_assignable_impl<T, U>;
-template <typename T, typename U = T>
-using is_nothrow_assignable_t = _t<is_nothrow_assignable<T, U>>;
-template <typename T, typename U = T>
-constexpr bool is_nothrow_assignable_v = _v<is_nothrow_assignable<T, U>>;
-
-// is_plus_assignable : a += b
-template <typename T, typename U = T>
-using is_plus_assignable = details::is_plus_assignable_impl<T, U>;
-template <typename T, typename U = T>
-using is_plus_assignable_t = _t<is_plus_assignable<T, U>>;
-template <typename T, typename U = T>
-constexpr bool is_plus_assignable_v = _v<is_plus_assignable<T, U>>;
-// is_nothrow_plus_assignable
-template <typename T, typename U = T>
-using is_nothrow_plus_assignable = details::is_nothrow_plus_assignable_impl<T, U>;
-template <typename T, typename U = T>
-using is_nothrow_plus_assignable_t = _t<is_nothrow_plus_assignable<T, U>>;
-template <typename T, typename U = T>
-constexpr bool is_nothrow_plus_assignable_v = _v<is_nothrow_plus_assignable<T, U>>;
-
-// is_less_assignable : a -= b
-template <typename T, typename U = T>
-using is_less_assignable = details::is_less_assignable_impl<T, U>;
-template <typename T, typename U = T>
-using is_less_assignable_t = _t<is_less_assignable<T, U>>;
-template <typename T, typename U = T>
-constexpr bool is_less_assignable_v = _v<is_less_assignable<T, U>>;
-// is_nothrow_less_assignable
-template <typename T, typename U = T>
-using is_nothrow_less_assignable = details::is_nothrow_less_assignable_impl<T, U>;
-template <typename T, typename U = T>
-using is_nothrow_less_assignable_t = _t<is_nothrow_less_assignable<T, U>>;
-template <typename T, typename U = T>
-constexpr bool is_nothrow_less_assignable_v = _v<is_nothrow_less_assignable<T, U>>;
-
-// is_mult_assignable : a *= b
-template <typename T, typename U = T>
-using is_mult_assignable = details::is_mult_assignable_impl<T, U>;
-template <typename T, typename U = T>
-using is_mult_assignable_t = _t<is_mult_assignable<T, U>>;
-template <typename T, typename U = T>
-constexpr bool is_mult_assignable_v = _v<is_mult_assignable<T, U>>;
-// is_nothrow_mult_assignable
-template <typename T, typename U = T>
-using is_nothrow_mult_assignable = details::is_nothrow_mult_assignable_impl<T, U>;
-template <typename T, typename U = T>
-using is_nothrow_mult_assignable_t = _t<is_nothrow_mult_assignable<T, U>>;
-template <typename T, typename U = T>
-constexpr bool is_nothrow_mult_assignable_v = _v<is_nothrow_mult_assignable<T, U>>;
-
-// is_div_assignable : a /= b
-template <typename T, typename U = T>
-using is_div_assignable = details::is_div_assignable_impl<T, U>;
-template <typename T, typename U = T>
-using is_div_assignable_t = _t<is_div_assignable<T, U>>;
-template <typename T, typename U = T>
-constexpr bool is_div_assignable_v = _v<is_div_assignable<T, U>>;
-// is_nothrow_div_assignable
-template <typename T, typename U = T>
-using is_nothrow_div_assignable = details::is_nothrow_div_assignable_impl<T, U>;
-template <typename T, typename U = T>
-using is_nothrow_div_assignable_t = _t<is_nothrow_div_assignable<T, U>>;
-template <typename T, typename U = T>
-constexpr bool is_nothrow_div_assignable_v = _v<is_nothrow_div_assignable<T, U>>;
-
-// is_mod_assignable : a %= b
-template <typename T, typename U = T>
-using is_mod_assignable = details::is_mod_assignable_impl<T, U>;
-template <typename T, typename U = T>
-using is_mod_assignable_t = _t<is_mod_assignable<T, U>>;
-template <typename T, typename U = T>
-constexpr bool is_mod_assignable_v = _v<is_mod_assignable<T, U>>;
-// is_nothrow_mod_assignable
-template <typename T, typename U = T>
-using is_nothrow_mod_assignable = details::is_nothrow_mod_assignable_impl<T, U>;
-template <typename T, typename U = T>
-using is_nothrow_mod_assignable_t = _t<is_nothrow_mod_assignable<T, U>>;
-template <typename T, typename U = T>
-constexpr bool is_nothrow_mod_assignable_v = _v<is_nothrow_mod_assignable<T, U>>;
-
-// is_and_assignable : a &= b
-template <typename T, typename U = T>
-using is_and_assignable = details::is_and_assignable_impl<T, U>;
-template <typename T, typename U = T>
-using is_and_assignable_t = _t<is_and_assignable<T, U>>;
-template <typename T, typename U = T>
-constexpr bool is_and_assignable_v = _v<is_and_assignable<T, U>>;
-// is_nothrow_and_assignable
-template <typename T, typename U = T>
-using is_nothrow_and_assignable = details::is_nothrow_and_assignable_impl<T, U>;
-template <typename T, typename U = T>
-using is_nothrow_and_assignable_t = _t<is_nothrow_and_assignable<T, U>>;
-template <typename T, typename U = T>
-constexpr bool is_nothrow_and_assignable_v = _v<is_nothrow_and_assignable<T, U>>;
-
-// is_or_assignable : a |= b
-template <typename T, typename U = T>
-using is_or_assignable = details::is_or_assignable_impl<T, U>;
-template <typename T, typename U = T>
-using is_or_assignable_t = _t<is_or_assignable<T, U>>;
-template <typename T, typename U = T>
-constexpr bool is_or_assignable_v = _v<is_or_assignable<T, U>>;
-// is_nothrow_or_assignable
-template <typename T, typename U = T>
-using is_nothrow_or_assignable = details::is_nothrow_or_assignable_impl<T, U>;
-template <typename T, typename U = T>
-using is_nothrow_or_assignable_t = _t<is_nothrow_or_assignable<T, U>>;
-template <typename T, typename U = T>
-constexpr bool is_nothrow_or_assignable_v = _v<is_nothrow_or_assignable<T, U>>;
-
-// is_xor_assignable : a ^= b
-template <typename T, typename U = T>
-using is_xor_assignable = details::is_xor_assignable_impl<T, U>;
-template <typename T, typename U = T>
-using is_xor_assignable_t = _t<is_xor_assignable<T, U>>;
-template <typename T, typename U = T>
-constexpr bool is_xor_assignable_v = _v<is_xor_assignable<T, U>>;
-// is_nothrow_xor_assignable
-template <typename T, typename U = T>
-using is_nothrow_xor_assignable = details::is_nothrow_xor_assignable_impl<T, U>;
-template <typename T, typename U = T>
-using is_nothrow_xor_assignable_t = _t<is_nothrow_xor_assignable<T, U>>;
-template <typename T, typename U = T>
-constexpr bool is_nothrow_xor_assignable_v = _v<is_nothrow_xor_assignable<T, U>>;
-
-// is_lshift_assignable : a <<= b
-template <typename T, typename U = T>
-using is_lshift_assignable = details::is_lshift_assignable_impl<T, U>;
-template <typename T, typename U = T>
-using is_lshift_assignable_t = _t<is_lshift_assignable<T, U>>;
-template <typename T, typename U = T>
-constexpr bool is_lshift_assignable_v = _v<is_lshift_assignable<T, U>>;
-// is_nothrow_lshift_assignable
-template <typename T, typename U = T>
-using is_nothrow_lshift_assignable = details::is_nothrow_lshift_assignable_impl<T, U>;
-template <typename T, typename U = T>
-using is_nothrow_lshift_assignable_t = _t<is_nothrow_lshift_assignable<T, U>>;
-template <typename T, typename U = T>
-constexpr bool is_nothrow_lshift_assignable_v = _v<is_nothrow_lshift_assignable<T, U>>;
-
-// is_rshift_assignable : a >>= b
-template <typename T, typename U = T>
-using is_rshift_assignable = details::is_rshift_assignable_impl<T, U>;
-template <typename T, typename U = T>
-using is_rshift_assignable_t = _t<is_rshift_assignable<T, U>>;
-template <typename T, typename U = T>
-constexpr bool is_rshift_assignable_v = _v<is_rshift_assignable<T, U>>;
-// is_nothrow_rshift_assignable
-template <typename T, typename U = T>
-using is_nothrow_rshift_assignable = details::is_nothrow_rshift_assignable_impl<T, U>;
-template <typename T, typename U = T>
-using is_nothrow_rshift_assignable_t = _t<is_nothrow_rshift_assignable<T, U>>;
-template <typename T, typename U = T>
-constexpr bool is_nothrow_rshift_assignable_v = _v<is_nothrow_rshift_assignable<T, U>>;
-
-
-// arithmetic
-
-// is_positive : +a
-template <typename T>
-using is_positive = details::is_positive_impl<T>;
-template <typename T>
-using is_positive_t = _t<is_positive<T>>;
-template <typename T>
-constexpr bool is_positive_v = _v<is_positive<T>>;
-// is_nothrow_positive
-template <typename T>
-using is_nothrow_positive = details::is_nothrow_positive_impl<T>;
-template <typename T>
-using is_nothrow_positive_t = _t<is_nothrow_positive<T>>;
-template <typename T>
-constexpr bool is_nothrow_positive_v = _v<is_nothrow_positive<T>>;
-
-// is_negative : -a
-template <typename T>
-using is_negative = details::is_negative_impl<T>;
-template <typename T>
-using is_negative_t = _t<is_negative<T>>;
-template <typename T>
-constexpr bool is_negative_v = _v<is_negative<T>>;
-// is_nothrow_negative
-template <typename T>
-using is_nothrow_negative = details::is_nothrow_negative_impl<T>;
-template <typename T>
-using is_nothrow_negative_t = _t<is_nothrow_negative<T>>;
-template <typename T>
-constexpr bool is_nothrow_negative_v = _v<is_nothrow_negative<T>>;
-
-// is_not : ~a
-template <typename T>
-using is_not = details::is_not_impl<T>;
-template <typename T>
-using is_not_t = _t<is_not<T>>;
-template <typename T>
-constexpr bool is_not_v = _v<is_not<T>>;
-// is_nothrow_not
-template <typename T>
-using is_nothrow_not = details::is_nothrow_not_impl<T>;
-template <typename T>
-using is_nothrow_not_t = _t<is_nothrow_not<T>>;
-template <typename T>
-constexpr bool is_nothrow_not_v = _v<is_nothrow_not<T>>;
-
-// is_plus : a + b
-template <typename T, typename U = T>
-using is_plus = details::is_plus_impl<T, U>;
-template <typename T, typename U = T>
-using is_plus_t = _t<is_plus<T, U>>;
-template <typename T, typename U = T>
-constexpr bool is_plus_v = _v<is_plus<T, U>>;
-// is_nothrow_plus
-template <typename T, typename U = T>
-using is_nothrow_plus = details::is_nothrow_plus_impl<T, U>;
-template <typename T, typename U = T>
-using is_nothrow_plus_t = _t<is_nothrow_plus<T, U>>;
-template <typename T, typename U = T>
-constexpr bool is_nothrow_plus_v = _v<is_nothrow_plus<T, U>>;
-
-// is_less : a - b
-template <typename T, typename U = T>
-using is_less = details::is_less_impl<T, U>;
-template <typename T, typename U = T>
-using is_less_t = _t<is_less<T, U>>;
-template <typename T, typename U = T>
-constexpr bool is_less_v = _v<is_less<T, U>>;
-// is_nothrow_less
-template <typename T, typename U = T>
-using is_nothrow_less = details::is_nothrow_less_impl<T, U>;
-template <typename T, typename U = T>
-using is_nothrow_less_t = _t<is_nothrow_less<T, U>>;
-template <typename T, typename U = T>
-constexpr bool is_nothrow_less_v = _v<is_nothrow_less<T, U>>;
-
-// is_mult : a * b
-template <typename T, typename U = T>
-using is_mult = details::is_mult_impl<T, U>;
-template <typename T, typename U = T>
-using is_mult_t = _t<is_mult<T, U>>;
-template <typename T, typename U = T>
-constexpr bool is_mult_v = _v<is_mult<T, U>>;
-// is_nothrow_mult
-template <typename T, typename U = T>
-using is_nothrow_mult = details::is_nothrow_mult_impl<T, U>;
-template <typename T, typename U = T>
-using is_nothrow_mult_t = _t<is_nothrow_mult<T, U>>;
-template <typename T, typename U = T>
-constexpr bool is_nothrow_mult_v = _v<is_nothrow_mult<T, U>>;
-
-// is_div : a / b
-template <typename T, typename U = T>
-using is_div = details::is_div_impl<T, U>;
-template <typename T, typename U = T>
-using is_div_t = _t<is_div<T, U>>;
-template <typename T, typename U = T>
-constexpr bool is_div_v = _v<is_div<T, U>>;
-// is_nothrow_div
-template <typename T, typename U = T>
-using is_nothrow_div = details::is_nothrow_div_impl<T, U>;
-template <typename T, typename U = T>
-using is_nothrow_div_t = _t<is_nothrow_div<T, U>>;
-template <typename T, typename U = T>
-constexpr bool is_nothrow_div_v = _v<is_nothrow_div<T, U>>;
-
-// is_mod : a % b
-template <typename T, typename U = T>
-using is_mod = details::is_mod_impl<T, U>;
-template <typename T, typename U = T>
-using is_mod_t = _t<is_mod<T, U>>;
-template <typename T, typename U = T>
-constexpr bool is_mod_v = _v<is_mod<T, U>>;
-// is_nothrow_mod
-template <typename T, typename U = T>
-using is_nothrow_mod = details::is_nothrow_mod_impl<T, U>;
-template <typename T, typename U = T>
-using is_nothrow_mod_t = _t<is_nothrow_mod<T, U>>;
-template <typename T, typename U = T>
-constexpr bool is_nothrow_mod_v = _v<is_nothrow_mod<T, U>>;
-
-// is_and : a & b
-template <typename T, typename U = T>
-using is_and = details::is_and_impl<T, U>;
-template <typename T, typename U = T>
-using is_and_t = _t<is_and<T, U>>;
-template <typename T, typename U = T>
-constexpr bool is_and_v = _v<is_and<T, U>>;
-// is_nothrow_and
-template <typename T, typename U = T>
-using is_nothrow_and = details::is_nothrow_and_impl<T, U>;
-template <typename T, typename U = T>
-using is_nothrow_and_t = _t<is_nothrow_and<T, U>>;
-template <typename T, typename U = T>
-constexpr bool is_nothrow_and_v = _v<is_nothrow_and<T, U>>;
-
-// is_or : a | b
-template <typename T, typename U = T>
-using is_or = details::is_or_impl<T, U>;
-template <typename T, typename U = T>
-using is_or_t = _t<is_or<T, U>>;
-template <typename T, typename U = T>
-constexpr bool is_or_v = _v<is_or<T, U>>;
-// is_nothrow_or
-template <typename T, typename U = T>
-using is_nothrow_or = details::is_nothrow_or_impl<T, U>;
-template <typename T, typename U = T>
-using is_nothrow_or_t = _t<is_nothrow_or<T, U>>;
-template <typename T, typename U = T>
-constexpr bool is_nothrow_or_v = _v<is_nothrow_or<T, U>>;
-
-// is_xor : a ^ b
-template <typename T, typename U = T>
-using is_xor = details::is_xor_impl<T, U>;
-template <typename T, typename U = T>
-using is_xor_t = _t<is_xor<T, U>>;
-template <typename T, typename U = T>
-constexpr bool is_xor_v = _v<is_xor<T, U>>;
-// is_nothrow_xor
-template <typename T, typename U = T>
-using is_nothrow_xor = details::is_nothrow_xor_impl<T, U>;
-template <typename T, typename U = T>
-using is_nothrow_xor_t = _t<is_nothrow_xor<T, U>>;
-template <typename T, typename U = T>
-constexpr bool is_nothrow_xor_v = _v<is_nothrow_xor<T, U>>;
-
-// is_lshift : a << b
-template <typename T, typename U = T>
-using is_lshift = details::is_lshift_impl<T, U>;
-template <typename T, typename U = T>
-using is_lshift_t = _t<is_lshift<T, U>>;
-template <typename T, typename U = T>
-constexpr bool is_lshift_v = _v<is_lshift<T, U>>;
-// is_nothrow_lshift
-template <typename T, typename U = T>
-using is_nothrow_lshift = details::is_nothrow_lshift_impl<T, U>;
-template <typename T, typename U = T>
-using is_nothrow_lshift_t = _t<is_nothrow_lshift<T, U>>;
-template <typename T, typename U = T>
-constexpr bool is_nothrow_lshift_v = _v<is_nothrow_lshift<T, U>>;
-
-// is_rshift : a >> b
-template <typename T, typename U = T>
-using is_rshift = details::is_rshift_impl<T, U>;
-template <typename T, typename U = T>
-using is_rshift_t = _t<is_rshift<T, U>>;
-template <typename T, typename U = T>
-constexpr bool is_rshift_v = _v<is_rshift<T, U>>;
-// is_nothrow_rshift
-template <typename T, typename U = T>
-using is_nothrow_rshift = details::is_nothrow_rshift_impl<T, U>;
-template <typename T, typename U = T>
-using is_nothrow_rshift_t = _t<is_nothrow_rshift<T, U>>;
-template <typename T, typename U = T>
-constexpr bool is_nothrow_rshift_v = _v<is_nothrow_rshift<T, U>>;
-
-
-// increment / decrement
-
+inline namespace arithmetic {
 // is_pre_incrementable : ++a
 template <typename T>
 using is_pre_incrementable = details::is_pre_incrementable_impl<T>;
@@ -516,9 +149,374 @@ using is_nothrow_post_decrementable_t = _t<is_nothrow_post_decrementable<T>>;
 template <typename T>
 constexpr bool is_nothrow_post_decrementable_v = _v<is_nothrow_post_decrementable<T>>;
 
+// is_positive : +a
+template <typename T>
+using is_positive = details::is_positive_impl<T>;
+template <typename T>
+using is_positive_t = _t<is_positive<T>>;
+template <typename T>
+constexpr bool is_positive_v = _v<is_positive<T>>;
+// is_nothrow_positive
+template <typename T>
+using is_nothrow_positive = details::is_nothrow_positive_impl<T>;
+template <typename T>
+using is_nothrow_positive_t = _t<is_nothrow_positive<T>>;
+template <typename T>
+constexpr bool is_nothrow_positive_v = _v<is_nothrow_positive<T>>;
 
-// comparison
+// is_negative : -a
+template <typename T>
+using is_negative = details::is_negative_impl<T>;
+template <typename T>
+using is_negative_t = _t<is_negative<T>>;
+template <typename T>
+constexpr bool is_negative_v = _v<is_negative<T>>;
+// is_nothrow_negative
+template <typename T>
+using is_nothrow_negative = details::is_nothrow_negative_impl<T>;
+template <typename T>
+using is_nothrow_negative_t = _t<is_nothrow_negative<T>>;
+template <typename T>
+constexpr bool is_nothrow_negative_v = _v<is_nothrow_negative<T>>;
 
+// is_bit_not : ~a
+template <typename T>
+using is_bit_not = details::is_bit_not_impl<T>;
+template <typename T>
+using is_bit_not_t = _t<is_bit_not<T>>;
+template <typename T>
+constexpr bool is_bit_not_v = _v<is_bit_not<T>>;
+// is_nothrow_bit_not
+template <typename T>
+using is_nothrow_bit_not = details::is_nothrow_bit_not_impl<T>;
+template <typename T>
+using is_nothrow_bit_not_t = _t<is_nothrow_bit_not<T>>;
+template <typename T>
+constexpr bool is_nothrow_bit_not_v = _v<is_nothrow_bit_not<T>>;
+
+// is_plus : a + b
+template <typename T, typename U = T>
+using is_plus = details::is_plus_impl<T, U>;
+template <typename T, typename U = T>
+using is_plus_t = _t<is_plus<T, U>>;
+template <typename T, typename U = T>
+constexpr bool is_plus_v = _v<is_plus<T, U>>;
+// is_nothrow_plus
+template <typename T, typename U = T>
+using is_nothrow_plus = details::is_nothrow_plus_impl<T, U>;
+template <typename T, typename U = T>
+using is_nothrow_plus_t = _t<is_nothrow_plus<T, U>>;
+template <typename T, typename U = T>
+constexpr bool is_nothrow_plus_v = _v<is_nothrow_plus<T, U>>;
+
+// is_minus : a - b
+template <typename T, typename U = T>
+using is_minus = details::is_minus_impl<T, U>;
+template <typename T, typename U = T>
+using is_minus_t = _t<is_minus<T, U>>;
+template <typename T, typename U = T>
+constexpr bool is_minus_v = _v<is_minus<T, U>>;
+// is_nothrow_minus
+template <typename T, typename U = T>
+using is_nothrow_minus = details::is_nothrow_minus_impl<T, U>;
+template <typename T, typename U = T>
+using is_nothrow_minus_t = _t<is_nothrow_minus<T, U>>;
+template <typename T, typename U = T>
+constexpr bool is_nothrow_minus_v = _v<is_nothrow_minus<T, U>>;
+
+// is_mult : a * b
+template <typename T, typename U = T>
+using is_mult = details::is_mult_impl<T, U>;
+template <typename T, typename U = T>
+using is_mult_t = _t<is_mult<T, U>>;
+template <typename T, typename U = T>
+constexpr bool is_mult_v = _v<is_mult<T, U>>;
+// is_nothrow_mult
+template <typename T, typename U = T>
+using is_nothrow_mult = details::is_nothrow_mult_impl<T, U>;
+template <typename T, typename U = T>
+using is_nothrow_mult_t = _t<is_nothrow_mult<T, U>>;
+template <typename T, typename U = T>
+constexpr bool is_nothrow_mult_v = _v<is_nothrow_mult<T, U>>;
+
+// is_div : a / b
+template <typename T, typename U = T>
+using is_div = details::is_div_impl<T, U>;
+template <typename T, typename U = T>
+using is_div_t = _t<is_div<T, U>>;
+template <typename T, typename U = T>
+constexpr bool is_div_v = _v<is_div<T, U>>;
+// is_nothrow_div
+template <typename T, typename U = T>
+using is_nothrow_div = details::is_nothrow_div_impl<T, U>;
+template <typename T, typename U = T>
+using is_nothrow_div_t = _t<is_nothrow_div<T, U>>;
+template <typename T, typename U = T>
+constexpr bool is_nothrow_div_v = _v<is_nothrow_div<T, U>>;
+
+// is_mod : a % b
+template <typename T, typename U = T>
+using is_mod = details::is_mod_impl<T, U>;
+template <typename T, typename U = T>
+using is_mod_t = _t<is_mod<T, U>>;
+template <typename T, typename U = T>
+constexpr bool is_mod_v = _v<is_mod<T, U>>;
+// is_nothrow_mod
+template <typename T, typename U = T>
+using is_nothrow_mod = details::is_nothrow_mod_impl<T, U>;
+template <typename T, typename U = T>
+using is_nothrow_mod_t = _t<is_nothrow_mod<T, U>>;
+template <typename T, typename U = T>
+constexpr bool is_nothrow_mod_v = _v<is_nothrow_mod<T, U>>;
+
+// is_bit_and : a & b
+template <typename T, typename U = T>
+using is_bit_and = details::is_bit_and_impl<T, U>;
+template <typename T, typename U = T>
+using is_bit_and_t = _t<is_bit_and<T, U>>;
+template <typename T, typename U = T>
+constexpr bool is_bit_and_v = _v<is_bit_and<T, U>>;
+// is_nothrow_bit_and
+template <typename T, typename U = T>
+using is_nothrow_bit_and = details::is_nothrow_bit_and_impl<T, U>;
+template <typename T, typename U = T>
+using is_nothrow_bit_and_t = _t<is_nothrow_bit_and<T, U>>;
+template <typename T, typename U = T>
+constexpr bool is_nothrow_bit_and_v = _v<is_nothrow_bit_and<T, U>>;
+
+// is_bit_or : a | b
+template <typename T, typename U = T>
+using is_bit_or = details::is_bit_or_impl<T, U>;
+template <typename T, typename U = T>
+using is_bit_or_t = _t<is_bit_or<T, U>>;
+template <typename T, typename U = T>
+constexpr bool is_bit_or_v = _v<is_bit_or<T, U>>;
+// is_nothrow_bit_or
+template <typename T, typename U = T>
+using is_nothrow_bit_or = details::is_nothrow_bit_or_impl<T, U>;
+template <typename T, typename U = T>
+using is_nothrow_bit_or_t = _t<is_nothrow_bit_or<T, U>>;
+template <typename T, typename U = T>
+constexpr bool is_nothrow_bit_or_v = _v<is_nothrow_bit_or<T, U>>;
+
+// is_bit_xor : a ^ b
+template <typename T, typename U = T>
+using is_bit_xor = details::is_bit_xor_impl<T, U>;
+template <typename T, typename U = T>
+using is_bit_xor_t = _t<is_bit_xor<T, U>>;
+template <typename T, typename U = T>
+constexpr bool is_bit_xor_v = _v<is_bit_xor<T, U>>;
+// is_nothrow_bit_xor
+template <typename T, typename U = T>
+using is_nothrow_bit_xor = details::is_nothrow_bit_xor_impl<T, U>;
+template <typename T, typename U = T>
+using is_nothrow_bit_xor_t = _t<is_nothrow_bit_xor<T, U>>;
+template <typename T, typename U = T>
+constexpr bool is_nothrow_bit_xor_v = _v<is_nothrow_bit_xor<T, U>>;
+
+// is_bit_lshift : a << b
+template <typename T, typename U = T>
+using is_bit_lshift = details::is_bit_lshift_impl<T, U>;
+template <typename T, typename U = T>
+using is_bit_lshift_t = _t<is_bit_lshift<T, U>>;
+template <typename T, typename U = T>
+constexpr bool is_bit_lshift_v = _v<is_bit_lshift<T, U>>;
+// is_nothrow_bit_lshift
+template <typename T, typename U = T>
+using is_nothrow_bit_lshift = details::is_nothrow_bit_lshift_impl<T, U>;
+template <typename T, typename U = T>
+using is_nothrow_bit_lshift_t = _t<is_nothrow_bit_lshift<T, U>>;
+template <typename T, typename U = T>
+constexpr bool is_nothrow_bit_lshift_v = _v<is_nothrow_bit_lshift<T, U>>;
+
+// is_bit_rshift : a >> b
+template <typename T, typename U = T>
+using is_bit_rshift = details::is_bit_rshift_impl<T, U>;
+template <typename T, typename U = T>
+using is_bit_rshift_t = _t<is_bit_rshift<T, U>>;
+template <typename T, typename U = T>
+constexpr bool is_bit_rshift_v = _v<is_bit_rshift<T, U>>;
+// is_nothrow_bit_rshift
+template <typename T, typename U = T>
+using is_nothrow_bit_rshift = details::is_nothrow_bit_rshift_impl<T, U>;
+template <typename T, typename U = T>
+using is_nothrow_bit_rshift_t = _t<is_nothrow_bit_rshift<T, U>>;
+template <typename T, typename U = T>
+constexpr bool is_nothrow_bit_rshift_v = _v<is_nothrow_bit_rshift<T, U>>;
+
+
+inline namespace assignement {
+// is_assignable : a = b
+template <typename T, typename U = T>
+using is_assignable = details::is_assignable_impl<T, U>;
+template <typename T, typename U = T>
+using is_assignable_t = _t<is_assignable<T, U>>;
+template <typename T, typename U = T>
+constexpr bool is_assignable_v = _v<is_assignable<T, U>>;
+// is_nothrow_assignable
+template <typename T, typename U = T>
+using is_nothrow_assignable = details::is_nothrow_assignable_impl<T, U>;
+template <typename T, typename U = T>
+using is_nothrow_assignable_t = _t<is_nothrow_assignable<T, U>>;
+template <typename T, typename U = T>
+constexpr bool is_nothrow_assignable_v = _v<is_nothrow_assignable<T, U>>;
+
+// is_plus_assignable : a += b
+template <typename T, typename U = T>
+using is_plus_assignable = details::is_plus_assignable_impl<T, U>;
+template <typename T, typename U = T>
+using is_plus_assignable_t = _t<is_plus_assignable<T, U>>;
+template <typename T, typename U = T>
+constexpr bool is_plus_assignable_v = _v<is_plus_assignable<T, U>>;
+// is_nothrow_plus_assignable
+template <typename T, typename U = T>
+using is_nothrow_plus_assignable = details::is_nothrow_plus_assignable_impl<T, U>;
+template <typename T, typename U = T>
+using is_nothrow_plus_assignable_t = _t<is_nothrow_plus_assignable<T, U>>;
+template <typename T, typename U = T>
+constexpr bool is_nothrow_plus_assignable_v = _v<is_nothrow_plus_assignable<T, U>>;
+
+// is_minus_assignable : a -= b
+template <typename T, typename U = T>
+using is_minus_assignable = details::is_minus_assignable_impl<T, U>;
+template <typename T, typename U = T>
+using is_minus_assignable_t = _t<is_minus_assignable<T, U>>;
+template <typename T, typename U = T>
+constexpr bool is_minus_assignable_v = _v<is_minus_assignable<T, U>>;
+// is_nothrow_minus_assignable
+template <typename T, typename U = T>
+using is_nothrow_minus_assignable = details::is_nothrow_minus_assignable_impl<T, U>;
+template <typename T, typename U = T>
+using is_nothrow_minus_assignabl_t = _t<is_nothrow_minus_assignable<T, U>>;
+template <typename T, typename U = T>
+constexpr bool is_nothrow_minus_assignable_v = _v<is_nothrow_minus_assignable<T, U>>;
+
+// is_mult_assignable : a *= b
+template <typename T, typename U = T>
+using is_mult_assignable = details::is_mult_assignable_impl<T, U>;
+template <typename T, typename U = T>
+using is_mult_assignable_t = _t<is_mult_assignable<T, U>>;
+template <typename T, typename U = T>
+constexpr bool is_mult_assignable_v = _v<is_mult_assignable<T, U>>;
+// is_nothrow_mult_assignable
+template <typename T, typename U = T>
+using is_nothrow_mult_assignable = details::is_nothrow_mult_assignable_impl<T, U>;
+template <typename T, typename U = T>
+using is_nothrow_mult_assignable_t = _t<is_nothrow_mult_assignable<T, U>>;
+template <typename T, typename U = T>
+constexpr bool is_nothrow_mult_assignable_v = _v<is_nothrow_mult_assignable<T, U>>;
+
+// is_div_assignable : a /= b
+template <typename T, typename U = T>
+using is_div_assignable = details::is_div_assignable_impl<T, U>;
+template <typename T, typename U = T>
+using is_div_assignable_t = _t<is_div_assignable<T, U>>;
+template <typename T, typename U = T>
+constexpr bool is_div_assignable_v = _v<is_div_assignable<T, U>>;
+// is_nothrow_div_assignable
+template <typename T, typename U = T>
+using is_nothrow_div_assignable = details::is_nothrow_div_assignable_impl<T, U>;
+template <typename T, typename U = T>
+using is_nothrow_div_assignable_t = _t<is_nothrow_div_assignable<T, U>>;
+template <typename T, typename U = T>
+constexpr bool is_nothrow_div_assignable_v = _v<is_nothrow_div_assignable<T, U>>;
+
+// is_mod_assignable : a %= b
+template <typename T, typename U = T>
+using is_mod_assignable = details::is_mod_assignable_impl<T, U>;
+template <typename T, typename U = T>
+using is_mod_assignable_t = _t<is_mod_assignable<T, U>>;
+template <typename T, typename U = T>
+constexpr bool is_mod_assignable_v = _v<is_mod_assignable<T, U>>;
+// is_nothrow_mod_assignable
+template <typename T, typename U = T>
+using is_nothrow_mod_assignable = details::is_nothrow_mod_assignable_impl<T, U>;
+template <typename T, typename U = T>
+using is_nothrow_mod_assignable_t = _t<is_nothrow_mod_assignable<T, U>>;
+template <typename T, typename U = T>
+constexpr bool is_nothrow_mod_assignable_v = _v<is_nothrow_mod_assignable<T, U>>;
+
+// is_bit_and_assignable : a &= b
+template <typename T, typename U = T>
+using is_bit_and_assignable = details::is_bit_and_assignable_impl<T, U>;
+template <typename T, typename U = T>
+using is_bit_and_assignable_t = _t<is_bit_and_assignable<T, U>>;
+template <typename T, typename U = T>
+constexpr bool is_bit_and_assignable_v = _v<is_bit_and_assignable<T, U>>;
+// is_nothrow_bit_and_assignable
+template <typename T, typename U = T>
+using is_nothrow_bit_and_assignable = details::is_nothrow_bit_and_assignable_impl<T, U>;
+template <typename T, typename U = T>
+using is_nothrow_bit_and_assignable_t = _t<is_nothrow_bit_and_assignable<T, U>>;
+template <typename T, typename U = T>
+constexpr bool is_nothrow_bit_and_assignable_v = _v<is_nothrow_bit_and_assignable<T, U>>;
+
+// is_bit_or_assignable : a |= b
+template <typename T, typename U = T>
+using is_bit_or_assignable = details::is_bit_or_assignable_impl<T, U>;
+template <typename T, typename U = T>
+using is_bit_or_assignable_t = _t<is_bit_or_assignable<T, U>>;
+template <typename T, typename U = T>
+constexpr bool is_bit_or_assignable_v = _v<is_bit_or_assignable<T, U>>;
+// is_nothrow_bit_or_assignable
+template <typename T, typename U = T>
+using is_nothrow_bit_or_assignable = details::is_nothrow_bit_or_assignable_impl<T, U>;
+template <typename T, typename U = T>
+using is_nothrow_bit_or_assignable_t = _t<is_nothrow_bit_or_assignable<T, U>>;
+template <typename T, typename U = T>
+constexpr bool is_nothrow_bit_or_assignable_v = _v<is_nothrow_bit_or_assignable<T, U>>;
+
+// is_bit_xor_assignable : a ^= b
+template <typename T, typename U = T>
+using is_bit_xor_assignable = details::is_bit_xor_assignable_impl<T, U>;
+template <typename T, typename U = T>
+using is_bit_xor_assignable_t = _t<is_bit_xor_assignable<T, U>>;
+template <typename T, typename U = T>
+constexpr bool is_bit_xor_assignable_v = _v<is_bit_xor_assignable<T, U>>;
+// is_nothrow_bit_xor_assignable
+template <typename T, typename U = T>
+using is_nothrow_bit_xor_assignable = details::is_nothrow_bit_xor_assignable_impl<T, U>;
+template <typename T, typename U = T>
+using is_nothrow_bit_xor_assignable_t = _t<is_nothrow_bit_xor_assignable<T, U>>;
+template <typename T, typename U = T>
+constexpr bool is_nothrow_bit_xor_assignable_v = _v<is_nothrow_bit_xor_assignable<T, U>>;
+
+// is_bit_lshift_assignable : a <<= b
+template <typename T, typename U = T>
+using is_bit_lshift_assignable = details::is_bit_lshift_assignable_impl<T, U>;
+template <typename T, typename U = T>
+using is_bit_lshift_assignable_t = _t<is_bit_lshift_assignable<T, U>>;
+template <typename T, typename U = T>
+constexpr bool is_bit_lshift_assignable_v = _v<is_bit_lshift_assignable<T, U>>;
+// is_nothrow_bit_lshift_assignable
+template <typename T, typename U = T>
+using is_nothrow_bit_lshift_assignable = details::is_nothrow_bit_lshift_assignable_impl<T, U>;
+template <typename T, typename U = T>
+using is_nothrow_bit_lshift_assignable_t = _t<is_nothrow_bit_lshift_assignable<T, U>>;
+template <typename T, typename U = T>
+constexpr bool is_nothrow_bit_lshift_assignable_v = _v<is_nothrow_bit_lshift_assignable<T, U>>;
+
+// is_bit_rshift_assignable : a >>= b
+template <typename T, typename U = T>
+using is_bit_rshift_assignable = details::is_bit_rshift_assignable_impl<T, U>;
+template <typename T, typename U = T>
+using is_bit_rshift_assignable_t = _t<is_bit_rshift_assignable<T, U>>;
+template <typename T, typename U = T>
+constexpr bool is_bit_rshift_assignable_v = _v<is_bit_rshift_assignable<T, U>>;
+// is_nothrow_bit_rshift_assignable
+template <typename T, typename U = T>
+using is_nothrow_bit_rshift_assignable = details::is_nothrow_bit_rshift_assignable_impl<T, U>;
+template <typename T, typename U = T>
+using is_nothrow_bit_rshift_assignable_t = _t<is_nothrow_bit_rshift_assignable<T, U>>;
+template <typename T, typename U = T>
+constexpr bool is_nothrow_bit_rshift_assignable_v = _v<is_nothrow_bit_rshift_assignable<T, U>>;
+
+} // namespace assignement
+
+} // namespace arithmetic
+
+
+inline namespace comparison {
 // is_equality : a == b
 template <typename T, typename U = T>
 using is_equality = details::is_equality_impl<T, U>;
@@ -609,9 +607,10 @@ using is_nothrow_greater_equal_than_t = _t<is_nothrow_greater_equal_than<T, U>>;
 template <typename T, typename U = T>
 constexpr bool is_nothrow_greater_equal_than_v = _v<is_nothrow_greater_equal_than<T, U>>;
 
+} // namespace comparison
 
-// logical
 
+inline namespace logical {
 // is_logical_not
 template <typename T>
 using is_logical_not = details::is_logical_not_impl<T>;
@@ -657,9 +656,10 @@ using is_nothrow_logical_or_t = _t<is_nothrow_logical_or<T, U>>;
 template <typename T, typename U = T>
 constexpr bool is_nothrow_logical_or_v = _v<is_nothrow_logical_or<T, U>>;
 
+} // namespace logical
 
-// other
 
+inline namespace other {
 // is_comma
 template <typename T, typename U = T>
 using is_comma = details::is_comma_impl<T, U>;
@@ -719,5 +719,7 @@ template <typename R, typename F, typename... Args>
 using is_nothrow_invocable_r_t = _t<is_nothrow_invocable_r<R, F, Args...>>;
 template <typename R, typename F, typename... Args>
 constexpr bool is_nothrow_invocable_r_v = _v<is_nothrow_invocable_r<R, F, Args...>>;
+
+} // namespace other
 
 }} // namespace blackmagic::traits::utility

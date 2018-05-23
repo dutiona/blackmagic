@@ -20,15 +20,16 @@ namespace details {
 template <template <auto...> class T, template <auto...> class U>
 inline constexpr const auto enabled_and_v =
   logical_trait<(enable_trait<_t<tag_of<T>>>::logical || enable_trait<_t<tag_of<U>>>::logical), _t<tag_of<T>>,
-                _t<tag_of<U>>>::And;
+                _t<tag_of<U>>>::logical_and;
 
 template <template <auto...> class T, template <auto...> class U>
 inline constexpr const auto enabled_or_v =
   logical_trait<(enable_trait<_t<tag_of<T>>>::logical || enable_trait<_t<tag_of<U>>>::logical), _t<tag_of<T>>,
-                _t<tag_of<U>>>::Or;
+                _t<tag_of<U>>>::logical_or;
 
 template <template <auto...> class T>
-inline constexpr const auto enabled_not_v = logical_trait<enable_trait<_t<tag_of<T>>>::logical, _t<tag_of<T>>>::Not;
+inline constexpr const auto enabled_not_v =
+  logical_trait<enable_trait<_t<tag_of<T>>>::logical, _t<tag_of<T>>>::logical_not;
 
 } // namespace details
 
@@ -38,7 +39,7 @@ template <template <auto...> class T, template <auto...> class U, auto... ArgsT,
           typename = std::enable_if_t<details::enabled_and_v<T, U>>>
 constexpr decltype(auto) operator&&(T<ArgsT...>&& t, U<ArgsU...>&& u)
 {
-  return And<T, U>(std::forward<T>(t), std::forward<U>(u));
+  return logical_and<T, U>(std::forward<T>(t), std::forward<U>(u));
 }
 
 // ||
@@ -46,14 +47,14 @@ template <template <auto...> class T, template <auto...> class U, auto... ArgsT,
           typename = std::enable_if_t<details::enabled_or_v<T, U>>>
 constexpr decltype(auto) operator||(T<ArgsT...>&& t, U<ArgsU...>&& u)
 {
-  return Or<T, U>(std::forward<T>(t), std::forward<U>(u));
+  return logical_or<T, U>(std::forward<T>(t), std::forward<U>(u));
 }
 
 // !
 template <template <auto...> class T, auto... Args, typename = std::enable_if_t<details::enabled_not_v<T>>>
 constexpr decltype(auto) operator!(T<Args...>&& t)
 {
-  return Not<T>(std::forward<T>(t));
+  return logical_not<T>(std::forward<T>(t));
 }
 
 }}} // namespace blackmagic::integral::operators::logical

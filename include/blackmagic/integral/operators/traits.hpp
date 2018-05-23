@@ -12,9 +12,9 @@ using common::_t;
 
 template <bool Status, typename T, typename U = T>
 struct logical_trait {
-  static constexpr auto And = Status; // &&
-  static constexpr auto Or  = Status; // ||
-  static constexpr auto Not = Status; // !
+  static constexpr auto logical_and = Status; // &&
+  static constexpr auto logical_or  = Status; // ||
+  static constexpr auto logical_not = Status; // !
 };
 
 template <bool Status, typename T, typename U = T>
@@ -29,21 +29,21 @@ struct comparison_trait {
 
 template <bool Status, typename T, typename U = T>
 struct arithmetic_trait {
-  static constexpr auto incr         = Status; // ++
-  static constexpr auto decr         = Status; // --
-  static constexpr auto unary_plus   = Status; // unary +
-  static constexpr auto unary_minus  = Status; // unary -
-  static constexpr auto binary_plus  = Status; // binary +
-  static constexpr auto binary_minus = Status; // binary -
-  static constexpr auto div          = Status; // /
-  static constexpr auto mult         = Status; // *
-  static constexpr auto mod          = Status; // %
-  static constexpr auto Not          = Status; // ~
-  static constexpr auto And          = Status; // &
-  static constexpr auto Or           = Status; // |
-  static constexpr auto Xor          = Status; // ^
-  static constexpr auto lshift       = Status; // <<
-  static constexpr auto rshift       = Status; // >>
+  static constexpr auto increment  = Status; // ++
+  static constexpr auto decrement  = Status; // --
+  static constexpr auto positive   = Status; // unary +
+  static constexpr auto negative   = Status; // unary -
+  static constexpr auto plus       = Status; // binary +
+  static constexpr auto minus      = Status; // binary -
+  static constexpr auto div        = Status; // /
+  static constexpr auto mult       = Status; // *
+  static constexpr auto mod        = Status; // %
+  static constexpr auto bit_not    = Status; // ~
+  static constexpr auto bit_and    = Status; // &
+  static constexpr auto bit_or     = Status; // |
+  static constexpr auto bit_xor    = Status; // ^
+  static constexpr auto bit_lshift = Status; // <<
+  static constexpr auto bit_rshift = Status; // >>
 };
 
 
@@ -56,20 +56,6 @@ struct enable_trait {
 
 template <>
 struct enable_trait<_t<tag_of<bool_t>>> {
-  static constexpr auto logical    = true;
-  static constexpr auto comparison = false;
-  static constexpr auto arithmetic = false;
-};
-
-template <>
-struct enable_trait<true_t> {
-  static constexpr auto logical    = true;
-  static constexpr auto comparison = false;
-  static constexpr auto arithmetic = false;
-};
-
-template <>
-struct enable_trait<false_t> {
   static constexpr auto logical    = true;
   static constexpr auto comparison = false;
   static constexpr auto arithmetic = false;

@@ -15,12 +15,12 @@ struct placeholder_t {
 
   constexpr decltype(auto) operator=(const placeholder_t&) const
   {
-    return partial(assignable);
+    return partial(assign);
   }
   template <typename T>
   constexpr decltype(auto) operator=(T&& v) const
   {
-    return reverse_partial(assignable, std::forward<T>(v));
+    return reverse_partial(assign, std::forward<T>(v));
   }
 
   constexpr decltype(auto) operator[](const placeholder_t&) const
@@ -78,33 +78,33 @@ inline namespace arithmetic {
 // binary +
 constexpr decltype(auto) operator+(const placeholder_t&, const placeholder_t&)
 {
-  return partial(binary_plus);
+  return partial(plus);
 }
 template <typename T>
 constexpr decltype(auto) operator+(T&& v, const placeholder_t&)
 {
-  return partial(binary_plus, std::forward<T>(v));
+  return partial(plus, std::forward<T>(v));
 }
 template <typename T>
 constexpr decltype(auto) operator+(const placeholder_t&, T&& v)
 {
-  return reverse_partial(binary_plus, std::forward<T>(v));
+  return reverse_partial(plus, std::forward<T>(v));
 }
 
 // binary -
 constexpr decltype(auto) operator-(const placeholder_t&, const placeholder_t&)
 {
-  return partial(binary_minus);
+  return partial(minus);
 }
 template <typename T>
 constexpr decltype(auto) operator-(T&& v, const placeholder_t&)
 {
-  return partial(binary_minus, std::forward<T>(v));
+  return partial(minus, std::forward<T>(v));
 }
 template <typename T>
 constexpr decltype(auto) operator-(const placeholder_t&, T&& v)
 {
-  return reverse_partial(binary_minus, std::forward<T>(v));
+  return reverse_partial(minus, std::forward<T>(v));
 }
 
 // *
@@ -158,94 +158,260 @@ constexpr decltype(auto) operator%(const placeholder_t&, T&& v)
 // unary +
 constexpr decltype(auto) operator+(const placeholder_t&)
 {
-  return partial(unary_plus);
+  return partial(positive);
 }
 
 // unary -
 constexpr decltype(auto) operator-(const placeholder_t&)
 {
-  return partial(unary_minus);
+  return partial(negative);
 }
+
+// ~
+constexpr decltype(auto) operator~(const placeholder_t&)
+{
+  return partial(bit_not);
+}
+// &
+constexpr decltype(auto) operator&(const placeholder_t&, const placeholder_t&)
+{
+  return partial(bit_and);
+}
+template <typename T>
+constexpr decltype(auto) operator&(T&& v, const placeholder_t&)
+{
+  return partial(bit_and, std::forward<T>(v));
+}
+template <typename T>
+constexpr decltype(auto) operator&(const placeholder_t&, T&& v)
+{
+  return reverse_partial(bit_and, std::forward<T>(v));
+}
+
+// |
+constexpr decltype(auto) operator|(const placeholder_t&, const placeholder_t&)
+{
+  return partial(bit_or);
+}
+template <typename T>
+constexpr decltype(auto) operator|(T&& v, const placeholder_t&)
+{
+  return partial(bit_or, std::forward<T>(v));
+}
+template <typename T>
+constexpr decltype(auto) operator|(const placeholder_t&, T&& v)
+{
+  return reverse_partial(bit_or, std::forward<T>(v));
+}
+
+// ^
+constexpr decltype(auto) operator^(const placeholder_t&, const placeholder_t&)
+{
+  return partial(bit_xor);
+}
+template <typename T>
+constexpr decltype(auto) operator^(T&& v, const placeholder_t&)
+{
+  return partial(bit_xor, std::forward<T>(v));
+}
+template <typename T>
+constexpr decltype(auto) operator^(const placeholder_t&, T&& v)
+{
+  return reverse_partial(bit_xor, std::forward<T>(v));
+}
+
+// <<
+constexpr decltype(auto) operator<<(const placeholder_t&, const placeholder_t&)
+{
+  return partial(bit_lshift);
+}
+template <typename T>
+constexpr decltype(auto) operator<<(T&& v, const placeholder_t&)
+{
+  return partial(bit_lshift, std::forward<T>(v));
+}
+template <typename T>
+constexpr decltype(auto) operator<<(const placeholder_t&, T&& v)
+{
+  return reverse_partial(bit_lshift, std::forward<T>(v));
+}
+
+// >>
+constexpr decltype(auto) operator>>(const placeholder_t&, const placeholder_t&)
+{
+  return partial(bit_rshift);
+}
+template <typename T>
+constexpr decltype(auto) operator>>(T&& v, const placeholder_t&)
+{
+  return partial(bit_rshift, std::forward<T>(v));
+}
+template <typename T>
+constexpr decltype(auto) operator>>(const placeholder_t&, T&& v)
+{
+  return reverse_partial(bit_rshift, std::forward<T>(v));
+}
+
 
 inline namespace assignement {
 // +=
 constexpr decltype(auto) operator+=(const placeholder_t&, const placeholder_t&)
 {
-  return partial(assignable_plus);
+  return partial(plus_assign);
 }
 template <typename T>
 constexpr decltype(auto) operator+=(T&& v, const placeholder_t&)
 {
-  return partial(assignable_plus, std::forward<T>(v));
+  return partial(plus_assign, std::forward<T>(v));
 }
 template <typename T>
 constexpr decltype(auto) operator+=(const placeholder_t&, T&& v)
 {
-  return reverse_partial(assignable_plus, std::forward<T>(v));
+  return reverse_partial(plus_assign, std::forward<T>(v));
 }
 
 // -=
 constexpr decltype(auto) operator-=(const placeholder_t&, const placeholder_t&)
 {
-  return partial(assignable_minus);
+  return partial(minus_assign);
 }
 template <typename T>
 constexpr decltype(auto) operator-=(T&& v, const placeholder_t&)
 {
-  return partial(assignable_minus, std::forward<T>(v));
+  return partial(minus_assign, std::forward<T>(v));
 }
 template <typename T>
 constexpr decltype(auto) operator-=(const placeholder_t&, T&& v)
 {
-  return reverse_partial(assignable_minus, std::forward<T>(v));
+  return reverse_partial(minus_assign, std::forward<T>(v));
 }
 
 // *=
 constexpr decltype(auto) operator*=(const placeholder_t&, const placeholder_t&)
 {
-  return partial(assignable_mult);
+  return partial(mult_assign);
 }
 template <typename T>
 constexpr decltype(auto) operator*=(T&& v, const placeholder_t&)
 {
-  return partial(assignable_mult, std::forward<T>(v));
+  return partial(mult_assign, std::forward<T>(v));
 }
 template <typename T>
 constexpr decltype(auto) operator*=(const placeholder_t&, T&& v)
 {
-  return reverse_partial(assignable_mult, std::forward<T>(v));
+  return reverse_partial(mult_assign, std::forward<T>(v));
 }
 
 // /=
 constexpr decltype(auto) operator/=(const placeholder_t&, const placeholder_t&)
 {
-  return partial(assignable_div);
+  return partial(div_assign);
 }
 template <typename T>
 constexpr decltype(auto) operator/=(T&& v, const placeholder_t&)
 {
-  return partial(assignable_div, std::forward<T>(v));
+  return partial(div_assign, std::forward<T>(v));
 }
 template <typename T>
 constexpr decltype(auto) operator/=(const placeholder_t&, T&& v)
 {
-  return reverse_partial(assignable_div, std::forward<T>(v));
+  return reverse_partial(div_assign, std::forward<T>(v));
 }
 
 // %=
 constexpr decltype(auto) operator%=(const placeholder_t&, const placeholder_t&)
 {
-  return partial(assignable_mod);
+  return partial(mod_assign);
 }
 template <typename T>
 constexpr decltype(auto) operator%=(T&& v, const placeholder_t&)
 {
-  return partial(assignable_mod, std::forward<T>(v));
+  return partial(mod_assign, std::forward<T>(v));
 }
 template <typename T>
 constexpr decltype(auto) operator%=(const placeholder_t&, T&& v)
 {
-  return reverse_partial(assignable_mod, std::forward<T>(v));
+  return reverse_partial(mod_assign, std::forward<T>(v));
+}
+
+// &=
+constexpr decltype(auto) operator&=(const placeholder_t&, const placeholder_t&)
+{
+  return partial(bit_and_assign);
+}
+template <typename T>
+constexpr decltype(auto) operator&=(T&& v, const placeholder_t&)
+{
+  return partial(bit_and_assign, std::forward<T>(v));
+}
+template <typename T>
+constexpr decltype(auto) operator&=(const placeholder_t&, T&& v)
+{
+  return reverse_partial(bit_and_assign, std::forward<T>(v));
+}
+
+// |=
+constexpr decltype(auto) operator|=(const placeholder_t&, const placeholder_t&)
+{
+  return partial(bit_or_assign);
+}
+template <typename T>
+constexpr decltype(auto) operator|=(T&& v, const placeholder_t&)
+{
+  return partial(bit_or_assign, std::forward<T>(v));
+}
+template <typename T>
+constexpr decltype(auto) operator|=(const placeholder_t&, T&& v)
+{
+  return reverse_partial(bit_or_assign, std::forward<T>(v));
+}
+
+// ^=
+constexpr decltype(auto) operator^=(const placeholder_t&, const placeholder_t&)
+{
+  return partial(bit_xor_assign);
+}
+template <typename T>
+constexpr decltype(auto) operator^=(T&& v, const placeholder_t&)
+{
+  return partial(bit_xor_assign, std::forward<T>(v));
+}
+template <typename T>
+constexpr decltype(auto) operator^=(const placeholder_t&, T&& v)
+{
+  return reverse_partial(bit_xor_assign, std::forward<T>(v));
+}
+
+// <<=
+constexpr decltype(auto) operator<<=(const placeholder_t&, const placeholder_t&)
+{
+  return partial(bit_lshift_assign);
+}
+template <typename T>
+constexpr decltype(auto) operator<<=(T&& v, const placeholder_t&)
+{
+  return partial(bit_lshift_assign, std::forward<T>(v));
+}
+template <typename T>
+constexpr decltype(auto) operator<<=(const placeholder_t&, T&& v)
+{
+  return reverse_partial(bit_lshift_assign, std::forward<T>(v));
+}
+
+// >>=
+constexpr decltype(auto) operator>>=(const placeholder_t&, const placeholder_t&)
+{
+  return partial(bit_rshift_assign);
+}
+template <typename T>
+constexpr decltype(auto) operator>>=(T&& v, const placeholder_t&)
+{
+  return partial(bit_rshift_assign, std::forward<T>(v));
+}
+template <typename T>
+constexpr decltype(auto) operator>>=(const placeholder_t&, T&& v)
+{
+  return reverse_partial(bit_rshift_assign, std::forward<T>(v));
 }
 
 } // namespace assignement
@@ -253,209 +419,37 @@ constexpr decltype(auto) operator%=(const placeholder_t&, T&& v)
 } // namespace arithmetic
 
 
-inline namespace bitwise {
-// ~
-constexpr decltype(auto) operator~(const placeholder_t&)
-{
-  return partial(Not);
-}
-// &
-constexpr decltype(auto) operator&(const placeholder_t&, const placeholder_t&)
-{
-  return partial(And);
-}
-template <typename T>
-constexpr decltype(auto) operator&(T&& v, const placeholder_t&)
-{
-  return partial(And, std::forward<T>(v));
-}
-template <typename T>
-constexpr decltype(auto) operator&(const placeholder_t&, T&& v)
-{
-  return reverse_partial(And, std::forward<T>(v));
-}
-
-// |
-constexpr decltype(auto) operator|(const placeholder_t&, const placeholder_t&)
-{
-  return partial(Or);
-}
-template <typename T>
-constexpr decltype(auto) operator|(T&& v, const placeholder_t&)
-{
-  return partial(Or, std::forward<T>(v));
-}
-template <typename T>
-constexpr decltype(auto) operator|(const placeholder_t&, T&& v)
-{
-  return reverse_partial(Or, std::forward<T>(v));
-}
-
-// ^
-constexpr decltype(auto) operator^(const placeholder_t&, const placeholder_t&)
-{
-  return partial(Xor);
-}
-template <typename T>
-constexpr decltype(auto) operator^(T&& v, const placeholder_t&)
-{
-  return partial(Xor, std::forward<T>(v));
-}
-template <typename T>
-constexpr decltype(auto) operator^(const placeholder_t&, T&& v)
-{
-  return reverse_partial(Xor, std::forward<T>(v));
-}
-
-// <<
-constexpr decltype(auto) operator<<(const placeholder_t&, const placeholder_t&)
-{
-  return partial(lshift);
-}
-template <typename T>
-constexpr decltype(auto) operator<<(T&& v, const placeholder_t&)
-{
-  return partial(lshift, std::forward<T>(v));
-}
-template <typename T>
-constexpr decltype(auto) operator<<(const placeholder_t&, T&& v)
-{
-  return reverse_partial(lshift, std::forward<T>(v));
-}
-
-// >>
-constexpr decltype(auto) operator>>(const placeholder_t&, const placeholder_t&)
-{
-  return partial(rshift);
-}
-template <typename T>
-constexpr decltype(auto) operator>>(T&& v, const placeholder_t&)
-{
-  return partial(rshift, std::forward<T>(v));
-}
-template <typename T>
-constexpr decltype(auto) operator>>(const placeholder_t&, T&& v)
-{
-  return reverse_partial(rshift, std::forward<T>(v));
-}
-
-inline namespace assignement {
-// &=
-constexpr decltype(auto) operator&=(const placeholder_t&, const placeholder_t&)
-{
-  return partial(assignable_and);
-}
-template <typename T>
-constexpr decltype(auto) operator&=(T&& v, const placeholder_t&)
-{
-  return partial(assignable_and, std::forward<T>(v));
-}
-template <typename T>
-constexpr decltype(auto) operator&=(const placeholder_t&, T&& v)
-{
-  return reverse_partial(assignable_and, std::forward<T>(v));
-}
-
-// |=
-constexpr decltype(auto) operator|=(const placeholder_t&, const placeholder_t&)
-{
-  return partial(assignable_or);
-}
-template <typename T>
-constexpr decltype(auto) operator|=(T&& v, const placeholder_t&)
-{
-  return partial(assignable_or, std::forward<T>(v));
-}
-template <typename T>
-constexpr decltype(auto) operator|=(const placeholder_t&, T&& v)
-{
-  return reverse_partial(assignable_or, std::forward<T>(v));
-}
-
-// ^=
-constexpr decltype(auto) operator^=(const placeholder_t&, const placeholder_t&)
-{
-  return partial(assignable_xor);
-}
-template <typename T>
-constexpr decltype(auto) operator^=(T&& v, const placeholder_t&)
-{
-  return partial(assignable_xor, std::forward<T>(v));
-}
-template <typename T>
-constexpr decltype(auto) operator^=(const placeholder_t&, T&& v)
-{
-  return reverse_partial(assignable_xor, std::forward<T>(v));
-}
-
-// <<=
-constexpr decltype(auto) operator<<=(const placeholder_t&, const placeholder_t&)
-{
-  return partial(assignable_lshift);
-}
-template <typename T>
-constexpr decltype(auto) operator<<=(T&& v, const placeholder_t&)
-{
-  return partial(assignable_lshift, std::forward<T>(v));
-}
-template <typename T>
-constexpr decltype(auto) operator<<=(const placeholder_t&, T&& v)
-{
-  return reverse_partial(assignable_lshift, std::forward<T>(v));
-}
-
-// >>=
-constexpr decltype(auto) operator>>=(const placeholder_t&, const placeholder_t&)
-{
-  return partial(assignable_rshift);
-}
-template <typename T>
-constexpr decltype(auto) operator>>=(T&& v, const placeholder_t&)
-{
-  return partial(assignable_rshift, std::forward<T>(v));
-}
-template <typename T>
-constexpr decltype(auto) operator>>=(const placeholder_t&, T&& v)
-{
-  return reverse_partial(assignable_rshift, std::forward<T>(v));
-}
-
-} // namespace assignement
-
-} // namespace bitwise
-
-
 inline namespace comparison {
 // ==
 constexpr decltype(auto) operator==(const placeholder_t&, const placeholder_t&)
 {
-  return partial(equal);
+  return partial(equal_to);
 }
 template <typename T>
 constexpr decltype(auto) operator==(T&& v, const placeholder_t&)
 {
-  return partial(equal, std::forward<T>(v));
+  return partial(equal_to, std::forward<T>(v));
 }
 template <typename T>
 constexpr decltype(auto) operator==(const placeholder_t&, T&& v)
 {
-  return reverse_partial(equal, std::forward<T>(v));
+  return reverse_partial(equal_to, std::forward<T>(v));
 }
 
 // !=
 constexpr decltype(auto) operator!=(const placeholder_t&, const placeholder_t&)
 {
-  return partial(not_equal);
+  return partial(not_equal_to);
 }
 template <typename T>
 constexpr decltype(auto) operator!=(T&& v, const placeholder_t&)
 {
-  return partial(not_equal, std::forward<T>(v));
+  return partial(not_equal_to, std::forward<T>(v));
 }
 template <typename T>
 constexpr decltype(auto) operator!=(const placeholder_t&, T&& v)
 {
-  return reverse_partial(not_equal, std::forward<T>(v));
+  return reverse_partial(not_equal_to, std::forward<T>(v));
 }
 
 // <

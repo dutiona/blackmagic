@@ -15,24 +15,24 @@ using common::_v_t;
 
 inline namespace arithmetic {
 template <typename T>
-using incr_t = std::integral_constant<decltype(_v_t<T> + 1), (_v_t<T> + 1)>;
+using increment_t = std::integral_constant<decltype(_v_t<T> + 1), (_v_t<T> + 1)>;
 template <typename T>
-inline constexpr const auto incr_v = _v<incr_t<T>>;
+inline constexpr const auto increment_v = _v<increment_t<T>>;
 
 template <typename T>
-using decr_t = std::integral_constant<decltype(_v_t<T> - 1), (_v_t<T> - 1)>;
+using decrement_t = std::integral_constant<decltype(_v_t<T> - 1), (_v_t<T> - 1)>;
 template <typename T>
-inline constexpr const auto decr_v = _v<decr_t<T>>;
+inline constexpr const auto decrement_v = _v<decrement_t<T>>;
 
 template <typename T, typename U>
-using binary_plus_t = std::integral_constant<decltype(_v_t<T> + _v_t<U>), (_v_t<T> + _v_t<U>)>;
+using plus_t = std::integral_constant<decltype(_v_t<T> + _v_t<U>), (_v_t<T> + _v_t<U>)>;
 template <typename T, typename U>
-inline constexpr const auto binary_plus_v = _v<binary_plus_t<T, U>>;
+inline constexpr const auto plus_v = _v<plus_t<T, U>>;
 
 template <typename T, typename U>
-using binary_minus_t = std::integral_constant<decltype(_v_t<T> - _v_t<U>), (_v_t<T> - _v_t<U>)>;
+using minus_t = std::integral_constant<decltype(_v_t<T> - _v_t<U>), (_v_t<T> - _v_t<U>)>;
 template <typename T, typename U>
-inline constexpr const auto binary_minus_v = _v<binary_minus_t<T, U>>;
+inline constexpr const auto minus_v = _v<minus_t<T, U>>;
 
 template <typename T, typename U>
 using mult_t = std::integral_constant<decltype(_v_t<T> * _v_t<U>), (_v_t<T> * _v_t<U>)>;
@@ -50,46 +50,46 @@ template <typename T, typename U>
 inline constexpr const auto mod_v = _v<mod_t<T, U>>;
 
 template <typename T>
-using unary_plus_t = std::integral_constant<decltype(+_v_t<T>), (+_v_t<T>)>;
+using positive_t = std::integral_constant<decltype(+_v_t<T>), (+_v_t<T>)>;
 template <typename T>
-inline constexpr const auto unary_plus_v = _v<unary_plus_t<T>>;
-
-template <typename T>
-using unary_minus_t = std::integral_constant<decltype(-_v_t<T>), (-_v_t<T>)>;
-template <typename T>
-inline constexpr const auto unary_minus_v = _v<unary_minus_t<T>>;
+inline constexpr const auto positive_v = _v<positive_t<T>>;
 
 template <typename T>
-using not_t = std::integral_constant<decltype(~_v_t<T>), (~_v_t<T>)>;
+using negative_t = std::integral_constant<decltype(-_v_t<T>), (-_v_t<T>)>;
 template <typename T>
-inline constexpr const auto not_v = _v<not_t<T>>;
+inline constexpr const auto negative_v = _v<negative_t<T>>;
+
+template <typename T>
+using bit_not_t = std::integral_constant<decltype(~_v_t<T>), (~_v_t<T>)>;
+template <typename T>
+inline constexpr const auto bit_not_v = _v<bit_not_t<T>>;
 
 template <typename T, typename U>
-using and_t = std::integral_constant<decltype(_v_t<T> & _v_t<U>), (_v_t<T> & _v_t<U>)>;
+using bit_and_t = std::integral_constant<decltype(_v_t<T> & _v_t<U>), (_v_t<T> & _v_t<U>)>;
 template <typename T, typename U>
-inline constexpr const auto and_v = _v<and_t<T, U>>;
+inline constexpr const auto bit_and_v = _v<bit_and_t<T, U>>;
 
 template <typename T, typename U>
-using or_t = std::integral_constant<decltype(_v_t<T> | _v_t<U>), (_v_t<T> | _v_t<U>)>;
+using bit_or_t = std::integral_constant<decltype(_v_t<T> | _v_t<U>), (_v_t<T> | _v_t<U>)>;
 template <typename T, typename U>
-inline constexpr const auto or_v = _v<or_t<T, U>>;
+inline constexpr const auto bit_or_v = _v<bit_or_t<T, U>>;
 
 template <typename T, typename U>
-using xor_t = std::integral_constant<decltype(_v_t<T> ^ _v_t<U>), (_v_t<T> ^ _v_t<U>)>;
+using bit_xor_t = std::integral_constant<decltype(_v_t<T> ^ _v_t<U>), (_v_t<T> ^ _v_t<U>)>;
 template <typename T, typename U>
-inline constexpr const auto xor_v = _v<xor_t<T, U>>;
+inline constexpr const auto bit_xor_v = _v<bit_xor_t<T, U>>;
 
 template <typename T, typename U>
-using lshift_t = std::integral_constant<decltype(_v_t<T> << _v_t<U>), (_v_t<T> << _v_t<U>)>;
+using bit_lshift_t = std::integral_constant<decltype(_v_t<T> << _v_t<U>), (_v_t<T> << _v_t<U>)>;
 template <typename T, typename U>
-inline constexpr const auto lshift_v = _v<lshift_t<T, U>>;
+inline constexpr const auto bit_lshift_v = _v<bit_lshift_t<T, U>>;
 
 template <typename T, typename U>
 // clang-format off
-using rshift_t = std::integral_constant<decltype(_v_t<T> >> _v_t<U>), (_v_t<T> >> _v_t<U>)>;
+using bit_rshift_t = std::integral_constant<decltype(_v_t<T> >> _v_t<U>), (_v_t<T> >> _v_t<U>)>;
 // clang-format on
 template <typename T, typename U>
-inline constexpr const auto rshift_v = _v<rshift_t<T, U>>;
+inline constexpr const auto bit_rshift_v = _v<bit_rshift_t<T, U>>;
 
 } // namespace arithmetic
 
@@ -152,16 +152,16 @@ inline constexpr const auto logical_not_v = _v<logical_not_t<T>>;
 inline namespace traits {
 inline namespace arithmetic {
 template <typename T>
-inline constexpr const common::trait_t<incr_t, T> incr{};
+inline constexpr const common::trait_t<increment_t, T> increment{};
 
 template <typename T>
-inline constexpr const common::trait_t<decr_t, T> decr{};
+inline constexpr const common::trait_t<decrement_t, T> decrement{};
 
 template <typename T, typename U>
-inline constexpr const common::trait_t<binary_plus_t, T, U> binary_plus{};
+inline constexpr const common::trait_t<plus_t, T, U> plus{};
 
 template <typename T, typename U>
-inline constexpr const common::trait_t<binary_minus_t, T, U> binary_minus{};
+inline constexpr const common::trait_t<minus_t, T, U> minus{};
 
 template <typename T, typename U>
 inline constexpr const common::trait_t<mult_t, T, U> mult{};
@@ -173,28 +173,28 @@ template <typename T, typename U>
 inline constexpr const common::trait_t<mod_t, T, U> mod{};
 
 template <typename T>
-inline constexpr const common::trait_t<unary_plus_t, T> unary_plus{};
+inline constexpr const common::trait_t<positive_t, T> positive{};
 
 template <typename T>
-inline constexpr const common::trait_t<unary_minus_t, T> unary_minus{};
+inline constexpr const common::trait_t<negative_t, T> negative{};
 
 template <typename T>
-inline constexpr const common::trait_t<not_t, T> Not{};
+inline constexpr const common::trait_t<bit_not_t, T> bit_not{};
 
 template <typename T, typename U>
-inline constexpr const common::trait_t<and_t, T, U> And{};
+inline constexpr const common::trait_t<bit_and_t, T, U> bit_and{};
 
 template <typename T, typename U>
-inline constexpr const common::trait_t<or_t, T, U> Or{};
+inline constexpr const common::trait_t<bit_or_t, T, U> bit_or{};
 
 template <typename T, typename U>
-inline constexpr const common::trait_t<xor_t, T, U> Xor{};
+inline constexpr const common::trait_t<bit_xor_t, T, U> bit_xor{};
 
 template <typename T, typename U>
-inline constexpr const common::trait_t<lshift_t, T, U> lshift{};
+inline constexpr const common::trait_t<bit_lshift_t, T, U> bit_lshift{};
 
 template <typename T, typename U>
-inline constexpr const common::trait_t<rshift_t, T, U> rshift{};
+inline constexpr const common::trait_t<bit_rshift_t, T, U> bit_rshift{};
 
 } // namespace arithmetic
 

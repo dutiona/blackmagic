@@ -48,7 +48,7 @@ struct trivial_on_move_assignement {
   trivial_on_move_assignement& operator=(trivial_on_move_assignement&&) = default;
 };
 
-TEST(Cpt_Layout, TriviallyCopyable)
+TEST(Concepts_Layout, TriviallyCopyable)
 {
   ASSERT_TRUE((concepts::TriviallyCopyable.check<trivial_full>()));
 #ifndef _MSC_VER
@@ -66,7 +66,7 @@ struct non_trivial {
   }
 };
 
-TEST(Cpt_Layout, Trivial)
+TEST(Concepts_Layout, Trivial)
 {
   ASSERT_TRUE((concepts::Trivial.check<trivial_full>()));
 #ifndef _MSC_VER
@@ -136,7 +136,7 @@ struct non_standard_layout_composition {
   non_standard_layout_diamond_inheritance component_;
 };
 
-TEST(Cpt_Layout, standard_layout)
+TEST(Concepts_Layout, standard_layout)
 {
   ASSERT_TRUE((concepts::StandardLayout.check<standard_layout>()));
   ASSERT_TRUE((concepts::StandardLayout.check<standard_layout_bis>()));

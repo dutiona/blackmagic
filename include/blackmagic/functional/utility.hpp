@@ -3,6 +3,38 @@
 #include <utility>
 
 namespace blackmagic::functional { inline namespace utility { inline namespace functors {
+
+inline namespace member_access {
+struct indirection_t {
+  template <typename T>
+  constexpr decltype(auto) operator()(T&& a) const
+  {
+    return *std::forward<T>(a);
+  }
+};
+inline constexpr const indirection_t indirection{};
+
+struct address_of_t {
+  template <typename T>
+  constexpr decltype(auto) operator()(T&& a) const
+  {
+    return &std::forward<T>(a);
+  }
+};
+inline constexpr const address_of_t address_of{};
+
+struct subscript_t {
+  template <typename T, typename U>
+  constexpr decltype(auto) operator()(T&& a, U&& i) const
+  {
+    return std::forward<T>(a)[std::forward<U>(i)];
+  }
+};
+inline constexpr const subscript_t subscript{};
+
+} // namespace member_access
+
+
 inline namespace arithmetic {
 struct preincrement_t {
   template <typename T>
@@ -40,23 +72,23 @@ struct postdecrement_t {
 };
 inline constexpr const postdecrement_t postdecrement{};
 
-struct binary_plus_t {
+struct plus_t {
   template <typename T, typename U>
   constexpr decltype(auto) operator()(T&& a, U&& b) const
   {
     return std::forward<T>(a) + std::forward<U>(b);
   }
 };
-inline constexpr const binary_plus_t binary_plus{};
+inline constexpr const plus_t plus{};
 
-struct binary_minus_t {
+struct minus_t {
   template <typename T, typename U>
   constexpr decltype(auto) operator()(T&& a, U&& b) const
   {
     return std::forward<T>(a) - std::forward<U>(b);
   }
 };
-inline constexpr const binary_minus_t binary_minus{};
+inline constexpr const minus_t minus{};
 
 struct div_t {
   template <typename T, typename U>
@@ -85,27 +117,81 @@ struct mod_t {
 };
 inline constexpr const mod_t mod{};
 
-struct unary_plus_t {
+struct positive_t {
   template <typename T>
   constexpr decltype(auto) operator()(T&& a) const
   {
     return +std::forward<T>(a);
   }
 };
-inline constexpr const unary_plus_t unary_plus{};
+inline constexpr const positive_t positive{};
 
-struct unary_minus_t {
+struct negative_t {
   template <typename T>
   constexpr decltype(auto) operator()(T&& a) const
   {
     return -std::forward<T>(a);
   }
 };
-inline constexpr const unary_minus_t unary_minus{};
+inline constexpr const negative_t negative{};
+
+struct bit_not_t {
+  template <typename T>
+  constexpr decltype(auto) operator()(T&& a) const
+  {
+    return ~std::forward<T>(a);
+  }
+};
+inline constexpr const bit_not_t bit_not{};
+
+struct bit_and_t {
+  template <typename T, typename U>
+  constexpr decltype(auto) operator()(T&& a, U&& b) const
+  {
+    return std::forward<T>(a) & std::forward<U>(b);
+  }
+};
+inline constexpr const bit_and_t bit_and{};
+
+struct bit_or_t {
+  template <typename T, typename U>
+  constexpr decltype(auto) operator()(T&& a, U&& b) const
+  {
+    return std::forward<T>(a) | std::forward<U>(b);
+  }
+};
+inline constexpr const bit_or_t bit_or{};
+
+struct bit_xor_t {
+  template <typename T, typename U>
+  constexpr decltype(auto) operator()(T&& a, U&& b) const
+  {
+    return std::forward<T>(a) ^ std::forward<U>(b);
+  }
+};
+inline constexpr const bit_xor_t bit_xor{};
+
+struct bit_lshift_t {
+  template <typename T, typename U>
+  constexpr decltype(auto) operator()(T&& a, U&& b) const
+  {
+    return std::forward<T>(a) << std::forward<U>(b);
+  }
+};
+inline constexpr const bit_lshift_t bit_lshift{};
+
+struct bit_rshift_t {
+  template <typename T, typename U>
+  constexpr decltype(auto) operator()(T&& a, U&& b) const
+  {
+    return std::forward<T>(a) >> std::forward<U>(b);
+  }
+};
+inline constexpr const bit_rshift_t bit_rshift{};
 
 
 inline namespace assignement {
-struct assignable_t {
+struct assign_t {
   template <typename T, typename U>
   constexpr decltype(auto) operator()(T&& a, U&& b) const
   {
@@ -113,9 +199,9 @@ struct assignable_t {
     return std::forward<T>(a);
   }
 };
-inline constexpr const assignable_t assignable{};
+inline constexpr const assign_t assign{};
 
-struct assignable_plus_t {
+struct plus_assign_t {
   template <typename T, typename U>
   constexpr decltype(auto) operator()(T&& a, U&& b) const
   {
@@ -123,9 +209,9 @@ struct assignable_plus_t {
     return std::forward<T>(a);
   }
 };
-inline constexpr const assignable_plus_t assignable_plus{};
+inline constexpr const plus_assign_t plus_assign{};
 
-struct assignable_minus_t {
+struct minus_assign_t {
   template <typename T, typename U>
   constexpr decltype(auto) operator()(T&& a, U&& b) const
   {
@@ -133,9 +219,9 @@ struct assignable_minus_t {
     return std::forward<T>(a);
   }
 };
-inline constexpr const assignable_minus_t assignable_minus{};
+inline constexpr const minus_assign_t minus_assign{};
 
-struct assignable_mult_t {
+struct mult_assign_t {
   template <typename T, typename U>
   constexpr decltype(auto) operator()(T&& a, U&& b) const
   {
@@ -143,9 +229,9 @@ struct assignable_mult_t {
     return std::forward<T>(a);
   }
 };
-inline constexpr const assignable_mult_t assignable_mult{};
+inline constexpr const mult_assign_t mult_assign{};
 
-struct assignable_div_t {
+struct div_assign_t {
   template <typename T, typename U>
   constexpr decltype(auto) operator()(T&& a, U&& b) const
   {
@@ -153,9 +239,9 @@ struct assignable_div_t {
     return std::forward<T>(a);
   }
 };
-inline constexpr const assignable_div_t assignable_div{};
+inline constexpr const div_assign_t div_assign{};
 
-struct assignable_mod_t {
+struct mod_assign_t {
   template <typename T, typename U>
   constexpr decltype(auto) operator()(T&& a, U&& b) const
   {
@@ -163,71 +249,9 @@ struct assignable_mod_t {
     return std::forward<T>(a);
   }
 };
-inline constexpr const assignable_mod_t assignable_mod{};
+inline constexpr const mod_assign_t mod_assign{};
 
-} // namespace assignement
-
-} // namespace arithmetic
-
-
-inline namespace bitwise {
-struct not_t {
-  template <typename T>
-  constexpr decltype(auto) operator()(T&& a) const
-  {
-    return ~std::forward<T>(a);
-  }
-};
-inline constexpr const not_t Not{};
-
-struct and_t {
-  template <typename T, typename U>
-  constexpr decltype(auto) operator()(T&& a, U&& b) const
-  {
-    return std::forward<T>(a) & std::forward<U>(b);
-  }
-};
-inline constexpr const and_t And{};
-
-struct or_t {
-  template <typename T, typename U>
-  constexpr decltype(auto) operator()(T&& a, U&& b) const
-  {
-    return std::forward<T>(a) | std::forward<U>(b);
-  }
-};
-inline constexpr const or_t Or{};
-
-struct xor_t {
-  template <typename T, typename U>
-  constexpr decltype(auto) operator()(T&& a, U&& b) const
-  {
-    return std::forward<T>(a) ^ std::forward<U>(b);
-  }
-};
-inline constexpr const xor_t Xor{};
-
-struct lshift_t {
-  template <typename T, typename U>
-  constexpr decltype(auto) operator()(T&& a, U&& b) const
-  {
-    return std::forward<T>(a) << std::forward<U>(b);
-  }
-};
-inline constexpr const lshift_t lshift{};
-
-struct rshift_t {
-  template <typename T, typename U>
-  constexpr decltype(auto) operator()(T&& a, U&& b) const
-  {
-    return std::forward<T>(a) >> std::forward<U>(b);
-  }
-};
-inline constexpr const rshift_t rshift{};
-
-
-inline namespace assignement {
-struct assignable_and_t {
+struct bit_and_assign_t {
   template <typename T, typename U>
   constexpr decltype(auto) operator()(T&& a, U&& b) const
   {
@@ -235,9 +259,9 @@ struct assignable_and_t {
     return std::forward<T>(a);
   }
 };
-inline constexpr const assignable_and_t assignable_and{};
+inline constexpr const bit_and_assign_t bit_and_assign{};
 
-struct assignable_or_t {
+struct bit_or_assign_t {
   template <typename T, typename U>
   constexpr decltype(auto) operator()(T&& a, U&& b) const
   {
@@ -245,9 +269,9 @@ struct assignable_or_t {
     return std::forward<T>(a);
   }
 };
-inline constexpr const assignable_or_t assignable_or{};
+inline constexpr const bit_or_assign_t bit_or_assign{};
 
-struct assignable_xor_t {
+struct bit_xor_assign_t {
   template <typename T, typename U>
   constexpr decltype(auto) operator()(T&& a, U&& b) const
   {
@@ -255,9 +279,9 @@ struct assignable_xor_t {
     return std::forward<T>(a);
   }
 };
-inline constexpr const assignable_xor_t assignable_xor{};
+inline constexpr const bit_xor_assign_t bit_xor_assign{};
 
-struct assignable_lshift_t {
+struct bit_lshift_assign_t {
   template <typename T, typename U>
   constexpr decltype(auto) operator()(T&& a, U&& b) const
   {
@@ -265,9 +289,9 @@ struct assignable_lshift_t {
     return std::forward<T>(a);
   }
 };
-inline constexpr const assignable_lshift_t assignable_lshift{};
+inline constexpr const bit_lshift_assign_t bit_lshift_assign{};
 
-struct assignable_rshift_t {
+struct bit_rshift_assign_t {
   template <typename T, typename U>
   constexpr decltype(auto) operator()(T&& a, U&& b) const
   {
@@ -275,30 +299,31 @@ struct assignable_rshift_t {
     return std::forward<T>(a);
   }
 };
-inline constexpr const assignable_rshift_t assignable_rshift{};
+inline constexpr const bit_rshift_assign_t bit_rshift_assign{};
 
 } // namespace assignement
 
-} // namespace bitwise
+} // namespace arithmetic
+
 
 inline namespace comparison {
-struct equal_t {
+struct equal_to_t {
   template <typename T, typename U>
   constexpr decltype(auto) operator()(T&& a, U&& b) const
   {
     return std::forward<T>(a) == std::forward<U>(b);
   }
 };
-inline constexpr const equal_t equal{};
+inline constexpr const equal_to_t equal_to{};
 
-struct not_equal_t {
+struct not_equal_to_t {
   template <typename T, typename U>
   constexpr decltype(auto) operator()(T&& a, U&& b) const
   {
     return std::forward<T>(a) != std::forward<U>(b);
   }
 };
-inline constexpr const not_equal_t not_equal{};
+inline constexpr const not_equal_to_t not_equal_to{};
 
 struct less_than_t {
   template <typename T, typename U>
@@ -368,37 +393,6 @@ struct logical_not_t {
 inline constexpr const logical_not_t logical_not{};
 
 } // namespace logical
-
-
-inline namespace member_access {
-struct indirection_t {
-  template <typename T>
-  constexpr decltype(auto) operator()(T&& a) const
-  {
-    return *std::forward<T>(a);
-  }
-};
-inline constexpr const indirection_t indirection{};
-
-struct address_of_t {
-  template <typename T>
-  constexpr decltype(auto) operator()(T&& a) const
-  {
-    return &std::forward<T>(a);
-  }
-};
-inline constexpr const address_of_t address_of{};
-
-struct subscript_t {
-  template <typename T, typename U>
-  constexpr decltype(auto) operator()(T&& a, U&& i) const
-  {
-    return std::forward<T>(a)[std::forward<U>(i)];
-  }
-};
-inline constexpr const subscript_t subscript{};
-
-} // namespace member_access
 
 
 inline namespace other {
