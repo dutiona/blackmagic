@@ -1,7 +1,5 @@
 #include <blackmagic/integral/integral.hpp>
 
-#include <type_traits>
-
 #include <gtest/gtest.h>
 
 namespace integral = blackmagic::integral;

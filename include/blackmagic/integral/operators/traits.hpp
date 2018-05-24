@@ -19,12 +19,12 @@ struct logical_trait {
 
 template <bool Status, typename T, typename U = T>
 struct comparison_trait {
-  static constexpr auto equal_to           = Status; // ==
-  static constexpr auto not_equal_to       = Status; // !=
-  static constexpr auto less_than          = Status; // <
-  static constexpr auto less_equal_than    = Status; // <=
-  static constexpr auto greater_than       = Status; // >
-  static constexpr auto greater_equal_than = Status; // >=
+  static constexpr auto equal         = Status; // ==
+  static constexpr auto not_equal     = Status; // !=
+  static constexpr auto less          = Status; // <
+  static constexpr auto less_equal    = Status; // <=
+  static constexpr auto greater       = Status; // >
+  static constexpr auto greater_equal = Status; // >=
 };
 
 template <bool Status, typename T, typename U = T>
