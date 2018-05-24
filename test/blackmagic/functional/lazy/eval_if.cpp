@@ -10,7 +10,6 @@ TEST(Functional_Lazy, Eval_If_Simple)
   int c = 0;
 
   ASSERT_TRUE(c == 0);
-
   ASSERT_TRUE(9
               == lazy::eval_if(true,
                                lazy::make_lazy(
@@ -42,6 +41,5 @@ TEST(Functional_Lazy, Eval_If_Simple)
                                    return b - a;
                                  },
                                  4, 5)));
-
   ASSERT_TRUE(c == 0);
 }

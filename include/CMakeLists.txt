@@ -26,8 +26,7 @@ set(BLACKMAGIC_COMMON_SOURCES
         blackmagic/common/algorithm/are_equal.hpp
         blackmagic/common/algorithm/are_not_equal.hpp
         blackmagic/common/algorithm/count_v.hpp
-        blackmagic/common/algorithm/none_of_v.hpp
-        )
+        blackmagic/common/algorithm/none_of_v.hpp)
 
 set(BLACKMAGIC_CONCEPTS_SOURCES
         blackmagic/concepts/concepts.hpp
@@ -74,13 +73,14 @@ set(BLACKMAGIC_FUNCTIONAL_SOURCES
         blackmagic/functional/utility.hpp
         blackmagic/functional/lazy/eval.hpp
         blackmagic/functional/lazy/eval_if.hpp
-        blackmagic/functional/lazy/if.hpp
-        blackmagic/functional/lazy/while.hpp
-        blackmagic/functional/lazy/and.hpp
-        blackmagic/functional/lazy/or.hpp
-        blackmagic/functional/lazy/not.hpp
+        blackmagic/functional/if.hpp
+        blackmagic/functional/while.hpp
+        blackmagic/functional/and.hpp
+        blackmagic/functional/or.hpp
+        blackmagic/functional/not.hpp
         blackmagic/functional/lazy/make_lazy.hpp
-        blackmagic/functional/lazy.hpp)
+        blackmagic/functional/lazy.hpp
+        blackmagic/integral/traits_ext.hpp)
 
 set(BLACKMAGIC_INTEGRAL_SOURCES
         blackmagic/integral/integral.hpp

@@ -4,8 +4,6 @@
 
 namespace blackmagic::functional::lazy {
 
-namespace tuple = blackmagic::tuple;
-
 struct eval_t {
   template <typename Func, typename... Args>
   constexpr decltype(auto) operator()(const lazy_expr<Func, Args...>& fctor) const

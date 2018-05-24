@@ -1,0 +1,13 @@
+#pragma once
+
+#include "../common/algorithm/any_of_v.hpp"
+
+namespace blackmagic::functional {
+
+namespace common = blackmagic::common;
+
+using or_t = common::any_of_v_t;
+
+inline constexpr const or_t Or{};
+
+} // namespace blackmagic::functional::lazy

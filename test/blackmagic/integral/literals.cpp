@@ -135,3 +135,4 @@ TEST(Integral_Literals, Size_t)
   static_assert(std::is_same_v<integral::size_t_t<1>::value_type, size_t>);
   static_assert(integral::size_t_v<1> == 1);
 }
+

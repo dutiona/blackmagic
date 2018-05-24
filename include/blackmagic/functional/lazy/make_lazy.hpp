@@ -28,7 +28,7 @@ private:
   const F                   f_;
   const std::tuple<Args...> args_;
 
-  friend class eval_t;
+  friend struct eval_t;
 };
 
 struct lazy_t {

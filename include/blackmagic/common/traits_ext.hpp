@@ -5,6 +5,19 @@
 
 namespace blackmagic::common { inline namespace traits_ext {
 
+// _t
+template <typename T>
+using _t = typename T::type;
+
+// _v
+template <typename T>
+inline constexpr auto _v = T::value;
+
+// _v_t
+template <typename T>
+inline constexpr auto _v_t = T::type::value;
+
+
 // remove_cvref
 template <typename T>
 using remove_cvref = std::remove_cv<std::remove_reference_t<T>>;
@@ -31,6 +44,7 @@ struct basic_trait_t {
     return type{};
   }
 };
+
 template <typename Pred>
 inline constexpr basic_trait_t<Pred> basic_trait{};
 
@@ -49,6 +63,22 @@ struct trait_t {
 };
 template <template <typename...> class Pred, typename... Us>
 inline constexpr trait_t<Pred, Us...> trait{};
+
+
+// reverse_trait
+template <template <typename...> class Pred, typename... Us>
+struct reverse_trait_t {
+  template <typename... Args>
+  using type = Pred<Args..., Us...>;
+
+  template <typename... Args>
+  constexpr auto operator()(Args...) const
+  {
+    return type<Args...>{};
+  }
+};
+template <template <typename...> class Pred, typename... Us>
+inline constexpr reverse_trait_t<Pred, Us...> reverse_trait{};
 
 
 // basic_value
@@ -81,6 +111,21 @@ template <template <auto...> class Pred, auto... Us>
 inline constexpr value_t<Pred, Us...> value{};
 
 
+// reverse_value
+template <template <auto...> class Pred, auto... Us>
+struct reverse_value_t {
+  template <auto... Args>
+  using type = Pred<Args..., Us...>;
+
+  template <auto... Args>
+  constexpr auto operator()(...) const
+  {
+    return type<Args...>{};
+  }
+};
+template <template <auto...> class Pred, auto... Us>
+inline constexpr reverse_value_t<Pred, Us...> reverse_value{};
+
 // is_instantiation_of
 template <template <typename...> class Template, typename T>
 struct is_instantiation_of : std::false_type {
@@ -90,18 +135,13 @@ template <template <typename...> class Template, typename... Args>
 struct is_instantiation_of<Template, Template<Args...>> : std::true_type {
 };
 
+template <template <auto...> class Template, typename T>
+struct is_valued_instantiation_of : std::false_type {
+};
 
-// _t
-template <typename T>
-using _t = typename T::type;
-
-// _v
-template <typename T>
-inline constexpr auto _v = T::value;
-
-// _v_t
-template <typename T>
-inline constexpr auto _v_t = _v<_t<T>>;
+template <template <auto...> class Template, auto... Args>
+struct is_valued_instantiation_of<Template, Template<Args...>> : std::true_type {
+};
 
 
 // is_swappable_with

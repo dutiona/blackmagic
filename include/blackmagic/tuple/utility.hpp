@@ -43,9 +43,7 @@ using tuple_decay = std::tuple<std::decay_t<Ts>...>;
 
 // is_tuple
 template <typename T>
-struct is_tuple : common::is_instantiation_of<std::tuple, T> {
-};
-
+using is_tuple = common::is_instantiation_of<std::tuple, T>;
 template <typename T>
 inline constexpr const auto is_tuple_v = _v<is_tuple<T>>;
 

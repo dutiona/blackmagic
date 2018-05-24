@@ -1,10 +1,10 @@
 #pragma once
 
-#include "lazy/and.hpp"
+#include "and.hpp"
 #include "lazy/eval.hpp"
 #include "lazy/eval_if.hpp"
-#include "lazy/if.hpp"
+#include "if.hpp"
 #include "lazy/make_lazy.hpp"
-#include "lazy/not.hpp"
-#include "lazy/or.hpp"
-#include "lazy/while.hpp"
+#include "not.hpp"
+#include "or.hpp"
+#include "while.hpp"
