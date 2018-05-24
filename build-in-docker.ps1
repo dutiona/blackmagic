@@ -4,13 +4,13 @@ Param(
     [String]$BuildDirectory = "build-in-docker",
     [String]$SourceDirectory = "..",
     [String]$Target = "",
-    [String]$ToolchainFile = "",
     [String]$ConfigType = "Debug",
     [String]$Coverage = "OFF",
     [String]$Clean = "OFF",
     [String]$Benchmark = "OFF",
     [String]$Examples = "OFF",
-    [String]$Documentation = "OFF"
+    [String]$Documentation = "OFF",
+	[String]$TestsVerbose = "OFF"
 )
 
 $DockerImageToolset = "mroynard/ubuntu-toolset:local"
@@ -21,7 +21,6 @@ Write-Host "CmakeGenerator: $CmakeGenerator"
 Write-Host "BuildDirectory: $BuildDirectory"
 Write-Host "SourceDirectory: $SourceDirectory"
 Write-Host "Target: $Target"
-Write-Host "ToolchainFile: $ToolchainFile"
 Write-Host "ConfigType: $ConfigType"
 Write-Host "Coverage: $Coverage"
 Write-Host "Clean: $Clean"
@@ -60,14 +59,18 @@ If ($Clean -eq "ON") {
     docker exec --workdir $Workdir $ContainerID sh -c "rm -rf ./*"
 }
 
-If (!$ToolchainFile.Remove(" ").Equals("")) {
-    $ToolchainFile = "-T $ToolchainFile"
-}
-
 # configure & make
 docker exec -w $Workdir $ContainerID sh -c "export CC=$CC && export CXX=$CXX && $CXX --version && cmake $ToolchainFile -G $CmakeGenerator -DWITH_CODE_COVERAGE=$Coverage -DWITH_EXAMPLES=$Examples -DWITH_BENCHMARK=$Benchmark $SourceDirectory"
 docker exec -w $Workdir $ContainerID sh -c "cmake --build . --target $Target --config $ConfigType"
-docker exec -w $Workdir $ContainerID sh -c "cd .. && ./launch-tests.sh"
+
+# Launch tests
+If ($TestsVerbose -eq "ON") {
+	docker exec -w $Workdir $ContainerID sh -c "ctest --output-on-failure --schedule-random -C $ConfigType --verbose"
+}
+Else {
+	docker exec -w $Workdir $ContainerID sh -c "ctest --output-on-failure --schedule-random -C $ConfigType"
+}
+
 
 # stopping container
 Write-Host "Stopping container $ContainerID"

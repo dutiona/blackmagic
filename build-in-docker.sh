@@ -17,6 +17,7 @@ BENCHMARK="OFF"
 DOCUMENTATION="OFF"
 DOCKER_IMAGE_TOOLSET="mroynard/ubuntu-toolset:local"
 DOCKER_IMAGE_DOCTOOLSET="mroynard/ubuntu-doctoolset:local"
+VERBOSE_TESTS="OFF"
 
 USAGE="$(basename "$0") [OPTIONS] -- execute a build toolchain
 
@@ -48,6 +49,8 @@ where:
     -e --examples                   build the examples
 
     -d --doc                        build the documentation
+
+	-v --verbose-tests				verbose output for unit tests
     "
 
 while [[ $# -gt 0 ]]; do
@@ -81,6 +84,10 @@ while [[ $# -gt 0 ]]; do
 		;;
 	-d | --doc)
 		DOCUMENTATION="ON"
+		shift
+		;;
+	-v | --verbose-tests)
+		VERBOSE_TESTS="ON"
 		shift
 		;;
 	-c | --compiler)
@@ -155,10 +162,16 @@ if [ "$CLEAN" == "ON" ]; then
 	fi
 fi
 
-# configure & make
+# configure & build
 docker exec -w $WORKDIR $CONTAINER_ID sh -c "export CC=$CC && export CXX=$CXX && $CXX --version && cmake $TOOLCHAIN_FILE -G $CMAKE_GENERATOR -DWITH_CODE_COVERAGE=$COVERAGE -DWITH_EXAMPLES=$EXAMPLES -DWITH_BENCHMARK=$BENCHMARK $SOURCE_DIRECTORY"
 docker exec -w $WORKDIR $CONTAINER_ID sh -c "cmake --build . --target $TARGET --config $CONFIG_TYPE"
-docker exec -w $WORKDIR $CONTAINER_ID sh -c "cd .. && ./launch-tests.sh"
+
+# launch unit tests
+if [ "VERBOSE_TESTS" == "ON" ]; then
+	docker exec -w $WORKDIR $CONTAINER_ID sh -c "ctest --output-on-failure --schedule-random -C $CONFIG_TYPE --verbose"
+else
+	docker exec -w $WORKDIR $CONTAINER_ID sh -c "ctest --output-on-failure --schedule-random -C $CONFIG_TYPE"
+fi
 
 # stopping container
 echo "Stopping container $CONTAINER_ID"
