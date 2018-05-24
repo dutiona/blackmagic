@@ -1,5 +1,4 @@
 #pragma once
 
-namespace blackmagic::functional { inline namespace lazy {
-
-}}
+namespace blackmagic::functional::lazy {
+}
