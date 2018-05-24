@@ -547,65 +547,65 @@ using is_nothrow_inequality_t = _t<is_nothrow_inequality<T, U>>;
 template <typename T, typename U = T>
 constexpr bool is_nothrow_inequality_v = _v<is_nothrow_inequality<T, U>>;
 
-// is_less_than : a < b
+// is_less : a < b
 template <typename T, typename U = T>
-using is_less_than = details::is_less_than_impl<T, U>;
+using is_less = details::is_less_impl<T, U>;
 template <typename T, typename U = T>
-using is_less_than_t = _t<is_less_than<T, U>>;
+using is_less_t = _t<is_less<T, U>>;
 template <typename T, typename U = T>
-constexpr bool is_less_than_v = _v<is_less_than<T, U>>;
-// is_nothrow_less_than
+constexpr bool is_less_v = _v<is_less<T, U>>;
+// is_nothrow_less
 template <typename T, typename U = T>
-using is_nothrow_less_than = details::is_nothrow_less_than_impl<T, U>;
+using is_nothrow_less = details::is_nothrow_less_impl<T, U>;
 template <typename T, typename U = T>
-using is_nothrow_less_than_t = _t<is_nothrow_less_than<T, U>>;
+using is_nothrow_less_t = _t<is_nothrow_less<T, U>>;
 template <typename T, typename U = T>
-constexpr bool is_nothrow_less_than_v = _v<is_nothrow_less_than<T, U>>;
+constexpr bool is_nothrow_less_v = _v<is_nothrow_less<T, U>>;
 
-// is_less_equal_than : a <= b
+// is_less_equal : a <= b
 template <typename T, typename U = T>
-using is_less_equal_than = details::is_less_equal_than_impl<T, U>;
+using is_less_equal = details::is_less_equal_impl<T, U>;
 template <typename T, typename U = T>
-using is_less_equal_than_t = _t<is_less_equal_than<T, U>>;
+using is_less_equal_t = _t<is_less_equal<T, U>>;
 template <typename T, typename U = T>
-constexpr bool is_less_equal_than_v = _v<is_less_equal_than<T, U>>;
-// is_nothrow_less_equal_than
+constexpr bool is_less_equal_v = _v<is_less_equal<T, U>>;
+// is_nothrow_less_equal
 template <typename T, typename U = T>
-using is_nothrow_less_equal_than = details::is_nothrow_less_equal_than_impl<T, U>;
+using is_nothrow_less_equal = details::is_nothrow_less_equal_impl<T, U>;
 template <typename T, typename U = T>
-using is_nothrow_less_equal_than_t = _t<is_nothrow_less_equal_than<T, U>>;
+using is_nothrow_less_equal_t = _t<is_nothrow_less_equal<T, U>>;
 template <typename T, typename U = T>
-constexpr bool is_nothrow_less_equal_than_v = _v<is_nothrow_less_equal_than<T, U>>;
+constexpr bool is_nothrow_less_equal_v = _v<is_nothrow_less_equal<T, U>>;
 
-// is_greater_than : a > b
+// is_greater : a > b
 template <typename T, typename U = T>
-using is_greater_than = details::is_greater_than_impl<T, U>;
+using is_greater = details::is_greater_impl<T, U>;
 template <typename T, typename U = T>
-using is_greater_than_t = _t<is_greater_than<T, U>>;
+using is_greater_t = _t<is_greater<T, U>>;
 template <typename T, typename U = T>
-constexpr bool is_greater_than_v = _v<is_greater_than<T, U>>;
-// is_nothrow_greater_than
+constexpr bool is_greater_v = _v<is_greater<T, U>>;
+// is_nothrow_greater
 template <typename T, typename U = T>
-using is_nothrow_greater_than = details::is_nothrow_greater_than_impl<T, U>;
+using is_nothrow_greater = details::is_nothrow_greater_impl<T, U>;
 template <typename T, typename U = T>
-using is_nothrow_greater_than_t = _t<is_nothrow_greater_than<T, U>>;
+using is_nothrow_greater_t = _t<is_nothrow_greater<T, U>>;
 template <typename T, typename U = T>
-constexpr bool is_nothrow_greater_than_v = _v<is_nothrow_greater_than<T, U>>;
+constexpr bool is_nothrow_greater_v = _v<is_nothrow_greater<T, U>>;
 
-// is_greater_equal_than : a >= b
+// is_greater_equal : a >= b
 template <typename T, typename U = T>
-using is_greater_equal_than = details::is_greater_equal_than_impl<T, U>;
+using is_greater_equal = details::is_greater_equal_impl<T, U>;
 template <typename T, typename U = T>
-using is_greater_equal_than_t = _t<is_greater_equal_than<T, U>>;
+using is_greater_equal_t = _t<is_greater_equal<T, U>>;
 template <typename T, typename U = T>
-constexpr bool is_greater_equal_than_v = _v<is_greater_equal_than<T, U>>;
-// is_nothrow_greater_equal_than
+constexpr bool is_greater_equal_v = _v<is_greater_equal<T, U>>;
+// is_nothrow_greater_equal
 template <typename T, typename U = T>
-using is_nothrow_greater_equal_than = details::is_nothrow_greater_equal_than_impl<T, U>;
+using is_nothrow_greater_equal = details::is_nothrow_greater_equal_impl<T, U>;
 template <typename T, typename U = T>
-using is_nothrow_greater_equal_than_t = _t<is_nothrow_greater_equal_than<T, U>>;
+using is_nothrow_greater_equal_t = _t<is_nothrow_greater_equal<T, U>>;
 template <typename T, typename U = T>
-constexpr bool is_nothrow_greater_equal_than_v = _v<is_nothrow_greater_equal_than<T, U>>;
+constexpr bool is_nothrow_greater_equal_v = _v<is_nothrow_greater_equal<T, U>>;
 
 } // namespace comparison
 

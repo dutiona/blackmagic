@@ -613,70 +613,70 @@ struct is_nothrow_inequality_impl<T, U, Valid, std::enable_if_t<noexcept(std::de
   : is_inequality_impl<T, U, Valid> {
 };
 
-// is_less_than
+// is_less
 template <typename T, typename U = T, typename = void>
-struct is_less_than_impl : std::false_type {
+struct is_less_impl : std::false_type {
 };
 template <typename T, typename U>
-struct is_less_than_impl<T, U, std::void_t<decltype(std::declval<T>() < std::declval<U>())>> : std::true_type {
+struct is_less_impl<T, U, std::void_t<decltype(std::declval<T>() < std::declval<U>())>> : std::true_type {
 };
-// is_nothrow_less_than
+// is_nothrow_less
 template <typename T, typename U = T, typename Valid = void, typename = void>
-struct is_nothrow_less_than_impl : std::false_type {
+struct is_nothrow_less_impl : std::false_type {
 };
 template <typename T, typename U, typename Valid>
-struct is_nothrow_less_than_impl<T, U, Valid, std::enable_if_t<noexcept(std::declval<T>() < std::declval<U>())>>
-  : is_less_than_impl<T, U, Valid> {
+struct is_nothrow_less_impl<T, U, Valid, std::enable_if_t<noexcept(std::declval<T>() < std::declval<U>())>>
+  : is_less_impl<T, U, Valid> {
 };
 
-// is_less_equal_than
+// is_less_equal
 template <typename T, typename U = T, typename = void>
-struct is_less_equal_than_impl : std::false_type {
+struct is_less_equal_impl : std::false_type {
 };
 template <typename T, typename U>
-struct is_less_equal_than_impl<T, U, std::void_t<decltype(std::declval<T>() <= std::declval<U>())>> : std::true_type {
+struct is_less_equal_impl<T, U, std::void_t<decltype(std::declval<T>() <= std::declval<U>())>> : std::true_type {
 };
-// is_nothrow_less_equal_than
+// is_nothrow_less_equal
 template <typename T, typename U = T, typename Valid = void, typename = void>
-struct is_nothrow_less_equal_than_impl : std::false_type {
+struct is_nothrow_less_equal_impl : std::false_type {
 };
 template <typename T, typename U, typename Valid>
-struct is_nothrow_less_equal_than_impl<T, U, Valid, std::enable_if_t<noexcept(std::declval<T>() <= std::declval<U>())>>
-  : is_less_equal_than_impl<T, U, Valid> {
+struct is_nothrow_less_equal_impl<T, U, Valid, std::enable_if_t<noexcept(std::declval<T>() <= std::declval<U>())>>
+  : is_less_equal_impl<T, U, Valid> {
 };
 
-// is_greater_than
+// is_greater
 template <typename T, typename U = T, typename = void>
-struct is_greater_than_impl : std::false_type {
+struct is_greater_impl : std::false_type {
 };
 template <typename T, typename U>
-struct is_greater_than_impl<T, U, std::void_t<decltype(std::declval<T>() > std::declval<U>())>> : std::true_type {
+struct is_greater_impl<T, U, std::void_t<decltype(std::declval<T>() > std::declval<U>())>> : std::true_type {
 };
-// is_nothrow_greater_than
+// is_nothrow_greater
 template <typename T, typename U = T, typename Valid = void, typename = void>
-struct is_nothrow_greater_than_impl : std::false_type {
+struct is_nothrow_greater_impl : std::false_type {
 };
 template <typename T, typename U, typename Valid>
-struct is_nothrow_greater_than_impl<T, U, Valid, std::enable_if_t<noexcept(std::declval<T>() > std::declval<U>())>>
-  : is_greater_than_impl<T, U, Valid> {
+struct is_nothrow_greater_impl<T, U, Valid, std::enable_if_t<noexcept(std::declval<T>() > std::declval<U>())>>
+  : is_greater_impl<T, U, Valid> {
 };
 
-// is_greater_equal_than
+// is_greater_equal
 template <typename T, typename U = T, typename = void>
-struct is_greater_equal_than_impl : std::false_type {
+struct is_greater_equal_impl : std::false_type {
 };
 template <typename T, typename U>
-struct is_greater_equal_than_impl<T, U, std::void_t<decltype(std::declval<T>() >= std::declval<U>())>>
+struct is_greater_equal_impl<T, U, std::void_t<decltype(std::declval<T>() >= std::declval<U>())>>
   : std::true_type {
 };
-// is_nothrow_greater_equal_than
+// is_nothrow_greater_equal
 template <typename T, typename U = T, typename Valid = void, typename = void>
-struct is_nothrow_greater_equal_than_impl : std::false_type {
+struct is_nothrow_greater_equal_impl : std::false_type {
 };
 template <typename T, typename U, typename Valid>
-struct is_nothrow_greater_equal_than_impl<T, U, Valid,
+struct is_nothrow_greater_equal_impl<T, U, Valid,
                                           std::enable_if_t<noexcept(std::declval<T>() >= std::declval<U>())>>
-  : is_greater_equal_than_impl<T, U, Valid> {
+  : is_greater_equal_impl<T, U, Valid> {
 };
 
 } // namespace comparison

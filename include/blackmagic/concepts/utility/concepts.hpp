@@ -57,7 +57,7 @@ inline constexpr auto BitNot = is_true<traits::is_bit_not>("Not"sv);
 inline constexpr auto Plus = is_true<traits::is_plus>("Plus"sv);
 
 // less
-inline constexpr auto Minus = is_true<traits::is_minus>("Less"sv);
+inline constexpr auto Minus = is_true<traits::is_minus>("Minus"sv);
 
 // mult
 inline constexpr auto Mult = is_true<traits::is_mult>("Mult"sv);
@@ -69,19 +69,19 @@ inline constexpr auto Div = is_true<traits::is_div>("Div"sv);
 inline constexpr auto Mod = is_true<traits::is_mod>("Mod"sv);
 
 // and
-inline constexpr auto BitAnd = is_true<traits::is_bit_and>("And"sv);
+inline constexpr auto BitAnd = is_true<traits::is_bit_and>("BitAnd"sv);
 
 // or
-inline constexpr auto BitOr = is_true<traits::is_bit_or>("Or"sv);
+inline constexpr auto BitOr = is_true<traits::is_bit_or>("BitOr"sv);
 
 // xor
-inline constexpr auto BitXor = is_true<traits::is_bit_xor>("Xor"sv);
+inline constexpr auto BitXor = is_true<traits::is_bit_xor>("BitXor"sv);
 
 // lshift
-inline constexpr auto BitLshift = is_true<traits::is_bit_lshift>("Lshift"sv);
+inline constexpr auto BitLshift = is_true<traits::is_bit_lshift>("BitLshift"sv);
 
 // rshift
-inline constexpr auto BitRshift = is_true<traits::is_bit_rshift>("Rshift"sv);
+inline constexpr auto BitRshift = is_true<traits::is_bit_rshift>("BitRshift"sv);
 
 
 inline namespace assignement {
@@ -130,17 +130,17 @@ inline constexpr auto Equality = is_true<traits::is_equality>("Equality"sv);
 // inequality
 inline constexpr auto Inequality = is_true<traits::is_inequality>("Inequality"sv);
 
-// less_than
-inline constexpr auto LessThan = is_true<traits::is_less_than>("LessThan"sv);
+// less
+inline constexpr auto Less = is_true<traits::is_less>("Less"sv);
 
-// less_equal_than
-inline constexpr auto LessEqualThan = is_true<traits::is_less_equal_than>("LessEqualThan"sv);
+// less_equal
+inline constexpr auto LessEqual = is_true<traits::is_less_equal>("LessEqual"sv);
 
-// greater_than
-inline constexpr auto GreaterThan = is_true<traits::is_greater_than>("GreaterThan"sv);
+// greater
+inline constexpr auto Greater = is_true<traits::is_greater>("Greater"sv);
 
-// greater_equal_than
-inline constexpr auto GreaterEqualThan = is_true<traits::is_greater_equal_than>("GreaterEqualThan"sv);
+// greater_equal
+inline constexpr auto GreaterEqual = is_true<traits::is_greater_equal>("GreaterEqual"sv);
 
 } // namespace comparison
 

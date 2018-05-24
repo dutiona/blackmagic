@@ -1125,16 +1125,16 @@ struct less_than_op_friend_test {
   }
 };
 
-TEST(Concepts_Utility, Comparison_LessThan)
+TEST(Concepts_Utility, Comparison_Less)
 {
-  ASSERT_TRUE((concepts::LessThan.check<less_than_op_member_test, int>()));
-  ASSERT_TRUE((concepts::LessThan.check<less_than_op_friend_test, int>()));
-  ASSERT_TRUE((concepts::LessThan.check<int, less_than_op_friend_test>()));
-  ASSERT_TRUE((concepts::LessThan.check<bool, int>()));
-  ASSERT_TRUE((concepts::LessThan.check<double, int>()));
-  ASSERT_TRUE((concepts::LessThan.check<bool_convertible_test, int_convertible_test>()));
-  ASSERT_FALSE((concepts::LessThan.check<int, less_than_op_member_test>()));
-  ASSERT_FALSE((concepts::LessThan.check<no_operator_test, no_operator_test>()));
+  ASSERT_TRUE((concepts::Less.check<less_than_op_member_test, int>()));
+  ASSERT_TRUE((concepts::Less.check<less_than_op_friend_test, int>()));
+  ASSERT_TRUE((concepts::Less.check<int, less_than_op_friend_test>()));
+  ASSERT_TRUE((concepts::Less.check<bool, int>()));
+  ASSERT_TRUE((concepts::Less.check<double, int>()));
+  ASSERT_TRUE((concepts::Less.check<bool_convertible_test, int_convertible_test>()));
+  ASSERT_FALSE((concepts::Less.check<int, less_than_op_member_test>()));
+  ASSERT_FALSE((concepts::Less.check<no_operator_test, no_operator_test>()));
 }
 
 struct less_equal_than_op_member_test {
@@ -1154,16 +1154,16 @@ struct less_equal_than_op_friend_test {
   }
 };
 
-TEST(Concepts_Utility, Comparison_LessEqualThan)
+TEST(Concepts_Utility, Comparison_LessEqual)
 {
-  ASSERT_TRUE((concepts::LessEqualThan.check<less_equal_than_op_member_test, int>()));
-  ASSERT_TRUE((concepts::LessEqualThan.check<less_equal_than_op_friend_test, int>()));
-  ASSERT_TRUE((concepts::LessEqualThan.check<int, less_equal_than_op_friend_test>()));
-  ASSERT_TRUE((concepts::LessEqualThan.check<bool, int>()));
-  ASSERT_TRUE((concepts::LessEqualThan.check<double, int>()));
-  ASSERT_TRUE((concepts::LessEqualThan.check<bool_convertible_test, int_convertible_test>()));
-  ASSERT_FALSE((concepts::LessEqualThan.check<int, less_equal_than_op_member_test>()));
-  ASSERT_FALSE((concepts::LessEqualThan.check<no_operator_test, no_operator_test>()));
+  ASSERT_TRUE((concepts::LessEqual.check<less_equal_than_op_member_test, int>()));
+  ASSERT_TRUE((concepts::LessEqual.check<less_equal_than_op_friend_test, int>()));
+  ASSERT_TRUE((concepts::LessEqual.check<int, less_equal_than_op_friend_test>()));
+  ASSERT_TRUE((concepts::LessEqual.check<bool, int>()));
+  ASSERT_TRUE((concepts::LessEqual.check<double, int>()));
+  ASSERT_TRUE((concepts::LessEqual.check<bool_convertible_test, int_convertible_test>()));
+  ASSERT_FALSE((concepts::LessEqual.check<int, less_equal_than_op_member_test>()));
+  ASSERT_FALSE((concepts::LessEqual.check<no_operator_test, no_operator_test>()));
 }
 
 struct greater_than_op_member_test {
@@ -1183,16 +1183,16 @@ struct greater_than_op_friend_test {
   }
 };
 
-TEST(Concepts_Utility, Comparison_GreaterThan)
+TEST(Concepts_Utility, Comparison_Greater)
 {
-  ASSERT_TRUE((concepts::GreaterThan.check<greater_than_op_member_test, int>()));
-  ASSERT_TRUE((concepts::GreaterThan.check<greater_than_op_friend_test, int>()));
-  ASSERT_TRUE((concepts::GreaterThan.check<int, greater_than_op_friend_test>()));
-  ASSERT_TRUE((concepts::GreaterThan.check<bool, int>()));
-  ASSERT_TRUE((concepts::GreaterThan.check<double, int>()));
-  ASSERT_TRUE((concepts::GreaterThan.check<bool_convertible_test, int_convertible_test>()));
-  ASSERT_FALSE((concepts::GreaterThan.check<int, greater_than_op_member_test>()));
-  ASSERT_FALSE((concepts::GreaterThan.check<no_operator_test, no_operator_test>()));
+  ASSERT_TRUE((concepts::Greater.check<greater_than_op_member_test, int>()));
+  ASSERT_TRUE((concepts::Greater.check<greater_than_op_friend_test, int>()));
+  ASSERT_TRUE((concepts::Greater.check<int, greater_than_op_friend_test>()));
+  ASSERT_TRUE((concepts::Greater.check<bool, int>()));
+  ASSERT_TRUE((concepts::Greater.check<double, int>()));
+  ASSERT_TRUE((concepts::Greater.check<bool_convertible_test, int_convertible_test>()));
+  ASSERT_FALSE((concepts::Greater.check<int, greater_than_op_member_test>()));
+  ASSERT_FALSE((concepts::Greater.check<no_operator_test, no_operator_test>()));
 }
 
 struct greater_equal_than_op_member_test {
@@ -1212,16 +1212,16 @@ struct greater_equal_than_op_friend_test {
   }
 };
 
-TEST(Concepts_Utility, Comparison_GreaterEqualThan)
+TEST(Concepts_Utility, Comparison_GreaterEqual)
 {
-  ASSERT_TRUE((concepts::GreaterEqualThan.check<greater_equal_than_op_member_test, int>()));
-  ASSERT_TRUE((concepts::GreaterEqualThan.check<greater_equal_than_op_friend_test, int>()));
-  ASSERT_TRUE((concepts::GreaterEqualThan.check<int, greater_equal_than_op_friend_test>()));
-  ASSERT_TRUE((concepts::GreaterEqualThan.check<bool, int>()));
-  ASSERT_TRUE((concepts::GreaterEqualThan.check<double, int>()));
-  ASSERT_TRUE((concepts::GreaterEqualThan.check<bool_convertible_test, int_convertible_test>()));
-  ASSERT_FALSE((concepts::GreaterEqualThan.check<int, greater_equal_than_op_member_test>()));
-  ASSERT_FALSE((concepts::GreaterEqualThan.check<no_operator_test, no_operator_test>()));
+  ASSERT_TRUE((concepts::GreaterEqual.check<greater_equal_than_op_member_test, int>()));
+  ASSERT_TRUE((concepts::GreaterEqual.check<greater_equal_than_op_friend_test, int>()));
+  ASSERT_TRUE((concepts::GreaterEqual.check<int, greater_equal_than_op_friend_test>()));
+  ASSERT_TRUE((concepts::GreaterEqual.check<bool, int>()));
+  ASSERT_TRUE((concepts::GreaterEqual.check<double, int>()));
+  ASSERT_TRUE((concepts::GreaterEqual.check<bool_convertible_test, int_convertible_test>()));
+  ASSERT_FALSE((concepts::GreaterEqual.check<int, greater_equal_than_op_member_test>()));
+  ASSERT_FALSE((concepts::GreaterEqual.check<no_operator_test, no_operator_test>()));
 }
 
 

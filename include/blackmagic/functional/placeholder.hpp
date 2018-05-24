@@ -423,97 +423,97 @@ inline namespace comparison {
 // ==
 constexpr decltype(auto) operator==(const placeholder_t&, const placeholder_t&)
 {
-  return partial(equal_to);
+  return partial(equal);
 }
 template <typename T>
 constexpr decltype(auto) operator==(T&& v, const placeholder_t&)
 {
-  return partial(equal_to, std::forward<T>(v));
+  return partial(equal, std::forward<T>(v));
 }
 template <typename T>
 constexpr decltype(auto) operator==(const placeholder_t&, T&& v)
 {
-  return reverse_partial(equal_to, std::forward<T>(v));
+  return reverse_partial(equal, std::forward<T>(v));
 }
 
 // !=
 constexpr decltype(auto) operator!=(const placeholder_t&, const placeholder_t&)
 {
-  return partial(not_equal_to);
+  return partial(not_equal);
 }
 template <typename T>
 constexpr decltype(auto) operator!=(T&& v, const placeholder_t&)
 {
-  return partial(not_equal_to, std::forward<T>(v));
+  return partial(not_equal, std::forward<T>(v));
 }
 template <typename T>
 constexpr decltype(auto) operator!=(const placeholder_t&, T&& v)
 {
-  return reverse_partial(not_equal_to, std::forward<T>(v));
+  return reverse_partial(not_equal, std::forward<T>(v));
 }
 
 // <
 constexpr decltype(auto) operator<(const placeholder_t&, const placeholder_t&)
 {
-  return partial(less_than);
+  return partial(less);
 }
 template <typename T>
 constexpr decltype(auto) operator<(T&& v, const placeholder_t&)
 {
-  return partial(less_than, std::forward<T>(v));
+  return partial(less, std::forward<T>(v));
 }
 template <typename T>
 constexpr decltype(auto) operator<(const placeholder_t&, T&& v)
 {
-  return reverse_partial(less_than, std::forward<T>(v));
+  return reverse_partial(less, std::forward<T>(v));
 }
 
 // <=
 constexpr decltype(auto) operator<=(const placeholder_t&, const placeholder_t&)
 {
-  return partial(less_equal_than);
+  return partial(less_equal);
 }
 template <typename T>
 constexpr decltype(auto) operator<=(T&& v, const placeholder_t&)
 {
-  return partial(less_equal_than, std::forward<T>(v));
+  return partial(less_equal, std::forward<T>(v));
 }
 template <typename T>
 constexpr decltype(auto) operator<=(const placeholder_t&, T&& v)
 {
-  return reverse_partial(less_equal_than, std::forward<T>(v));
+  return reverse_partial(less_equal, std::forward<T>(v));
 }
 
 // >
 constexpr decltype(auto) operator>(const placeholder_t&, const placeholder_t&)
 {
-  return partial(greater_than);
+  return partial(greater);
 }
 template <typename T>
 constexpr decltype(auto) operator>(T&& v, const placeholder_t&)
 {
-  return partial(greater_than, std::forward<T>(v));
+  return partial(greater, std::forward<T>(v));
 }
 template <typename T>
 constexpr decltype(auto) operator>(const placeholder_t&, T&& v)
 {
-  return reverse_partial(greater_than, std::forward<T>(v));
+  return reverse_partial(greater, std::forward<T>(v));
 }
 
 // >=
 constexpr decltype(auto) operator>=(const placeholder_t&, const placeholder_t&)
 {
-  return partial(greater_equal_than);
+  return partial(greater_equal);
 }
 template <typename T>
 constexpr decltype(auto) operator>=(T&& v, const placeholder_t&)
 {
-  return partial(greater_equal_than, std::forward<T>(v));
+  return partial(greater_equal, std::forward<T>(v));
 }
 template <typename T>
 constexpr decltype(auto) operator>=(const placeholder_t&, T&& v)
 {
-  return reverse_partial(greater_equal_than, std::forward<T>(v));
+  return reverse_partial(greater_equal, std::forward<T>(v));
 }
 
 } // namespace comparison

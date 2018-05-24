@@ -307,59 +307,59 @@ inline constexpr const bit_rshift_assign_t bit_rshift_assign{};
 
 
 inline namespace comparison {
-struct equal_to_t {
+struct equal_t {
   template <typename T, typename U>
   constexpr decltype(auto) operator()(T&& a, U&& b) const
   {
     return std::forward<T>(a) == std::forward<U>(b);
   }
 };
-inline constexpr const equal_to_t equal_to{};
+inline constexpr const equal_t equal{};
 
-struct not_equal_to_t {
+struct not_equal_t {
   template <typename T, typename U>
   constexpr decltype(auto) operator()(T&& a, U&& b) const
   {
     return std::forward<T>(a) != std::forward<U>(b);
   }
 };
-inline constexpr const not_equal_to_t not_equal_to{};
+inline constexpr const not_equal_t not_equal{};
 
-struct less_than_t {
+struct less_t {
   template <typename T, typename U>
   constexpr decltype(auto) operator()(T&& a, U&& b) const
   {
     return std::forward<T>(a) < std::forward<U>(b);
   }
 };
-inline constexpr const less_than_t less_than{};
+inline constexpr const less_t less{};
 
-struct less_equal_than_t {
+struct less_equal_t {
   template <typename T, typename U>
   constexpr decltype(auto) operator()(T&& a, U&& b) const
   {
     return std::forward<T>(a) <= std::forward<U>(b);
   }
 };
-inline constexpr const less_equal_than_t less_equal_than{};
+inline constexpr const less_equal_t less_equal{};
 
-struct greater_than_t {
+struct greater_t {
   template <typename T, typename U>
   constexpr decltype(auto) operator()(T&& a, U&& b) const
   {
     return std::forward<T>(a) > std::forward<U>(b);
   }
 };
-inline constexpr const greater_than_t greater_than{};
+inline constexpr const greater_t greater{};
 
-struct greater_equal_than_t {
+struct greater_equal_t {
   template <typename T, typename U>
   constexpr decltype(auto) operator()(T&& a, U&& b) const
   {
     return std::forward<T>(a) >= std::forward<U>(b);
   }
 };
-inline constexpr const greater_equal_than_t greater_equal_than{};
+inline constexpr const greater_equal_t greater_equal{};
 
 } // namespace comparison
 
