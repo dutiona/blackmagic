@@ -55,7 +55,7 @@ template <template <auto...> class T, template <auto...> class U, auto... ArgsT,
           typename = std::enable_if_t<details::enabled_equal_to_v<T, U>>>
 constexpr decltype(auto) operator==(T<ArgsT...>&& t, U<ArgsU...>&& u)
 {
-  return equal_to<T, U>(std::forward<T>(t), std::forward<U>(u));
+  return equal_to(std::forward<T<ArgsT...>>(t), std::forward<U<ArgsU...>>(u));
 }
 
 // !=
@@ -63,7 +63,7 @@ template <template <auto...> class T, template <auto...> class U, auto... ArgsT,
           typename = std::enable_if_t<details::enabled_not_equal_to_v<T, U>>>
 constexpr decltype(auto) operator!=(T<ArgsT...>&& t, U<ArgsU...>&& u)
 {
-  return not_equal_to<T, U>(std::forward<T>(t), std::forward<U>(u));
+  return not_equal_to(std::forward<T<ArgsT...>>(t), std::forward<U<ArgsU...>>(u));
 }
 
 // <
@@ -71,7 +71,7 @@ template <template <auto...> class T, template <auto...> class U, auto... ArgsT,
           typename = std::enable_if_t<details::enabled_less_than_v<T, U>>>
 constexpr decltype(auto) operator<(T<ArgsT...>&& t, U<ArgsU...>&& u)
 {
-  return less_than<T, U>(std::forward<T>(t), std::forward<U>(u));
+  return less_than(std::forward<T<ArgsT...>>(t), std::forward<U<ArgsU...>>(u));
 }
 
 // <=
@@ -79,7 +79,7 @@ template <template <auto...> class T, template <auto...> class U, auto... ArgsT,
           typename = std::enable_if_t<details::enabled_less_equal_than_v<T, U>>>
 constexpr decltype(auto) operator<=(T<ArgsT...>&& t, U<ArgsU...>&& u)
 {
-  return less_equal_than<T, U>(std::forward<T>(t), std::forward<U>(u));
+  return less_equal_than(std::forward<T<ArgsT...>>(t), std::forward<U<ArgsU...>>(u));
 }
 
 // >
@@ -87,7 +87,7 @@ template <template <auto...> class T, template <auto...> class U, auto... ArgsT,
           typename = std::enable_if_t<details::enabled_greater_than_v<T, U>>>
 constexpr decltype(auto) operator>(T<ArgsT...>&& t, U<ArgsU...>&& u)
 {
-  return greater_than<T, U>(std::forward<T>(t), std::forward<U>(u));
+  return greater_than(std::forward<T<ArgsT...>>(t), std::forward<U<ArgsU...>>(u));
 }
 
 // >=
@@ -95,7 +95,7 @@ template <template <auto...> class T, template <auto...> class U, auto... ArgsT,
           typename = std::enable_if_t<details::enabled_greater_equal_than_v<T, U>>>
 constexpr decltype(auto) operator>=(T<ArgsT...>&& t, U<ArgsU...>&& u)
 {
-  return greater_equal_than<T, U>(std::forward<T>(t), std::forward<U>(u));
+  return greater_equal_than(std::forward<T<ArgsT...>>(t), std::forward<U<ArgsU...>>(u));
 }
 
 }}} // namespace blackmagic::integral::operators::comparison

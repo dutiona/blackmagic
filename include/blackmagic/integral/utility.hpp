@@ -149,88 +149,232 @@ inline constexpr const auto logical_not_v = _v<logical_not_t<T>>;
 } // namespace logical
 
 
-inline namespace traits {
+inline namespace functors {
 inline namespace arithmetic {
-template <typename T>
-inline constexpr const common::trait_t<increment_t, T> increment{};
+struct increment_impl {
+  template <typename T>
+  constexpr decltype(auto) operator()(T&& t) const
+  {
+    return increment_t<T>{};
+  }
+};
+inline constexpr increment_impl increment{};
 
-template <typename T>
-inline constexpr const common::trait_t<decrement_t, T> decrement{};
+struct decrement_impl {
+  template <typename T>
+  constexpr decltype(auto) operator()(T&& t) const
+  {
+    return decrement_t<T>{};
+  }
+};
+inline constexpr const decrement_impl decrement{};
 
-template <typename T, typename U>
-inline constexpr const common::trait_t<plus_t, T, U> plus{};
+struct plus_impl {
+  template <typename T, typename U>
+  constexpr plus_t<T, U> operator()(T&&, U&&) const
+  {
+    return plus_t<T, U>{};
+  }
+};
+inline constexpr const plus_impl plus{};
 
-template <typename T, typename U>
-inline constexpr const common::trait_t<minus_t, T, U> minus{};
+struct minus_impl {
+  template <typename T, typename U>
+  constexpr minus_t<T, U> operator()(T&&, U&&) const
+  {
+    return minus_t<T, U>{};
+  }
+};
+inline constexpr const minus_impl minus{};
 
-template <typename T, typename U>
-inline constexpr const common::trait_t<mult_t, T, U> mult{};
+struct mult_impl {
+  template <typename T, typename U>
+  constexpr mult_t<T, U> operator()(T&&, U&&) const
+  {
+    return mult_t<T, U>{};
+  }
+};
+inline constexpr const mult_impl mult{};
 
-template <typename T, typename U>
-inline constexpr const common::trait_t<div_t, T, U> div{};
+struct div_impl {
+  template <typename T, typename U>
+  constexpr div_t<T, U> operator()(T&&, U&&) const
+  {
+    return div_t<T, U>{};
+  }
+};
+inline constexpr const div_impl div{};
 
-template <typename T, typename U>
-inline constexpr const common::trait_t<mod_t, T, U> mod{};
+struct mod_impl {
+  template <typename T, typename U>
+  constexpr mod_t<T, U> operator()(T&&, U&&) const
+  {
+    return mod_t<T, U>{};
+  }
+};
+inline constexpr const mod_impl mod{};
 
-template <typename T>
-inline constexpr const common::trait_t<positive_t, T> positive{};
+struct positive_impl {
+  template <typename T>
+  constexpr decltype(auto) operator()(T&&) const
+  {
+    return positive_t<T>{};
+  }
+};
+inline constexpr const positive_impl positive{};
 
-template <typename T>
-inline constexpr const common::trait_t<negative_t, T> negative{};
+struct negative_impl {
+  template <typename T>
+  constexpr decltype(auto) operator()(T&&) const
+  {
+    return negative_t<T>{};
+  }
+};
+inline constexpr const negative_impl negative{};
 
-template <typename T>
-inline constexpr const common::trait_t<bit_not_t, T> bit_not{};
+struct bit_not_impl {
+  template <typename T>
+  constexpr decltype(auto) operator()(T&&) const
+  {
+    return bit_not_t<T>{};
+  }
+};
+inline constexpr const bit_not_impl bit_not{};
 
-template <typename T, typename U>
-inline constexpr const common::trait_t<bit_and_t, T, U> bit_and{};
+struct bit_and_impl {
+  template <typename T, typename U>
+  constexpr bit_and_t<T, U> operator()(T&&, U&&) const
+  {
+    return bit_and_t<T, U>{};
+  }
+};
+inline constexpr const bit_and_impl bit_and{};
 
-template <typename T, typename U>
-inline constexpr const common::trait_t<bit_or_t, T, U> bit_or{};
+struct bit_or_impl {
+  template <typename T, typename U>
+  constexpr bit_or_t<T, U> operator()(T&&, U&&) const
+  {
+    return bit_or_t<T, U>{};
+  }
+};
+inline constexpr const bit_or_impl bit_or{};
 
-template <typename T, typename U>
-inline constexpr const common::trait_t<bit_xor_t, T, U> bit_xor{};
+struct bit_xor_impl {
+  template <typename T, typename U>
+  constexpr bit_xor_t<T, U> operator()(T&&, U&&) const
+  {
+    return bit_xor_t<T, U>{};
+  }
+};
+inline constexpr const bit_xor_impl bit_xor{};
 
-template <typename T, typename U>
-inline constexpr const common::trait_t<bit_lshift_t, T, U> bit_lshift{};
+struct bit_lshift_impl {
+  template <typename T, typename U>
+  constexpr bit_lshift_t<T, U> operator()(T&&, U&&) const
+  {
+    return bit_lshift_t<T, U>{};
+  }
+};
+inline constexpr const bit_lshift_impl bit_lshift{};
 
-template <typename T, typename U>
-inline constexpr const common::trait_t<bit_rshift_t, T, U> bit_rshift{};
+struct bit_rshift_impl {
+  template <typename T, typename U>
+  constexpr bit_rshift_t<T, U> operator()(T&&, U&&) const
+  {
+    return bit_rshift_t<T, U>{};
+  }
+};
+inline constexpr const bit_rshift_impl bit_rshift{};
 
 } // namespace arithmetic
 
 
 inline namespace comparison {
-template <typename T, typename U>
-inline constexpr const common::trait_t<equal_to_t, T, U> equal_to{};
+struct equal_to_impl {
+  template <typename T, typename U>
+  constexpr equal_to_t<T, U> operator()(T&&, U&&) const
+  {
+    return equal_to_t<T, U>{};
+  }
+};
+inline constexpr const equal_to_impl equal_to{};
 
-template <typename T, typename U>
-inline constexpr const common::trait_t<not_equal_to_t, T, U> not_equal_to{};
+struct not_equal_to_impl {
+  template <typename T, typename U>
+  constexpr not_equal_to_t<T, U> operator()(T&&, U&&) const
+  {
+    return not_equal_to_t<T, U>{};
+  }
+};
+inline constexpr const not_equal_to_impl not_equal_to{};
 
-template <typename T, typename U>
-inline constexpr const common::trait_t<greater_than_t, T, U> greater_than{};
+struct greater_than_impl {
+  template <typename T, typename U>
+  constexpr greater_than_t<T, U> operator()(T&&, U&&) const
+  {
+    return greater_than_t<T, U>{};
+  }
+};
+inline constexpr const greater_than_impl greater_than{};
 
-template <typename T, typename U>
-inline constexpr const common::trait_t<less_than_t, T, U> less_than{};
+struct less_than_impl {
+  template <typename T, typename U>
+  constexpr less_than_t<T, U> operator()(T&&, U&&) const
+  {
+    return less_than_t<T, U>{};
+  }
+};
+inline constexpr const less_than_impl less_than{};
 
-template <typename T, typename U>
-inline constexpr const common::trait_t<greater_equal_than_t, T, U> greater_equal_than{};
+struct greater_equal_than_impl {
+  template <typename T, typename U>
+  constexpr greater_equal_than_t<T, U> operator()(T&&, U&&) const
+  {
+    return greater_equal_than_t<T, U>{};
+  }
+};
+inline constexpr const greater_equal_than_impl greater_equal_than{};
 
-template <typename T, typename U>
-inline constexpr const common::trait_t<less_equal_than_t, T, U> less_equal_than{};
+struct less_equal_than_impl {
+  template <typename T, typename U>
+  constexpr less_equal_than_t<T, U> operator()(T&&, U&&) const
+  {
+    return less_equal_than_t<T, U>{};
+  }
+};
+inline constexpr const less_equal_than_impl less_equal_than{};
 } // namespace comparison
 
 
 inline namespace logical {
-template <typename T, typename U>
-inline constexpr const common::trait_t<logical_and_t, T, U> logical_and{};
+struct logical_and_impl {
+  template <typename T, typename U>
+  constexpr logical_and_t<T, U> operator()(T&&, U&&) const
+  {
+    return logical_and_t<T, U>{};
+  }
+};
+inline constexpr const logical_and_impl logical_and{};
 
-template <typename T, typename U>
-inline constexpr const common::trait_t<logical_or_t, T, U> logical_or{};
+struct logical_or_impl {
+  template <typename T, typename U>
+  constexpr logical_or_t<T, U> operator()(T&&, U&&) const
+  {
+    return logical_or_t<T, U>{};
+  }
+};
+inline constexpr const logical_or_impl logical_or{};
 
-template <typename T>
-inline constexpr const common::trait_t<logical_not_t, T> logical_not{};
+struct logical_not_impl {
+  template <typename T>
+  constexpr logical_not_t<T> operator()(T&&) const
+  {
+    return logical_not_t<T>{};
+  }
+};
+inline constexpr const logical_not_impl logical_not{};
 } // namespace logical
 
-} // namespace traits
+} // namespace functors
 
 }} // namespace blackmagic::integral::utility

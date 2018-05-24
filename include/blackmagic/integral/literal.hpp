@@ -165,7 +165,7 @@ constexpr decltype(auto) operator""_usc()
 template <char... C>
 constexpr decltype(auto) operator""_uc()
 {
-  return unsigned_long_long_t<details::parse_unsigned_number({C...})>{};
+  return unsigned_t<details::parse_unsigned_number({C...})>{};
 }
 
 template <char... C>

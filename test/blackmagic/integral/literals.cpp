@@ -93,11 +93,11 @@ TEST(Integral_Literals, UnsignedShort)
 }
 
 // _uc unsigned common
-TEST(Integral_Literals, UnsignedCommon)
+TEST(Integral_Literals, Unsigned)
 {
-  static_assert(std::is_same_v<integral::unsigned_long_long_t<1>, std::remove_reference_t<decltype(1_uc)>>);
-  static_assert(std::is_same_v<integral::unsigned_long_long_t<1>::value_type, unsigned long long>);
-  static_assert(integral::unsigned_long_long_v<1> == 1);
+  static_assert(std::is_same_v<integral::unsigned_t<1>, std::remove_reference_t<decltype(1_uc)>>);
+  static_assert(std::is_same_v<integral::unsigned_t<1>::value_type, unsigned>);
+  static_assert(integral::unsigned_v<1> == 1);
 }
 
 // _uic unsigned int
@@ -106,10 +106,6 @@ TEST(Integral_Literals, UnsignedInt)
   static_assert(std::is_same_v<integral::unsigned_int_t<1>, std::remove_reference_t<decltype(1_uic)>>);
   static_assert(std::is_same_v<integral::unsigned_int_t<1>::value_type, unsigned int>);
   static_assert(integral::unsigned_int_v<1> == 1);
-
-  static_assert(std::is_same_v<integral::unsigned_t<1>, std::remove_reference_t<decltype(1_uic)>>);
-  static_assert(std::is_same_v<integral::unsigned_t<1>::value_type, unsigned>);
-  static_assert(integral::unsigned_v<1> == 1);
 }
 
 // _ulc unsigned long

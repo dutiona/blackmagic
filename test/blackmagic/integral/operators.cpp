@@ -122,10 +122,10 @@ TEST(Integral_Operators, Comparison_GreaterEqualThan)
 
 TEST(Integral_Operators, Logical_Not)
 {
-  static_assert(!"false"_bc == "true"_bc);
-  static_assert(!"false"_bc != "false"_bc);
-  static_assert(!"true"_bc == "false"_bc);
-  static_assert(!"true"_bc != "true"_bc);
+  static_assert((!"false"_bc) == "true"_bc);
+  static_assert((!"false"_bc) != "false"_bc);
+  static_assert((!"true"_bc) == "false"_bc);
+  static_assert((!"true"_bc) != "true"_bc);
 }
 
 TEST(Integral_Operators, Logical_And)

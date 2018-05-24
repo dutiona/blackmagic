@@ -39,7 +39,7 @@ template <template <auto...> class T, template <auto...> class U, auto... ArgsT,
           typename = std::enable_if_t<details::enabled_and_v<T, U>>>
 constexpr decltype(auto) operator&&(T<ArgsT...>&& t, U<ArgsU...>&& u)
 {
-  return logical_and<T, U>(std::forward<T>(t), std::forward<U>(u));
+  return logical_and(std::forward<T<ArgsT...>>(t), std::forward<U<ArgsU...>>(u));
 }
 
 // ||
@@ -47,14 +47,14 @@ template <template <auto...> class T, template <auto...> class U, auto... ArgsT,
           typename = std::enable_if_t<details::enabled_or_v<T, U>>>
 constexpr decltype(auto) operator||(T<ArgsT...>&& t, U<ArgsU...>&& u)
 {
-  return logical_or<T, U>(std::forward<T>(t), std::forward<U>(u));
+  return logical_or(std::forward<T<ArgsT...>>(t), std::forward<U<ArgsU...>>(u));
 }
 
 // !
 template <template <auto...> class T, auto... Args, typename = std::enable_if_t<details::enabled_not_v<T>>>
 constexpr decltype(auto) operator!(T<Args...>&& t)
 {
-  return logical_not<T>(std::forward<T>(t));
+  return logical_not(std::forward<T<Args...>>(t));
 }
 
 }}} // namespace blackmagic::integral::operators::logical
