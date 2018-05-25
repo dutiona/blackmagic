@@ -65,4 +65,9 @@ struct tag_of<integral::unsigned_long_long_t> {
   using type = struct UnsignedLongLongTag;
 };
 
+template <>
+struct tag_of<integral::size_t_t> {
+  using type = struct SizeTTag;
+};
+
 }} // namespace blackmagic::integral::tags

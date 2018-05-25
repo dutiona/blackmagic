@@ -10,8 +10,6 @@
 
 namespace blackmagic::tuple { inline namespace algorithm {
 
-namespace common = blackmagic::common;
-
 struct remove_t {
   template <typename T, typename... Ts>
   constexpr auto operator()(const std::tuple<Ts...>& tpl, T&& value) const

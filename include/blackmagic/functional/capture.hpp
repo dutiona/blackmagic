@@ -9,8 +9,6 @@
 
 namespace blackmagic::functional {
 
-namespace tuple = blackmagic::tuple;
-
 namespace details {
 
 template <typename... Args>

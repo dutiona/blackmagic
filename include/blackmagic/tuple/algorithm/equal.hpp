@@ -1,37 +1,35 @@
 #pragma once
 
-#include "../../common/algorithm/any_of_v.hpp"
+#include "../../common/algorithm/all_of_v.hpp"
 
 #include <tuple>
 #include <utility>
 
 namespace blackmagic::tuple { inline namespace algorithm {
 
-namespace common = blackmagic::common;
-
 namespace details {
 
 template <typename... Ts, typename... Us, size_t... I>
-constexpr bool not_equal_impl(const std::tuple<Ts...>& lhs, const std::tuple<Us...>& rhs, std::index_sequence<I...>)
+constexpr bool equal_impl(const std::tuple<Ts...>& lhs, const std::tuple<Us...>& rhs, std::index_sequence<I...>)
 {
-  return common::any_of_v((std::get<I>(lhs) != std::get<I>(rhs))...);
+  return common::all_of_v((std::get<I>(lhs) == std::get<I>(rhs))...);
 }
 
 } // namespace details
 
-struct not_equals_t {
+struct equal_t {
   template <typename... Ts, typename... Us>
   constexpr bool operator()(const std::tuple<Ts...>& lhs, const std::tuple<Us...>& rhs) const
   {
     if constexpr (sizeof...(Ts) != sizeof...(Us)) {
-      return true;
+      return false;
     }
     else {
-      return details::not_equal_impl(lhs, rhs, std::index_sequence_for<Ts...>{});
+      return details::equal_impl(lhs, rhs, std::index_sequence_for<Ts...>{});
     }
   }
 };
 
-inline constexpr const not_equals_t not_equals{};
+inline constexpr const equal_t equal{};
 
 }} // namespace blackmagic::tuple::algorithm

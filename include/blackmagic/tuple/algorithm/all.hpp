@@ -8,8 +8,6 @@
 
 namespace blackmagic::tuple { inline namespace algorithm {
 
-namespace functional = blackmagic::functional;
-
 struct all_t {
   template <typename... Ts>
   constexpr bool operator()(const std::tuple<Ts...>& tpl) const

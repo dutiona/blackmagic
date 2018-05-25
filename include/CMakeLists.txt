@@ -84,7 +84,7 @@ set(BLACKMAGIC_FUNCTIONAL_SOURCES
 
 set(BLACKMAGIC_INTEGRAL_SOURCES
         blackmagic/integral/integral.hpp
-        blackmagic/integral/literal.hpp
+        blackmagic/integral/literals.hpp
         blackmagic/integral/operators.hpp
         blackmagic/integral/types.hpp
         blackmagic/integral/utility.hpp
@@ -120,7 +120,7 @@ set(BLACKMAGIC_TUPLE_SOURCES
         blackmagic/tuple/algorithm/count.hpp
         blackmagic/tuple/algorithm/count_if.hpp
         blackmagic/tuple/algorithm/end.hpp
-        blackmagic/tuple/algorithm/equals.hpp
+        blackmagic/tuple/algorithm/equal.hpp
         blackmagic/tuple/algorithm/filter.hpp
         blackmagic/tuple/algorithm/find.hpp
         blackmagic/tuple/algorithm/find_if.hpp
@@ -133,7 +133,7 @@ set(BLACKMAGIC_TUPLE_SOURCES
         blackmagic/tuple/algorithm/merge.hpp
         blackmagic/tuple/algorithm/none.hpp
         blackmagic/tuple/algorithm/none_of.hpp
-        blackmagic/tuple/algorithm/not_equals.hpp
+        blackmagic/tuple/algorithm/not_equal.hpp
         blackmagic/tuple/algorithm/pop_back.hpp
         blackmagic/tuple/algorithm/pop_front.hpp
         blackmagic/tuple/algorithm/push_back.hpp

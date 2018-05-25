@@ -1,4 +1,3 @@
-#include <blackmagic/common/common.hpp>
 #include <blackmagic/functional/functional.hpp>
 #include <blackmagic/integral/integral.hpp>
 
@@ -6,7 +5,6 @@
 
 namespace functional = blackmagic::functional;
 namespace integral   = blackmagic::integral;
-namespace common     = blackmagic::common;
 using namespace integral::literals;
 using namespace functional::placeholder;
 

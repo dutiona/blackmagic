@@ -8,7 +8,6 @@
 
 namespace blackmagic::integral { inline namespace utility {
 
-namespace common = blackmagic::common;
 using common::_v;
 using common::_v_t;
 

@@ -7,8 +7,6 @@
 
 namespace blackmagic::tuple { inline namespace algorithm {
 
-namespace type   = blackmagic::type;
-
 namespace details {
 
 template <bool... bools>

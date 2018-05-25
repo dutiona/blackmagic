@@ -7,8 +7,6 @@
 
 namespace blackmagic::pair { inline namespace algorithm {
 
-namespace common = blackmagic::common;
-
 // from_tuple
 struct flip_inplace_t {
   template <typename T, typename U>

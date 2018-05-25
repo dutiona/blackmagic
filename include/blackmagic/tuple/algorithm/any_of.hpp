@@ -10,8 +10,6 @@
 
 namespace blackmagic::tuple { inline namespace algorithm {
 
-namespace common = blackmagic::common;
-
 struct any_of_t {
   template <typename Func, typename... Ts>
   constexpr bool operator()(std::tuple<Ts...> tpl, Func&& f) const

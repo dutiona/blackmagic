@@ -13,8 +13,6 @@
 
 namespace blackmagic::tuple { inline namespace algorithm {
 
-namespace common = blackmagic::common;
-
 // fwd decl
 struct unique_t {
   template <typename... Ts>

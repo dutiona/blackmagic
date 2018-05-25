@@ -8,8 +8,6 @@
 
 namespace blackmagic::functional::lazy {
 
-namespace tuple = blackmagic::tuple;
-
 template <typename F, typename... Args>
 class lazy_expr {
 public:

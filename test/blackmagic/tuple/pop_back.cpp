@@ -9,5 +9,5 @@ using namespace std::literals;
 
 TEST(Tuple_Pop_back, Simple)
 {
-  ASSERT_TRUE(tuple::equals(tuple::pop_back(std::make_tuple("str"sv, 1, 6.0)), std::make_tuple("str"sv, 1)));
+  ASSERT_TRUE(tuple::equal(tuple::pop_back(std::make_tuple("str"sv, 1, 6.0)), std::make_tuple("str"sv, 1)));
 }

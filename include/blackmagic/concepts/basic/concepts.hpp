@@ -8,7 +8,6 @@
 namespace blackmagic::concepts { inline namespace basic {
 
 using namespace std::literals;
-namespace traits = blackmagic::traits;
 
 // default constructible
 inline constexpr auto DefaultConstructible = is_true<traits::is_default_constructible>("DefaultConstructible"sv);

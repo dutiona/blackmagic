@@ -7,7 +7,6 @@
 
 namespace blackmagic::integral {
 
-namespace common = blackmagic::common;
 using common::_v;
 
 template <bool B>

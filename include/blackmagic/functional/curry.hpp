@@ -8,8 +8,6 @@
 
 namespace blackmagic::functional {
 
-namespace integral = blackmagic::integral;
-
 // fwd dcl
 struct curry_t {
   template <typename Func, size_t N>

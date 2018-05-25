@@ -6,7 +6,6 @@
 
 namespace blackmagic::pair { inline namespace utility {
 
-
 // first
 struct first_t {
   template <typename T, typename U>

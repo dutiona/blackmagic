@@ -8,7 +8,6 @@
 
 namespace blackmagic::tuple { inline namespace utility {
 
-namespace common = blackmagic::common;
 using common::_v;
 
 // tuple_remove_const

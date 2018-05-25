@@ -10,9 +10,6 @@
 
 namespace blackmagic::functional::lazy {
 
-namespace integral = blackmagic::integral;
-namespace common   = blackmagic::common;
-
 namespace details {
 
 template <typename T>

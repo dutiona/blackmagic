@@ -7,8 +7,6 @@
 
 namespace blackmagic::type {
 
-namespace integral = blackmagic::integral;
-
 // FIXME use -1_c when implemented
 using npos = integral::long_long_t<-1>;
 

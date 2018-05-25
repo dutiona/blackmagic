@@ -10,7 +10,6 @@
 
 namespace blackmagic::integral { inline namespace operators { inline namespace arithmetic {
 
-namespace common = blackmagic::common;
 using common::_t;
 using trait::arithmetic_trait;
 using trait::enable_trait;

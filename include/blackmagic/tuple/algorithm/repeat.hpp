@@ -9,8 +9,6 @@
 
 namespace blackmagic::tuple { inline namespace algorithm {
 
-namespace integral = blackmagic::integral;
-
 struct repeat_t {
   template <typename T, size_t N>
   constexpr auto operator()(T&& e, integral::size_t_t<N>) const;

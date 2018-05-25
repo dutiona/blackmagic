@@ -7,8 +7,6 @@
 
 namespace blackmagic::tuple { inline namespace algorithm {
 
-namespace integral = blackmagic::integral;
-
 namespace details {
 
 template <typename... Ts, size_t... I>

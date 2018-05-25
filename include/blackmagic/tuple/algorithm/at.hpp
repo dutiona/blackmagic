@@ -7,8 +7,6 @@
 
 namespace blackmagic::tuple { inline namespace algorithm {
 
-namespace common = blackmagic::common;
-
 struct at_t {
   template <typename... Ts, typename N>
   constexpr decltype(auto) operator()(const std::tuple<Ts...>& tpl, N) const

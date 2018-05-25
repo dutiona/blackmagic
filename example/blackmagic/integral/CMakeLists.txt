@@ -1,1 +1,1 @@
-add_example(integral_literal "literal.cpp")
+add_example(integral_literal "literals.cpp")

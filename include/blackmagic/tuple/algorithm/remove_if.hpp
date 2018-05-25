@@ -12,7 +12,6 @@
 
 namespace blackmagic::tuple { inline namespace algorithm {
 
-namespace common = blackmagic::common;
 using common::_v;
 
 namespace details {

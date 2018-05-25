@@ -18,9 +18,6 @@
 
 namespace blackmagic::concepts { inline namespace engine {
 
-namespace common = blackmagic::common;
-namespace tuple  = blackmagic::tuple;
-
 namespace details {
 
 struct ensure_unique_keys_t {

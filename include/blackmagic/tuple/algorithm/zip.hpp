@@ -15,9 +15,6 @@
 
 namespace blackmagic::tuple { inline namespace algorithm {
 
-namespace common   = blackmagic::common;
-namespace integral = blackmagic::integral;
-
 // fwd dcl
 struct zip_t {
   template <typename... Ts>

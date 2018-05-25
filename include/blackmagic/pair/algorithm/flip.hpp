@@ -4,7 +4,6 @@
 
 namespace blackmagic::pair { inline namespace algorithm {
 
-
 // from_tuple
 struct flip_t {
   template <typename T, typename U>
@@ -15,6 +14,5 @@ struct flip_t {
 };
 
 inline constexpr const flip_t flip{};
-
 
 }} // namespace blackmagic::pair::algorithm

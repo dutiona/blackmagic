@@ -8,7 +8,6 @@
 namespace blackmagic::concepts { inline namespace utility {
 
 using namespace std::literals;
-namespace traits = blackmagic::traits;
 
 inline namespace member_access {
 // indirection

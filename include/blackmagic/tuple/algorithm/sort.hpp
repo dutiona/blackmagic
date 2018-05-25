@@ -10,8 +10,6 @@
 
 namespace blackmagic::tuple { inline namespace algorithm {
 
-namespace integral = blackmagic::integral;
-namespace common   = blackmagic::common;
 using common::_v;
 
 // fwd dcl

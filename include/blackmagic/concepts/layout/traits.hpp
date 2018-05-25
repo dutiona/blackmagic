@@ -6,7 +6,6 @@
 
 namespace blackmagic::traits { inline namespace layout {
 
-namespace common = blackmagic::common;
 using common::_t;
 using common::_v;
 

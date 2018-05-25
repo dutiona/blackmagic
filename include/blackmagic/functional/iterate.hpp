@@ -6,8 +6,6 @@
 
 namespace blackmagic::functional {
 
-namespace integral = blackmagic::integral;
-
 struct iterate_t {
   template <typename Func, size_t N>
   constexpr decltype(auto) operator()(Func&& f, integral::size_t_t<N>) const;

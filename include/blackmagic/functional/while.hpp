@@ -8,9 +8,6 @@
 
 namespace blackmagic::functional {
 
-namespace integral = blackmagic::integral;
-namespace common   = blackmagic::common;
-
 struct while_t {
   template <typename Pred, typename State, typename Func>
   constexpr decltype(auto) operator()(Pred&& pred, State&& state, Func&& f) const;

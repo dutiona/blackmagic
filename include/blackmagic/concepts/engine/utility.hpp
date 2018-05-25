@@ -7,8 +7,6 @@
 
 namespace blackmagic::concepts { inline namespace utility {
 
-namespace type   = blackmagic::type;
-namespace common = blackmagic::common;
 using common::_t;
 using common::_v;
 using common::_v_t;

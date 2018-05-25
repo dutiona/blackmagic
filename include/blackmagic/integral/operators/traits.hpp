@@ -7,7 +7,6 @@
 
 namespace blackmagic::integral { inline namespace operators { namespace trait {
 
-namespace common = blackmagic::common;
 using common::_t;
 
 template <bool Status, typename T, typename U = T>
@@ -124,6 +123,13 @@ struct enable_trait<_t<tag_of<unsigned_long_t>>> {
 
 template <>
 struct enable_trait<_t<tag_of<unsigned_long_long_t>>> {
+  static constexpr auto logical    = false;
+  static constexpr auto comparison = true;
+  static constexpr auto arithmetic = true;
+};
+
+template <>
+struct enable_trait<_t<tag_of<size_t_t>>> {
   static constexpr auto logical    = false;
   static constexpr auto comparison = true;
   static constexpr auto arithmetic = true;
