@@ -84,9 +84,10 @@ documentation-builder:
               -DWITH_CODE_COVERAGE=$COVERAGE
               $SOURCE_DIRECTORY
       - cmake --build . --target $TARGET
-    artifacts:
-        name: "documentation"
-        paths:
-            - $BUILD_DIRECTORY/doc/api
-            - $BUILD_DIRECTORY/doc/user
-        expire_in: 14 days
+# Artifact is too large !
+#    artifacts:
+#        name: "documentation"
+#        paths:
+#            - $BUILD_DIRECTORY/doc/api
+#            - $BUILD_DIRECTORY/doc/user
+#        expire_in: 14 days

@@ -33,23 +33,6 @@ if(UNIX)
     SET(PLATFORM_UNIX ON)
 endif(UNIX)
 
-set(BLACKMAGIC_INCLUDE_DIR "${PROJECT_SOURCE_DIR}/include")
-
-if(PLATFORM_WIN32 OR PLATFORM_APPLE)
-# dummy static project not linked anywere needed so that a vcxproj is generated with the sources in the solution
-    set_property(GLOBAL PROPERTY USE_FOLDERS ON)
-    file(GLOB_RECURSE BLACKMAGIC_SOURCES  "${BLACKMAGIC_INCLUDE_DIR}/*.hpp")
-    add_library(Blackmagic_srcs EXCLUDE_FROM_ALL STATIC ${BLACKMAGIC_SOURCES})
-    set_target_properties(Blackmagic_srcs PROPERTIES LINKER_LANGUAGE CXX)
-    target_compile_features(Blackmagic_srcs PUBLIC cxx_std_17)
-    target_include_directories(Blackmagic_srcs PUBLIC ${BLACKMAGIC_INCLUDE_DIR})
-    source_group(TREE ${BLACKMAGIC_INCLUDE_DIR} FILES ${BLACKMAGIC_SOURCES})
-endif()
-
-add_library(Blackmagic INTERFACE)
-target_compile_features(Blackmagic INTERFACE cxx_std_17)
-target_include_directories(Blackmagic INTERFACE ${BLACKMAGIC_INCLUDE_DIR})
-
 if(COMPILER_MSVC)
     add_compile_options(/W4 /WX /permissive- /std:c++17)
 else(COMPILER_MSVC)
@@ -82,6 +65,8 @@ endif(WITH_CODE_COVERAGE)
 
 install(DIRECTORY include DESTINATION include FILES_MATCHING PATTERN "*.hpp")
 
+add_subdirectory(include)
+
 add_subdirectory(doc)
 
 add_subdirectory(example)
@@ -92,9 +77,9 @@ enable_testing()
 add_subdirectory(test)
 
 add_custom_target(check
-    DEPENDS examples tests benchmarks
+    DEPENDS examples-compile tests-compile benchmarks-compile
     COMMENT "Build and run all the unit tests, examples and benchmarks.")
 
 add_custom_target(full
-    DEPENDS check docs
+    DEPENDS check tests examples benchmarks docs
     COMMENT "Build and run all tests, examples, benchmark in addition to building the documentation.")

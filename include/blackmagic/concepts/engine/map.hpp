@@ -3,14 +3,20 @@
 #include "diagnostic.hpp"
 #include "item.hpp"
 
-#include "../../tuple/tuple.hpp"
+#include "../../common/detector.hpp"
+#include "../../tuple/algorithm/accumulate.hpp"
+#include "../../tuple/algorithm/all.hpp"
+#include "../../tuple/algorithm/count_if.hpp"
+#include "../../tuple/algorithm/find_if.hpp"
+#include "../../tuple/algorithm/for_each.hpp"
+#include "../../tuple/algorithm/transform.hpp"
+#include "../../tuple/algorithm/unique.hpp"
+#include "../../tuple/algorithm/unpack.hpp"
 
 #include <string_view>
 #include <tuple>
 
 namespace blackmagic::concepts { inline namespace engine {
-
-namespace tuple = blackmagic::tuple;
 
 namespace details {
 
@@ -116,7 +122,7 @@ struct map {
   template <typename... Args>
   constexpr void diagnostic() const
   {
-    static_assert(common_helpers::is_detected_v<can_call_diagnose_t, std::decay_t<decltype(*this)>, Args...>,
+    static_assert(common::is_detected_v<can_call_diagnose_t, std::decay_t<decltype(*this)>, Args...>,
                   "No diagnostic trait provided for this concept type.");
 
     diagnostic::traits<std::decay_t<decltype(*this)>>::template diagnose<Args...>();

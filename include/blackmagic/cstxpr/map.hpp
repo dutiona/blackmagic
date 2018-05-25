@@ -1,46 +1,77 @@
 #pragma once
 
 #include "algorithm.hpp"
-#include "pair.hpp"
 
 #include <array>
 #include <cstddef>
 #include <functional>
 #include <stdexcept>
+#include <utility>
 
 namespace blackmagic::cstxpr {
 
 template <typename Key, typename Value, size_t Size = 5, typename Compare = std::equal_to<Key>>
 class map {
 public:
+
   constexpr auto begin() const
   {
     return m_data.begin();
   }
+
   constexpr auto begin()
   {
     return m_data.begin();
   }
 
-  // We would have prefered to use `std::next`, however it does not seem
-  // to be enabled for cstxpr use for std::array in this version
-  // of gcc. TODO: reevaluate this
   constexpr auto end() const
   {
-    return m_data.begin() + m_size;
+    return m_data.end();
   }
+
   constexpr auto end()
   {
-    return m_data.begin() + m_size;
+    return m_data.end();
   }
 
   constexpr auto cbegin() const
   {
-    return m_data.begin();
+    return m_data.cbegin();
   }
+
   constexpr auto cend() const
   {
-    return m_data.begin() + m_size;
+    return m_data.cend();
+  }
+
+  constexpr auto rbegin() const
+  {
+    return m_data.rbegin();
+  }
+
+  constexpr auto rbegin()
+  {
+    return m_data.rbegin();
+  }
+
+  constexpr auto rend() const
+  {
+    return m_data.rend();
+  }
+
+  constexpr auto rend()
+  {
+    return m_data.rend();
+  }
+
+  constexpr auto crbegin() const
+  {
+    return m_data.crbegin();
+  }
+
+  constexpr auto crend() const
+  {
+    return m_data.crend();
   }
 
   constexpr auto find(const Key& k)
@@ -73,13 +104,19 @@ public:
     return itr->second;
   }
 
+  constexpr auto empty() const
+  {
+    return m_size == 0;
+  }
+
   constexpr auto size() const
   {
     return m_size;
   }
-  constexpr auto empty() const
+
+  constexpr auto max_size() const
   {
-    return m_size == 0;
+    return Size;
   }
 
 private:
@@ -89,8 +126,8 @@ private:
     return cstxpr::find_if(t.begin(), t.end(), [&k](const auto& d) { return Compare{}(d.first, k); });
   }
 
-  std::array<pair<Key, Value>, Size> m_data{}; // for cstxpr use, the std::array must be initialized
-  size_t                             m_size{0};
+  std::array<std::pair<Key, Value>, Size> m_data{}; // for cstxpr use, the std::array must be initialized
+  size_t                                  m_size{0};
 };
 
 } // namespace blackmagic::cstxpr

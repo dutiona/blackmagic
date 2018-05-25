@@ -1,5 +1,3 @@
 add_unit_test(concepts_basic "basic.cpp")
-add_unit_test(concepts_iterator "iterator.cpp")
 add_unit_test(concepts_layout "layout.cpp")
-add_unit_test(concepts_library "library.cpp")
 add_unit_test(concepts_utility "utility.cpp")

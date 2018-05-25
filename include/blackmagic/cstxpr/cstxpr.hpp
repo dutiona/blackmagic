@@ -9,7 +9,4 @@
 
 #include "algorithm.hpp"
 #include "map.hpp"
-#include "optional.hpp"
-#include "pair.hpp"
-#include "string.hpp"
 #include "vector.hpp"

@@ -1,5 +1,8 @@
+TODO / FIXME
+make remove_if and copy_if work with compile-time tuples of integral_constant
+
 FIXME
-tests for common/helpers + split common helpers
+tests for common
 test for accumulate
 test for all
 test for all_of
@@ -26,15 +29,16 @@ test for take_front
 test for transform
 test for unpack
 
-TODO
-pair utilities
-first
-second
-to_tuple
-from_tuple
-rotate
+TODO cstxpr
+set
+map
+enhanced map
+enhanced vector
+add algorithms
 
-TODO
+TODO tuple map
+
+TODO tuple
 at_key
 insert
 transpose
@@ -63,21 +67,8 @@ includes
 set_difference / set_symmetric_difference
 set_intersection / set_union
 is_permutation / next_permutation / prev_permutation
-literals :
-   https://github.com/boostorg/hana/blob/master/include/boost/hana/bool.hpp
-   https://github.com/boostorg/hana/blob/master/include/boost/hana/fwd/integral_constant.hpp
-operators :
-   https://github.com/boostorg/hana/blob/master/include/boost/hana/detail/operators/arithmetic.hpp
-   https://github.com/boostorg/hana/blob/master/include/boost/hana/detail/operators/comparable.hpp
-   https://github.com/boostorg/hana/blob/master/include/boost/hana/detail/operators/iterable.hpp
-   https://github.com/boostorg/hana/blob/master/include/boost/hana/detail/operators/logical.hpp
-   https://github.com/boostorg/hana/blob/master/include/boost/hana/detail/operators/monad.hpp
-   https://github.com/boostorg/hana/blob/master/include/boost/hana/detail/operators/orderable.hpp
-   https://github.com/boostorg/hana/blob/master/include/boost/hana/detail/operators/searchable.hpp
-logical eval_if (lazy) / if_ / and_ / or_ / not_ / while_
 
-TODO
-pure type :
+TODO pure type :
 integral list
 sizeof wrapper
 see https://github.com/edouarda/brigand/wiki/reference
@@ -110,29 +101,9 @@ zip / zip_with / zip_shortest / zip_longest
 accumulate
 defer (lazy)
 
-
-TODO functional
-create a functional directory for functional helpers + tests
-partial / reverse_partial
-curry
-always
-arg
-capture
-compose
-demux
-fix_point
-flip
-flip
-identity
-iterate
-lockstep
-on
-overload
-overload_linearly
-
 TODO concepts
 http://en.cppreference.com/w/cpp/language/constraints
 http://en.cppreference.com/w/cpp/concept
 http://en.cppreference.com/w/cpp/experimental/ranges
 
-TODO add contracts to the lib (based on scope_enter scope_exit and scope_error of Adrei Alexandrescu)
+TODO add contracts to the lib (based on scope_enter scope_exit and scope_error of Adrei Alexandrescu ?)

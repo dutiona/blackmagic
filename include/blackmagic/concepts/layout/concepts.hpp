@@ -20,7 +20,6 @@
 namespace blackmagic::concepts { inline namespace layout {
 
 using namespace std::literals;
-namespace traits = blackmagic::traits;
 
 // trivially copyable
 inline constexpr auto TriviallyCopyable = is_true<traits::is_trivially_copyable>("TriviallyCopyable"sv);

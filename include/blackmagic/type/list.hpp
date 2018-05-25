@@ -1,10 +1,14 @@
 #pragma once
 
-#include "integral_types.hpp"
+#include "../integral/types.hpp"
+
+#include <cstddef>
+#include <type_traits>
 
 namespace blackmagic::type {
 
-using npos = size_t_<size_t(-1)>;
+// FIXME use -1_c when implemented
+using npos = integral::long_long_t<-1>;
 
 template <typename... Ts>
 struct basic_list {

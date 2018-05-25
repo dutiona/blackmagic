@@ -1,0 +1,15 @@
+#pragma once
+
+#include "types/bool.hpp"
+#include "types/char.hpp"
+#include "types/int.hpp"
+#include "types/long.hpp"
+#include "types/long_long.hpp"
+#include "types/short.hpp"
+#include "types/size_t.hpp"
+#include "types/unsigned.hpp"
+#include "types/unsigned_char.hpp"
+#include "types/unsigned_int.hpp"
+#include "types/unsigned_long.hpp"
+#include "types/unsigned_long_long.hpp"
+#include "types/unsigned_short.hpp"

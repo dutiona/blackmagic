@@ -9,6 +9,5 @@ using namespace std::literals;
 
 TEST(Tuple_Rotate_left, Simple)
 {
-  ASSERT_TRUE(
-    tuple::equals(tuple::rotate_left(std::make_tuple("str"sv, 6.0, 4)), std::make_tuple(6.0, 4, "str"sv)));
+  ASSERT_TRUE(tuple::equal(tuple::rotate_left(std::make_tuple("str"sv, 6.0, 4)), std::make_tuple(6.0, 4, "str"sv)));
 }

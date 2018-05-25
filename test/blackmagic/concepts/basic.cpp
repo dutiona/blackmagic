@@ -11,7 +11,7 @@ struct not_default_constructible_test {
   not_default_constructible_test() = delete;
 };
 
-TEST(Cpt_Basic, DefaultConstructible)
+TEST(Concepts_Basic, DefaultConstructible)
 {
   ASSERT_TRUE((concepts::DefaultConstructible.check<default_constructible_test>()));
   ASSERT_FALSE((concepts::DefaultConstructible.check<not_default_constructible_test>()));
@@ -27,7 +27,7 @@ struct not_copy_constructible_test {
   not_copy_constructible_test(const not_copy_constructible_test&) = delete;
 };
 
-TEST(Cpt_Basic, CopyConstructible)
+TEST(Concepts_Basic, CopyConstructible)
 {
   ASSERT_TRUE((concepts::CopyConstructible.check<default_constructible_test>()));
   ASSERT_TRUE((concepts::CopyConstructible.check<not_default_constructible_test>()));
@@ -47,7 +47,7 @@ struct not_move_constructible_test {
   not_move_constructible_test(not_move_constructible_test&&)      = delete;
 };
 
-TEST(Cpt_Basic, MoveConstructible)
+TEST(Concepts_Basic, MoveConstructible)
 {
   ASSERT_TRUE((concepts::MoveConstructible.check<default_constructible_test>()));
   ASSERT_TRUE((concepts::MoveConstructible.check<not_default_constructible_test>()));
@@ -68,7 +68,7 @@ struct not_copy_assignable_test {
   not_copy_assignable_test& operator=(const not_copy_assignable_test&) = delete;
 };
 
-TEST(Cpt_Basic, CopyAssignable)
+TEST(Concepts_Basic, CopyAssignable)
 {
   ASSERT_TRUE((concepts::CopyAssignable.check<default_constructible_test>()));
   ASSERT_TRUE((concepts::CopyAssignable.check<not_default_constructible_test>()));
@@ -88,7 +88,7 @@ struct not_move_assignable_test {
   not_move_assignable_test& operator=(not_move_assignable_test&&) = delete;
 };
 
-TEST(Cpt_Basic, MoveAssignable)
+TEST(Concepts_Basic, MoveAssignable)
 {
   ASSERT_TRUE((concepts::MoveAssignable.check<default_constructible_test>()));
   ASSERT_TRUE((concepts::MoveAssignable.check<not_default_constructible_test>()));
@@ -105,7 +105,7 @@ struct not_destructible_test {
   ~not_destructible_test() = delete;
 };
 
-TEST(Cpt_Basic, destructible)
+TEST(Concepts_Basic, destructible)
 {
   ASSERT_TRUE((concepts::Destructible.check<destructible_test>()));
   ASSERT_FALSE((concepts::Destructible.check<not_destructible_test>()));

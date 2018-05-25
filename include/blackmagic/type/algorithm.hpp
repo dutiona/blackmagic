@@ -1,12 +1,6 @@
 #pragma once
 
-#include "helpers.hpp"
-#include "integral_types.hpp"
-#include "list.hpp"
-
-namespace blackmagic::type { inline namespace algorithm {
-
-using helpers::call_t;
-
-
-}} // namespace blackmagic::type::algorithm
+#include "algorithm/all_of.hpp"
+#include "algorithm/any_of.hpp"
+#include "algorithm/count.hpp"
+#include "algorithm/none_of.hpp"

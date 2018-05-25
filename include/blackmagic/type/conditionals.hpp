@@ -1,7 +1,6 @@
 #pragma once
 
 #include "helpers.hpp"
-#include "integral_types.hpp"
 
 namespace blackmagic::type {
 

@@ -1,8 +1,9 @@
 #pragma once
 
-#include "pair.hpp"
+#include "algorithm/equal.hpp"
 
 #include <iterator>
+#include <utility>
 
 namespace blackmagic::cstxpr { inline namespace algorithm {
 
@@ -164,21 +165,12 @@ constexpr typename std::iterator_traits<InputIt>::difference_type count_if(Input
 }
 
 template <class InputIt1, class InputIt2>
-constexpr pair<InputIt1, InputIt2> mismatch(InputIt1 first1, InputIt1 last1, InputIt2 first2, InputIt2 last2)
+constexpr std::pair<InputIt1, InputIt2> mismatch(InputIt1 first1, InputIt1 last1, InputIt2 first2, InputIt2 last2)
 {
   while (first1 != last1 && first2 != last2 && *first1 == *first2) {
     ++first1, ++first2;
   }
-  return pair<InputIt1, InputIt2>{first1, first2};
-}
-
-template <class InputIt1, class InputIt2>
-constexpr bool equal(InputIt1 first1, InputIt1 last1, InputIt2 first2, InputIt2 last2)
-{
-  while (first1 != last1 && first2 != last2 && *first1 == *first2) {
-    ++first1, ++first2;
-  }
-  return first1 == last1 && first2 == last2;
+  return std::pair<InputIt1, InputIt2>{first1, first2};
 }
 
 // for_each compiles as cstxpr, but I can't see a use for it... we can't
