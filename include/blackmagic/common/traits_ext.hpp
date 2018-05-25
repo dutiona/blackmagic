@@ -143,9 +143,25 @@ template <template <auto...> class Template, auto... Args>
 struct is_valued_instantiation_of<Template, Template<Args...>> : std::true_type {
 };
 
+template <template <typename, auto...> class Template, typename T>
+struct is_typed_valued_instantiation_of : std::false_type {
+};
+
+template <template <typename, auto...> class Template, typename T, auto... Args>
+struct is_typed_valued_instantiation_of<Template, Template<T, Args...>> : std::true_type {
+};
+
+template <template <typename, auto...> class Template, typename T, typename U>
+struct is_specialized_typed_valued_instantiation_of : std::false_type {
+};
+
+template <template <typename, auto...> class Template, typename T, auto... Args>
+struct is_specialized_typed_valued_instantiation_of<Template, T, Template<T, Args...>> : std::true_type {
+};
+
 
 // is_swappable_with
-namespace details {
+namespace {
 using std::swap;
 
 template <typename T, typename U = T, typename = void>
@@ -155,10 +171,10 @@ struct swappable : std::false_type {
 template <typename T, typename U>
 struct swappable<T, U, std::void_t<decltype(swap(std::declval<T>(), std::declval<U>()))>> : std::true_type {
 };
-} // namespace details
+} // namespace
 
 template <typename T, typename U = T>
-using is_swappable_with = details::swappable<T, U>;
+using is_swappable_with = swappable<T, U>;
 
 template <typename T, typename U = T>
 inline constexpr auto is_swappable_with_v = is_swappable_with<T, U>::value;

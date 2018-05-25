@@ -1,185 +1,184 @@
 #pragma once
 
-#include "../utility.hpp"
-#include "tag_of.hpp"
-#include "traits.hpp"
+#include "../functors.hpp"
+#include "../types.hpp"
 
+#include "../../common/tag_of.hpp"
 #include "../../common/traits_ext.hpp"
 
 #include <type_traits>
 
 namespace blackmagic::integral { inline namespace operators { inline namespace arithmetic {
 
-using common::_t;
-using trait::arithmetic_trait;
-using trait::enable_trait;
+using common::_v;
+using common::tag_of_t;
 
-namespace details {
+namespace {
 
-template <template <auto...> class T>
-inline constexpr const auto enabled_unary_plus_v =
-  arithmetic_trait<enable_trait<_t<tag_of<T>>>::arithmetic, _t<tag_of<T>>>::positive;
+template <typename Tag>
+struct arithmetic_operators {
+  static constexpr bool value = false;
+};
 
-template <template <auto...> class T>
-inline constexpr const auto enabled_unary_minus_v =
-  arithmetic_trait<enable_trait<_t<tag_of<T>>>::arithmetic, _t<tag_of<T>>>::negative;
+template <>
+struct arithmetic_operators<tags::char_tag> {
+  static constexpr bool value = true;
+};
 
-template <template <auto...> class T, template <auto...> class U>
-inline constexpr const auto enabled_binary_plus_v =
-  arithmetic_trait<(enable_trait<_t<tag_of<T>>>::arithmetic || enable_trait<_t<tag_of<U>>>::arithmetic), _t<tag_of<T>>,
-                   _t<tag_of<U>>>::plus;
+template <>
+struct arithmetic_operators<tags::short_tag> {
+  static constexpr bool value = true;
+};
 
-template <template <auto...> class T, template <auto...> class U>
-inline constexpr const auto enabled_binary_minus_v =
-  arithmetic_trait<(enable_trait<_t<tag_of<T>>>::arithmetic || enable_trait<_t<tag_of<U>>>::arithmetic), _t<tag_of<T>>,
-                   _t<tag_of<U>>>::minus;
+template <>
+struct arithmetic_operators<tags::int_tag> {
+  static constexpr bool value = true;
+};
+template <>
+struct arithmetic_operators<tags::long_tag> {
+  static constexpr bool value = true;
+};
 
-template <template <auto...> class T, template <auto...> class U>
-inline constexpr const auto enabled_div_v =
-  arithmetic_trait<(enable_trait<_t<tag_of<T>>>::arithmetic || enable_trait<_t<tag_of<U>>>::arithmetic), _t<tag_of<T>>,
-                   _t<tag_of<U>>>::div;
+template <>
+struct arithmetic_operators<tags::long_long_tag> {
+  static constexpr bool value = true;
+};
 
-template <template <auto...> class T, template <auto...> class U>
-inline constexpr const auto enabled_mult_v =
-  arithmetic_trait<(enable_trait<_t<tag_of<T>>>::arithmetic || enable_trait<_t<tag_of<U>>>::arithmetic), _t<tag_of<T>>,
-                   _t<tag_of<U>>>::mult;
+template <>
+struct arithmetic_operators<tags::unsigned_char_tag> {
+  static constexpr bool value = true;
+};
+template <>
+struct arithmetic_operators<tags::unsigned_short_tag> {
+  static constexpr bool value = true;
+};
 
-template <template <auto...> class T, template <auto...> class U>
-inline constexpr const auto enabled_mod_v =
-  arithmetic_trait<(enable_trait<_t<tag_of<T>>>::arithmetic || enable_trait<_t<tag_of<U>>>::arithmetic), _t<tag_of<T>>,
-                   _t<tag_of<U>>>::mod;
+template <>
+struct arithmetic_operators<tags::unsigned_tag> {
+  static constexpr bool value = true;
+};
 
-template <template <auto...> class T>
-inline constexpr const auto enabled_not_v =
-  arithmetic_trait<enable_trait<_t<tag_of<T>>>::arithmetic, _t<tag_of<T>>>::bit_not;
+template <>
+struct arithmetic_operators<tags::unsigned_int_tag> {
+  static constexpr bool value = true;
+};
+template <>
+struct arithmetic_operators<tags::unsigned_long_tag> {
+  static constexpr bool value = true;
+};
 
-template <template <auto...> class T, template <auto...> class U>
-inline constexpr const auto enabled_or_v =
-  arithmetic_trait<(enable_trait<_t<tag_of<T>>>::arithmetic || enable_trait<_t<tag_of<U>>>::arithmetic), _t<tag_of<T>>,
-                   _t<tag_of<U>>>::bit_or;
+template <>
+struct arithmetic_operators<tags::unsigned_long_long_tag> {
+  static constexpr bool value = true;
+};
 
-template <template <auto...> class T, template <auto...> class U>
-inline constexpr const auto enabled_and_v =
-  arithmetic_trait<(enable_trait<_t<tag_of<T>>>::arithmetic || enable_trait<_t<tag_of<U>>>::arithmetic), _t<tag_of<T>>,
-                   _t<tag_of<U>>>::bit_and;
+template <>
+struct arithmetic_operators<tags::size_t_tag> {
+  static constexpr bool value = true;
+};
 
-template <template <auto...> class T, template <auto...> class U>
-inline constexpr const auto enabled_xor_v =
-  arithmetic_trait<(enable_trait<_t<tag_of<T>>>::arithmetic || enable_trait<_t<tag_of<U>>>::arithmetic), _t<tag_of<T>>,
-                   _t<tag_of<U>>>::bit_xor;
-
-template <template <auto...> class T, template <auto...> class U>
-inline constexpr const auto enabled_lshift_v =
-  arithmetic_trait<(enable_trait<_t<tag_of<T>>>::arithmetic || enable_trait<_t<tag_of<U>>>::arithmetic), _t<tag_of<T>>,
-                   _t<tag_of<U>>>::bit_lshift;
-
-template <template <auto...> class T, template <auto...> class U>
-inline constexpr const auto enabled_rshift_v =
-  arithmetic_trait<(enable_trait<_t<tag_of<T>>>::arithmetic || enable_trait<_t<tag_of<U>>>::arithmetic), _t<tag_of<T>>,
-                   _t<tag_of<U>>>::bit_rshift;
-
-} // namespace details
+} // namespace
 
 
 // unary +
-template <template <auto...> class T, auto... Args, typename = std::enable_if_t<details::enabled_unary_plus_v<T>>>
-constexpr decltype(auto) operator+(T<Args...>&& t)
+template <typename T, typename = std::enable_if_t<_v<arithmetic_operators<tag_of_t<T>>>>>
+constexpr decltype(auto) operator+(T&& t)
 {
-  return positive(std::forward<T<Args...>>(t));
+  return positive(std::forward<T>(t));
 }
 
 // unary -
-template <template <auto...> class T, auto... Args, typename = std::enable_if_t<details::enabled_unary_minus_v<T>>>
-constexpr decltype(auto) operator-(T<Args...>&& t)
+template <typename T, typename = std::enable_if_t<_v<arithmetic_operators<tag_of_t<T>>>>>
+constexpr decltype(auto) operator-(T&& t)
 {
-  return negative(std::forward<T<Args...>>(t));
+  return negative(std::forward<T>(t));
 }
 
 // binary +
-template <template <auto...> class T, template <auto...> class U, auto... ArgsT, auto... ArgsU,
-          typename = std::enable_if_t<details::enabled_binary_plus_v<T, U>>>
-constexpr decltype(auto) operator+(T<ArgsT...>&& t, U<ArgsU...>&& u)
+template <typename T, typename U,
+          typename = std::enable_if_t<_v<arithmetic_operators<tag_of_t<T>>> || _v<arithmetic_operators<tag_of_t<U>>>>>
+constexpr decltype(auto) operator+(T&& t, U&& u)
 {
-  return plus(std::forward<T<ArgsT...>>(t), std::forward<U<ArgsU...>>(u));
+  return plus(std::forward<T>(t), std::forward<U>(u));
 }
 
 // binary -
-template <template <auto...> class T, template <auto...> class U, auto... ArgsT, auto... ArgsU,
-          typename = std::enable_if_t<details::enabled_binary_minus_v<T, U>>>
-constexpr decltype(auto) operator-(T<ArgsT...>&& t, U<ArgsU...>&& u)
+template <typename T, typename U,
+          typename = std::enable_if_t<_v<arithmetic_operators<tag_of_t<T>>> || _v<arithmetic_operators<tag_of_t<U>>>>>
+constexpr decltype(auto) operator-(T&& t, U&& u)
 {
-  return minus(std::forward<T<ArgsT...>>(t), std::forward<U<ArgsU...>>(u));
+  return minus(std::forward<T>(t), std::forward<U>(u));
 }
 
 // /
-template <template <auto...> class T, template <auto...> class U, auto... ArgsT, auto... ArgsU,
-          typename = std::enable_if_t<details::enabled_div_v<T, U>>>
-constexpr decltype(auto) operator/(T<ArgsT...>&& t, U<ArgsU...>&& u)
+template <typename T, typename U,
+          typename = std::enable_if_t<_v<arithmetic_operators<tag_of_t<T>>> || _v<arithmetic_operators<tag_of_t<U>>>>>
+constexpr decltype(auto) operator/(T&& t, U&& u)
 {
-  return div(std::forward<T<ArgsT...>>(t), std::forward<U<ArgsU...>>(u));
+  return div(std::forward<T>(t), std::forward<U>(u));
 }
 
 // *
-template <template <auto...> class T, template <auto...> class U, auto... ArgsT, auto... ArgsU,
-          typename = std::enable_if_t<details::enabled_mult_v<T, U>>>
-constexpr decltype(auto) operator*(T<ArgsT...>&& t, U<ArgsU...>&& u)
+template <typename T, typename U,
+          typename = std::enable_if_t<_v<arithmetic_operators<tag_of_t<T>>> || _v<arithmetic_operators<tag_of_t<U>>>>>
+constexpr decltype(auto) operator*(T&& t, U&& u)
 {
-  return mult(std::forward<T<ArgsT...>>(t), std::forward<U<ArgsU...>>(u));
+  return mult(std::forward<T>(t), std::forward<U>(u));
 }
 
 // %
-template <template <auto...> class T, template <auto...> class U, auto... ArgsT, auto... ArgsU,
-          typename = std::enable_if_t<details::enabled_mod_v<T, U>>>
-constexpr decltype(auto) operator%(T<ArgsT...>&& t, U<ArgsU...>&& u)
+template <typename T, typename U,
+          typename = std::enable_if_t<_v<arithmetic_operators<tag_of_t<T>>> || _v<arithmetic_operators<tag_of_t<U>>>>>
+constexpr decltype(auto) operator%(T&& t, U&& u)
 {
-  return mod(std::forward<T<ArgsT...>>(t), std::forward<U<ArgsU...>>(u));
+  return mod(std::forward<T>(t), std::forward<U>(u));
 }
 
 // ~
-template <template <auto...> class T, auto... Args, typename = std::enable_if_t<details::enabled_not_v<T>>>
-constexpr decltype(auto) operator~(T<Args...>&& t)
+template <typename T, typename = std::enable_if_t<_v<arithmetic_operators<tag_of_t<T>>>>>
+constexpr decltype(auto) operator~(T&& t)
 {
-  return bit_not(std::forward<T<Args...>>(t));
+  return bit_not(std::forward<T>(t));
 }
 
 // &
-template <template <auto...> class T, template <auto...> class U, auto... ArgsT, auto... ArgsU,
-          typename = std::enable_if_t<details::enabled_or_v<T, U>>>
-constexpr decltype(auto) operator&(T<ArgsT...>&& t, U<ArgsU...>&& u)
+template <typename T, typename U,
+          typename = std::enable_if_t<_v<arithmetic_operators<tag_of_t<T>>> || _v<arithmetic_operators<tag_of_t<U>>>>>
+constexpr decltype(auto) operator&(T&& t, U&& u)
 {
-  return bit_and(std::forward<T<ArgsT...>>(t), std::forward<U<ArgsU...>>(u));
+  return bit_and(std::forward<T>(t), std::forward<U>(u));
 }
 
 // |
-template <template <auto...> class T, template <auto...> class U, auto... ArgsT, auto... ArgsU,
-          typename = std::enable_if_t<details::enabled_and_v<T, U>>>
-constexpr decltype(auto) operator|(T<ArgsT...>&& t, U<ArgsU...>&& u)
+template <typename T, typename U,
+          typename = std::enable_if_t<_v<arithmetic_operators<tag_of_t<T>>> || _v<arithmetic_operators<tag_of_t<U>>>>>
+constexpr decltype(auto) operator|(T&& t, U&& u)
 {
-  return bit_or(std::forward<T<ArgsT...>>(t), std::forward<U<ArgsU...>>(u));
+  return bit_or(std::forward<T>(t), std::forward<U>(u));
 }
 
 // ^
-template <template <auto...> class T, template <auto...> class U, auto... ArgsT, auto... ArgsU,
-          typename = std::enable_if_t<details::enabled_xor_v<T, U>>>
-constexpr decltype(auto) operator^(T<ArgsT...>&& t, U<ArgsU...>&& u)
+template <typename T, typename U,
+          typename = std::enable_if_t<_v<arithmetic_operators<tag_of_t<T>>> || _v<arithmetic_operators<tag_of_t<U>>>>>
+constexpr decltype(auto) operator^(T&& t, U&& u)
 {
-  return bit_xor(std::forward<T<ArgsT...>>(t), std::forward<U<ArgsU...>>(u));
+  return bit_xor(std::forward<T>(t), std::forward<U>(u));
 }
 
 // <<
-template <template <auto...> class T, template <auto...> class U, auto... ArgsT, auto... ArgsU,
-          typename = std::enable_if_t<details::enabled_lshift_v<T, U>>>
-constexpr decltype(auto) operator<<(T<ArgsT...>&& t, U<ArgsU...>&& u)
+template <typename T, typename U,
+          typename = std::enable_if_t<_v<arithmetic_operators<tag_of_t<T>>> || _v<arithmetic_operators<tag_of_t<U>>>>>
+constexpr decltype(auto) operator<<(T&& t, U&& u)
 {
-  return bit_lshift(std::forward<T<ArgsT...>>(t), std::forward<U<ArgsU...>>(u));
+  return bit_lshift(std::forward<T>(t), std::forward<U>(u));
 }
 
 // >>
-template <template <auto...> class T, template <auto...> class U, auto... ArgsT, auto... ArgsU,
-          typename = std::enable_if_t<details::enabled_rshift_v<T, U>>>
-constexpr decltype(auto) operator>>(T<ArgsT...>&& t, U<ArgsU...>&& u)
+template <typename T, typename U,
+          typename = std::enable_if_t<_v<arithmetic_operators<tag_of_t<T>>> || _v<arithmetic_operators<tag_of_t<U>>>>>
+constexpr decltype(auto) operator>>(T&& t, U&& u)
 {
-  return bit_rshift(std::forward<T<ArgsT...>>(t), std::forward<U<ArgsU...>>(u));
+  return bit_rshift(std::forward<T>(t), std::forward<U>(u));
 }
 
 }}} // namespace blackmagic::integral::operators::arithmetic

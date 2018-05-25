@@ -18,7 +18,7 @@ struct nonesuch {
 
 
 // is_detected
-namespace details {
+namespace {
 
 template <typename Default, template <typename...> class Op, typename ParametersPack, typename = void>
 struct detector {
@@ -36,13 +36,13 @@ struct detector<Default, Op, ParametersPack<Args...>, std::void_t<Op<Args...>>> 
 } // namespace details
 
 template <template <typename...> class Op, typename... Args>
-using is_detected = typename details::detector<nonesuch, Op, type::basic_list<Args...>>::value_t;
+using is_detected = typename detector<nonesuch, Op, type::basic_list<Args...>>::value_t;
 
 template <template <typename...> class Op, typename... Args>
-using detected_t = _t<details::detector<nonesuch, Op, type::basic_list<Args...>>>;
+using detected_t = _t<detector<nonesuch, Op, type::basic_list<Args...>>>;
 
 template <typename Default, template <typename...> class Op, typename... Args>
-using detected_or = details::detector<Default, Op, type::basic_list<Args...>>;
+using detected_or = detector<Default, Op, type::basic_list<Args...>>;
 
 template <template <typename...> class Op, typename... Args>
 constexpr bool is_detected_v = _v<is_detected<Op, Args...>>;

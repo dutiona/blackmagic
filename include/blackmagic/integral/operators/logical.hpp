@@ -1,59 +1,54 @@
 #pragma once
 
-#include "../utility.hpp"
-#include "tag_of.hpp"
-#include "traits.hpp"
+#include "../functors.hpp"
+#include "../types.hpp"
 
+#include "../../common/tag_of.hpp"
 #include "../../common/traits_ext.hpp"
 
 #include <type_traits>
 
 namespace blackmagic::integral { inline namespace operators { inline namespace logical {
 
-using common::_t;
-using trait::enable_trait;
-using trait::logical_trait;
+using common::_v;
+using common::tag_of_t;
 
-namespace details {
+namespace {
 
-template <template <auto...> class T, template <auto...> class U>
-inline constexpr const auto enabled_and_v =
-  logical_trait<(enable_trait<_t<tag_of<T>>>::logical || enable_trait<_t<tag_of<U>>>::logical), _t<tag_of<T>>,
-                _t<tag_of<U>>>::logical_and;
+template <typename Tag>
+struct logical_operators {
+  static constexpr bool value = false;
+};
 
-template <template <auto...> class T, template <auto...> class U>
-inline constexpr const auto enabled_or_v =
-  logical_trait<(enable_trait<_t<tag_of<T>>>::logical || enable_trait<_t<tag_of<U>>>::logical), _t<tag_of<T>>,
-                _t<tag_of<U>>>::logical_or;
+template <>
+struct logical_operators<tags::bool_tag> {
+  static constexpr bool value = true;
+};
 
-template <template <auto...> class T>
-inline constexpr const auto enabled_not_v =
-  logical_trait<enable_trait<_t<tag_of<T>>>::logical, _t<tag_of<T>>>::logical_not;
-
-} // namespace details
+} // namespace
 
 
 // &&
-template <template <auto...> class T, template <auto...> class U, auto... ArgsT, auto... ArgsU,
-          typename = std::enable_if_t<details::enabled_and_v<T, U>>>
-constexpr decltype(auto) operator&&(T<ArgsT...>&& t, U<ArgsU...>&& u)
+template <typename T, typename U,
+          typename = std::enable_if_t<_v<logical_operators<tag_of_t<T>>> || _v<logical_operators<tag_of_t<U>>>>>
+constexpr decltype(auto) operator&&(T&& t, U&& u)
 {
-  return logical_and(std::forward<T<ArgsT...>>(t), std::forward<U<ArgsU...>>(u));
+  return logical_and(std::forward<T>(t), std::forward<U>(u));
 }
 
 // ||
-template <template <auto...> class T, template <auto...> class U, auto... ArgsT, auto... ArgsU,
-          typename = std::enable_if_t<details::enabled_or_v<T, U>>>
-constexpr decltype(auto) operator||(T<ArgsT...>&& t, U<ArgsU...>&& u)
+template <typename T, typename U,
+          typename = std::enable_if_t<_v<logical_operators<tag_of_t<T>>> || _v<logical_operators<tag_of_t<U>>>>>
+constexpr decltype(auto) operator||(T&& t, U&& u)
 {
-  return logical_or(std::forward<T<ArgsT...>>(t), std::forward<U<ArgsU...>>(u));
+  return logical_or(std::forward<T>(t), std::forward<U>(u));
 }
 
 // !
-template <template <auto...> class T, auto... Args, typename = std::enable_if_t<details::enabled_not_v<T>>>
-constexpr decltype(auto) operator!(T<Args...>&& t)
+template <typename T, typename = std::enable_if_t<_v<logical_operators<tag_of_t<T>>>>>
+constexpr decltype(auto) operator!(T&& t)
 {
-  return logical_not(std::forward<T<Args...>>(t));
+  return logical_not(std::forward<T>(t));
 }
 
 }}} // namespace blackmagic::integral::operators::logical

@@ -20,6 +20,7 @@ set(BLACKMAGIC_COMMON_SOURCES
         blackmagic/common/dependent_false.hpp
         blackmagic/common/detector.hpp
         blackmagic/common/traits_ext.hpp
+        blackmagic/common/tag_of.hpp
         blackmagic/common/algorithm.hpp
         blackmagic/common/algorithm/all_of_v.hpp
         blackmagic/common/algorithm/any_of_v.hpp
@@ -88,11 +89,50 @@ set(BLACKMAGIC_INTEGRAL_SOURCES
         blackmagic/integral/operators.hpp
         blackmagic/integral/types.hpp
         blackmagic/integral/utility.hpp
-        blackmagic/integral/operators/traits.hpp
         blackmagic/integral/operators/arithmetic.hpp
         blackmagic/integral/operators/logical.hpp
         blackmagic/integral/operators/comparison.hpp
-        blackmagic/integral/operators/tag_of.hpp)
+        blackmagic/integral/functors.hpp
+        blackmagic/integral/functors/increment.hpp
+        blackmagic/integral/functors/decrement.hpp
+        blackmagic/integral/functors/bit_and.hpp
+        blackmagic/integral/functors/bit_lshift.hpp
+        blackmagic/integral/functors/bit_not.hpp
+        blackmagic/integral/functors/bit_or.hpp
+        blackmagic/integral/functors/bit_rshift.hpp
+        blackmagic/integral/functors/bit_xor.hpp
+        blackmagic/integral/functors/decrement.hpp
+        blackmagic/integral/functors/div.hpp
+        blackmagic/integral/functors/equal.hpp
+        blackmagic/integral/functors/greater_equal.hpp
+        blackmagic/integral/functors/greater.hpp
+        blackmagic/integral/functors/increment.hpp
+        blackmagic/integral/functors/less_equal.hpp
+        blackmagic/integral/functors/less.hpp
+        blackmagic/integral/functors/logical_and.hpp
+        blackmagic/integral/functors/logical_not.hpp
+        blackmagic/integral/functors/logical_or.hpp
+        blackmagic/integral/functors/minus.hpp
+        blackmagic/integral/functors/mod.hpp
+        blackmagic/integral/functors/mult.hpp
+        blackmagic/integral/functors/negative.hpp
+        blackmagic/integral/functors/not_equal.hpp
+        blackmagic/integral/functors/plus.hpp
+        blackmagic/integral/functors/positive.hpp
+        blackmagic/integral/tags.hpp
+        blackmagic/integral/types/bool.hpp
+        blackmagic/integral/types/char.hpp
+        blackmagic/integral/types/int.hpp
+        blackmagic/integral/types/long.hpp
+        blackmagic/integral/types/long_long.hpp
+        blackmagic/integral/types/short.hpp
+        blackmagic/integral/types/size_t.hpp
+        blackmagic/integral/types/unsigned_char.hpp
+        blackmagic/integral/types/unsigned.hpp
+        blackmagic/integral/types/unsigned_int.hpp
+        blackmagic/integral/types/unsigned_long.hpp
+        blackmagic/integral/types/unsigned_long_long.hpp
+        blackmagic/integral/types/unsigned_short.hpp)
 
 set(BLACKMAGIC_PAIR_SOURCES
         blackmagic/pair/algorithm.hpp

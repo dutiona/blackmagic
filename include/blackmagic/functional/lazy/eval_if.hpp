@@ -23,16 +23,16 @@ struct eval_if_t {
                                       const lazy_expr<ElseFunc, ElseArgs...>& else_) const
   {
     using Cond = std::decay_t<C>;
-    if constexpr (std::is_convertible_v<Cond, bool> && !common::is_detected_v<details::value_type_t, Cond>) {
-      if (cond) {
+    if constexpr (integral::is_bool_c_v<Cond>) {
+      if constexpr (Cond()) {
         return eval(then);
       }
       else {
         return eval(else_);
       }
     }
-    else if constexpr (common::is_detected_v<details::value_type_t, Cond> && integral::is_bool_c_v<Cond>) {
-      if constexpr (Cond()) {
+    else if constexpr (std::is_convertible_v<Cond, bool>) {
+      if (cond) {
         return eval(then);
       }
       else {

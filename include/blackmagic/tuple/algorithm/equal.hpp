@@ -1,11 +1,26 @@
 #pragma once
 
+#include "../../functional/partial.hpp"
+#include "../../functional/reverse_partial.hpp"
 #include "../../common/algorithm/all_of_v.hpp"
 
 #include <tuple>
 #include <utility>
 
 namespace blackmagic::tuple { inline namespace algorithm {
+
+struct equal_t {
+  template <typename... Ts, typename... Us>
+  constexpr bool operator()(const std::tuple<Ts...>& lhs, const std::tuple<Us...>& rhs) const;
+
+  template <typename... Ts>
+  constexpr decltype(auto) operator()(const std::tuple<Ts...>& lhs) const;
+
+  template <typename... Us>
+  constexpr decltype(auto) to(const std::tuple<Us...>& rhs) const;
+};
+
+inline constexpr const equal_t equal{};
 
 namespace details {
 
@@ -17,19 +32,29 @@ constexpr bool equal_impl(const std::tuple<Ts...>& lhs, const std::tuple<Us...>&
 
 } // namespace details
 
-struct equal_t {
-  template <typename... Ts, typename... Us>
-  constexpr bool operator()(const std::tuple<Ts...>& lhs, const std::tuple<Us...>& rhs) const
-  {
-    if constexpr (sizeof...(Ts) != sizeof...(Us)) {
-      return false;
-    }
-    else {
-      return details::equal_impl(lhs, rhs, std::index_sequence_for<Ts...>{});
-    }
-  }
-};
 
-inline constexpr const equal_t equal{};
+template <typename... Ts, typename... Us>
+constexpr bool equal_t::operator()(const std::tuple<Ts...>& lhs, const std::tuple<Us...>& rhs) const
+{
+  if constexpr (sizeof...(Ts) != sizeof...(Us)) {
+    return false;
+  }
+  else {
+    return details::equal_impl(lhs, rhs, std::index_sequence_for<Ts...>{});
+  }
+}
+
+// non owning
+template <typename... Ts>
+constexpr decltype(auto) equal_t::operator()(const std::tuple<Ts...>& lhs) const
+{
+  return functional::partial(equal, lhs);
+}
+
+template <typename... Us>
+constexpr decltype(auto) equal_t::to(const std::tuple<Us...>& rhs) const
+{
+  return functional::reverse_partial(equal, rhs);
+}
 
 }} // namespace blackmagic::tuple::algorithm

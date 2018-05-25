@@ -12,39 +12,40 @@ using namespace integral::literals;
 
 TEST(Integral_Operators, Arithmetic_Positive)
 {
-  static_assert(+1_c == 1_c);
+  static_assert((+1_c) == 1_c);
+  static_assert((+1_c) == 1_c);
 }
 
 TEST(Integral_Operators, Arithmetic_Negative)
 {
-  static_assert(-1_c == -1_c);
+  static_assert((-1_c) == (-1_c));
 }
 
 TEST(Integral_Operators, Arithmetic_Plus)
 {
-  static_assert(1_c + 1_c == 2_c);
-  static_assert(1_c + (-1_c) == 0_c);
+  static_assert((1_c + 1_c) == 2_c);
+  static_assert((1_c + (-1_c)) == 0_c);
 }
 
 TEST(Integral_Operators, Arithmetic_Minus)
 {
-  static_assert(1_c - 1_c == 0_c);
-  static_assert(1_c - (-1_c) == 2_c);
+  static_assert((1_c - 1_c) == 0_c);
+  static_assert((1_c - (-1_c)) == 2_c);
 }
 
 TEST(Integral_Operators, Arithmetic_Div)
 {
-  static_assert(10_c / 2_c == 5_c);
+  static_assert((10_c / 2_c) == 5_c);
 }
 
 TEST(Integral_Operators, Arithmetic_Mult)
 {
-  static_assert(10_c * 2_c == 20_c);
+  static_assert((10_c * 2_c) == 20_c);
 }
 
 TEST(Integral_Operators, Arithmetic_Mod)
 {
-  static_assert(10_c % 3_c == 1_c);
+  static_assert((10_c % 3_c) == 1_c);
 }
 
 TEST(Integral_Operators, Arithmetic_BitNot)

@@ -1,8 +1,3 @@
-TODO
-tuple equal unary & to
-tuple not equal unary & to
-integral less/less_equal/greater/greater_equal/equal/not_equal unary
-
 FIXME
 tests for common
 test for accumulate
