@@ -60,7 +60,7 @@ If ($Clean -eq "ON") {
 }
 
 # configure & make
-docker exec -w $Workdir $ContainerID sh -c "export CC=$CC && export CXX=$CXX && $CXX --version && cmake $ToolchainFile -G $CmakeGenerator -DWITH_CODE_COVERAGE=$Coverage -DWITH_EXAMPLES=$Examples -DWITH_BENCHMARK=$Benchmark $SourceDirectory"
+docker exec -w $Workdir $ContainerID sh -c "export CC=$CC && export CXX=$CXX && $CXX --version && cmake -G $CmakeGenerator -DWITH_CODE_COVERAGE=$Coverage -DWITH_EXAMPLES=$Examples -DWITH_BENCHMARK=$Benchmark $SourceDirectory"
 docker exec -w $Workdir $ContainerID sh -c "cmake --build . --target $Target --config $ConfigType"
 
 # Launch tests
