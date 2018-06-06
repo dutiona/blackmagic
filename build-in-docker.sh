@@ -5,7 +5,6 @@ set -e
 COMPILER="gcc"
 CMAKE_GENERATOR="Ninja"
 BUILD_DIRECTORY="build-in-docker"
-TOOLCHAIN_FILE=""
 SOURCE_DIRECTORY=".."
 TARGET=""
 CONFIG_TYPE="Debug"
@@ -36,7 +35,6 @@ where:
                                     default = all
     -r --config-type ConfigType     build type. Release|Debug|RelWithDebInfo|MinSizeRel
                                     default = Debug
-    -n --toolchain ToolchainFile    path to the toolchain file (passed with -T to cmake).
 
     -f --clean                      empty build directory to force a full rebuild
 
@@ -109,10 +107,6 @@ while [[ $# -gt 0 ]]; do
 	-t | --target)
 		TARGET="$2"
 		shift 2
-		;;
-    -n | --toolchain)
-        TOOLCHAIN_FILE="$2"
-        shift 2
         ;;
 	-r | --config-type)
 		CONFIG_TYPE="$2"
@@ -139,11 +133,6 @@ fi
 
 echo "*** BUILDING BINARIES ***"
 
-# Handle toolchain file
-if [ !  -z "${TOOLCHAIN_FILE// }" ]; then
-    TOOLCHAIN_FILE="-T $TOOLCHAIN_FILE"
-fi
-
 # starting container
 CONTAINER_ID=$(docker run -itd --rm --mount type=bind,source="$(pwd)",target=/workspace $DOCKER_IMAGE_TOOLSET)
 trap "docker exec $CONTAINER_ID true 2> /dev/null && echo 'Aborting...' && docker stop $CONTAINER_ID > /dev/null" EXIT
@@ -163,7 +152,7 @@ if [ "$CLEAN" == "ON" ]; then
 fi
 
 # configure & build
-docker exec -w $WORKDIR $CONTAINER_ID sh -c "export CC=$CC && export CXX=$CXX && $CXX --version && cmake $TOOLCHAIN_FILE -G $CMAKE_GENERATOR -DWITH_CODE_COVERAGE=$COVERAGE -DWITH_EXAMPLES=$EXAMPLES -DWITH_BENCHMARK=$BENCHMARK $SOURCE_DIRECTORY"
+docker exec -w $WORKDIR $CONTAINER_ID sh -c "export CC=$CC && export CXX=$CXX && $CXX --version && cmake -G $CMAKE_GENERATOR -DWITH_CODE_COVERAGE=$COVERAGE -DWITH_EXAMPLES=$EXAMPLES -DWITH_BENCHMARK=$BENCHMARK $SOURCE_DIRECTORY"
 docker exec -w $WORKDIR $CONTAINER_ID sh -c "cmake --build . --target $TARGET --config $CONFIG_TYPE"
 
 # launch unit tests

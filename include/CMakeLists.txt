@@ -12,9 +12,6 @@ set_property(GLOBAL PROPERTY USE_FOLDERS ON)
 
 
 # Source listing
-
-# file(GLOB_RECURSE BLACKMAGIC_SOURCES  "${BLACKMAGIC_INCLUDE_DIR}/*.hpp")
-
 set(BLACKMAGIC_COMMON_SOURCES
         blackmagic/common/common.hpp
         blackmagic/common/dependent_false.hpp
@@ -222,7 +219,7 @@ set(BLACKMAGIC_SOURCES
 add_library(Blackmagic_srcs EXCLUDE_FROM_ALL STATIC ${BLACKMAGIC_SOURCES})
 set_target_properties(Blackmagic_srcs PROPERTIES LINKER_LANGUAGE CXX)
 target_compile_features(Blackmagic_srcs PUBLIC cxx_std_17)
-target_include_directories(Blackmagic_srcs PUBLIC ${BLACKMAGIC_INCLUDE_DIR})
+target_link_libraries(Blackmagic_srcs PUBLIC Blackmagic)
 source_group(TREE ${BLACKMAGIC_INCLUDE_DIR} FILES ${BLACKMAGIC_SOURCES})
 
 
