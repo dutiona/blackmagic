@@ -79,8 +79,6 @@ documentation-builder:
       - mkdir -p $BUILD_DIRECTORY
       - cd $BUILD_DIRECTORY
       - conan install ..
-              --build missing
-              -pr $CONAN_PROFILE
       - cmake $CMAKE_GENERATOR
               -DWITH_TESTS=$TESTS
               -DWITH_EXAMPLES=$EXAMPLES
