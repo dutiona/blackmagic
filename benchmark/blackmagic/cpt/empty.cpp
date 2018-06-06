@@ -16,4 +16,4 @@ static void BM_StringCreation(benchmark::State& state)
 }
 BENCHMARK(BM_StringCreation);
 
-BENCHMARK_MAIN()
+BENCHMARK_MAIN();
