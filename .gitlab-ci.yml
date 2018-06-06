@@ -1,6 +1,7 @@
 variables:
     CC: "gcc"                                   # eg. gcc or clang
     CXX: "g++"                                  # eg. g++ or clang++
+    CONAN_PROFILE: "gcc-release"                # profile to use with conan
     CMAKE_GENERATOR: "-G Ninja"                 # include -G if defined
     BUILD_DIRECTORY: "build-in-docker"          # build directory name
     SOURCE_DIRECTORY: ".."                      # where cmake search source files from the build directory
@@ -26,6 +27,9 @@ stages:
       - mkdir -p $BUILD_DIRECTORY
       - cd $BUILD_DIRECTORY
       - if [ "$CLEAN" == "ON" ]; then rm -rf ./*; fi
+      - conan install ..
+              --build missing
+              -pr $CONAN_PROFILE
       - cmake $CMAKE_GENERATOR
               -DWITH_TESTS=$TESTS
               -DWITH_EXAMPLES=$EXAMPLES
@@ -39,23 +43,19 @@ stages:
 distcheck-linux-gcc-release:
     <<: *distcheck-basic-linux
     variables:
-        RELEASE_TYPE: "Release"
-        CC: "gcc"
-        CXX: "g++"
 
 distcheck-linux-clang-release:
     <<: *distcheck-basic-linux
     variables:
-        RELEASE_TYPE: "Release"
         CC: "clang"
         CXX: "clang++"
+        CONAN_PROFILE: "clang-release"
 
 distcheck-linux-gcc-debug:
     <<: *distcheck-basic-linux
     variables:
         RELEASE_TYPE: "Debug"
-        CC: "gcc"
-        CXX: "g++"
+        CONAN_PROFILE: "gcc-release"
 
 distcheck-linux-clang-debug:
     <<: *distcheck-basic-linux
@@ -63,6 +63,7 @@ distcheck-linux-clang-debug:
         RELEASE_TYPE: "Debug"
         CC: "clang"
         CXX: "clang++"
+        CONAN_PROFILE: "clang-debug"
 
 documentation-builder:
     stage: doc
@@ -77,6 +78,9 @@ documentation-builder:
     script:
       - mkdir -p $BUILD_DIRECTORY
       - cd $BUILD_DIRECTORY
+      - conan install ..
+              --build missing
+              -pr $CONAN_PROFILE
       - cmake $CMAKE_GENERATOR
               -DWITH_TESTS=$TESTS
               -DWITH_EXAMPLES=$EXAMPLES

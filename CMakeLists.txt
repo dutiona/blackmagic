@@ -2,6 +2,9 @@ cmake_minimum_required(VERSION 3.8.2) # required for cxx_std_17
 
 project(Blackmagic VERSION 0.0.1 LANGUAGES CXX)
 
+include(${CMAKE_BINARY_DIR}/conanbuildinfo.cmake)
+conan_basic_setup(TARGETS)
+
 SET(COMPILER_CLANG OFF)
 SET(COMPILER_GCC OFF)
 SET(COMPILER_ICC OFF)
@@ -39,29 +42,28 @@ else(COMPILER_MSVC)
     add_compile_options(-Wall -Wextra -Werror -pedantic)
 endif(COMPILER_MSVC)
 
-option(WITH_CODE_COVERAGE "Add specific compile flag to enable proper code coverage" OFF)
-
-if(WITH_CODE_COVERAGE)
-
-    SET(GCC_COVERAGE_COMPILE_FLAGS "-fprofile-arcs -ftest-coverage")
-    SET(GCC_COVERAGE_LINK_FLAGS "-lgcov")
-    SET(CLANG_COVERAGE_COMPILE_FLAGS "-fprofile-arcs -ftest-coverage")
-    SET(CLANG_COVERAGE_LINK_FLAGS "--coverage")
-
-    if (COMPILER_CLANG)
-        # using Clang
-        SET(CMAKE_CXX_FLAGS  "${CMAKE_CXX_FLAGS} ${CLANG_COVERAGE_COMPILE_FLAGS}")
-        SET(CMAKE_EXE_LINKER_FLAGS  "${CMAKE_EXE_LINKER_FLAGS} ${CLANG_COVERAGE_LINK_FLAGS}")
-    elseif (COMPILER_GCC)
-        # using GCC
-        SET(CMAKE_CXX_FLAGS  "${CMAKE_CXX_FLAGS} ${GCC_COVERAGE_COMPILE_FLAGS}" )
-        SET(CMAKE_EXE_LINKER_FLAGS  "${CMAKE_EXE_LINKER_FLAGS} ${GCC_COVERAGE_LINK_FLAGS}" )
-    elseif (COMPILER_ICC OR COMPILER_MSVC)
-        # using Intel C++ or Visual Studio C++
-        # no coverage
-    endif()
-
-endif(WITH_CODE_COVERAGE)
+# option(WITH_CODE_COVERAGE "Add specific compile flag to enable proper code coverage" OFF)
+# if(WITH_CODE_COVERAGE)
+#
+#     SET(GCC_COVERAGE_COMPILE_FLAGS "-fprofile-arcs -ftest-coverage")
+#     SET(GCC_COVERAGE_LINK_FLAGS "-lgcov")
+#     SET(CLANG_COVERAGE_COMPILE_FLAGS "-fprofile-arcs -ftest-coverage")
+#     SET(CLANG_COVERAGE_LINK_FLAGS "--coverage")
+#
+#     if (COMPILER_CLANG)
+#         # using Clang
+#         SET(CMAKE_CXX_FLAGS  "${CMAKE_CXX_FLAGS} ${CLANG_COVERAGE_COMPILE_FLAGS}")
+#         SET(CMAKE_EXE_LINKER_FLAGS  "${CMAKE_EXE_LINKER_FLAGS} ${CLANG_COVERAGE_LINK_FLAGS}")
+#     elseif (COMPILER_GCC)
+#         # using GCC
+#         SET(CMAKE_CXX_FLAGS  "${CMAKE_CXX_FLAGS} ${GCC_COVERAGE_COMPILE_FLAGS}" )
+#         SET(CMAKE_EXE_LINKER_FLAGS  "${CMAKE_EXE_LINKER_FLAGS} ${GCC_COVERAGE_LINK_FLAGS}" )
+#     elseif (COMPILER_ICC OR COMPILER_MSVC)
+#         # using Intel C++ or Visual Studio C++
+#         # no coverage
+#     endif()
+#
+# endif(WITH_CODE_COVERAGE)
 
 install(DIRECTORY include DESTINATION include FILES_MATCHING PATTERN "*.hpp")
 
