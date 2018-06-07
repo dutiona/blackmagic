@@ -49,6 +49,13 @@ stages:
       - cmake --build .
               --target $TARGET
               --config $RELEASE_TYPE
+      - ctest -C $RELEASE_TYPE
+              --output-on-failure
+              --schedule-random
+              --verbose
+      - cmake --build .
+              --target benchmarks
+              --config $RELEASE_TYPE
       - cd ..
       - conan create
               --build missing

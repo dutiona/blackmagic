@@ -1,7 +1,7 @@
 from conans import CMake, ConanFile, tools
 
 class GtestconstexprextConan(ConanFile):
-    name = "Blackmagic"
+    name = "blackmagic"
     version = "0.4"
     license = "MIT"
     url = "https://gitlab.lrde.epita.fr/mroynard/blackmagic"
@@ -19,7 +19,7 @@ class GtestconstexprextConan(ConanFile):
 
     def build(self):
         cmake = CMake(self, generator="Ninja")
-        # cmake.configure(definitions={"WITH_BENCHMARKS": "ON", "WITH_EXAMPLES": "ON"})
+        # cmake.configure()
         cmake.configure(definitions={"WITH_BENCHMARKS": "ON", "WITH_EXAMPLES": "ON"})
         cmake.build()
         cmake.test()
