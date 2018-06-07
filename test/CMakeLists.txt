@@ -1,6 +1,6 @@
 add_custom_target(tests-compile ALL COMMENT "Build all the unit tests.")
 
-add_custom_target(tests EXCLUDE_FROM_ALL
+add_custom_target(tests
     DEPENDS tests-compile
     COMMAND ${CMAKE_CTEST_COMMAND} -C ${CMAKE_CONFIGURATION_TYPES} --output-on-failure --schedule-random --verbose
     COMMENT "Build and run all the unit tests.")
@@ -23,7 +23,7 @@ option(WITH_TESTS "Compile and run tests" ON)
 
 if(WITH_TESTS)
 
-    find_package(Threads)
+    find_package(Threads REQUIRED)
     add_subdirectory(blackmagic)
 
 endif(WITH_TESTS)

@@ -60,7 +60,7 @@ If ($Clean -eq "ON") {
 }
 
 # configure & make
-docker exec -w $Workdir $ContainerID sh -c "export CC=$CC && export CXX=$CXX && $CXX --version && cmake -G $CmakeGenerator -DWITH_CODE_COVERAGE=$Coverage -DWITH_EXAMPLES=$Examples -DWITH_BENCHMARK=$Benchmark $SourceDirectory"
+docker exec -w $Workdir $ContainerID sh -c "export CC=$CC && export CXX=$CXX && $CXX --version && cmake -G $CmakeGenerator -DWITH_CODE_COVERAGE=$Coverage -DWITH_EXAMPLES=$Examples -DWITH_BENCHMARKS=$Benchmark $SourceDirectory"
 docker exec -w $Workdir $ContainerID sh -c "cmake --build . --target $Target --config $ConfigType"
 
 # Launch tests
@@ -99,7 +99,7 @@ if ($Documentation -eq "ON") {
     }
 
     # configure & make
-    docker exec --workdir $Workdir $ContainerID sh -c "cmake -G $CmakeGenerator -DWITH_CODE_COVERAGE=OFF -DWITH_EXAMPLES=OFF -DWITH_BENCHMARK=OFF -DWITH_TESTS=OFF $SourceDirectory"
+    docker exec --workdir $Workdir $ContainerID sh -c "cmake -G $CmakeGenerator -DWITH_CODE_COVERAGE=OFF -DWITH_EXAMPLES=OFF -DWITH_BENCHMARKS=OFF -DWITH_TESTS=OFF $SourceDirectory"
     docker exec --workdir $Workdir $ContainerID sh -c "cmake --build . --target docs"
 
     # stopping container

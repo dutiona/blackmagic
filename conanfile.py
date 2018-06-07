@@ -1,14 +1,14 @@
 from conans import CMake, ConanFile, tools
 
 class GtestconstexprextConan(ConanFile):
-    name = "Blackmagic"
+    name = "blackmagic"
     version = "0.4"
     license = "MIT"
     url = "https://gitlab.lrde.epita.fr/mroynard/blackmagic"
     description = "Metaprogramming toolbox to do blackmagic in C++17."
 
     settings = "os", "compiler", "arch", "build_type", "cppstd"
-    requires = "gtest/1.8.0@bincrafters/stable"#, "benchmark/1.8.0@lrde-local/stable"
+    requires = "gtest/1.8.0@bincrafters/stable", "benchmark/1.4.1@dutiona/stable"
     generators = "cmake"
 
     no_copy_source = True
@@ -20,6 +20,7 @@ class GtestconstexprextConan(ConanFile):
     def build(self):
         cmake = CMake(self, generator="Ninja")
         cmake.configure()
+        # cmake.configure(defs={"WITH_BENCHMARKS": "ON", "WITH_EXAMPLES": "ON"})
         cmake.build()
         cmake.test()
 
