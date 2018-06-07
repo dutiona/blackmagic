@@ -7,7 +7,7 @@ add_custom_target(benchmarks EXCLUDE_FROM_ALL
 macro(add_benchmark Executable Source)
     add_executable(benchmark_${Executable}.exe EXCLUDE_FROM_ALL ${Source})
 
-    target_link_libraries(benchmark_${Executable}.exe PRIVATE Blackmagic CONAN_PKG::benchmark)
+    target_link_libraries(benchmark_${Executable}.exe PRIVATE Blackmagic CONAN_PKG::benchmark Threads::Threads)
 	if(MSVC)
 		#only with 15.6 preview as of now
 		# target_compile_options(benchmark_${Executable}.exe PRIVATE /experimental:external /external:anglebracket /external:wd4141) # 'inline': used more than once
@@ -30,7 +30,8 @@ endmacro(add_benchmark)
 option(WITH_BENCHMARKS "Enable benchmark (requires google benchmark installed)" OFF)
 
 if(WITH_BENCHMARKS)
-    
+
+    find_package(Threads REQUIRED)
     add_subdirectory(blackmagic)
 
 endif(WITH_BENCHMARKS)

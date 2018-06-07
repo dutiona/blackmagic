@@ -23,7 +23,7 @@ option(WITH_TESTS "Compile and run tests" ON)
 
 if(WITH_TESTS)
 
-    find_package(Threads)
+    find_package(Threads REQUIRED)
     add_subdirectory(blackmagic)
 
 endif(WITH_TESTS)

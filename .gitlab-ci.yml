@@ -51,13 +51,13 @@ stages:
               --config $RELEASE_TYPE
       - cd ..
       - conan create
-                --build missing
-                -pr $CONAN_PROFILE
-                . $NAME/$VERSION@$CONAN_USER/$TAG-$CONAN_PROFILE
+              --build missing
+              -pr $CONAN_PROFILE
+              . $NAME/$VERSION@$CONAN_USER/$TAG-$CONAN_PROFILE
       - conan upload
-                --all
-                -r $CONAN_REMOTE_NAME
-                $NAME/$VERSION@$CONAN_USER/$TAG-$CONAN_PROFILE
+              --all
+              -r $CONAN_REMOTE_NAME
+              $NAME/$VERSION@$CONAN_USER/$TAG-$CONAN_PROFILE
 
 distcheck-linux-gcc-release:
     <<: *distcheck-basic-linux
