@@ -20,7 +20,7 @@ class GtestconstexprextConan(ConanFile):
     def build(self):
         cmake = CMake(self, generator="Ninja")
         # cmake.configure()
-        cmake.configure(definitions={"WITH_BENCHMARKS": "ON", "WITH_EXAMPLES": "ON"})
+        cmake.configure(defs={"WITH_BENCHMARKS": "ON", "WITH_EXAMPLES": "ON"})
         cmake.build()
         cmake.test()
 
