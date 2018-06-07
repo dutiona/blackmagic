@@ -8,7 +8,7 @@ class GtestconstexprextConan(ConanFile):
     description = "Metaprogramming toolbox to do blackmagic in C++17."
 
     settings = "os", "compiler", "arch", "build_type", "cppstd"
-    requires = "gtest/1.8.0@bincrafters/stable"#, "benchmark/1.8.0@lrde-local/stable"
+    requires = "gtest/1.8.0@bincrafters/stable", "benchmark/1.4.1@dutiona/stable"
     generators = "cmake"
 
     no_copy_source = True
@@ -19,7 +19,8 @@ class GtestconstexprextConan(ConanFile):
 
     def build(self):
         cmake = CMake(self, generator="Ninja")
-        cmake.configure()
+        # cmake.configure(definitions={"WITH_BENCHMARKS": "ON", "WITH_EXAMPLES": "ON"})
+        cmake.configure(definitions={"WITH_BENCHMARKS": "ON", "WITH_EXAMPLES": "ON"})
         cmake.build()
         cmake.test()
 

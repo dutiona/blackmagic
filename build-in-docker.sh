@@ -12,7 +12,7 @@ CLEAN="OFF"
 CLEAN_ONLY="OFF"
 COVERAGE="OFF"
 EXAMPLES="OFF"
-BENCHMARK="OFF"
+BENCHMARKS="OFF"
 DOCUMENTATION="OFF"
 DOCKER_IMAGE_TOOLSET="mroynard/ubuntu-toolset:local"
 DOCKER_IMAGE_DOCTOOLSET="mroynard/ubuntu-doctoolset:local"
@@ -42,7 +42,7 @@ where:
 
     -o --coverage                   run gcovr coverage tool
 
-    -m --benchmark                  build the benchmark suite
+    -m --benchmarks                 build the benchmark suite
 
     -e --examples                   build the examples
 
@@ -72,8 +72,8 @@ while [[ $# -gt 0 ]]; do
 		# COVERAGE="ON"
 		shift
 		;;
-	-m | --benchmark)
-		BENCHMARK="ON"
+	-m | --benchmarks)
+		BENCHMARKS="ON"
 		shift
 		;;
 	-e | --examples)
@@ -152,7 +152,7 @@ if [ "$CLEAN" == "ON" ]; then
 fi
 
 # configure & build
-docker exec -w $WORKDIR $CONTAINER_ID sh -c "export CC=$CC && export CXX=$CXX && $CXX --version && cmake -G $CMAKE_GENERATOR -DWITH_CODE_COVERAGE=$COVERAGE -DWITH_EXAMPLES=$EXAMPLES -DWITH_BENCHMARK=$BENCHMARK $SOURCE_DIRECTORY"
+docker exec -w $WORKDIR $CONTAINER_ID sh -c "export CC=$CC && export CXX=$CXX && $CXX --version && cmake -G $CMAKE_GENERATOR -DWITH_CODE_COVERAGE=$COVERAGE -DWITH_EXAMPLES=$EXAMPLES -DWITH_BENCHMARKS=$BENCHMARKS $SOURCE_DIRECTORY"
 docker exec -w $WORKDIR $CONTAINER_ID sh -c "cmake --build . --target $TARGET --config $CONFIG_TYPE"
 
 # launch unit tests
@@ -186,7 +186,7 @@ if [ "$DOCUMENTATION" == "ON" ]; then
     fi
 
     # configure & make
-    docker exec -w $WORKDIR $CONTAINER_ID sh -c "cmake -G $CMAKE_GENERATOR -DWITH_CODE_COVERAGE=OFF -DWITH_EXAMPLES=OFF -DWITH_BENCHMARK=OFF -DWITH_TESTS=OFF $SOURCE_DIRECTORY"
+    docker exec -w $WORKDIR $CONTAINER_ID sh -c "cmake -G $CMAKE_GENERATOR -DWITH_CODE_COVERAGE=OFF -DWITH_EXAMPLES=OFF -DWITH_BENCHMARKS=OFF -DWITH_TESTS=OFF $SOURCE_DIRECTORY"
     docker exec -w $WORKDIR $CONTAINER_ID sh -c "cmake --build . --target docs"
 
     # stopping container
