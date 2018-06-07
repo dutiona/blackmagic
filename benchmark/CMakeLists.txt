@@ -1,6 +1,6 @@
 add_custom_target(benchmarks-compile ALL COMMENT "Build all the benchmarks.")
 
-add_custom_target(benchmarks EXCLUDE_FROM_ALL
+add_custom_target(benchmarks
         DEPENDS benchmarks-compile
         COMMENT "Build and run all the benchmarks.")
 
