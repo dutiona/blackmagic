@@ -107,7 +107,7 @@ documentation-builder:
       - conan remote add $CONAN_REMOTE_NAME $CONAN_REMOTE_URL
       - conan user -p $CONAN_API_KEY -r $CONAN_REMOTE_NAME $CONAN_USER
       - conan remote list
-      - conan install ..
+      - conan install .. --build missing
       - cmake $CMAKE_GENERATOR
               -DWITH_TESTS=$TESTS
               -DWITH_EXAMPLES=$EXAMPLES
