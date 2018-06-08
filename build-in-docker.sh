@@ -17,6 +17,10 @@ DOCUMENTATION="OFF"
 DOCKER_IMAGE_TOOLSET="mroynard/ubuntu-toolset:local"
 DOCKER_IMAGE_DOCTOOLSET="mroynard/ubuntu-doctoolset:local"
 VERBOSE_TESTS="OFF"
+CONAN_REMOTE_NAME="dutiona-lrde"
+CONAN_REMOTE_URL="https://api.bintray.com/conan/dutiona/lrde"
+CONAN_USER="dutiona"
+CONAN_API_KEY="e2a665548385e82bf1ecbb4739d3582b83b8235f"
 
 USAGE="$(basename "$0") [OPTIONS] -- execute a build toolchain
 
@@ -151,9 +155,23 @@ if [ "$CLEAN" == "ON" ]; then
 	fi
 fi
 
+CONAN_PROFILE="${CC}-${CONFIG_TYPE,,}"
+echo "Conan profile : $CONAN_PROFILE"
 # configure & build
-docker exec -w $WORKDIR $CONTAINER_ID sh -c "export CC=$CC && export CXX=$CXX && $CXX --version && cmake -G $CMAKE_GENERATOR -DWITH_CODE_COVERAGE=$COVERAGE -DWITH_EXAMPLES=$EXAMPLES -DWITH_BENCHMARKS=$BENCHMARKS $SOURCE_DIRECTORY"
-docker exec -w $WORKDIR $CONTAINER_ID sh -c "cmake --build . --target $TARGET --config $CONFIG_TYPE"
+DOCKER_CMD=$(cat <<- EOM
+    export CC=$CC && \
+    export CXX=$CXX && \
+    $CXX --version && \
+    conan remote add $CONAN_REMOTE_NAME $CONAN_REMOTE_URL && \
+    conan remote list && \
+    conan user -p $CONAN_API_KEY -r $CONAN_REMOTE_NAME $CONAN_USER && \
+    conan install $SOURCE_DIRECTORY --build missing -pr $CONAN_PROFILE && _
+    cmake -G $CMAKE_GENERATOR -DWITH_CODE_COVERAGE=$COVERAGE -DWITH_EXAMPLES=$EXAMPLES -DWITH_BENCHMARKS=$BENCHMARKS $SOURCE_DIRECTORY && \
+    cmake --build . --target $TARGET --config $CONFIG_TYPE
+EOM
+)
+
+docker exec -w $WORKDIR $CONTAINER_ID sh -c "$DOCKER_CMD"
 
 # launch unit tests
 if [ "VERBOSE_TESTS" == "ON" ]; then
@@ -178,16 +196,24 @@ if [ "$DOCUMENTATION" == "ON" ]; then
     # making build directory
     DOC_BUILD_DIR="$BUILD_DIRECTORY-doc"
     WORKDIR=$(docker exec $CONTAINER_ID sh -c "mkdir -p $DOC_BUILD_DIR && cd $DOC_BUILD_DIR && pwd")
-    echo "Building in $DOC_BUILD_DIR (host) -> $WORKDIR (docker)"
+    # echo "Building in $DOC_BUILD_DIR (host) -> $WORKDIR (docker)"
 
     # cleaning if needed
     if [ "$CLEAN" == "ON" ]; then
         docker exec --workdir $WORKDIR $CONTAINER_ID sh -c "rm -rf ./*"
     fi
 
+    DOCKER_DOC_CMD=$(cat <<- EOM
+    conan remote add $CONAN_REMOTE_NAME $CONAN_REMOTE_URL && \
+    conan remote list && \
+    conan user -p $CONAN_API_KEY -r $CONAN_REMOTE_NAME $CONAN_USER && \
+    conan install $SOURCE_DIRECTORY --build missing -pr $CONAN_PROFILE && \_
+    cmake -G $CMAKE_GENERATOR -DWITH_CODE_COVERAGE=OFF -DWITH_EXAMPLES=OFF -DWITH_BENCHMARKS=OFF -DWITH_TESTS=OFF $SOURCE_DIRECTORY
+    cmake --build . --target docs
+EOM
+)
     # configure & make
-    docker exec -w $WORKDIR $CONTAINER_ID sh -c "cmake -G $CMAKE_GENERATOR -DWITH_CODE_COVERAGE=OFF -DWITH_EXAMPLES=OFF -DWITH_BENCHMARKS=OFF -DWITH_TESTS=OFF $SOURCE_DIRECTORY"
-    docker exec -w $WORKDIR $CONTAINER_ID sh -c "cmake --build . --target docs"
+    docker exec -w $WORKDIR $CONTAINER_ID sh -c "$DOCKER_DOC_CMD"
 
     # stopping container
     echo "Stopping container $CONTAINER_ID"
