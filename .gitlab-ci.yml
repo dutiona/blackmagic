@@ -12,8 +12,6 @@ variables:
     CMAKE_GENERATOR: "-G Ninja"                                     # include -G if defined
     BUILD_DIRECTORY: "build-in-docker"                              # build directory name
     SOURCE_DIRECTORY: ".."                                          # where cmake search source files from the build directory
-    TARGET: "check"                                                 # target to invoke
-    CLEAN: "OFF"                                                    # whether to rm -rf * in build directory before running cmake
     TESTS: "ON"                                                     # build and run unit tests
     EXAMPLES: "ON"                                                  # build and run examples
     BENCHMARKS: "ON"                                                # build and run benchmarks
@@ -21,9 +19,10 @@ variables:
 
 stages:
     - build
+    - package
     - doc
 
-.job-basic-build-linux: &distcheck-basic-linux
+.job-basic-build-linux: &distcheck-build-basic-linux
     stage: build
     image: mroynard/ubuntu-toolset:stable
     script:
@@ -33,7 +32,6 @@ stages:
       - $CXX --version
       - mkdir -p $BUILD_DIRECTORY
       - cd $BUILD_DIRECTORY
-      - if [ "$CLEAN" == "ON" ]; then rm -rf ./*; fi
       - conan remote add $CONAN_REMOTE_NAME $CONAN_REMOTE_URL
       - conan user -p $CONAN_API_KEY -r $CONAN_REMOTE_NAME $CONAN_USER
       - conan remote list
@@ -47,7 +45,6 @@ stages:
               -DWITH_CODE_COVERAGE=$COVERAGE
               $SOURCE_DIRECTORY
       - cmake --build .
-              --target $TARGET
               --config $RELEASE_TYPE
       - ctest -C $RELEASE_TYPE
               --output-on-failure
@@ -56,35 +53,70 @@ stages:
       - cmake --build .
               --target benchmarks
               --config $RELEASE_TYPE
-      - cd ..
-      - conan create
-              --build missing
-              -pr $CONAN_PROFILE
-              . $NAME/$VERSION@$CONAN_USER/$TAG-$CONAN_PROFILE
-      - conan upload
-              --all
-              -r $CONAN_REMOTE_NAME
-              $NAME/$VERSION@$CONAN_USER/$TAG-$CONAN_PROFILE
 
-distcheck-linux-gcc-release:
-    <<: *distcheck-basic-linux
+distcheck-build-linux-gcc-release:
+    <<: *distcheck-build-basic-linux
     variables:
 
-distcheck-linux-clang-release:
-    <<: *distcheck-basic-linux
+distcheck-build-linux-clang-release:
+    <<: *distcheck-build-basic-linux
     variables:
         CC: "clang"
         CXX: "clang++"
         CONAN_PROFILE: "clang-release"
 
-distcheck-linux-gcc-debug:
-    <<: *distcheck-basic-linux
+distcheck-build-linux-gcc-debug:
+    <<: *distcheck-build-basic-linux
     variables:
         RELEASE_TYPE: "Debug"
         CONAN_PROFILE: "gcc-release"
 
-distcheck-linux-clang-debug:
-    <<: *distcheck-basic-linux
+distcheck-build-linux-clang-debug:
+    <<: *distcheck-build-basic-linux
+    variables:
+        RELEASE_TYPE: "Debug"
+        CC: "clang"
+        CXX: "clang++"
+        CONAN_PROFILE: "clang-debug"
+
+.job-basic-package-linux: &distcheck-package-basic-linux
+    stage: package
+    image: mroynard/ubuntu-toolset:stable
+    script:
+      - set -e
+      - export CC=$CC
+      - export CXX=$CXX
+      - $CXX --version
+      - conan remote add $CONAN_REMOTE_NAME $CONAN_REMOTE_URL
+      - conan user -p $CONAN_API_KEY -r $CONAN_REMOTE_NAME $CONAN_USER
+      - conan remote list
+      - conan create
+              --build missing
+              -pr $CONAN_PROFILE
+              . $NAME/$VERSION@$CONAN_USER/$TAG-$CONAN_PROFILE
+      - conan upload
+              -r $CONAN_REMOTE_NAME
+              $NAME/$VERSION@$CONAN_USER/$TAG-$CONAN_PROFILE
+
+distcheck-package-linux-gcc-release:
+    <<: *distcheck-package-basic-linux
+    variables:
+
+distcheck-package-linux-clang-release:
+    <<: *distcheck-package-basic-linux
+    variables:
+        CC: "clang"
+        CXX: "clang++"
+        CONAN_PROFILE: "clang-release"
+
+distcheck-package-linux-gcc-debug:
+    <<: *distcheck-package-basic-linux
+    variables:
+        RELEASE_TYPE: "Debug"
+        CONAN_PROFILE: "gcc-release"
+
+distcheck-package-linux-clang-debug:
+    <<: *distcheck-package-basic-linux
     variables:
         RELEASE_TYPE: "Debug"
         CC: "clang"
