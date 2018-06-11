@@ -23,7 +23,7 @@ template <typename T>
 using remove_cvref = std::remove_cv<std::remove_reference_t<T>>;
 
 template <typename T>
-using remove_cvref_t = typename remove_cvref<T>::type;
+using remove_cvref_t = _t<remove_cvref<T>>;
 
 
 // disable_if
@@ -141,22 +141,6 @@ struct is_valued_instantiation_of : std::false_type {
 
 template <template <auto...> class Template, auto... Args>
 struct is_valued_instantiation_of<Template, Template<Args...>> : std::true_type {
-};
-
-template <template <typename, auto...> class Template, typename T>
-struct is_typed_valued_instantiation_of : std::false_type {
-};
-
-template <template <typename, auto...> class Template, typename T, auto... Args>
-struct is_typed_valued_instantiation_of<Template, Template<T, Args...>> : std::true_type {
-};
-
-template <template <typename, auto...> class Template, typename T, typename U>
-struct is_specialized_typed_valued_instantiation_of : std::false_type {
-};
-
-template <template <typename, auto...> class Template, typename T, auto... Args>
-struct is_specialized_typed_valued_instantiation_of<Template, T, Template<T, Args...>> : std::true_type {
 };
 
 

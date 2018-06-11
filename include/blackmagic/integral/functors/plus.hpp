@@ -2,6 +2,8 @@
 
 #include "../utility.hpp"
 
+#include "../../common/traits_ext.hpp"
+
 namespace blackmagic::integral { inline namespace functors { inline namespace arithmetic {
 
 struct plus_functor_t {
@@ -24,7 +26,7 @@ struct plus_functor_impl_rhs {
   template <typename U>
   constexpr decltype(auto) operator()(U&&) const
   {
-    return plus_t<T, U>{};
+    return plus_t<common::remove_cvref_t<T>, common::remove_cvref_t<U>>{};
   }
 };
 
@@ -33,7 +35,7 @@ struct plus_functor_impl_by {
   template <typename T>
   constexpr decltype(auto) operator()(T&&) const
   {
-    return plus_t<T, U>{};
+    return plus_t<common::remove_cvref_t<T>, common::remove_cvref_t<U>>{};
   }
 };
 
@@ -42,7 +44,7 @@ struct plus_functor_impl_by {
 template <typename T, typename U>
 constexpr decltype(auto) plus_functor_t::operator()(T&&, U&&) const
 {
-  return plus_t<T, U>{};
+  return plus_t<common::remove_cvref_t<T>, common::remove_cvref_t<U>>{};
 }
 
 template <typename T>

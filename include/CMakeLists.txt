@@ -116,7 +116,6 @@ set(BLACKMAGIC_INTEGRAL_SOURCES
         blackmagic/integral/functors/not_equal.hpp
         blackmagic/integral/functors/plus.hpp
         blackmagic/integral/functors/positive.hpp
-        blackmagic/integral/tags.hpp
         blackmagic/integral/types/bool.hpp
         blackmagic/integral/types/char.hpp
         blackmagic/integral/types/int.hpp

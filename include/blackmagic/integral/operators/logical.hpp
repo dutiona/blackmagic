@@ -3,7 +3,6 @@
 #include "../functors.hpp"
 #include "../types.hpp"
 
-#include "../../common/tag_of.hpp"
 #include "../../common/traits_ext.hpp"
 
 #include <type_traits>
@@ -11,7 +10,6 @@
 namespace blackmagic::integral { inline namespace operators { inline namespace logical {
 
 using common::_v;
-using common::tag_of_t;
 
 namespace {
 
@@ -21,7 +19,7 @@ struct logical_operators {
 };
 
 template <>
-struct logical_operators<tags::bool_tag> {
+struct logical_operators<bool> {
   static constexpr bool value = true;
 };
 
@@ -29,26 +27,27 @@ struct logical_operators<tags::bool_tag> {
 
 
 // &&
-template <typename T, typename U,
-          typename = std::enable_if_t<_v<logical_operators<tag_of_t<T>>> || _v<logical_operators<tag_of_t<U>>>>>
-constexpr decltype(auto) operator&&(T&& t, U&& u)
+template <typename T, auto V, typename U, auto W,
+          typename = std::enable_if_t<_v<logical_operators<T>> || _v<logical_operators<U>>>>
+constexpr decltype(auto) operator&&(const std::integral_constant<T, V>& t, const std::integral_constant<U, W>& u)
 {
-  return logical_and(std::forward<T>(t), std::forward<U>(u));
+  return logical_and(t, u);
 }
 
 // ||
-template <typename T, typename U,
-          typename = std::enable_if_t<_v<logical_operators<tag_of_t<T>>> || _v<logical_operators<tag_of_t<U>>>>>
-constexpr decltype(auto) operator||(T&& t, U&& u)
+template <typename T, auto V, typename U, auto W,
+          typename = std::enable_if_t<_v<logical_operators<T>> || _v<logical_operators<U>>>>
+constexpr decltype(auto) operator||(const std::integral_constant<T, V>& t, const std::integral_constant<U, W>& u)
 {
-  return logical_or(std::forward<T>(t), std::forward<U>(u));
+  return logical_or(t, u);
 }
 
 // !
-template <typename T, typename = std::enable_if_t<_v<logical_operators<tag_of_t<T>>>>>
-constexpr decltype(auto) operator!(T&& t)
+template <typename T, auto V, typename = std::enable_if_t<_v<logical_operators<T>>>>
+constexpr decltype(auto) operator!(const std::integral_constant<T, V>& t)
 {
-  return logical_not(std::forward<T>(t));
+  return logical_not(t);
 }
+
 
 }}} // namespace blackmagic::integral::operators::logical

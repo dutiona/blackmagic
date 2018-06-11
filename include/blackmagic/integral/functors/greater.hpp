@@ -2,6 +2,8 @@
 
 #include "../utility.hpp"
 
+#include "../../common/traits_ext.hpp"
+
 namespace blackmagic::integral { inline namespace functors { inline namespace comparison {
 
 struct greater_functor_t {
@@ -24,7 +26,7 @@ struct greater_functor_impl_rhs {
   template <typename U>
   constexpr decltype(auto) operator()(U&&) const
   {
-    return greater_t<T, U>{};
+    return greater_t<common::remove_cvref_t<T>, common::remove_cvref_t<U>>{};
   }
 };
 
@@ -33,7 +35,7 @@ struct greater_functor_impl_than {
   template <typename T>
   constexpr decltype(auto) operator()(T&&) const
   {
-    return greater_t<T, U>{};
+    return greater_t<common::remove_cvref_t<T>, common::remove_cvref_t<U>>{};
   }
 };
 
@@ -42,7 +44,7 @@ struct greater_functor_impl_than {
 template <typename T, typename U>
 constexpr decltype(auto) greater_functor_t::operator()(T&&, U&&) const
 {
-  return greater_t<T, U>{};
+  return greater_t<common::remove_cvref_t<T>, common::remove_cvref_t<U>>{};
 }
 
 template <typename T>

@@ -3,7 +3,6 @@
 #include "../functors.hpp"
 #include "../types.hpp"
 
-#include "../../common/tag_of.hpp"
 #include "../../common/traits_ext.hpp"
 
 #include <type_traits>
@@ -11,7 +10,6 @@
 namespace blackmagic::integral { inline namespace operators { inline namespace comparison {
 
 using common::_v;
-using common::tag_of_t;
 
 namespace {
 
@@ -21,116 +19,119 @@ struct comparison_operators {
 };
 
 template <>
-struct comparison_operators<tags::bool_tag> {
+struct comparison_operators<bool> {
   static constexpr bool value = true;
 };
 
 template <>
-struct comparison_operators<tags::char_tag> {
+struct comparison_operators<char> {
   static constexpr bool value = true;
 };
 
 template <>
-struct comparison_operators<tags::short_tag> {
+struct comparison_operators<short> {
   static constexpr bool value = true;
 };
 
 template <>
-struct comparison_operators<tags::int_tag> {
+struct comparison_operators<int> {
   static constexpr bool value = true;
 };
 template <>
-struct comparison_operators<tags::long_tag> {
+struct comparison_operators<long> {
   static constexpr bool value = true;
 };
 
 template <>
-struct comparison_operators<tags::long_long_tag> {
+struct comparison_operators<long long> {
   static constexpr bool value = true;
 };
 
 template <>
-struct comparison_operators<tags::unsigned_char_tag> {
+struct comparison_operators<unsigned char> {
   static constexpr bool value = true;
 };
 template <>
-struct comparison_operators<tags::unsigned_short_tag> {
+struct comparison_operators<unsigned short> {
   static constexpr bool value = true;
 };
 
 template <>
-struct comparison_operators<tags::unsigned_tag> {
+struct comparison_operators<unsigned> {
+  static constexpr bool value = true;
+};
+
+/*
+template <>
+struct comparison_operators<unsigned int> {
+  static constexpr bool value = true;
+};*/
+
+template <>
+struct comparison_operators<unsigned long> {
   static constexpr bool value = true;
 };
 
 template <>
-struct comparison_operators<tags::unsigned_int_tag> {
-  static constexpr bool value = true;
-};
-template <>
-struct comparison_operators<tags::unsigned_long_tag> {
+struct comparison_operators<unsigned long long> {
   static constexpr bool value = true;
 };
 
+/*
 template <>
-struct comparison_operators<tags::unsigned_long_long_tag> {
+struct comparison_operators<size_t> {
   static constexpr bool value = true;
-};
-
-template <>
-struct comparison_operators<tags::size_t_tag> {
-  static constexpr bool value = true;
-};
+};*/
 
 } // namespace
 
 
 // ==
-template <typename T, typename U,
-          typename = std::enable_if_t<_v<comparison_operators<tag_of_t<T>>> || _v<comparison_operators<tag_of_t<U>>>>>
-constexpr decltype(auto) operator==(T&& t, U&& u)
+template <typename T, auto V, typename U, auto W,
+          typename = std::enable_if_t<_v<comparison_operators<T>> && _v<comparison_operators<U>>>>
+constexpr decltype(auto) operator==(const std::integral_constant<T, V>& t, const std::integral_constant<U, W>& u)
 {
-  return equal(std::forward<T>(t), std::forward<U>(u));
+  return equal(t, u);
 }
 
 // !=
-template <typename T, typename U,
-          typename = std::enable_if_t<_v<comparison_operators<tag_of_t<T>>> || _v<comparison_operators<tag_of_t<U>>>>>
-constexpr decltype(auto) operator!=(T&& t, U&& u)
+template <typename T, auto V, typename U, auto W,
+          typename = std::enable_if_t<_v<comparison_operators<T>> || _v<comparison_operators<U>>>>
+constexpr decltype(auto) operator!=(const std::integral_constant<T, V>& t, const std::integral_constant<U, W>& u)
 {
-  return not_equal(std::forward<T>(t), std::forward<U>(u));
+  return not_equal(t, u);
 }
 
 // <
-template <typename T, typename U,
-          typename = std::enable_if_t<_v<comparison_operators<tag_of_t<T>>> || _v<comparison_operators<tag_of_t<U>>>>>
-constexpr decltype(auto) operator<(T&& t, U&& u)
+template <typename T, auto V, typename U, auto W,
+          typename = std::enable_if_t<_v<comparison_operators<T>> || _v<comparison_operators<U>>>>
+constexpr decltype(auto) operator<(const std::integral_constant<T, V>& t, const std::integral_constant<U, W>& u)
 {
-  return less(std::forward<T>(t), std::forward<U>(u));
+  return less(t, u);
 }
 
 // <=
-template <typename T, typename U,
-          typename = std::enable_if_t<_v<comparison_operators<tag_of_t<T>>> || _v<comparison_operators<tag_of_t<U>>>>>
-constexpr decltype(auto) operator<=(T&& t, U&& u)
+template <typename T, auto V, typename U, auto W,
+          typename = std::enable_if_t<_v<comparison_operators<T>> || _v<comparison_operators<U>>>>
+constexpr decltype(auto) operator<=(const std::integral_constant<T, V>& t, const std::integral_constant<U, W>& u)
 {
-  return less_equal(std::forward<T>(t), std::forward<U>(u));
+  return less_equal(t, u);
 }
 
 // >
-template <typename T, typename U,
-          typename = std::enable_if_t<_v<comparison_operators<tag_of_t<T>>> || _v<comparison_operators<tag_of_t<U>>>>>
-constexpr decltype(auto) operator>(T&& t, U&& u)
+template <typename T, auto V, typename U, auto W,
+          typename = std::enable_if_t<_v<comparison_operators<T>> || _v<comparison_operators<U>>>>
+constexpr decltype(auto) operator>(const std::integral_constant<T, V>& t, const std::integral_constant<U, W>& u)
 {
-  return greater(std::forward<T>(t), std::forward<U>(u));
+  return greater(t, u);
 }
 
 // >=
-template <typename T, typename U,
-          typename = std::enable_if_t<_v<comparison_operators<tag_of_t<T>>> || _v<comparison_operators<tag_of_t<U>>>>>
-constexpr decltype(auto) operator>=(T&& t, U&& u)
+template <typename T, auto V, typename U, auto W,
+          typename = std::enable_if_t<_v<comparison_operators<T>> || _v<comparison_operators<U>>>>
+constexpr decltype(auto) operator>=(const std::integral_constant<T, V>& t, const std::integral_constant<U, W>& u)
 {
-  return greater_equal(std::forward<T>(t), std::forward<U>(u));
+  return greater_equal(t, u);
 }
 
 }}} // namespace blackmagic::integral::operators::comparison
