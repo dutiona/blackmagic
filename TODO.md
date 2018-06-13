@@ -1,6 +1,3 @@
-TODO / FIXME
-make remove_if and copy_if work with compile-time tuples of integral_constant
-
 FIXME
 tests for common
 test for accumulate

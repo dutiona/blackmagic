@@ -16,19 +16,19 @@ using common::_v;
 
 namespace details {
 
-template <template <typename...> class Pred, typename... Us>
+template <typename Pred>
 class make_remove_if_indexes {
-  const common::trait_t<Pred, Us...>& trait_;
+  const Pred& pred_;
 
 public:
-  constexpr make_remove_if_indexes(const common::trait_t<Pred, Us...>& t)
-    : trait_(t)
+  constexpr make_remove_if_indexes(const Pred& pred)
+    : pred_(pred)
   {
   }
 
   template <typename... Ts>
   constexpr auto operator()(Ts&&... t) const
-    -> filter_indexes<static_cast<bool>(!_v<std::decay_t<decltype(trait_(std::forward<Ts>(t)))>>)...>
+    -> filter_indexes<static_cast<bool>(!_v<std::decay_t<decltype(pred_(std::forward<Ts>(t)))>>)...>
   {
     return {};
   }
@@ -40,21 +40,20 @@ constexpr auto build_removed_tuple(const std::tuple<Ts...>& tpl, std::index_sequ
   return std::make_tuple(std::get<Indexes::indexes[I]>(tpl)...);
 }
 
-template <template <typename...> class Pred, typename... Us, typename... Ts, size_t... I>
-constexpr decltype(auto) remove_if_impl(const std::tuple<Ts...>& tpl, const common::trait_t<Pred, Us...>& trait,
-                                        std::index_sequence<I...>)
+template <typename Pred, typename... Ts, size_t... I>
+constexpr decltype(auto) remove_if_impl(const std::tuple<Ts...>& tpl, const Pred& pred, std::index_sequence<I...>)
 {
-  using indexes_t = decltype(unpack(tpl, make_remove_if_indexes{trait}));
+  using indexes_t = decltype(unpack(tpl, make_remove_if_indexes{pred}));
   return build_removed_tuple<indexes_t>(tpl, std::make_index_sequence<indexes_t::indexes.size()>{});
 }
 
 } // namespace details
 
 struct remove_if_t {
-  template <template <typename...> class Pred, typename... Us, typename... Ts>
-  constexpr auto operator()(const std::tuple<Ts...>& tpl, const common::trait_t<Pred, Us...>& trait) const
+  template <typename Pred, typename... Us, typename... Ts>
+  constexpr auto operator()(const std::tuple<Ts...>& tpl, const Pred& pred) const
   {
-    return details::remove_if_impl(tpl, trait, std::index_sequence_for<Ts...>{});
+    return details::remove_if_impl(tpl, pred, std::index_sequence_for<Ts...>{});
   }
 };
 
