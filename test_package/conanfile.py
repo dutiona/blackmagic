@@ -3,7 +3,7 @@ import os
 from conans import ConanFile, CMake, tools
 
 
-class GtestconstexprextTestConan(ConanFile):
+class BlackmagicTestConan(ConanFile):
     settings = "os", "compiler", "build_type", "arch", "cppstd"
     generators = "cmake"
 

@@ -1,6 +1,6 @@
 from conans import CMake, ConanFile, tools
 
-class GtestconstexprextConan(ConanFile):
+class Blackmagic(ConanFile):
     name = "blackmagic"
     version = "0.4"
     license = "MIT"

@@ -69,7 +69,7 @@ distcheck-build-linux-gcc-debug:
     <<: *distcheck-build-basic-linux
     variables:
         RELEASE_TYPE: "Debug"
-        CONAN_PROFILE: "gcc-release"
+        CONAN_PROFILE: "gcc-debug"
 
 distcheck-build-linux-clang-debug:
     <<: *distcheck-build-basic-linux
@@ -113,7 +113,7 @@ distcheck-package-linux-gcc-debug:
     <<: *distcheck-package-basic-linux
     variables:
         RELEASE_TYPE: "Debug"
-        CONAN_PROFILE: "gcc-release"
+        CONAN_PROFILE: "gcc-debug"
 
 distcheck-package-linux-clang-debug:
     <<: *distcheck-package-basic-linux
