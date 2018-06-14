@@ -6,6 +6,9 @@ template <typename Concept>
 struct traits {
   template <typename... Args>
   static constexpr void diagnose();
+
+  template <auto... Args>
+  static constexpr void diagnose_v();
 };
 
 }}} // namespace blackmagic::concepts::engine::diagnostic

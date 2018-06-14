@@ -25,10 +25,22 @@ struct item : std::pair<std::string_view, checker<Concept>> {
     require_concept<Concept, Args...>();
   }
 
+  template <auto... Args>
+  constexpr void require_v() const
+  {
+    require_v_concept<Concept, Args...>();
+  }
+
   template <typename... Args>
   constexpr bool check() const
   {
     return check_concept<Concept, Args...>();
+  }
+
+  template <auto... Args>
+  constexpr bool check_v() const
+  {
+    return check_v_concept<Concept, Args...>();
   }
 };
 

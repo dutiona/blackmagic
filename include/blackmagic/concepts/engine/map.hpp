@@ -81,6 +81,12 @@ struct map {
     tuple::for_each(items_, [](auto cpt) { cpt.template require<Args...>(); });
   }
 
+  template <auto... Args>
+  constexpr void require_v() const
+  {
+    tuple::for_each(items_, [](auto cpt) { cpt.template require_v<Args...>(); });
+  }
+
   template <typename... Args>
   constexpr void require_at(std::string_view concept_name) const
   {
@@ -95,10 +101,30 @@ struct map {
     });
   }
 
+  template <auto... Args>
+  constexpr void require_v_at(std::string_view concept_name) const
+  {
+    if (!has(concept_name)) {
+      throw "This concept key doesn't exists in this concept map!";
+    }
+
+    tuple::for_each(items_, [concept_name](auto cpt) {
+      if (cpt.is(concept_name)) {
+        cpt.template require_v<Args...>();
+      }
+    });
+  }
+
   template <typename... Args>
   constexpr bool check() const
   {
     return tuple::all(tuple::transform(items_, [](auto cpt) { return cpt.template check<Args...>(); }));
+  }
+
+  template <auto... Args>
+  constexpr bool check_v() const
+  {
+    return tuple::all(tuple::transform(items_, [](auto cpt) { return cpt.template check_v<Args...>(); }));
   }
 
   template <typename... Args>
@@ -116,6 +142,21 @@ struct map {
     }));
   }
 
+  template <auto... Args>
+  constexpr bool check_v_at(std::string_view concept_name) const
+  {
+    if (!has(concept_name)) {
+      throw "This concept key doesn't exists in this concept map!";
+    }
+
+    return tuple::all(tuple::transform(items_, [concept_name](auto cpt) {
+      if (cpt.is(concept_name)) {
+        return cpt.template check_v<Args...>();
+      }
+      return true;
+    }));
+  }
+
   template <typename This, typename... Args>
   using can_call_diagnose_t = decltype(diagnostic::traits<This>::template diagnose<Args...>());
 
@@ -126,6 +167,18 @@ struct map {
                   "No diagnostic trait provided for this concept type.");
 
     diagnostic::traits<std::decay_t<decltype(*this)>>::template diagnose<Args...>();
+  }
+
+  template <typename This, auto... Args>
+  using can_call_diagnose_v_t = decltype(diagnostic::traits<This>::template diagnose_v<Args...>());
+
+  template <auto... Args>
+  constexpr void diagnostic_v() const
+  {
+    static_assert(common::is_detected_v<can_call_diagnose_v_t, std::decay_t<decltype(*this)>, Args...>,
+                  "No diagnostic trait provided for this concept type.");
+
+    diagnostic::traits<std::decay_t<decltype(*this)>>::template diagnose_v<Args...>();
   }
 };
 
