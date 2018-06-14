@@ -81,6 +81,10 @@ template <template <typename...> class Pred, typename... Parameters>
 struct is_true_ : is_true_impl<Pred<Parameters...>> {
 };
 
+template <template <auto...> class Pred, auto... Parameters>
+struct is_true_v_ : is_true_impl<Pred<Parameters...>> {
+};
+
 template <typename ParametersPack, typename = void, template <typename...> class... Preds>
 struct are_true_ : std::false_type {
 };
@@ -89,8 +93,20 @@ struct are_true_<ParametersPack<Parameters...>, std::enable_if<_v<are_true_impl<
   : std::true_type {
 };
 
+template <typename ParametersPack, typename = void, template <auto...> class... Preds>
+struct are_true_v_ : std::false_type {
+};
+template <template <auto...> class ParametersPack, template <auto...> class... Preds, auto... Parameters>
+struct are_true_v_<ParametersPack<Parameters...>, std::enable_if<_v<are_true_impl<Preds<Parameters...>...>>>, Preds...>
+  : std::true_type {
+};
+
 template <template <typename...> class Pred, typename... Parameters>
 struct is_false_ : is_false_impl<Pred<Parameters...>> {
+};
+
+template <template <auto...> class Pred, auto... Parameters>
+struct is_false_v_ : is_false_impl<Pred<Parameters...>> {
 };
 
 template <typename ParametersPack, typename = void, template <typename...> class... Preds>
@@ -99,6 +115,14 @@ struct are_false_ : std::false_type {
 template <template <typename...> class ParametersPack, template <typename...> class... Preds, typename... Parameters>
 struct are_false_<ParametersPack<Parameters...>, std::enable_if<_v<are_false_impl<Preds<Parameters...>...>>>, Preds...>
   : std::true_type {
+};
+
+template <typename ParametersPack, typename = void, template <auto...> class... Preds>
+struct are_false_v_ : std::false_type {
+};
+template <template <auto...> class ParametersPack, template <auto...> class... Preds, auto... Parameters>
+struct are_false_v_<ParametersPack<Parameters...>, std::enable_if<_v<are_false_impl<Preds<Parameters...>...>>>,
+                    Preds...> : std::true_type {
 };
 
 template <template <typename...> class T, template <typename...> class U = T, typename... Parameters>
@@ -139,6 +163,16 @@ struct is_true {
   static constexpr bool value = _v<type<Parameters...>>;
 };
 
+template <template <auto...> class Pred>
+struct is_true_v {
+  template <auto... Parameters>
+  using type = is_true_v_<Pred, Parameters...>;
+  template <auto... Parameters>
+  using underlying_type = _t<type<Parameters...>>;
+  template <auto... Parameters>
+  static constexpr bool value = _v<type<Parameters...>>;
+};
+
 template <template <typename...> class... Preds>
 struct are_true {
   template <typename... Parameters>
@@ -146,6 +180,16 @@ struct are_true {
   template <typename... Parameters>
   using underlying_type = _t<type<Parameters...>>;
   template <typename... Parameters>
+  static constexpr bool value = _v<type<Parameters...>>;
+};
+
+template <template <auto...> class... Preds>
+struct are_true_v {
+  template <auto... Parameters>
+  using type = are_true_v_<type::basic_value_list<Parameters...>, void, Preds...>;
+  template <auto... Parameters>
+  using underlying_type = _t<type<Parameters...>>;
+  template <auto... Parameters>
   static constexpr bool value = _v<type<Parameters...>>;
 };
 
@@ -159,6 +203,16 @@ struct is_false {
   static constexpr bool value = _v<type<Parameters...>>;
 };
 
+template <template <auto...> class Pred>
+struct is_false_v {
+  template <auto... Parameters>
+  using type = is_false_v_<Pred, Parameters...>;
+  template <auto... Parameters>
+  using underlying_type = _t<type<Parameters...>>;
+  template <auto... Parameters>
+  static constexpr bool value = _v<type<Parameters...>>;
+};
+
 template <template <typename...> class... Preds>
 struct are_false {
   template <typename... Parameters>
@@ -166,6 +220,16 @@ struct are_false {
   template <typename... Parameters>
   using underlying_type = _t<type<Parameters...>>;
   template <typename... Parameters>
+  static constexpr bool value = _v<type<Parameters...>>;
+};
+
+template <template <auto...> class... Preds>
+struct are_false_v {
+  template <auto... Parameters>
+  using type = are_false_v_<type::basic_value_list<Parameters...>, void, Preds...>;
+  template <auto... Parameters>
+  using underlying_type = _t<type<Parameters...>>;
+  template <auto... Parameters>
   static constexpr bool value = _v<type<Parameters...>>;
 };
 
@@ -209,10 +273,22 @@ constexpr decltype(auto) is_true(std::string_view concept_name)
   return make_concept_item<details::is_true<Pred>>(concept_name);
 }
 
+template <template <auto...> class Pred>
+constexpr decltype(auto) is_true_v(std::string_view concept_name)
+{
+  return make_concept_item<details::is_true_v<Pred>>(concept_name);
+}
+
 template <template <typename...> class... Preds>
 constexpr decltype(auto) are_true(std::string_view concept_name)
 {
   return make_concept_item<details::are_true<Preds...>>(concept_name);
+}
+
+template <template <auto...> class... Preds>
+constexpr decltype(auto) are_true_v(std::string_view concept_name)
+{
+  return make_concept_item<details::are_true_v<Preds...>>(concept_name);
 }
 
 template <template <typename...> class Pred>
@@ -221,10 +297,22 @@ constexpr decltype(auto) is_false(std::string_view concept_name)
   return make_concept_item<details::is_false<Pred>>(concept_name);
 }
 
+template <template <auto...> class Pred>
+constexpr decltype(auto) is_false_v(std::string_view concept_name)
+{
+  return make_concept_item<details::is_false_v<Pred>>(concept_name);
+}
+
 template <template <typename...> class... Preds>
 constexpr decltype(auto) are_false(std::string_view concept_name)
 {
   return make_concept_item<details::are_false<Preds...>>(concept_name);
+}
+
+template <template <auto...> class... Preds>
+constexpr decltype(auto) are_false_v(std::string_view concept_name)
+{
+  return make_concept_item<details::are_false_v<Preds...>>(concept_name);
 }
 
 template <template <typename...> class T, template <typename...> class U = T>

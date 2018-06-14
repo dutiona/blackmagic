@@ -18,4 +18,12 @@ struct basic_list {
   }
 };
 
+template <auto... Vs>
+struct basic_value_list {
+  static constexpr size_t size() noexcept
+  {
+    return sizeof...(Vs);
+  }
+};
+
 } // namespace blackmagic::type
