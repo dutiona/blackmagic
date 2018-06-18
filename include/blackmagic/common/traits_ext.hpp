@@ -163,4 +163,12 @@ using is_swappable_with = swappable<T, U>;
 template <typename T, typename U = T>
 inline constexpr auto is_swappable_with_v = is_swappable_with<T, U>::value;
 
+
+// apply_if
+template <bool B, template <typename> class M, typename T>
+using apply_if = std::conditional<B, M<T>, T>;
+
+template <bool B, template <typename> class M, typename T>
+using apply_if_t = typename apply_if<B, M, T>::type;
+
 }} // namespace blackmagic::common::traits_ext

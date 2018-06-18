@@ -1,1 +1,1 @@
-add_unit_test(common_empty "empty.cpp")
+add_unit_test(common_common_reference "common_reference.cpp")

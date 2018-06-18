@@ -24,7 +24,8 @@ set(BLACKMAGIC_COMMON_SOURCES
         blackmagic/common/algorithm/are_equal.hpp
         blackmagic/common/algorithm/are_not_equal.hpp
         blackmagic/common/algorithm/count_v.hpp
-        blackmagic/common/algorithm/none_of_v.hpp)
+        blackmagic/common/algorithm/none_of_v.hpp
+        blackmagic/common/common_reference.hpp)
 
 set(BLACKMAGIC_CONCEPTS_SOURCES
         blackmagic/concepts/concepts.hpp
