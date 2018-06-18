@@ -89,7 +89,7 @@ template <typename ParametersPack, typename = void, template <typename...> class
 struct are_true_ : std::false_type {
 };
 template <template <typename...> class ParametersPack, template <typename...> class... Preds, typename... Parameters>
-struct are_true_<ParametersPack<Parameters...>, std::enable_if<_v<are_true_impl<Preds<Parameters...>...>>>, Preds...>
+struct are_true_<ParametersPack<Parameters...>, std::enable_if_t<_v<are_true_impl<Preds<Parameters...>...>>>, Preds...>
   : std::true_type {
 };
 
@@ -97,8 +97,8 @@ template <typename ParametersPack, typename = void, template <auto...> class... 
 struct are_true_v_ : std::false_type {
 };
 template <template <auto...> class ParametersPack, template <auto...> class... Preds, auto... Parameters>
-struct are_true_v_<ParametersPack<Parameters...>, std::enable_if<_v<are_true_impl<Preds<Parameters...>...>>>, Preds...>
-  : std::true_type {
+struct are_true_v_<ParametersPack<Parameters...>, std::enable_if_t<_v<are_true_impl<Preds<Parameters...>...>>>,
+                   Preds...> : std::true_type {
 };
 
 template <template <typename...> class Pred, typename... Parameters>
@@ -113,15 +113,15 @@ template <typename ParametersPack, typename = void, template <typename...> class
 struct are_false_ : std::false_type {
 };
 template <template <typename...> class ParametersPack, template <typename...> class... Preds, typename... Parameters>
-struct are_false_<ParametersPack<Parameters...>, std::enable_if<_v<are_false_impl<Preds<Parameters...>...>>>, Preds...>
-  : std::true_type {
+struct are_false_<ParametersPack<Parameters...>, std::enable_if_t<_v<are_false_impl<Preds<Parameters...>...>>>,
+                  Preds...> : std::true_type {
 };
 
 template <typename ParametersPack, typename = void, template <auto...> class... Preds>
 struct are_false_v_ : std::false_type {
 };
 template <template <auto...> class ParametersPack, template <auto...> class... Preds, auto... Parameters>
-struct are_false_v_<ParametersPack<Parameters...>, std::enable_if<_v<are_false_impl<Preds<Parameters...>...>>>,
+struct are_false_v_<ParametersPack<Parameters...>, std::enable_if_t<_v<are_false_impl<Preds<Parameters...>...>>>,
                     Preds...> : std::true_type {
 };
 
