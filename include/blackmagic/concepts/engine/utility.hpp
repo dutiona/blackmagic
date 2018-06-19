@@ -328,10 +328,16 @@ constexpr decltype(auto) convertible_to(std::string_view concept_name)
 }
 
 // Refines utility
-template <auto C, typename... Ts>
-using refines = std::bool_constant<C.template check<Ts...>()>;
+template <typename... Ts, typename C>
+constexpr decltype(auto) refines(const C& c)
+{
+  return std::bool_constant<c.template check<Ts...>()>{};
+}
 
-template <auto C, auto... Vs>
-using refines_v = std::bool_constant<C.template check_v<Vs...>()>;
+template <auto... Vs, typename C>
+constexpr decltype(auto) refines_v(const C& c)
+{
+  return std::bool_constant<c.template check_v<Vs...>()>{};
+}
 
 }} // namespace blackmagic::concepts::utility
