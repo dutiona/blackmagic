@@ -171,34 +171,46 @@ template <typename T, typename U, typename = void>
 struct common_reference2 {
 };
 
+// T and U are both reference type and simple_common_reference type exists
+template <typename T, typename U>
+inline constexpr auto both_refs =
+  std::conjunction_v<std::is_reference<T>, std::is_reference<U>, is_detected<has_type_, simple_common_reference<T, U>>>;
+
+//  basic_common_reference exists
+template <typename T, typename U>
+inline constexpr auto basic_common_reference_exists = is_detected_v<has_type_, basic_common_reference_impl<T, U>>;
+
+// cond_expr is valid
+template <typename T, typename U>
+inline constexpr auto cond_expr_is_valid = valid_cond_expr_v<T, U>;
+
+// std::common_type is valid
+template <typename T, typename U>
+inline constexpr auto common_type_valid = is_detected_v<has_type_, std::common_type<T, U>>;
+
+template <typename T, typename U>
+struct common_reference2<T, U, std::enable_if_t<both_refs<T, U>>> {
+  using type = simple_common_reference_t<T, U>;
+};
+
+template <typename T, typename U>
+struct common_reference2<T, U, std::enable_if_t<(!both_refs<T, U> && basic_common_reference_exists<T, U>)>> {
+  using type = basic_common_reference_impl_t<T, U>;
+};
+
+template <typename T, typename U>
+struct common_reference2<
+  T, U, std::enable_if_t<(!both_refs<T, U> && !basic_common_reference_exists<T, U> && cond_expr_is_valid<T, U>)>> {
+  using type = cond_expr<T, U>;
+};
+
 template <typename T, typename U>
 struct common_reference2<
   T, U,
-  std::enable_if_t<std::disjunction_v<
-    // T and U are both reference type and simple_common_reference type exists
-    std::conjunction<std::is_reference<T>, std::is_reference<U>, is_detected<has_type_, simple_common_reference<T, U>>>,
-    // Else if basic_common_reference exists
-    is_detected<has_type_, basic_common_reference_impl<T, U>>,
-    // Else if cond_expr is valid
-    valid_cond_expr<T, U>,
-    // Else if std::common_type is valid
-    is_detected<has_type_, std::common_type<T, U>>>>> {
-  using type = std::conditional_t<
-    // T and U are both reference type and simple_common_reference type exists
-    std::conjunction_v<std::is_reference<T>, std::is_reference<U>,
-                       is_detected<has_type_, simple_common_reference<T, U>>>,
-    // Then
-    simple_common_reference_t<T, U>,
-    // Else if basic_common_reference exists
-    std::conditional_t<is_detected_v<has_type_, basic_common_reference_impl<T, U>>,
-                       // Then
-                       basic_common_reference_impl_t<T, U>,
-                       // Else if cond_expr is valid
-                       std::conditional_t<valid_cond_expr_v<T, U>,
-                                          // Then
-                                          cond_expr<T, U>,
-                                          // Else : fallback to std::common_type is valid
-                                          std::common_type_t<T, U>>>>;
+  std::enable_if_t<(
+    !both_refs<T,
+               U> && !basic_common_reference_exists<T, U> && !cond_expr_is_valid<T, U> && common_type_valid<T, U>)>> {
+  using type = std::common_type_t<T, U>;
 };
 
 } // namespace details
@@ -211,12 +223,12 @@ struct common_reference<T> {
 
 template <typename T, typename U>
 struct common_reference<T, U> {
-  using type = details::common_reference2<T, U>;
+  using type = typename details::common_reference2<T, U>::type;
 };
 
 template <typename T, typename U, typename... Vs>
 struct common_reference<T, U, Vs...> {
-  using type = typename common_reference<details::common_reference2<T, U>, Vs...>::type;
+  using type = common_reference_t<typename details::common_reference2<T, U>::type, Vs...>;
 };
 
 
