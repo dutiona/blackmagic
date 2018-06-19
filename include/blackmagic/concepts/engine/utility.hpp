@@ -327,4 +327,11 @@ constexpr decltype(auto) convertible_to(std::string_view concept_name)
   return make_concept_item<details::convertible_to<From, To>>(concept_name);
 }
 
+// Refines utility
+template <auto C, typename... Ts>
+using refines = std::bool_constant<C.template check<Ts...>()>;
+
+template <auto C, auto... Vs>
+using refines_v = std::bool_constant<C.template check_v<Vs...>()>;
+
 }} // namespace blackmagic::concepts::utility
