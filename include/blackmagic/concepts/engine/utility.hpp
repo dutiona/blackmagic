@@ -386,13 +386,13 @@ constexpr decltype(auto) are_convertible_to(std::string_view concept_name)
 template <typename... Ts, typename C>
 constexpr decltype(auto) refines(const C& c)
 {
-  return std::bool_constant<c.template check<Ts...>()>{};
+  return c.template check<Ts...>();
 }
 
 template <auto... Vs, typename C>
 constexpr decltype(auto) refines_v(const C& c)
 {
-  return std::bool_constant<c.template check_v<Vs...>()>{};
+  return c.template check_v<Vs...>();
 }
 
 }} // namespace blackmagic::concepts::utility
