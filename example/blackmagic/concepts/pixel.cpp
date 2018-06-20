@@ -21,12 +21,12 @@ using image_type_construct = typename PixelType::image_type;
 
 
 inline constexpr auto PixelConstructs =
-  concepts::valid_exprs<value_type_construct, reference_construct, site_type_construct, image_type_construct>(
+  concepts::are_valid_exprs<value_type_construct, reference_construct, site_type_construct, image_type_construct>(
     "PixelConstructs"sv);
 
 // point_type alias site_type
 inline constexpr auto PointType_Is_SiteType = concepts::make_concept_map(
-  PixelConstructs, concepts::same<point_type_construct, site_type_construct>("PointType_Is_SiteType"sv));
+  PixelConstructs, concepts::is_same<point_type_construct, site_type_construct>("PointType_Is_SiteType"sv));
 
 
 // value type is not reference
@@ -48,11 +48,11 @@ template <typename PixelType>
 using method_image = decltype(std::declval<PixelType>().image());
 
 inline constexpr auto HasMethods = concepts::make_concept_map(
-  PixelConstructs, concepts::valid_exprs<method_val, method_point, method_site, method_image>("HasMethods"sv),
-  concepts::convertible_to<method_val, reference_construct>("Method_val_Returns_reference"sv),
-  concepts::convertible_to<method_point, point_type_construct>("Method_point_Returns_point"sv),
-  concepts::convertible_to<method_site, site_type_construct>("Method_site_Returns_site_type"sv),
-  concepts::convertible_to<method_image, image_type_construct>("Method_image_Returns_image_type"sv));
+  PixelConstructs, concepts::are_valid_exprs<method_val, method_point, method_site, method_image>("HasMethods"sv),
+  concepts::is_convertible_to<method_val, reference_construct>("Method_val_Returns_reference"sv),
+  concepts::is_convertible_to<method_point, point_type_construct>("Method_point_Returns_point"sv),
+  concepts::is_convertible_to<method_site, site_type_construct>("Method_site_Returns_site_type"sv),
+  concepts::is_convertible_to<method_image, image_type_construct>("Method_image_Returns_image_type"sv));
 
 } // namespace pixel_concept_traits
 
