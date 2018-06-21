@@ -102,8 +102,8 @@ struct xref_<T const volatile> {
 
 } // namespace impl_
 
-namespace simple_common_reference_impl {
-// Simple common ref
+
+// Simple common reference
 template <typename T, typename U, typename = void>
 struct simple_common_reference {
 };
@@ -111,6 +111,7 @@ struct simple_common_reference {
 template <typename T, typename U>
 using simple_common_reference_t = typename simple_common_reference<T, U>::type;
 
+namespace simple_common_reference_impl {
 
 namespace lvalue {
 // Lvalue impl
@@ -136,10 +137,17 @@ using simple_common_reference_lvalue_t = typename simple_common_reference_lvalue
 
 namespace rvalue {
 // Rvalue impl
+template <typename T, typename U, typename = void>
+struct simple_lvalue_common_from_rvalue {
+};
 template <typename T, typename U>
-using simple_lvalue_common_from_rvalue =
-  lvalue::simple_common_reference_lvalue<std::add_lvalue_reference_t<std::remove_reference_t<T>>,
-                                         std::add_lvalue_reference_t<std::remove_reference_t<U>>>;
+struct simple_lvalue_common_from_rvalue<
+  T, U,
+  std::void_t<lvalue::simple_common_reference_lvalue_t<std::add_lvalue_reference_t<std::remove_reference_t<T>>,
+                                                     std::add_lvalue_reference_t<std::remove_reference_t<U>>>>>
+  : lvalue::simple_common_reference_lvalue<std::add_lvalue_reference_t<std::remove_reference_t<T>>,
+                                           std::add_lvalue_reference_t<std::remove_reference_t<U>>> {
+};
 
 template <typename T, typename U>
 using simple_lvalue_common_from_rvalue_t = typename simple_lvalue_common_from_rvalue<T, U>::type;
@@ -209,36 +217,43 @@ inline constexpr auto is_mixed_ref_rhslhs =
                      common::is_detected<impl_::has_type_, mixed::simple_common_reference_mixed_t<T, U>>,
                      std::is_convertible<T, mixed::simple_common_reference_mixed_t<T, U>>>;
 
+} // namespace simple_common_reference_impl
+
 
 // Simple common ref lvalue
 template <typename T, typename U>
-struct simple_common_reference<T, U, std::enable_if_t<is_lvalue_ref<T, U>>> {
-  using type = lvalue::simple_common_reference_lvalue_t<T, U>;
+struct simple_common_reference<T, U, std::enable_if_t<simple_common_reference_impl::is_lvalue_ref<T, U>>> {
+  using type = simple_common_reference_impl::lvalue::simple_common_reference_lvalue_t<T, U>;
 };
 
 // Simple common ref rvalue
 template <typename T, typename U>
-struct simple_common_reference<T, U, std::enable_if_t<(!is_lvalue_ref<T, U> && is_rvalue_ref<T, U>)>> {
-  using type = rvalue::simple_common_reference_rvalue_t<T, U>;
+struct simple_common_reference<T, U,
+                               std::enable_if_t<(!simple_common_reference_impl::is_lvalue_ref<
+                                                   T, U> && simple_common_reference_impl::is_rvalue_ref<T, U>)>> {
+  using type = simple_common_reference_impl::rvalue::simple_common_reference_rvalue_t<T, U>;
 };
 
 // Simple common ref mixed
 template <typename T, typename U>
 struct simple_common_reference<
-  T, U, std::enable_if_t<(!is_lvalue_ref<T, U> && !is_rvalue_ref<T, U> && is_mixed_ref_lhsrhs<T, U>)>> {
-  using type = mixed::simple_common_reference_mixed_t<T, U>;
+  T, U,
+  std::enable_if_t<(
+    !simple_common_reference_impl::is_lvalue_ref<
+      T,
+      U> && !simple_common_reference_impl::is_rvalue_ref<T, U> && simple_common_reference_impl::is_mixed_ref_lhsrhs<T, U>)>> {
+  using type = simple_common_reference_impl::mixed::simple_common_reference_mixed_t<T, U>;
 };
 
 template <typename T, typename U>
 struct simple_common_reference<
   T, U,
   std::enable_if_t<(
-    !is_lvalue_ref<T, U> && !is_rvalue_ref<T, U> && !is_mixed_ref_lhsrhs<T, U> && is_mixed_ref_rhslhs<T, U>)>> {
-  using type = mixed::simple_common_reference_mixed_t<U, T>;
+    !simple_common_reference_impl::is_lvalue_ref<
+      T,
+      U> && !simple_common_reference_impl::is_rvalue_ref<T, U> && !simple_common_reference_impl::is_mixed_ref_lhsrhs<T, U> && simple_common_reference_impl::is_mixed_ref_rhslhs<T, U>)>> {
+  using type = simple_common_reference_impl::mixed::simple_common_reference_mixed_t<U, T>;
 };
-
-} // namespace simple_common_reference_impl
-
 
 namespace basic_common_reference_impl {
 template <typename T, typename U>
@@ -259,9 +274,9 @@ struct common_reference2 {
 
 // T and U are both reference type and simple_common_reference type exists
 template <typename T, typename U>
-inline constexpr auto both_refs = std::conjunction_v<
-  std::is_reference<T>, std::is_reference<U>,
-  common::is_detected<impl_::has_type_, simple_common_reference_impl::simple_common_reference<T, U>>>;
+inline constexpr auto both_refs =
+  std::conjunction_v<std::is_reference<T>, std::is_reference<U>,
+                     common::is_detected<impl_::has_type_, simple_common_reference<T, U>>>;
 
 //  basic_common_reference exists
 template <typename T, typename U>
@@ -278,7 +293,7 @@ inline constexpr auto common_type_valid = is_detected_v<impl_::has_type_, std::c
 
 template <typename T, typename U>
 struct common_reference2<T, U, std::enable_if_t<both_refs<T, U>>> {
-  using type = simple_common_reference_impl::simple_common_reference_t<T, U>;
+  using type = simple_common_reference_t<T, U>;
 };
 
 template <typename T, typename U>

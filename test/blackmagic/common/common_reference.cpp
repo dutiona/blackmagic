@@ -32,12 +32,12 @@ TEST(Common_CommonReference, TwoElements_BothRvalueReferences)
 
 TEST(Common_CommonReference, TwoElements_Mixed_LhsLvalue)
 {
-  //static_assert(std::is_same_v<common::common_reference_t<const int&, double&&>, const double&>);
+  // static_assert(std::is_same_v<common::common_reference_t<const int&, double&&>, const double&>);
 }
 
 TEST(Common_CommonReference, TwoElements_Mixed_RhsLvalue)
 {
-  //static_assert(std::is_same_v<common::common_reference_t<const int&&, double&>, const double&>);
+  // static_assert(std::is_same_v<common::common_reference_t<const int&&, double&>, const double&>);
 }
 
 struct A {
@@ -57,6 +57,7 @@ inline constexpr auto has_common_reference_v = has_common_reference<T, U>::value
 
 TEST(Common_CommonReference, TwoElements_Different)
 {
-  static_assert(!common::details::impl_::valid_cond_expr_v_<A, B>);
-  static_assert(has_common_reference_v<A, B>);
+  static_assert(
+    !common::is_detected_v<common::details::impl_::has_type_, common::details::simple_common_reference<A, B>>);
+  //static_assert(has_common_reference_v<A, B>);
 }
