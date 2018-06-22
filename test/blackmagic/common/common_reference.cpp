@@ -12,7 +12,7 @@ using has_type = typename T::type;
 
 TEST(Common_CommonReference, EmptyList)
 {
-  static_assert(std::is_same_v<common::common_reference_t<>, common::no_common_reference>);
+  static_assert(!common::has_common_reference_v<>);
 }
 
 TEST(Common_CommonReference, OneElement)

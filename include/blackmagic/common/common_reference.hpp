@@ -96,17 +96,12 @@ struct common_reference {
 template <typename... Ts>
 using common_reference_t = typename common_reference<Ts...>::type;
 
-template <typename T, typename U, typename = void>
-struct has_common_reference : std::false_type {
-};
-template <typename T, typename U>
-struct has_common_reference<T, U,
-                            std::enable_if_t<!std::is_same_v<no_common_reference, common::common_reference_t<T, U>>>>
-  : std::true_type {
-};
+template <typename... Ts>
+struct has_common_reference;
 
-template <typename T, typename U>
-inline constexpr auto has_common_reference_v = has_common_reference<T, U>::value;
+template <typename... Ts>
+inline constexpr auto has_common_reference_v = has_common_reference<Ts...>::value;
+
 
 namespace details {
 
@@ -383,6 +378,15 @@ struct common_reference2<
 
 } // namespace common_reference_impl
 
+template <typename = void, typename... Ts>
+struct has_common_reference_impl : std::false_type {
+};
+
+template <typename... Ts>
+struct has_common_reference_impl<std::enable_if_t<!std::is_same_v<no_common_reference, common_reference_t<Ts...>>>,
+                                 Ts...> : std::true_type {
+};
+
 } // namespace details
 
 
@@ -392,14 +396,13 @@ struct common_reference<T> {
   using type = T;
 };
 
-template <typename T, typename U>
-struct common_reference<T, U> {
-  using type = typename details::common_reference_impl::common_reference2<T, U>::type;
-};
-
 template <typename T, typename U, typename... Vs>
 struct common_reference<T, U, Vs...> {
   using type = common_reference_t<typename details::common_reference_impl::common_reference2<T, U>::type, Vs...>;
+};
+
+template <typename... Ts>
+struct has_common_reference : details::has_common_reference_impl<void, Ts...> {
 };
 
 } // namespace blackmagic::common
