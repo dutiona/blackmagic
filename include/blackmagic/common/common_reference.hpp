@@ -35,22 +35,78 @@ struct defer : defer_<C, Ts...> {
 
 template <typename... Ts>
 using void_ = invoke<id<void>, Ts...>;
+
+ template <bool B, typename Then, typename Else, typename = void>
+struct if_ {
+};
+
+template <bool B, typename Then, typename Else>
+struct if_<B, Then, Else, std::enable_if_t<B>> {
+  using type = Then;
+};
+
+template <bool B, typename Then, typename Else>
+struct if_<B, Then, Else, std::enable_if_t<!B>> {
+  using type = Else;
+};
+
+template <bool B, typename Then, typename Else>
+using if_t_ = typename if_<B, Then, Else>::type;
+
+struct A {
+  using type = int;
+};
+struct B {
+};
+
+static_assert(std::is_same_v<int, if_t_<common::is_detected_v<impl_::has_type_, A>, A::type, void>>);
+static_assert(std::is_same_v<void, if_t_<common::is_detected_v<impl_::has_type_, B>, A::type, void>>);
+
+template <typename... Ts>
+struct and_ : std::true_type {
+};
+
+template <typename T, typename... Us>
+struct and_<T, Us...> : if_t_<T::value, and_<Us...>, std::false_type> {
+};
+
+template <typename... Ts>
+inline constexpr auto and_v_ = and_<Ts...>::value;
+
+static_assert(!and_v_<std::true_type, std::true_type, std::false_type>);
+
 */
 
 namespace blackmagic::common {
 
+struct no_common_reference {
+};
+
 // Public interface
 template <typename T, typename U, typename TQual, typename UQual>
 struct basic_common_reference {
+  using type = no_common_reference;
 };
 
 template <typename... Ts>
 struct common_reference {
+  using type = no_common_reference;
 };
 
 template <typename... Ts>
 using common_reference_t = typename common_reference<Ts...>::type;
 
+template <typename T, typename U, typename = void>
+struct has_common_reference : std::false_type {
+};
+template <typename T, typename U>
+struct has_common_reference<T, U,
+                            std::enable_if_t<!std::is_same_v<no_common_reference, common::common_reference_t<T, U>>>>
+  : std::true_type {
+};
+
+template <typename T, typename U>
+inline constexpr auto has_common_reference_v = has_common_reference<T, U>::value;
 
 namespace details {
 
@@ -106,6 +162,7 @@ struct xref_<T const volatile> {
 // Simple common reference
 template <typename T, typename U, typename = void>
 struct simple_common_reference {
+  using type = no_common_reference;
 };
 
 template <typename T, typename U>
@@ -117,6 +174,7 @@ namespace lvalue {
 // Lvalue impl
 template <typename T, typename U, typename = void>
 struct simple_common_reference_lvalue {
+  using type = no_common_reference;
 };
 
 template <typename T, typename U>
@@ -139,12 +197,14 @@ namespace rvalue {
 // Rvalue impl
 template <typename T, typename U, typename = void>
 struct simple_lvalue_common_from_rvalue {
+  using type = no_common_reference;
 };
 template <typename T, typename U>
 struct simple_lvalue_common_from_rvalue<
   T, U,
-  std::void_t<lvalue::simple_common_reference_lvalue_t<std::add_lvalue_reference_t<std::remove_reference_t<T>>,
-                                                     std::add_lvalue_reference_t<std::remove_reference_t<U>>>>>
+  std::enable_if_t<!std::is_same_v<no_common_reference, lvalue::simple_common_reference_lvalue_t<
+                                                          std::add_lvalue_reference_t<std::remove_reference_t<T>>,
+                                                          std::add_lvalue_reference_t<std::remove_reference_t<U>>>>>>
   : lvalue::simple_common_reference_lvalue<std::add_lvalue_reference_t<std::remove_reference_t<T>>,
                                            std::add_lvalue_reference_t<std::remove_reference_t<U>>> {
 };
@@ -154,9 +214,11 @@ using simple_lvalue_common_from_rvalue_t = typename simple_lvalue_common_from_rv
 
 template <typename T, typename U, typename = void>
 struct simple_common_reference_rvalue {
+  using type = no_common_reference;
 };
 template <typename T, typename U>
-struct simple_common_reference_rvalue<T, U, std::void_t<simple_lvalue_common_from_rvalue_t<T, U>>> {
+struct simple_common_reference_rvalue<
+  T, U, std::enable_if_t<!std::is_same_v<no_common_reference, simple_lvalue_common_from_rvalue_t<T, U>>>> {
   using type = simple_lvalue_common_from_rvalue_t<T, U>;
 };
 
@@ -176,9 +238,11 @@ using simple_common_ref_from_mixed_t = typename simple_common_ref_from_mixed<T, 
 
 template <typename T, typename U, typename = void>
 struct simple_common_reference_mixed {
+  using type = no_common_reference;
 };
 template <typename T, typename U>
-struct simple_common_reference_mixed<T, U, std::void_t<simple_common_ref_from_mixed_t<T, U>>> {
+struct simple_common_reference_mixed<
+  T, U, std::enable_if_t<!std::is_same_v<no_common_reference, simple_common_ref_from_mixed_t<T, U>>>> {
   using type = simple_common_ref_from_mixed_t<T, U>;
 };
 
@@ -193,28 +257,28 @@ using simple_common_reference_mixed_t = typename simple_common_reference_mixed<T
 template <typename T, typename U>
 inline constexpr auto is_lvalue_ref =
   std::conjunction_v<std::is_lvalue_reference<T>, std::is_lvalue_reference<U>,
-                     common::is_detected<impl_::has_type_, lvalue::simple_common_reference_lvalue<T, U>>>;
+                     std::negation<std::is_same<no_common_reference, lvalue::simple_common_reference_lvalue_t<T, U>>>>;
 
 // is rvalue ref
 template <typename T, typename U>
 inline constexpr auto is_rvalue_ref =
   std::conjunction_v<std::is_rvalue_reference<T>, std::is_rvalue_reference<U>,
-                     common::is_detected<impl_::has_type_, rvalue::simple_lvalue_common_from_rvalue<T, U>>,
+                     std::negation<std::is_same<no_common_reference, rvalue::simple_lvalue_common_from_rvalue_t<T, U>>>,
                      std::is_convertible<T, rvalue::simple_lvalue_common_from_rvalue_t<T, U>>,
                      std::is_convertible<U, rvalue::simple_lvalue_common_from_rvalue_t<T, U>>,
-                     common::is_detected<impl_::has_type_, rvalue::simple_common_reference_rvalue<T, U>>>;
+                     std::negation<std::is_same<no_common_reference, rvalue::simple_common_reference_rvalue_t<T, U>>>>;
 
 // is mixed
 template <typename T, typename U>
 inline constexpr auto is_mixed_ref_lhsrhs =
   std::conjunction_v<std::is_lvalue_reference<T>, std::is_rvalue_reference<U>,
-                     common::is_detected<impl_::has_type_, mixed::simple_common_reference_mixed_t<T, U>>,
+                     std::negation<std::is_same<no_common_reference, mixed::simple_common_reference_mixed_t<T, U>>>,
                      std::is_convertible<U, mixed::simple_common_reference_mixed_t<T, U>>>;
 
 template <typename T, typename U>
 inline constexpr auto is_mixed_ref_rhslhs =
   std::conjunction_v<std::is_rvalue_reference<T>, std::is_lvalue_reference<U>,
-                     common::is_detected<impl_::has_type_, mixed::simple_common_reference_mixed_t<T, U>>,
+                     std::negation<std::is_same<no_common_reference, mixed::simple_common_reference_mixed_t<T, U>>>,
                      std::is_convertible<T, mixed::simple_common_reference_mixed_t<T, U>>>;
 
 } // namespace simple_common_reference_impl
@@ -270,18 +334,19 @@ using basic_common_reference_impl_t = typename basic_common_reference_impl<T, U>
 namespace common_reference_impl {
 template <typename T, typename U, typename = void>
 struct common_reference2 {
+  using type = no_common_reference;
 };
 
 // T and U are both reference type and simple_common_reference type exists
 template <typename T, typename U>
 inline constexpr auto both_refs =
   std::conjunction_v<std::is_reference<T>, std::is_reference<U>,
-                     common::is_detected<impl_::has_type_, simple_common_reference<T, U>>>;
+                     std::negation<std::is_same<no_common_reference, simple_common_reference_t<T, U>>>>;
 
 //  basic_common_reference exists
 template <typename T, typename U>
 inline constexpr auto basic_common_reference_exists =
-  is_detected_v<impl_::has_type_, basic_common_reference_impl::basic_common_reference_impl<T, U>>;
+  !std::is_same_v<no_common_reference, basic_common_reference_impl::basic_common_reference_impl_t<T, U>>;
 
 // cond_expr is valid
 template <typename T, typename U>
@@ -336,6 +401,5 @@ template <typename T, typename U, typename... Vs>
 struct common_reference<T, U, Vs...> {
   using type = common_reference_t<typename details::common_reference_impl::common_reference2<T, U>::type, Vs...>;
 };
-
 
 } // namespace blackmagic::common
