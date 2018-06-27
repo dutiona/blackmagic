@@ -14,7 +14,7 @@ class Blackmagic(ConanFile):
 
     def source(self):
         git = tools.Git()
-        git.clone("https://gitlab.lrde.epita.fr/mroynard/blackmagic.git")
+        git.clone("{}.git".format(self.url))
 
     def build(self):
         cmake = CMake(self, generator="Ninja")
@@ -31,5 +31,5 @@ class Blackmagic(ConanFile):
     def requirements(self):
         tag = "stable-{}-{}".format(self.settings.compiler, str(self.settings.build_type).lower())
 
-        self.requires("gtest/1.8.0@dutiona/{}".format(tag))
-        self.requires("benchmark/1.4.1@dutiona/{}".format(tag))
+        self.requires("gtest/1.8.0@mroynard/{}".format(tag))
+        self.requires("benchmark/1.4.1@mroynard/{}".format(tag))

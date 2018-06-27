@@ -1,21 +1,23 @@
 variables:
-    CC: "gcc"                                                       # eg. gcc or clang
-    CXX: "g++"                                                      # eg. g++ or clang++
-    CONAN_PROFILE: "gcc-release"                                    # profile to use with conan
-    CONAN_REMOTE_NAME: "dutiona-lrde"                               # Conan remote name
-    CONAN_REMOTE_URL: "https://api.bintray.com/conan/dutiona/lrde"  # Conan remote name
-    CONAN_USER: "dutiona"                                           # Conan user name
-    CONAN_API_KEY: "e2a665548385e82bf1ecbb4739d3582b83b8235f"       # Conan API key on public bintray repositories
-    NAME: "blackmagic"                                              # Conan package name
-    TAG: "stable"                                                   # Conan tag
-    VERSION: "0.4"                                                  # Version to build
-    CMAKE_GENERATOR: "-G Ninja"                                     # include -G if defined
-    BUILD_DIRECTORY: "build-in-docker"                              # build directory name
-    SOURCE_DIRECTORY: ".."                                          # where cmake search source files from the build directory
-    TESTS: "ON"                                                     # build and run unit tests
-    EXAMPLES: "ON"                                                  # build and run examples
-    BENCHMARKS: "ON"                                                # build and run benchmarks
-    COVERAGE: "OFF"                                                 # build and run with coverage flags
+    CC: "gcc"                                                                                       # eg. gcc or clang
+    CXX: "g++"                                                                                      # eg. g++ or clang++
+    CONAN_PROFILE: "gcc-release"                                                                    # profile to use with conan
+    CONAN_PUBLIC_REMOTE_NAME: "lrde-public"                                                         # Conan remote name
+    CONAN_PUBLIC_REMOTE_URL: "https://artifactory.lrde.epita.fr/artifactory/api/conan/lrde-public"  # Conan remote name
+    CONAN_PRIVATE_REMOTE_NAME: "lrde-private"                                                       # Conan remote name
+    CONAN_PRIVATE_REMOTE_URL: "http://artifactory.lrde.epita.fr/artifactory/api/conan/lrde-private" # Conan remote name
+    CONAN_USER: "mroynard"                                                                          # Conan user name
+    CONAN_API_KEY: "AKCp5bAiaob11EFd9cnDkF1LJBqG5QDgTgbQttVmSfgokeLK4yE6AQ9KM7WyUqBCK1MwTp9H1"      # Conan API key on public bintray repositories
+    NAME: "blackmagic"                                                                              # Conan package name
+    TAG: "stable"                                                                                   # Conan tag
+    VERSION: "0.4"                                                                                  # Version to build
+    CMAKE_GENERATOR: "-G Ninja"                                                                     # include -G if defined
+    BUILD_DIRECTORY: "build-in-docker"                                                              # build directory name
+    SOURCE_DIRECTORY: ".."                                                                          # where cmake search source files from the build directory
+    TESTS: "ON"                                                                                     # build and run unit tests
+    EXAMPLES: "ON"                                                                                  # build and run examples
+    BENCHMARKS: "ON"                                                                                # build and run benchmarks
+    COVERAGE: "OFF"                                                                                 # build and run with coverage flags
 
 stages:
     - build
@@ -30,11 +32,17 @@ stages:
       - export CC=$CC
       - export CXX=$CXX
       - $CXX --version
+      - conan remote add $CONAN_PUBLIC_REMOTE_NAME $CONAN_PUBLIC_REMOTE_URL
+      - conan remote add $CONAN_PRIVATE_REMOTE_NAME $CONAN_PRIVATE_REMOTE_URL
+      - conan user
+              -p $CONAN_API_KEY
+              -r $CONAN_PUBLIC_REMOTE_NAME $CONAN_USER
+      - conan user
+              -p $CONAN_API_KEY
+              -r $CONAN_PRIVATE_REMOTE_NAME $CONAN_USER
+      - conan remote list
       - mkdir -p $BUILD_DIRECTORY
       - cd $BUILD_DIRECTORY
-      - conan remote add $CONAN_REMOTE_NAME $CONAN_REMOTE_URL
-      - conan user -p $CONAN_API_KEY -r $CONAN_REMOTE_NAME $CONAN_USER
-      - conan remote list
       - conan install ..
               --build missing
               -pr $CONAN_PROFILE
@@ -87,15 +95,22 @@ distcheck-build-linux-clang-debug:
       - export CC=$CC
       - export CXX=$CXX
       - $CXX --version
-      - conan remote add $CONAN_REMOTE_NAME $CONAN_REMOTE_URL
-      - conan user -p $CONAN_API_KEY -r $CONAN_REMOTE_NAME $CONAN_USER
+      - conan remote add $CONAN_PUBLIC_REMOTE_NAME $CONAN_PUBLIC_REMOTE_URL
+      - conan remote add $CONAN_PRIVATE_REMOTE_NAME $CONAN_PRIVATE_REMOTE_URL
+      - conan user
+              -p $CONAN_API_KEY
+              -r $CONAN_PUBLIC_REMOTE_NAME $CONAN_USER
+      - conan user
+              -p $CONAN_API_KEY
+              -r $CONAN_PRIVATE_REMOTE_NAME $CONAN_USER
       - conan remote list
       - conan create
               --build missing
               -pr $CONAN_PROFILE
               . $NAME/$VERSION@$CONAN_USER/$TAG-$CONAN_PROFILE
       - conan upload
-              -r $CONAN_REMOTE_NAME
+              --all
+              -r $CONAN_PRIVATE_REMOTE_NAME
               $NAME/$VERSION@$CONAN_USER/$TAG-$CONAN_PROFILE
 
 distcheck-package-linux-gcc-release:
@@ -134,19 +149,27 @@ documentation-builder:
         BENCHMARKS: "OFF"
         COVERAGE: "OFF"
     script:
+      - conan remote add $CONAN_PUBLIC_REMOTE_NAME $CONAN_PUBLIC_REMOTE_URL
+      - conan remote add $CONAN_PRIVATE_REMOTE_NAME $CONAN_PRIVATE_REMOTE_URL
+      - conan user
+              -p $CONAN_API_KEY
+              -r $CONAN_PUBLIC_REMOTE_NAME $CONAN_USER
+      - conan user
+              -p $CONAN_API_KEY
+              -r $CONAN_PRIVATE_REMOTE_NAME $CONAN_USER
+      - conan remote list
       - mkdir -p $BUILD_DIRECTORY
       - cd $BUILD_DIRECTORY
-      - conan remote add $CONAN_REMOTE_NAME $CONAN_REMOTE_URL
-      - conan user -p $CONAN_API_KEY -r $CONAN_REMOTE_NAME $CONAN_USER
-      - conan remote list
-      - conan install .. --build missing
+      - conan install ..
+              --build missing
       - cmake $CMAKE_GENERATOR
               -DWITH_TESTS=$TESTS
               -DWITH_EXAMPLES=$EXAMPLES
               -DWITH_BENCHMARKS=$BENCHMARKS
               -DWITH_CODE_COVERAGE=$COVERAGE
               $SOURCE_DIRECTORY
-      - cmake --build . --target $TARGET
+      - cmake --build .
+              --target $TARGET
 # Artifact is too large !
 #    artifacts:
 #        name: "documentation"
