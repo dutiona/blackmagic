@@ -31,5 +31,7 @@ class Blackmagic(ConanFile):
     def requirements(self):
         tag = "stable-{}-{}".format(self.settings.compiler, str(self.settings.build_type).lower())
 
-        self.requires("gtest/1.8.0@mroynard/{}".format(tag))
-        self.requires("benchmark/1.4.1@mroynard/{}".format(tag))
+        self.requires("gtest/1.8.0@dutiona/{}".format(tag))
+        # self.requires("gtest/1.8.0@mroynard/{}".format(tag))
+        self.requires("benchmark/1.4.1@dutiona/{}".format(tag))
+        # self.requires("benchmark/1.4.1@mroynard/{}".format(tag))
