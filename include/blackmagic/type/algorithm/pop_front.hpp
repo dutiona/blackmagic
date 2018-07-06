@@ -1,0 +1,30 @@
+#pragma once
+
+#include "../list.hpp"
+
+#include "../../common/dependent_false.hpp"
+
+#include <type_traits>
+
+namespace blackmagic::type { inline namespace algorithm {
+
+template <typename List, typename = void>
+struct pop_front {
+};
+
+template <typename List>
+struct pop_front<List, std::enable_if_t<(List::size() == 0)>> {
+  static_assert(common::dependent_false_v<List>, "List is empty!");
+};
+
+template <template <typename, typename...> class List, typename T, typename... Ts>
+struct pop_front<List<T, Ts...>, std::enable_if_t<(List<T, Ts...>::size() > 0)>> {
+  using type = basic_type_list<Ts...>;
+};
+
+template <typename List>
+using pop_front_t = typename pop_front<List>::type;
+
+// static_assert(std::is_same_v<type_list<int, double, float>, pop_front_t<type_list<char, int, double, float>>>);
+
+}} // namespace blackmagic::type::algorithm

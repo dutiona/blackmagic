@@ -66,8 +66,6 @@ set_intersection / set_union
 is_permutation / next_permutation / prev_permutation
 
 TODO pure type :
-integral list
-sizeof wrapper
 see https://github.com/edouarda/brigand/wiki/reference
 see https://brunocodutra.github.io/metal/
 all / all_of
@@ -75,20 +73,13 @@ any / any_of
 none / none_of
 count / count_if
 at
-front / back
-pop_front / pop_back
-push_front / push_back
 find / find_if
 replace / replace_if
 copy / copy_if
-remove / remove_if
+remove 
 reverse / rotate / rotate_left / rotate_right
-take / take_left / take_right
 fold / fold_left / fold_right
-sort
 transform
-unique
-cat
 insert
 cartesian_product
 transpose

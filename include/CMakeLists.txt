@@ -4,7 +4,7 @@ target_compile_features(Blackmagic INTERFACE cxx_std_17)
 target_include_directories(Blackmagic INTERFACE ${BLACKMAGIC_INCLUDE_DIR})
 
 if(COMPILER_CLANG)
-    target_compile_options(Blackmagic INTERFACE -Wno-gnu-string-literal-operator-template)
+    target_compile_options(Blackmagic INTERFACE -Wno-gnu-string-literal-operator-template -frelaxed-template-template-args)
 endif(COMPILER_CLANG)
 
 # dummy static project not linked anywere needed so that a vcxproj is generated with the sources in the solution
@@ -197,7 +197,36 @@ set(BLACKMAGIC_TYPE_SOURCES
         blackmagic/type/type.hpp
         blackmagic/type/utility.hpp
         blackmagic/type/ext/print.hpp
-        blackmagic/type/ext/streamio.hpp)
+        blackmagic/type/ext/streamio.hpp
+        blackmagic/type/algorithm.hpp
+        blackmagic/type/algorithm/details/merge_lists.hpp
+        blackmagic/type/algorithm/all.hpp
+        blackmagic/type/algorithm/all_of.hpp
+        blackmagic/type/algorithm/any.hpp
+        blackmagic/type/algorithm/any_of.hpp
+        blackmagic/type/algorithm/none.hpp
+        blackmagic/type/algorithm/none_of.hpp
+        blackmagic/type/algorithm/back.hpp
+        blackmagic/type/algorithm/count.hpp
+        blackmagic/type/algorithm/count_if.hpp
+        blackmagic/type/algorithm/front.hpp
+        blackmagic/type/algorithm/merge.hpp
+        blackmagic/type/algorithm/none.hpp
+        blackmagic/type/algorithm/none_of.hpp
+        blackmagic/type/algorithm/pop_back.hpp
+        blackmagic/type/algorithm/pop_back_n.hpp
+        blackmagic/type/algorithm/pop_front.hpp
+        blackmagic/type/algorithm/pop_front_n.hpp
+        blackmagic/type/algorithm/push_back.hpp
+        blackmagic/type/algorithm/push_front.hpp
+        blackmagic/type/algorithm/remove_if.hpp
+        blackmagic/type/algorithm/sort.hpp
+        blackmagic/type/algorithm/take_back.hpp
+        blackmagic/type/algorithm/take_back_from.hpp
+        blackmagic/type/algorithm/take_front.hpp
+        blackmagic/type/algorithm/take_front_from.hpp
+        blackmagic/type/algorithm/unique.hpp
+        blackmagic/type/algorithm/at.hpp)
 
 set(BLACKMAGIC_SOURCES
         blackmagic/blackmagic.hpp
