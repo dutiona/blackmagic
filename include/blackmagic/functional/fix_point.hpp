@@ -28,7 +28,7 @@ public:
   }
 
 private:
-  const F f_;
+  F f_;
 };
 
 } // namespace details

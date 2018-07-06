@@ -34,8 +34,8 @@ public:
   }
 
 private:
-  const Func                f_;
-  const std::tuple<Args...> args_;
+  Func                f_;
+  std::tuple<Args...> args_;
 };
 
 } // namespace details

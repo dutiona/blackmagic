@@ -32,8 +32,8 @@ public:
   }
 
 private:
-  const F f_;
-  const G g_;
+  F f_;
+  G g_;
 };
 
 template <typename F, typename G>

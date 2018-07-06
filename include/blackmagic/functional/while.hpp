@@ -1,6 +1,5 @@
 #pragma once
 
-#include "../common/detector.hpp"
 #include "../integral/traits_ext.hpp"
 
 #include <type_traits>
@@ -14,13 +13,6 @@ struct while_t {
 };
 
 inline constexpr const while_t While{};
-
-namespace details {
-
-template <typename T>
-using value_type_t = typename T::value_type;
-
-} // namespace details
 
 template <typename Pred, typename State, typename Func>
 constexpr decltype(auto) while_t::operator()(Pred&& pred, State&& state, Func&& f) const

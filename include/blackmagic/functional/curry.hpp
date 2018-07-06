@@ -40,7 +40,7 @@ public:
   }
 
 private:
-  const Func f_;
+  Func f_;
 };
 
 } // namespace details

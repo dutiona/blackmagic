@@ -1,6 +1,6 @@
 #pragma once
 
-#include "../../common/algorithm/any_of_v.hpp"
+#include "../../common/utility.hpp"
 #include "../../functional/partial.hpp"
 #include "../../functional/reverse_partial.hpp"
 

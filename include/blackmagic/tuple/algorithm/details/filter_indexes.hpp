@@ -1,7 +1,7 @@
 #pragma once
 
 #include "../../../common/traits_ext.hpp"
-#include "../../../type/algorithm/count.hpp"
+#include "../../../type/utility.hpp"
 
 #include <array>
 

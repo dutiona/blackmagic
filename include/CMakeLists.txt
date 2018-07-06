@@ -18,14 +18,9 @@ set(BLACKMAGIC_COMMON_SOURCES
         blackmagic/common/detector.hpp
         blackmagic/common/traits_ext.hpp
         blackmagic/common/tag_of.hpp
-        blackmagic/common/algorithm.hpp
-        blackmagic/common/algorithm/all_of_v.hpp
-        blackmagic/common/algorithm/any_of_v.hpp
-        blackmagic/common/algorithm/are_equal.hpp
-        blackmagic/common/algorithm/are_not_equal.hpp
-        blackmagic/common/algorithm/count_v.hpp
-        blackmagic/common/algorithm/none_of_v.hpp
-        blackmagic/common/common_reference.hpp)
+        blackmagic/common/utility.hpp
+        blackmagic/common/common_reference.hpp
+        blackmagic/common/sizeof.hpp)
 
 set(BLACKMAGIC_CONCEPTS_SOURCES
         blackmagic/concepts/concepts.hpp
@@ -144,6 +139,7 @@ set(BLACKMAGIC_TUPLE_SOURCES
         blackmagic/tuple/utility.hpp
         blackmagic/tuple/ext/print.hpp
         blackmagic/tuple/ext/print_all.hpp
+        blackmagic/tuple/ext/streamio.hpp
         blackmagic/tuple/algorithm/accumulate.hpp
         blackmagic/tuple/algorithm/all.hpp
         blackmagic/tuple/algorithm/all_of.hpp
@@ -195,15 +191,13 @@ set(BLACKMAGIC_TUPLE_SOURCES
         blackmagic/tuple/algorithm/details/filter_indexes.hpp)
 
 set(BLACKMAGIC_TYPE_SOURCES
-        blackmagic/type/algorithm.hpp
         blackmagic/type/conditionals.hpp
         blackmagic/type/helpers.hpp
         blackmagic/type/list.hpp
         blackmagic/type/type.hpp
-        blackmagic/type/algorithm/all_of.hpp
-        blackmagic/type/algorithm/any_of.hpp
-        blackmagic/type/algorithm/count.hpp
-        blackmagic/type/algorithm/none_of.hpp)
+        blackmagic/type/utility.hpp
+        blackmagic/type/ext/print.hpp
+        blackmagic/type/ext/streamio.hpp)
 
 set(BLACKMAGIC_SOURCES
         blackmagic/blackmagic.hpp

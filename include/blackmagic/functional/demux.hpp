@@ -10,8 +10,8 @@ namespace details {
 template <typename F, typename... Funcs>
 class demux_impl_caller {
 public:
-  constexpr demux_impl_caller(const F& f, Funcs&&... fs)
-    : f_(f)
+  constexpr demux_impl_caller(F&& f, Funcs&&... fs)
+    : f_(std::forward<F>(f))
     , funcs_(std::forward<Funcs>(fs)...)
   {
   }
@@ -30,8 +30,8 @@ private:
   }
 
 private:
-  const F                    f_;
-  const std::tuple<Funcs...> funcs_;
+  F                    f_;
+  std::tuple<Funcs...> funcs_;
 };
 
 template <typename F>
@@ -45,11 +45,11 @@ public:
   template <typename... Funcs>
   constexpr decltype(auto) operator()(Funcs&&... funcs)
   {
-    return demux_impl_caller<F, Funcs...>{f_, std::forward<Funcs>(funcs)...};
+    return demux_impl_caller<F, Funcs...>{std::forward<F>(f_), std::forward<Funcs>(funcs)...};
   }
 
 private:
-  const F f_;
+  F f_;
 };
 
 } // namespace details

@@ -2,7 +2,7 @@
 
 #include "../../functional/partial.hpp"
 #include "../../functional/reverse_partial.hpp"
-#include "../../common/algorithm/all_of_v.hpp"
+#include "../../common/utility.hpp"
 
 #include <tuple>
 #include <utility>

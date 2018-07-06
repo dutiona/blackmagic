@@ -23,7 +23,7 @@ template <typename... Ts, size_t I, size_t... J>
 void print_all_impl_(const std::tuple<Ts...>& tpl, std::ostream& os, size_t idx, size_t padding,
                      std::index_sequence<I, J...>)
 {
-  if constexpr (helpers::is_tuple_v<std::decay_t<decltype(std::get<I>(tpl))>>) {
+  if constexpr (is_tuple_v<std::decay_t<decltype(std::get<I>(tpl))>>) {
     os << std::string(padding, '\t') << "[" << idx << "] <nested tuple> : \n";
     print_all(std::get<I>(tpl), os, 0, padding + 1);
   }

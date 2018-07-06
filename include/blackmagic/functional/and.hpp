@@ -1,6 +1,6 @@
 #pragma once
 
-#include "../common/algorithm/all_of_v.hpp"
+#include "../common/utility.hpp"
 
 namespace blackmagic::functional {
 

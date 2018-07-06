@@ -26,7 +26,7 @@ public:
   }
 
 private:
-  const std::tuple<Args...> args_;
+  std::tuple<Args...> args_;
 };
 
 } // namespace details

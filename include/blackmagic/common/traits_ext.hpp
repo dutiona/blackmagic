@@ -51,7 +51,7 @@ inline constexpr basic_trait_t<Pred> basic_trait{};
 
 // trait
 template <template <typename...> class Pred, typename... Us>
-struct trait_t {
+struct partial_trait_t {
   template <typename... Args>
   using type = Pred<Us..., Args...>;
 
@@ -62,12 +62,12 @@ struct trait_t {
   }
 };
 template <template <typename...> class Pred, typename... Us>
-inline constexpr trait_t<Pred, Us...> trait{};
+inline constexpr partial_trait_t<Pred, Us...> trait{};
 
 
 // reverse_trait
 template <template <typename...> class Pred, typename... Us>
-struct reverse_trait_t {
+struct reverse_partial_trait_t {
   template <typename... Args>
   using type = Pred<Args..., Us...>;
 
@@ -78,7 +78,7 @@ struct reverse_trait_t {
   }
 };
 template <template <typename...> class Pred, typename... Us>
-inline constexpr reverse_trait_t<Pred, Us...> reverse_trait{};
+inline constexpr reverse_partial_trait_t<Pred, Us...> reverse_trait{};
 
 
 // basic_value
@@ -97,7 +97,7 @@ inline constexpr basic_value_t<Pred> basic_value{};
 
 // value
 template <template <auto...> class Pred, auto... Us>
-struct value_t {
+struct partial_value_t {
   template <auto... Args>
   using type = Pred<Us..., Args...>;
 
@@ -108,12 +108,12 @@ struct value_t {
   }
 };
 template <template <auto...> class Pred, auto... Us>
-inline constexpr value_t<Pred, Us...> value{};
+inline constexpr partial_value_t<Pred, Us...> value{};
 
 
 // reverse_value
 template <template <auto...> class Pred, auto... Us>
-struct reverse_value_t {
+struct reverse_partial_value_t {
   template <auto... Args>
   using type = Pred<Args..., Us...>;
 
@@ -124,7 +124,7 @@ struct reverse_value_t {
   }
 };
 template <template <auto...> class Pred, auto... Us>
-inline constexpr reverse_value_t<Pred, Us...> reverse_value{};
+inline constexpr reverse_partial_value_t<Pred, Us...> reverse_value{};
 
 // is_instantiation_of
 template <template <typename...> class Template, typename T>
@@ -170,5 +170,13 @@ using apply_if = std::conditional<B, M<T>, T>;
 
 template <bool B, template <typename> class M, typename T>
 using apply_if_t = typename apply_if<B, M, T>::type;
+
+
+// type_identity
+template <typename T>
+struct type_identity {
+  using type = T;
+};
+
 
 }} // namespace blackmagic::common::traits_ext

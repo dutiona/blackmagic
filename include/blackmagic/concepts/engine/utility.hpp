@@ -169,7 +169,7 @@ struct is_valid_expr {
 template <template <typename...> class... Constraints>
 struct are_valid_exprs {
   template <typename... Parameters>
-  using type = are_valid_exprs_<type::basic_list<Parameters...>, void, Constraints...>;
+  using type = are_valid_exprs_<type::basic_type_list<Parameters...>, void, Constraints...>;
   template <typename... Parameters>
   using underlying_type = _t<type<Parameters...>>;
   template <typename... Parameters>
@@ -199,7 +199,7 @@ struct is_true_v {
 template <template <typename...> class... Preds>
 struct are_true {
   template <typename... Parameters>
-  using type = are_true_<type::basic_list<Parameters...>, void, Preds...>;
+  using type = are_true_<type::basic_type_list<Parameters...>, void, Preds...>;
   template <typename... Parameters>
   using underlying_type = _t<type<Parameters...>>;
   template <typename... Parameters>
@@ -239,7 +239,7 @@ struct is_false_v {
 template <template <typename...> class... Preds>
 struct are_false {
   template <typename... Parameters>
-  using type = are_false_<type::basic_list<Parameters...>, void, Preds...>;
+  using type = are_false_<type::basic_type_list<Parameters...>, void, Preds...>;
   template <typename... Parameters>
   using underlying_type = _t<type<Parameters...>>;
   template <typename... Parameters>
@@ -269,7 +269,7 @@ struct is_same {
 template <template <typename...> class T, template <typename...> class... U>
 struct are_same {
   template <typename... Parameters>
-  using type = are_same_<type::basic_list<Parameters...>, T, void, U...>;
+  using type = are_same_<type::basic_type_list<Parameters...>, T, void, U...>;
   template <typename... Parameters>
   using underlying_type = _t<type<Parameters...>>;
   template <typename... Parameters>
@@ -289,7 +289,7 @@ struct is_convertible_to {
 template <template <typename...> class To, template <typename...> class... From>
 struct are_convertible_to {
   template <typename... Parameters>
-  using type = are_convertible_to_<type::basic_list<Parameters...>, To, void, From...>;
+  using type = are_convertible_to_<type::basic_type_list<Parameters...>, To, void, From...>;
   template <typename... Parameters>
   using underlying_type = _t<type<Parameters...>>;
   template <typename... Parameters>
