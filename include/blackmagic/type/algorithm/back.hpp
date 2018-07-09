@@ -31,6 +31,6 @@ struct back<List<T, Ts...>, std::enable_if_t<(List<T, Ts...>::size() == 1)>> {
 template <typename List>
 using back_t = typename back<List>::type;
 
-// static_assert(std::is_same_v<float, back_t<type_list<char, int, double, float>>>);
+// static_assert(std::is_same_v<float, back_t<basic_type_list<char, int, double, float>>>);
 
 }} // namespace blackmagic::type::algorithm
