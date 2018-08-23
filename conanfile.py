@@ -8,7 +8,7 @@ class Blackmagic(ConanFile):
     description = "Metaprogramming toolbox to do blackmagic in C++17."
 
     settings = "os", "compiler", "arch", "build_type", "cppstd"
-    generators = "cmake"
+    generators = "cmake_find_package"
 
     no_copy_source = True
 

@@ -2,9 +2,6 @@ cmake_minimum_required(VERSION 3.8.2) # required for cxx_std_17
 
 project(Blackmagic VERSION 0.0.1 LANGUAGES CXX)
 
-include(${CMAKE_BINARY_DIR}/conanbuildinfo.cmake)
-conan_basic_setup(TARGETS)
-
 SET(COMPILER_CLANG OFF)
 SET(COMPILER_GCC OFF)
 SET(COMPILER_ICC OFF)
