@@ -1,1 +1,1 @@
-add_example(cstxpr_empty "empty.cpp")
+add_example(cstxpr_empty empty.cpp)

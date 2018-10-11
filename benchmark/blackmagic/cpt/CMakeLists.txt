@@ -1,1 +1,1 @@
-add_benchmark(cpt_empty "empty.cpp")
+add_benchmark(cpt_empty empty.cpp)

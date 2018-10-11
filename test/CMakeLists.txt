@@ -5,11 +5,12 @@ add_custom_target(tests
     COMMAND ${CMAKE_CTEST_COMMAND} -C ${CMAKE_CONFIGURATION_TYPES} --output-on-failure --schedule-random --verbose
     COMMENT "Build and run all the unit tests.")
 
-macro(add_unit_test Executable Source)
-    add_executable(test_${Executable} EXCLUDE_FROM_ALL ${Source})
+macro(add_unit_test Executable)
+    set(Sources ${ARGN})
+    add_executable(test_${Executable} EXCLUDE_FROM_ALL ${Sources})
     add_test(NAME test_${Executable} COMMAND test_${Executable} WORKING_DIRECTORY ${CMAKE_BINARY_DIR}/test)
     
-    target_link_libraries(test_${Executable} PRIVATE Blackmagic gtest::gtest Threads::Threads)
+    target_link_libraries(test_${Executable} PRIVATE Blackmagic gtest::gtest)
     target_include_directories(test_${Executable} PRIVATE ${CMAKE_CURRENT_SOURCE_DIR})
     
     if(PLATFORM_UNIX AND COMPILER_CLANG)
@@ -25,7 +26,6 @@ if(WITH_TESTS)
 
     set(CMAKE_MODULE_PATH ${CMAKE_BINARY_DIR})
     find_package(gtest REQUIRED)
-    find_package(Threads REQUIRED)
     add_subdirectory(blackmagic)
 
 endif(WITH_TESTS)

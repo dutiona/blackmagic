@@ -1,1 +1,1 @@
-add_example(type_conditionals "conditionals.cpp")
+add_example(type_conditionals conditionals.cpp)

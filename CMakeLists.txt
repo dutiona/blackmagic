@@ -76,7 +76,7 @@ enable_testing()
 add_subdirectory(test)
 
 add_custom_target(check
-    DEPENDS examples-compile tests-compile benchmarks-compile
+    DEPENDS examples-compile tests-compile
     COMMENT "Build and run all the unit tests, examples and benchmarks.")
 
 add_custom_target(full

@@ -65,5 +65,6 @@
         "codecvt": "cpp",
         "algorithm": "cpp",
         "__nullptr": "cpp"
-    }
+    },
+    "python.pythonPath": "venv/bin/python"
 }
