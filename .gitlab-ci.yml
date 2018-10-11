@@ -211,34 +211,24 @@ documentation-builder:
     stage: doc
     image: mroynard/ubuntu-doctoolset:stable
     variables:
-        BUILD_DIRECTORY: "build-in-docker-doc"
         TARGET: "docs"
         TESTS: "OFF"
         EXAMPLES: "OFF"
         BENCHMARKS: "OFF"
         COVERAGE: "OFF"
     script:
-        - conan remote add $CONAN_PRIVATE_REMOTE_NAME $CONAN_PRIVATE_REMOTE_URL
-        - conan user
-                -p $CONAN_API_KEY
-                -r $CONAN_PRIVATE_REMOTE_NAME $CONAN_USER
-        - conan remote list
-        - mkdir -p $BUILD_DIRECTORY
-        - cd $BUILD_DIRECTORY
-        - conan install ..
-                --build missing
-        - cmake $CMAKE_GENERATOR
-                -DWITH_TESTS=$TESTS
+        - mkdir -p build && cd build
+        - cmake -DWITH_TESTS=$TESTS
                 -DWITH_EXAMPLES=$EXAMPLES
                 -DWITH_BENCHMARKS=$BENCHMARKS
                 -DWITH_CODE_COVERAGE=$COVERAGE
-                $SOURCE_DIRECTORY
+                ..
         - cmake --build .
                 --target $TARGET
 # Artifact is too large !
 #    artifacts:
 #        name: "documentation"
 #        paths:
-#            - $BUILD_DIRECTORY/doc/api
-#            - $BUILD_DIRECTORY/doc/user
+#            - build/doc/api
+#            - build/doc/user
 #        expire_in: 14 days
