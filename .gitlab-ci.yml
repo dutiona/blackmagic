@@ -223,8 +223,8 @@ documentation-builder:
                 -DWITH_BENCHMARKS=$BENCHMARKS
                 -DWITH_CODE_COVERAGE=$COVERAGE
                 ..
-        - cmake --build .
-                --target $TARGET
+#        - cmake --build .
+#                --target $TARGET
 # Artifact is too large !
 #    artifacts:
 #        name: "documentation"
